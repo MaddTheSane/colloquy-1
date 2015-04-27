@@ -25,13 +25,13 @@
 #import "acid-xpath.h"
 #import "acid-dom.h"
 
-@interface XPLocation (Private)
--(id) initWithTokens:(NSMutableString*)pathtokens;
+@interface XPLocation ()
+-(instancetype) initWithTokens:(NSMutableString*)pathtokens;
 @end
 
 @implementation XPLocation
 
--(id) init
+-(instancetype) init
 {
     if ((self = [super init]))
     {

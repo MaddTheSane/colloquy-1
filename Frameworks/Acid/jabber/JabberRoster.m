@@ -29,29 +29,24 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 @interface JRItem : NSObject <JabberRosterItem>
 {
-    JabberID* _jid;
-    NSString* _nickname;
     NSString* _subscription;
-    NSSet*    _groups;
-    id        _defaultPresence;
 }
-+(id) itemWithJID:(JabberID*)jid;
--(void) dealloc;
++(instancetype) itemWithJID:(JabberID*)jid;
 
--(NSString*) displayName;
--(JabberID*) JID;
--(NSString*) JIDString;
--(NSSet*)    groups;
--(id)        defaultPresence;
+@property (nonatomic, copy) NSString *displayName;
+@property (nonatomic, readonly, retain) JabberID *JID;
+@property (nonatomic, readonly, copy) NSString *JIDString;
+@property (nonatomic, readwrite, retain) id defaultPresence;
 
--(void) setDefaultPresence:(id)defaultPres;
--(void) setDisplayName:(NSString*)name;
 -(void) setGroups:(NSMutableSet*)groups withDelegate:(id)delegate;
 @end
 
 @implementation JRItem
+@synthesize JID = _jid;
+@synthesize displayName = _nickname;
+@synthesize groups = _groups;
 
-+(id) itemWithJID:(JabberID*)jid
++(instancetype) itemWithJID:(JabberID*)jid
 {
     JRItem* result = [[JRItem alloc] init];
     result->_jid = [jid retain];
@@ -81,37 +76,9 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
         return [_jid userhost];
 }
 
-
--(JabberID*) JID
-{
-    return _jid;
-}
-
 -(NSString*) JIDString
 {
     return [_jid description];
-}
-
--(NSSet*) groups
-{
-    return _groups;
-}
-
--(id) defaultPresence
-{
-    return _defaultPresence;
-}
-
--(void) setDefaultPresence:(id)defaultPres
-{
-    [_defaultPresence release];
-    _defaultPresence = [defaultPres retain];
-}
-
--(void) setDisplayName:(NSString*)name
-{
-    [_nickname release];
-    _nickname = [name retain];
 }
 
 -(void) setGroups:(NSMutableSet*)groups withDelegate:(id)delegate
@@ -164,6 +131,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 @end
 
 @implementation JabberRoster
+@synthesize delegate = _delegate;
 
 -(void) parseItems:(NSArray*)items
 {
@@ -186,7 +154,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
         }
 
         remove = [[cur getAttribute:@"subscription"] isEqual:@"remove"];
-        item = [_items objectForKey:[jid userhostJID]];
+        item = _items[[jid userhostJID]];
 
         if (remove)
         {
@@ -211,7 +179,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
             if (item == nil)
             {
                 item = [JRItem itemWithJID:jid];
-                [_items setObject:item forKey:[jid userhostJID]];
+                _items[[jid userhostJID]] = item;
             }
 
             [item setDisplayName:(nick != nil) ? nick : @""];
@@ -265,12 +233,12 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(void) onRosterPush:(NSNotification*)n
 {
-    NSAutoreleasePool* p = [[NSAutoreleasePool alloc] init];
-    NSArray* items = [XPathQuery queryForList:[n object] xpath:@"/iq/query/item"];
-    [_delegate onBeginUpdate];
-    [self parseItems:items];
-    [_delegate onEndUpdate];
-    [p release];
+	@autoreleasepool {
+		NSArray* items = [XPathQuery queryForList:[n object] xpath:@"/iq/query/item"];
+		[_delegate onBeginUpdate];
+		[self parseItems:items];
+		[_delegate onEndUpdate];
+	}
 }
 
 -(void) onInitialRosterPush:(NSNotification*)n
@@ -283,7 +251,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 -(void) onDefaultPresenceChange:(NSNotification*)n
 {
     JabberPresence* pres = [n object];
-    JRItem* item = [_items objectForKey:[[pres from] userhostJID]];
+    JRItem* item = _items[[[pres from] userhostJID]];
 
     JabberPresence* default_presence = 
 	[[_session presenceTracker] defaultPresenceForJID:[pres from]];
@@ -293,7 +261,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 -(void) onUnavailable:(NSNotification*)n
 {
     JabberID* jid = [n object];
-    JRItem* item = [_items objectForKey:[jid userhostJID]];
+    JRItem* item = _items[[jid userhostJID]];
     [item setDefaultPresence:nil];
 }
 
@@ -303,16 +271,6 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
     _items = nil;
 }
 
--(id) delegate
-{
-    return _delegate;
-}
-
--(void) setDelegate:(id)delegate
-{
-    _delegate = delegate;
-}
-
 -(NSEnumerator*) itemEnumerator
 {
     return [_items objectEnumerator];
@@ -320,12 +278,12 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(id) itemForJID:(JabberID*)jid
 {
-    return [_items objectForKey:[jid userhostJID]];
+    return _items[[jid userhostJID]];
 }
 
 -(NSString*) nickForJID:(JabberID*)jid
 {
-    id item = [_items objectForKey:[jid userhostJID]];
+    id item = _items[[jid userhostJID]];
     if (item != NULL)
         return [item displayName];
     else
@@ -377,6 +335,11 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 - (void)onRosterResult:(NSNotification *)n
 {
     // XXX: There should probably be some code for handling errors here.
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len
+{
+    return [_items countByEnumeratingWithState:state objects:buffer count:len];
 }
 
 @end

@@ -46,11 +46,6 @@
     [super dealloc];
 }
 
--(NSString*) path
-{
-    return _path;
-}
-
 -(BOOL) matches:(XMLElement*)elem
 {
     return [_expression matches:elem];

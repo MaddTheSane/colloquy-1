@@ -30,12 +30,18 @@ XPathQuery* QRY_STATUS;
 XPathQuery* QRY_SIGN;
 
 @implementation JabberPresence
+@synthesize from;
+@synthesize to;
+@synthesize priority;
+@synthesize show;
+@synthesize sign;
+@synthesize status;
 
-+(id) constructElement:(XMLQName*)qname withAttributes:(NSMutableDictionary*)atts withDefaultURI:(NSString*)default_uri
++(instancetype) constructElement:(XMLQName*)qname withAttributes:(NSMutableDictionary*)atts withDefaultURI:(NSString*)default_uri
 {
     if ([qname isEqual:JABBER_PRESENCE_QN])
     {
-        NSString* type = [atts objectForKey:JABBER_TYPE_ATTRIB_QN];
+        NSString* type = atts[JABBER_TYPE_ATTRIB_QN];
         if ((type == nil) || ([type isEqual:@"unavailable"]))
             return [[JabberPresence alloc] initWithQName:qname withAttributes:atts withDefaultURI:default_uri];
             return nil;
@@ -45,10 +51,13 @@ XPathQuery* QRY_SIGN;
 
 +(void) initialize
 {
-    QRY_PRIORITY = [[XPathQuery alloc] initWithPath:@"/presence/priority"];
-    QRY_SHOW     = [[XPathQuery alloc] initWithPath:@"/presence/show"];
-    QRY_STATUS   = [[XPathQuery alloc] initWithPath:@"/presence/status"];
-    QRY_SIGN  	 = [[XPathQuery alloc] initWithPath:@"/presence/x[%jabber:x:signed]"];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        QRY_PRIORITY = [[XPathQuery alloc] initWithPath:@"/presence/priority"];
+        QRY_SHOW     = [[XPathQuery alloc] initWithPath:@"/presence/show"];
+        QRY_STATUS   = [[XPathQuery alloc] initWithPath:@"/presence/status"];
+        QRY_SIGN  	 = [[XPathQuery alloc] initWithPath:@"/presence/x[%jabber:x:signed]"];
+    });
 }
 
 -(void) setup
@@ -84,37 +93,6 @@ XPathQuery* QRY_SIGN;
 -(NSComparisonResult) compareFromResourcesIgnoringCase:(id)other
 {
     return [[from resource] caseInsensitiveCompare:[[other from] resource]];
-}
-
-
--(JabberID*) from
-{
-    return from;
-}
-
--(JabberID*) to
-{
-    return to;
-}
-
--(int) priority
-{
-    return priority;
-}
-
--(NSString*) show
-{
-    return show;
-}
-
--(NSString*) sign
-{
-    return sign;
-}
-
--(NSString*) status
-{
-    return status;
 }
 
 @end

@@ -34,13 +34,13 @@
     BOOL      _invert;
     BOOL      _wildcard;
 }
--(id) initWithName:(NSString*)name withValue:(NSString*)value;
--(id) initInvertedWithName:(NSString*)name withValue:(NSString*)value;
+-(instancetype) initWithName:(NSString*)name withValue:(NSString*)value;
+-(instancetype) initInvertedWithName:(NSString*)name withValue:(NSString*)value;
 -(BOOL) matches:(XMLElement*)elem;
 @end
 
 @implementation XP_AttrValue
--(id) initWithName:(NSString*)name withValue:(NSString*)value
+-(instancetype) initWithName:(NSString*)name withValue:(NSString*)value
 {
 	if (!(self = [super init])) return nil;
     _name = [name retain];
@@ -58,7 +58,7 @@
     return self;
 }
 
--(id) initInvertedWithName:(NSString*)name withValue:(NSString*)value
+-(instancetype) initInvertedWithName:(NSString*)name withValue:(NSString*)value
 {
     if (!(self = [self initWithName:name withValue:value])) return nil;
     _invert = YES;
@@ -103,14 +103,14 @@
     BOOL      _invert;
     BOOL      _userhostOnly;
 }
--(id) initWithName:(NSString*)name withValue:(NSString*)value;
--(id) initInvertedWithName:(NSString*)name withValue:(NSString*)value;
+-(instancetype) initWithName:(NSString*)name withValue:(NSString*)value;
+-(instancetype) initInvertedWithName:(NSString*)name withValue:(NSString*)value;
 -(BOOL) matches:(XMLElement*)elem;
 -(void) selectCompareUserHostOnly:(BOOL)value;
 @end
 
 @implementation XP_JIDAttrValue
--(id) initWithName:(NSString*)name withValue:(NSString*)value
+-(instancetype) initWithName:(NSString*)name withValue:(NSString*)value
 {
 	if (!(self = [super init])) return nil;
     _name = [name retain];
@@ -119,7 +119,7 @@
     return self;
 }
 
--(id) initInvertedWithName:(NSString*)name withValue:(NSString*)value
+-(instancetype) initInvertedWithName:(NSString*)name withValue:(NSString*)value
 {
     if (!(self = [self initWithName:name withValue:value])) return nil;
     _invert = YES;
@@ -166,12 +166,12 @@
 {
     NSString* _xmlns;
 }
--(id) initWithNS:(NSString*)namespace;
+-(instancetype) initWithNS:(NSString*)namespace;
 -(BOOL) matches:(XMLElement*)elem;
 @end
 
 @implementation XP_Namespace
--(id) initWithNS:(NSString*)namespace
+-(instancetype) initWithNS:(NSString*)namespace
 {
 	if (!(self = [super init])) return nil;
     _xmlns = [namespace retain];

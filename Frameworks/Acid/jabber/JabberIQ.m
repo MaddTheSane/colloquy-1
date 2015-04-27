@@ -24,9 +24,14 @@
 
 #import "acid.h"
 
-NSString* QUERY_PATH = @"/iq[@id='%@']";
+#define QUERY_PATH @"/iq[@id='%@']"
+
+@interface JabberIQ ()
+@property (assign) JabberSession *session;
+@end
 
 @implementation JabberIQ
+@synthesize queryElement = _query_elem;
 
 +(id) constructIQGet:(NSString*)namespace withSession:(JabberSession*)s
 {
@@ -39,7 +44,7 @@ NSString* QUERY_PATH = @"/iq[@id='%@']";
                                                                   withURI:namespace]
                                        withDefaultURI:namespace];
 
-    return result;
+    return [result autorelease];
 }
 
 +(id) constructIQSet:(NSString*)namespace withSession:(JabberSession*)s
@@ -53,15 +58,17 @@ NSString* QUERY_PATH = @"/iq[@id='%@']";
                                                                   withURI:namespace]
                                        withDefaultURI:namespace];
 
-    return result;
+    return [result autorelease];
 }
 
--(id) initWithSession:(JabberSession*)s 
+-(instancetype) initWithSession:(JabberSession*)s
 {
-    if (!(self = [super initWithQName:JABBER_IQ_QN])) return nil;
-    _session = s;
+    if (self = [super initWithQName:JABBER_IQ_QN])
+    {
+    self.session = s;
     _query = [NSString stringWithFormat:QUERY_PATH, [self addUniqueIDAttribute]];
     [_query retain];
+    }
     return self;
 }
 
@@ -83,11 +90,6 @@ NSString* QUERY_PATH = @"/iq[@id='%@']";
     _observer = observer;
     _callback = selector;
     _object = object;
-}
-
--(XMLElement*) queryElement
-{
-    return _query_elem;
 }
 
 -(id) copyWithZone:(NSZone*)zone
