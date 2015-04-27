@@ -80,6 +80,7 @@ XPathQuery* QRY_DELAY;
 -(instancetype) initWithRecipient:(JabberID*)jid andBody:(NSString*)b
 {
     if (!(self = [self initWithRecipient:jid])) return nil;
+    b = [b copy];
     [self addUniqueIDAttribute];
     [[self addElementWithName:@"body"] addCData:b];
     body = b;
@@ -139,11 +140,12 @@ XPathQuery* QRY_DELAY;
 
 -(void) setType:(NSString*)value
 {
-    [self putAttribute:@"type" withValue:value];
+    [self putAttribute:@"type" withValue:[value copy]];
 }
 
 -(void) setBody:(NSString*)s
 {
+    s = [s copy];
     body = s;
     // XXX: need to replace if existing already
     [[self addElementWithName:@"body"] addCData:s];
@@ -151,6 +153,7 @@ XPathQuery* QRY_DELAY;
 
 -(void) setEncrypted:(NSString*)s
 {
+    s = [s copy];
     XMLElement* elem;
     encrypted = s;
     elem = [self addElementWithName:@"x"];
@@ -161,6 +164,7 @@ XPathQuery* QRY_DELAY;
 
 -(void) setSubject:(NSString*)s
 {
+    s = [s copy];
     subject = s;
     // XXX: need to replace if existing already!
     [[self addElementWithName:@"subject"] addCData:s];
@@ -183,7 +187,7 @@ XPathQuery* QRY_DELAY;
     [self setType:@"chat"];
     elem = [self addElementWithQName:JABBER_X_EVENT_QN];
     [elem addElementWithName:@"composing"];
-    [[elem addElementWithName:@"id"] addCData:mid];
+    [[elem addElementWithName:@"id"] addCData:[mid copy]];
     eventType = JMEVENT_COMPOSING;
 }
 
@@ -191,7 +195,7 @@ XPathQuery* QRY_DELAY;
 {
     XMLElement* elem = [self addElementWithQName:JABBER_X_EVENT_QN];
     assert(eventType == JMEVENT_NONE);
-    [[elem addElementWithName:@"id"] addCData:mid];
+    [[elem addElementWithName:@"id"] addCData:[mid copy]];
     eventType = JMEVENT_COMPOSING_CANCEL;
 }
 
