@@ -66,6 +66,14 @@
 @end
 
 @implementation XMLElement
+{
+    NSMutableDictionary* _attribs;  // XMLQName->NSString
+    NSMutableArray*      _children;
+    XMLElement*          __weak _parent;
+    XMLQName*            _name;
+    NSString*            _defaultURI;
+    NSMutableDictionary* _namespaces; // NSString:URI->NSString:prefix
+}
 
 +(instancetype) constructElement:(XMLQName*)qname withAttributes:(NSMutableDictionary*)atts withDefaultURI:(NSString*)default_uri
 {

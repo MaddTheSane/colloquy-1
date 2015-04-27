@@ -25,10 +25,6 @@
 #import <Foundation/NSObject.h>
 
 @interface XMLQName : NSObject <NSCopying>
-{
-    NSString* _name;
-    NSString* _uri;
-}
 
 -(instancetype) initWithName:(NSString*)name inURI:(NSString*)uri;
 
@@ -57,9 +53,6 @@
 
 
 @interface XMLCData : NSObject <XMLNode>
-{
-    NSMutableString* _text; // CData is stored as escaped text
-}
 
 // Basic initializers
 -(instancetype)   init;
@@ -92,22 +85,14 @@
 
 
 @interface XMLElement : NSObject <XMLNode, NSFastEnumeration>
-{
-    NSMutableDictionary* _attribs;  // XMLQName->NSString
-    NSMutableArray*      _children;
-    XMLElement*          __weak _parent;
-    XMLQName*            _name;
-    NSString*            _defaultURI;
-    NSMutableDictionary* _namespaces; // NSString:URI->NSString:prefix
-}
 
 // Basic initializers
 -(instancetype)   init;
 
 // Extended initializers
 -(instancetype) initWithQName:(XMLQName*)qname
-     withAttributes:(NSMutableDictionary*)atts
-     withDefaultURI:(NSString*)uri;
+               withAttributes:(NSMutableDictionary*)atts
+               withDefaultURI:(NSString*)uri;
 
 -(instancetype) initWithQName:(XMLQName*)qname;
 
@@ -175,12 +160,6 @@
 
 
 @interface XMLAccumulator : NSObject
-{
-    NSMutableString*     _data;
-    NSMutableDictionary* _prefixes; // uri -> prefix
-    NSMutableDictionary* _overrides;
-    unsigned             _prefix_counter;
-}
 
 -(instancetype) init:(NSMutableString*)data;
 
@@ -206,17 +185,6 @@
 @end
 
 @interface XMLElementStream : NSObject 
-{
-    BOOL _document_started;
-    BOOL _document_ended;
-
-    void*       _parser;
-    XMLElement*      _current_element;
-
-    NSMutableArray*  _default_uri_stack;
-    
-    id<XMLElementStreamListener> _listener;
-}
 
 +(void) registerElementFactory:(Class)factory;
 

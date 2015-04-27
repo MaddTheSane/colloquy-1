@@ -93,6 +93,11 @@
 @end
 
 @implementation JabberGroupTracker
+{
+    NSMutableDictionary* _groups;
+    NSMutableArray*      _groupArray;
+}
+
 - (NSUInteger) count
 {
     return [_groupArray count];

@@ -119,6 +119,12 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 @end
 
 @implementation JabberRoster
+{
+    __weak JabberSession *_session;
+    NSMutableDictionary* _items;
+    XPathQuery* _groups_query;
+    BOOL _viewOnlineOnly;
+}
 @synthesize delegate = _delegate;
 
 -(void) parseItems:(NSArray*)items
@@ -183,7 +189,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
     return self;
 }
 
--(instancetype) initWithSession:(id)session
+-(instancetype) initWithSession:(JabberSession*)session
 {
 	if (!(self = [super init])) return nil;
     _session = session;

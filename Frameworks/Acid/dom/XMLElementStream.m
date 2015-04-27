@@ -122,7 +122,17 @@ static void _handleExitNamespace(void* data, const XML_Char* prefix)
 @end
 
 @implementation XMLElementStream
-
+{
+    BOOL _document_started;
+    BOOL _document_ended;
+    
+    void*       _parser;
+    XMLElement*      _current_element;
+    
+    NSMutableArray*  _default_uri_stack;
+    
+    __weak id<XMLElementStreamListener> _listener;
+}
 static NSMutableArray* G_FACTORY;
 
 +(void) registerElementFactory:(Class)factory

@@ -53,14 +53,17 @@ XPathQuery* QRY_DELAY;
 
 +(void) initialize
 {
-    QRY_ENCRYPT = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:encrypted]"];
-    QRY_BODY = [[XPathQuery alloc] initWithPath:@"/message/body"];
-    QRY_SUBJECT = [[XPathQuery alloc] initWithPath:@"/message/subject"];
-    QRY_COMPOSING = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:event]/composing"];
-    QRY_CHATSTATE_COMPOSING = [[XPathQuery alloc] initWithPath:@"/message/composing[%http://jabber.org/protocol/chatstates]"];
-    QRY_CHATSTATE_ACTIVE = [[XPathQuery alloc] initWithPath:@"/message/active[%http://jabber.org/protocol/chatstates]"];
-    QRY_MEVENT_ID = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:event]/id"];
-    QRY_DELAY = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:delay]@stamp"];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        QRY_ENCRYPT = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:encrypted]"];
+        QRY_BODY = [[XPathQuery alloc] initWithPath:@"/message/body"];
+        QRY_SUBJECT = [[XPathQuery alloc] initWithPath:@"/message/subject"];
+        QRY_COMPOSING = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:event]/composing"];
+        QRY_CHATSTATE_COMPOSING = [[XPathQuery alloc] initWithPath:@"/message/composing[%http://jabber.org/protocol/chatstates]"];
+        QRY_CHATSTATE_ACTIVE = [[XPathQuery alloc] initWithPath:@"/message/active[%http://jabber.org/protocol/chatstates]"];
+        QRY_MEVENT_ID = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:event]/id"];
+        QRY_DELAY = [[XPathQuery alloc] initWithPath:@"/message/x[%jabber:x:delay]@stamp"];
+    });
 }
 
 -(instancetype) initWithRecipient:(JabberID*)jid

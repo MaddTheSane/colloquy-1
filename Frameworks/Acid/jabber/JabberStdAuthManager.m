@@ -29,6 +29,13 @@
 NSString* DFMT = @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x";
 
 @implementation JabberStdAuthManager
+{
+    JabberID*      _jid;
+    JabberSession* _session;
+    NSString*      _0k_token;
+    int            _0k_sequence;
+    JAuthType      _type;
+}
 
 -(void) authenticateJID:(JabberID*)jid forSession:(JabberSession*)session
 {

@@ -52,6 +52,22 @@ NSString* STREAM_ROOT = @"<stream:stream xmlns='jabber:client' xmlns:stream='htt
 
 
 @implementation JabberSession
+{
+    CFMutableDictionaryRef _observerMap;
+    NSMutableDictionary*   _expressions;
+    NSNotificationCenter*  _ncenter;
+    JabberSocket*          _jsocket;
+    JabberRoster*          _roster;
+    JabberPresenceTracker* _pres;
+    ChatManager*     _chat;
+    SessionState     _state;
+    JabberID*        _jid;
+    NSString*        _sid;
+    unsigned long    _curr_id;
+    id               _authMgr;
+    BOOL             _useSSL;
+    BOOL             _do_auth;
+}
 
 -(instancetype) init
 {

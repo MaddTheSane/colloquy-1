@@ -30,6 +30,11 @@
 static NSMutableDictionary* G_cache;
 
 @implementation JabberID
+{
+    JabberID* _userhost_jid;
+    NSUInteger _hash_value; // cache the hash value, since it is
+                            // time-consuming to create
+}
 @synthesize hash = _hash_value;
 @synthesize completeID = _complete;
 

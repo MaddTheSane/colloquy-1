@@ -33,6 +33,13 @@
 @end
 
 @implementation JabberIQ
+{
+    JabberSession* _session;
+    NSString*      _query;
+    id             _observer;
+    SEL            _callback;
+    id             _object;
+}
 @synthesize queryElement = _query_elem;
 
 +(id) constructIQGet:(NSString*)namespace withSession:(JabberSession*)s

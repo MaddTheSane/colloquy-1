@@ -29,65 +29,68 @@ NSString* JPRESENCE_JID_DEFAULT_CHANGED = @"/presence/jid/defaultchanged";
 NSString* JPRESENCE_JID_UNAVAILABLE = @"/presence/jid/defaultunavail";
 
 /*!
-@class PGroup
-@abstract hold a group of related JabberPresence objects related to
-the same [node@]domain, but differing by resource.
-*/
+ @class PGroup
+ @abstract hold a group of related JabberPresence objects related to
+ the same [node@]domain, but differing by resource.
+ */
 @interface PGroup : NSObject <NSFastEnumeration>
 {
     NSMutableArray* _packets;
-    JabberID*       _userhost_jid;
 }
 /*!
-@method initWithJID
+ @method initWithJID
  @abstract initialize around a userhost JID
  */
 -(instancetype) initWithJID:(JabberID*)jid;
 
-    /*!
-    @method presenceForJID
-     @abstract return the JabberPresence object for a specific full JID
-     */
+/*!
+ @method presenceForJID
+ @abstract return the JabberPresence object for a specific full JID
+ */
 -(JabberPresence*) presenceForJID:(JabberID*)j;
 
-    /*!
-    @method jid
-     @abstract get the userhost JID
-     */
+/*!
+ @property userhostJID
+ @abstract The userhost JID
+ */
 @property (readonly, strong) JabberID *userhostJID;
-    /*!
-    @method updatePresence
-     @abstract add a new presence to the group, updating any previous
-     presence for the resource specified.
-     @param pres the presence packet being added or replacing the item
-     within the queue
-     @return YES if this new entry becomes the default presence
-     */
+
+/*!
+ @method updatePresence
+ @abstract add a new presence to the group, updating any previous
+ presence for the resource specified.
+ @param pres the presence packet being added or replacing the item
+ within the queue
+ @return YES if this new entry becomes the default presence
+ */
 -(BOOL) updatePresence:(JabberPresence*)pres;
-    /*!
-    @method removePresence
-     @abstract remove a presence from the group
-     @param pres the presence packet being removed
-     @return YES if this removal causes another presence to become the
-     default presence
-     */
+
+/*!
+ @method removePresence
+ @abstract remove a presence from the group
+ @param pres the presence packet being removed
+ @return YES if this removal causes another presence to become the
+ default presence
+ */
 -(BOOL) removePresence:(JabberPresence*)pres;
 
-    /*!
-    @method defaultPresence
-     @abstract return the default presence for the group, being the
-     presence with the highest priority
-     */
+/*!
+ @property defaultPresence
+ @abstract return the default presence for the group, being the
+ presence with the highest priority
+ */
 @property (readonly, strong) JabberPresence *defaultPresence;
-    /*!
-    @method isEmpty
-     @abstract return if the group contains no presence information
-     */
+
+/*!
+ @property empty
+ @abstract return if the group contains no presence information
+ */
 @property (readonly, getter=isEmpty) BOOL empty;
-    /*!
-    @method objectEnumerator
-     @abstract return an enumerator for all contained presences
-     */
+
+/*!
+ @method objectEnumerator
+ @abstract return an enumerator for all contained presences
+ */
 -(NSEnumerator*)objectEnumerator;
 
 @property (readonly) NSInteger count;
@@ -95,6 +98,7 @@ the same [node@]domain, but differing by resource.
 @end
 
 @implementation PGroup
+@synthesize userhostJID = _userhost_jid;
 
 -(instancetype) initWithJID:(JabberID*)jid
 {
@@ -102,11 +106,6 @@ the same [node@]domain, but differing by resource.
     _packets = [[NSMutableArray alloc] init];
     _userhost_jid = [jid userhostJID];
     return self;
-}
-
--(JabberID*) userhostJID
-{
-    return _userhost_jid;
 }
 
 -(JabberPresence*) presenceForJID:(JabberID*)j
@@ -194,7 +193,10 @@ the same [node@]domain, but differing by resource.
 @end
 
 @implementation JabberPresenceTracker
-
+{
+    id _session;
+    NSMutableDictionary* _items;
+}
 -(instancetype) initWithSession:(id)session
 {
 	if (!(self = [super init])) return nil;

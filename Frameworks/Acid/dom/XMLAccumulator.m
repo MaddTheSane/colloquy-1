@@ -26,6 +26,12 @@
 #import <expat.h>
 
 @implementation XMLAccumulator
+{
+    NSMutableString*     _data;
+    NSMutableDictionary* _prefixes; // uri -> prefix
+    NSMutableDictionary* _overrides;
+    unsigned             _prefix_counter;
+}
 
 -(instancetype) init:(NSMutableString*)data 
 {

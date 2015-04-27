@@ -25,7 +25,9 @@
 #import "NSString+Misc.h"
 
 @implementation XMLCData
-
+{
+    NSMutableString* _text; // CData is stored as escaped text
+}
 // Basic initializers
 -(instancetype) init
 {
