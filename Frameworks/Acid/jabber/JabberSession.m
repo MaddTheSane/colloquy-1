@@ -53,7 +53,7 @@ NSString* STREAM_ROOT = @"<stream:stream xmlns='jabber:client' xmlns:stream='htt
 
 @implementation JabberSession
 
--(id) init
+-(instancetype) init
 {
 	if (!(self = [super init])) return nil;
     _ncenter     = [NSNotificationCenter defaultCenter];

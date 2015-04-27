@@ -65,19 +65,9 @@ XPathQuery* QRY_SIGN;
     to = [[JabberID alloc] initWithString:[self getAttribute:@"to"]];
     from = [[JabberID alloc] initWithString:[self getAttribute:@"from"]];
     priority = [[QRY_PRIORITY queryForString:self] intValue];
-    show = [[QRY_SHOW queryForString:self] retain];
-    status = [[QRY_STATUS queryForString:self] retain];
-    sign = [[QRY_SIGN queryForString:self] retain];
-}
-
--(void) dealloc
-{
-    [status release];
-    [show release];
-    [to release];
-    [from release];
-    [sign release];
-    [super dealloc];
+    show = [QRY_SHOW queryForString:self];
+    status = [QRY_STATUS queryForString:self];
+    sign = [QRY_SIGN queryForString:self];
 }
 
 -(BOOL) isEqual:(JabberPresence*)other

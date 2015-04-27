@@ -145,7 +145,7 @@
   @abstract returns a Jabber Identifier without any resource
   portion. Returns self if there was no resource
 */
-@property (readonly, retain) JabberID *userhostJID;
+@property (readonly, strong) JabberID *userhostJID;
 
 /*!
   @method completeID

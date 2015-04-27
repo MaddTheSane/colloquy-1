@@ -24,6 +24,8 @@
 
 #import "acid.h"
 
+//This file is NOT converted to ARC because of handleCallback:
+
 #define QUERY_PATH @"/iq[@id='%@']"
 
 @interface JabberIQ ()

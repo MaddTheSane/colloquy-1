@@ -16,7 +16,7 @@
 		DD8ADFCC0BD1741A009AB74D /* XMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF710BD1741A009AB74D /* XMLElement.m */; };
 		DD8ADFCD0BD1741A009AB74D /* XMLElementStream.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF720BD1741A009AB74D /* XMLElementStream.m */; };
 		DD8ADFCE0BD1741A009AB74D /* XMLQName.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF730BD1741A009AB74D /* XMLQName.m */; };
-		DD8ADFE30BD1741A009AB74D /* NSMutableArray+InsertSort.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF8C0BD1741A009AB74D /* NSMutableArray+InsertSort.m */; };
+		DD8ADFE30BD1741A009AB74D /* NSMutableArray+InsertSort.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF8C0BD1741A009AB74D /* NSMutableArray+InsertSort.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD8ADFE40BD1741A009AB74D /* NSMutableString.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF8D0BD1741A009AB74D /* NSMutableString.m */; };
 		DD8ADFE60BD1741A009AB74D /* NSString+Misc.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF8F0BD1741A009AB74D /* NSString+Misc.m */; };
 		DD8ADFE70BD1741A009AB74D /* acid-jabber.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8ADF910BD1741A009AB74D /* acid-jabber.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,12 +24,12 @@
 		DD8ADFE90BD1741A009AB74D /* JabberGroupTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF930BD1741A009AB74D /* JabberGroupTracker.m */; };
 		DD8ADFEA0BD1741A009AB74D /* JabberID.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8ADF940BD1741A009AB74D /* JabberID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD8ADFEB0BD1741A009AB74D /* JabberID.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF950BD1741A009AB74D /* JabberID.m */; };
-		DD8ADFEC0BD1741A009AB74D /* JabberIQ.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF960BD1741A009AB74D /* JabberIQ.m */; };
+		DD8ADFEC0BD1741A009AB74D /* JabberIQ.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF960BD1741A009AB74D /* JabberIQ.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD8ADFED0BD1741A009AB74D /* JabberMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF970BD1741A009AB74D /* JabberMessage.m */; };
 		DD8ADFEE0BD1741A009AB74D /* JabberPresence.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF980BD1741A009AB74D /* JabberPresence.m */; };
 		DD8ADFEF0BD1741A009AB74D /* JabberPresenceTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF990BD1741A009AB74D /* JabberPresenceTracker.m */; };
 		DD8ADFF00BD1741A009AB74D /* JabberRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9A0BD1741A009AB74D /* JabberRoster.m */; };
-		DD8ADFF10BD1741A009AB74D /* JabberSession.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9B0BD1741A009AB74D /* JabberSession.m */; };
+		DD8ADFF10BD1741A009AB74D /* JabberSession.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9B0BD1741A009AB74D /* JabberSession.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD8ADFF20BD1741A009AB74D /* JabberSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9C0BD1741A009AB74D /* JabberSocket.m */; };
 		DD8ADFF30BD1741A009AB74D /* JabberStdAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9D0BD1741A009AB74D /* JabberStdAuthManager.m */; };
 		DD8ADFF40BD1741A009AB74D /* JabberSubscriptionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9E0BD1741A009AB74D /* JabberSubscriptionRequest.m */; };
@@ -409,6 +409,7 @@
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -468,6 +469,7 @@
 		DDF45C090BD5CEF40050911E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

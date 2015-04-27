@@ -40,23 +40,14 @@
     return self;
 }
 
--(void) dealloc
-{
-    [_predicates release];
-    [_next release];
-    [_elementName release];
-    [_attributeName release];
-    [super dealloc];
-}
-
 +(id) createWithPath:(NSString*)basepath
 {
-    NSMutableString* pathtokens = [[basepath mutableCopy] autorelease];
+    NSMutableString* pathtokens = [basepath mutableCopy];
     XPLocation* result = [[XPLocation alloc] initWithTokens:pathtokens];
-    return [result autorelease];
+    return result;
 }
 
--(id) initWithTokens:(NSMutableString*)pathtokens
+-(instancetype) initWithTokens:(NSMutableString*)pathtokens
 {
     self = [super init];
     if (self == nil)
@@ -74,7 +65,6 @@
     assert(_elementName != nil);
 
     // Save a copy of the element location name
-    [_elementName retain];
 
     // Begin looping
     while (YES)

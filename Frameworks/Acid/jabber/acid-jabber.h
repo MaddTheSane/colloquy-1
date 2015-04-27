@@ -36,7 +36,7 @@
     XMLCData,
     XMLElementStream,
     XMLElementStreamListener;
-@class AsyncSocket;
+@class GCDAsyncSocket;
 @class JabberSession;
 
 /*!
@@ -46,7 +46,7 @@
 @interface JabberSocket : NSObject <XMLElementStreamListener>
 {
 	dispatch_queue_t  _connectionDelegateQueue;
-    AsyncSocket*      _socket;
+    GCDAsyncSocket*   _socket;
     XMLElementStream* _parser;
     JabberSession*    _session;
     NSTimer*          _timer;
@@ -181,7 +181,6 @@ typedef NS_ENUM(NSInteger, SessionState)
 @interface JabberRoster : NSObject <NSCopying, NSFastEnumeration>
 {
     id _session;
-    id<JabberRosterDelegate> _delegate;
     NSMutableDictionary* _items;
     XPathQuery* _groups_query;
     BOOL _viewOnlineOnly;
@@ -196,7 +195,7 @@ typedef NS_ENUM(NSInteger, SessionState)
   @method itemEnumerator
   @abstract enumerate items within the roster
 */
--(NSEnumerator*) itemEnumerator;
+@property (readonly, strong) NSEnumerator *itemEnumerator;
 
 /*!
  @method delegate
@@ -206,7 +205,7 @@ typedef NS_ENUM(NSInteger, SessionState)
  @method setDelegate
  @abstract set a delegate protocol handler
  */
-@property (assign) id<JabberRosterDelegate> delegate;
+@property (unsafe_unretained) id<JabberRosterDelegate> delegate;
 /*!
   @method itemForJID
   @abstract return an item for a particular Jabber Identifier
@@ -247,13 +246,13 @@ typedef NS_ENUM(NSInteger, SessionState)
   @abstract return a JabberID object representing where the presence
   chunk was from
 */
-@property (readonly, retain) JabberID *from;
+@property (readonly, strong) JabberID *from;
 /*!
   @method to
   @abstract return a JabberID object representing where the presence
   chunk was addressed to
 */
-@property (readonly, retain) JabberID *to;
+@property (readonly, strong) JabberID *to;
 /*!
   @method priority
   @abstract return the priority of the presence chunk
@@ -377,13 +376,13 @@ typedef NS_ENUM(NSInteger, JMEvent)
   @abstract return the Jabber Identifier for where this message was
   addressed to
 */
-@property (nonatomic, retain) JabberID *to;
+@property (nonatomic, strong) JabberID *to;
 /*!
   @method from
   @abstract return the Jabber Identifier for where this message was
   from
 */
-@property (nonatomic, retain) JabberID *from;
+@property (nonatomic, strong) JabberID *from;
 /*!
   @method type
   @abstract return the type of this message, used for GUI display
@@ -434,7 +433,7 @@ typedef NS_ENUM(NSInteger, JMEvent)
   @abstract return the UTC time of the original message (if the
   message was delayed)
 */
-@property (readonly, retain) NSDate *delayedOnDate;
+@property (readonly, strong) NSDate *delayedOnDate;
 /*!
   @method addComposingRequest
   @abstract indicate that notification should be sent as responses to
@@ -665,7 +664,7 @@ typedef NS_ENUM(NSInteger, JMEvent)
   @method queryElement
   @abstract retrieve query element, if set in the initializer called
 */
-@property (readonly, retain) XMLElement *queryElement;
+@property (readonly, strong) XMLElement *queryElement;
 /*!
   @method execute
   @abstract send the IQ request to specified JID, signalling the object
@@ -688,7 +687,7 @@ typedef NS_ENUM(NSInteger, JMEvent)
  */
 -(id) copyWithZone:(NSZone*)zone;
 
-@property (readonly, retain) JabberID *from;
+@property (readonly, strong) JabberID *from;
 
 @end
 
@@ -783,8 +782,8 @@ typedef NS_ENUM(NSInteger, JAuthType)
 - (instancetype) initFromRoster: (JabberRoster*) roster;
 - (instancetype) initFromRoster: (JabberRoster*) roster withFilter: (id) object selector: (SEL) selector;
 
-- (NSUInteger) count;
-- (NSEnumerator *) groupEnumerator;
+@property (readonly) NSUInteger count;
+@property (readonly, strong) NSEnumerator *groupEnumerator;
 - (id) groupAtIndex: (NSUInteger) i;
 
 - (BOOL) item: (id) item addedToGroup: (NSString*) group;
@@ -812,8 +811,8 @@ typedef NS_ENUM(NSInteger, JabberSubscriptionType)
 
 @property (readonly) JabberSubscriptionType type;
 @property (readonly, copy) NSString *message;
-@property (readonly, retain) JabberID *to;
-@property (readonly, retain) JabberID *from;
+@property (readonly, strong) JabberID *to;
+@property (readonly, strong) JabberID *from;
 
 -(JabberSubscriptionRequest*) grant;
 -(JabberSubscriptionRequest*) deny;

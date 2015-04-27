@@ -52,13 +52,6 @@
     return self;
 }
 
--(void) dealloc
-{
-    [_stream release];
-    [_root release];
-    [super dealloc];
-}
-
 -(XMLElement*) process:(const char*)data
 {
     [_stream pushData:data];
@@ -72,7 +65,7 @@
 
 -(void) onDocumentStart:(XMLElement*)element
 {
-    _root = [element retain];
+    _root = element;
 }
 
 -(void) onElement:(XMLElement*)element
@@ -93,32 +86,32 @@
 
 static void _handleOpenElement(void* data, const char* name, const char** atts)
 {
-    XMLElementStream* parser = (XMLElementStream*)data;
+    XMLElementStream* parser = (__bridge XMLElementStream*)data;
     [parser openElement:name withAttributes: atts];
 }
 
 static void _handleCloseElement(void* data, const char* name)
 {
-    XMLElementStream* parser = (XMLElementStream*)data;
+    XMLElementStream* parser = (__bridge XMLElementStream*)data;
     [parser closeElement:name];
 }
 
 static void _storeCData(void* data, const XML_Char* s, int len)
 {
-    XMLElementStream* parser = (XMLElementStream*)data;
+    XMLElementStream* parser = (__bridge XMLElementStream*)data;
     [parser storeCData:(char*)s ofLength:len];
 }
 
 static void _handleEnterNamespace(void* data, const XML_Char* prefix, 
                                   const XML_Char* uri)
 {
-    XMLElementStream* parser = (XMLElementStream*)data;
+    XMLElementStream* parser = (__bridge XMLElementStream*)data;
     [parser enterNamespace:prefix withURI:uri];
 }
 
 static void _handleExitNamespace(void* data, const XML_Char* prefix)
 {
-    XMLElementStream* parser = (XMLElementStream*)data;
+    XMLElementStream* parser = (__bridge XMLElementStream*)data;
     [parser exitNamespace:prefix];
 }
 
@@ -143,7 +136,7 @@ static NSMutableArray* G_FACTORY;
     G_FACTORY = [[NSMutableArray alloc] init];
 }
 
--(id) init
+-(instancetype) init
 {
 	if (!(self = [super init])) return nil;
 
@@ -159,11 +152,9 @@ static NSMutableArray* G_FACTORY;
 {
     if (_parser)
         XML_ParserFree(_parser);
-    [_default_uri_stack release];
-    [super dealloc];
 }
 
--(id) initWithListener: (id <XMLElementStreamListener>) listener
+-(instancetype) initWithListener: (id <XMLElementStreamListener>) listener
 {
 	if (!(self = [self init])) return nil;
 
@@ -220,9 +211,8 @@ static NSMutableArray* G_FACTORY;
     while (atts[i] != '\0')
     {
         XMLQName* key = [XMLQName construct:atts[i] withDefaultURI:default_uri];
-        NSString* value = [[NSString alloc] initWithUTF8String:atts[i+1]];
+        NSString* value = @(atts[i+1]);
         new_element_attribs[key] = value;
-        [value release];
         i += 2;
     }
 
@@ -238,7 +228,6 @@ static NSMutableArray* G_FACTORY;
         if (_current_element)
         {
             _current_element = [_current_element addElement:new_element];
-            [new_element release];
         }
         // Starting a new packet
         else
@@ -251,7 +240,6 @@ static NSMutableArray* G_FACTORY;
     {
         _document_started = TRUE;
         [_listener onDocumentStart:new_element];
-        [new_element release];
     }
 }
 
@@ -269,7 +257,6 @@ static NSMutableArray* G_FACTORY;
     {
         [_current_element setup];
         [_listener onElement:_current_element];
-        [_current_element release];
         _current_element = nil;
     }
     // No current_element and no parents; this event is closing the
@@ -289,7 +276,6 @@ static NSMutableArray* G_FACTORY;
     {
         XMLCData* data = [[XMLCData alloc] initWithCharPtr:cdata ofLength:len];
         [_listener onCData:data];
-        [data release];
     }
 }
 
@@ -317,7 +303,7 @@ static NSMutableArray* G_FACTORY;
 
     // Setup the expat parser
     _parser = XML_ParserCreateNS(NULL, '|');
-    XML_SetUserData(_parser, self);
+    XML_SetUserData(_parser, (__bridge void *)(self));
     XML_SetElementHandler(_parser, _handleOpenElement, _handleCloseElement);
     XML_SetCharacterDataHandler(_parser, _storeCData);
     XML_SetNamespaceDeclHandler(_parser, _handleEnterNamespace, 
@@ -332,9 +318,8 @@ static NSMutableArray* G_FACTORY;
 {
     XMLElement* e;
     BufferParser* p = [[BufferParser alloc] init];
-    e = [[p process:buffer] retain];
-    [p release];
-    return [e autorelease];
+    e = [p process:buffer];
+    return e;
 }
 
 -(NSString*) currentNamespaceURI

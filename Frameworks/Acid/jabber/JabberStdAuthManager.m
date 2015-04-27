@@ -35,7 +35,7 @@ NSString* DFMT = @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%
     JabberIQ* auth_query;
 
     // Save JID and session info
-    _jid = [jid retain];
+    _jid = jid;
     _session = session;
     
     // Build an auth query

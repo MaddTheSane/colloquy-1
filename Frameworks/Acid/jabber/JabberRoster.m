@@ -34,9 +34,9 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 +(instancetype) itemWithJID:(JabberID*)jid;
 
 @property (nonatomic, copy) NSString *displayName;
-@property (nonatomic, readonly, retain) JabberID *JID;
+@property (nonatomic, readonly, strong) JabberID *JID;
 @property (nonatomic, readonly, copy) NSString *JIDString;
-@property (nonatomic, readwrite, retain) id defaultPresence;
+@property (nonatomic, readwrite, strong) id defaultPresence;
 
 -(void) setGroups:(NSMutableSet*)groups withDelegate:(id)delegate;
 @end
@@ -49,18 +49,8 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 +(instancetype) itemWithJID:(JabberID*)jid
 {
     JRItem* result = [[JRItem alloc] init];
-    result->_jid = [jid retain];
-    [result autorelease];
+    result->_jid = jid;
     return result;
-}
-
--(void) dealloc
-{
-    [_jid release];
-    [_nickname release];
-    [_subscription release];
-    [_groups release];
-    [super dealloc];
 }
 
 -(NSString*) displayName
@@ -101,8 +91,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
         }
 
         // Release all the old groups
-        [_groups release];
-        _groups = [[NSSet setWithObject:@"Unfiled"] retain];
+        _groups = [NSSet setWithObject:@"Unfiled"];
         [delegate onItem:self addedToGroup:@"Unfiled"];
 
         return;
@@ -112,8 +101,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
     oldgroups = [NSMutableSet setWithSet:_groups];
 
     // Update groups to point to new final group set
-    [_groups release];
-    _groups = [[NSSet setWithSet:groups] retain];
+    _groups = [NSSet setWithSet:groups];
 
     // Determine groups which have been added (new - old)
     [groups minusSet:oldgroups];
@@ -192,10 +180,10 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(id) copyWithZone:(NSZone*)zone
 {
-    return [self retain];
+    return self;
 }
 
--(id) initWithSession:(id)session
+-(instancetype) initWithSession:(id)session
 {
 	if (!(self = [super init])) return nil;
     _session = session;
@@ -214,9 +202,6 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 -(void) dealloc
 {
     [_session removeObserver:self];
-    [_items release];
-    [_groups_query release];
-    [super dealloc];
 }
 
 -(void) onSessionStarted:(NSNotification*)n
@@ -267,7 +252,6 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(void) onSessionEnded:(NSNotification*)n
 {
-    [_items release];
     _items = nil;
 }
 

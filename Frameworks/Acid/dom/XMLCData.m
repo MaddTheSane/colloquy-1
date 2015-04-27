@@ -33,12 +33,6 @@
     return self;
 }
 
--(void) dealloc
-{
-    [_text release];
-    [super dealloc];
-}
-
 // Custom initializers
 -(instancetype) initWithString:(NSString*)s  // Assumes unescaped data
 {
@@ -60,7 +54,6 @@
 {
 	if (!(self = [self init])) return nil;
     _text = [XMLCData unescape:cptr ofLength:clen];
-    [_text retain];
     return self;
 }
 
@@ -68,7 +61,6 @@
 // Modify text using data that is _not_ escaped
 -(void) setText:(const char*)text ofLength:(NSUInteger)textlen
 {
-    [_text release];
     if (textlen == 0)
         _text = [[NSMutableString alloc] initWithUTF8String:text];
     else
@@ -77,7 +69,6 @@
 
 -(void) setText:(NSString*)text
 {
-    [_text release];
     _text = [[NSMutableString alloc] initWithString:text];
 }
 
@@ -86,7 +77,6 @@
     NSString* s = [[NSString alloc] initWithUTF8StringNoCopy:(char*)text length:textlen
                                              freeWhenDone:NO];
     [_text appendString:s];
-    [s release];
 }
 
 -(void) appendText:(NSString*)text
@@ -97,9 +87,7 @@
 // Modify text using data that is escaped
 -(void) setEscapedText:(const char*)text ofLength:(NSUInteger)textlen
 {
-    [_text release];
     _text = [XMLCData unescape:text ofLength:textlen];
-    [_text retain];
 }
 
 -(void) appendEscapedText:(const char*)text ofLength:(NSUInteger)textlen
@@ -121,7 +109,6 @@
 -(XMLQName*) qname
 {
     XMLQName* result = [[XMLQName alloc] initWithName:@"#CDATA" inURI:@""];
-    [result autorelease];
     return result;
 }
 
@@ -177,7 +164,6 @@
     if (newlen == datasz)
     {
         result = [[NSString alloc] initWithUTF8String:data length:datasz];
-        [result autorelease];
         return result;
     }
 
@@ -217,7 +203,6 @@
                                length:newlen
                                freeWhenDone:TRUE];
 
-    [result autorelease];
     return result;
 }
 
@@ -299,7 +284,6 @@
                                length:newlen
                                freeWhenDone:TRUE];
 
-    [result autorelease];
     return result;
 }
 
@@ -318,7 +302,6 @@
     {
         result = [[NSMutableString alloc] initWithUTF8String:data 
                                           length:datasz];
-        [result autorelease];
         return result;
     }
 
@@ -357,7 +340,6 @@
                                       length:j
                                       freeWhenDone:TRUE];
 
-    [result autorelease];
     return result;
 }
 

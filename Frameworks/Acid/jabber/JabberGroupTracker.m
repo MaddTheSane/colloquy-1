@@ -50,8 +50,7 @@
 +(id) groupWithName: (NSString*) name
 {
     JRGroup* result = [[JRGroup alloc] init];
-    result->_name = [name retain];
-    [result autorelease];
+    result->_name = name;
     return result;
 }
 
@@ -60,13 +59,6 @@
 	if (!(self = [super init])) return nil;
     _items = [[NSMutableArray alloc] init];
     return self;
-}
-
--(void) dealloc
-{
-    [_items release];
-    [_name release];
-    [super dealloc];
 }
 
 -(NSUInteger) count
@@ -146,7 +138,7 @@
     return retval;
 }
 
-- (id) init
+- (instancetype) init
 {
     if ((self = [super init]))
     {
@@ -156,7 +148,7 @@
     return self;
 }
 
-- (id) initFromRoster: (JabberRoster*) roster withFilter: (id) object selector: (SEL) selector
+- (instancetype) initFromRoster: (JabberRoster*) roster withFilter: (id) object selector: (SEL) selector
 {
     if ((self = [self init]))
     {
@@ -186,18 +178,11 @@
 }
 
 
-- (id) initFromRoster: (JabberRoster*) roster
+- (instancetype) initFromRoster: (JabberRoster*) roster
 {
     return [self initFromRoster: roster withFilter: nil selector: nil];
 }
 
-
-- (void) dealloc
-{
-    [_groups release];
-    [_groupArray release];
-    [super dealloc];
-}
 
 -(BOOL) item: (id) item addedToGroup: (NSString*) groupName
 {

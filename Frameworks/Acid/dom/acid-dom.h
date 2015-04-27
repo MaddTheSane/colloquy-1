@@ -95,7 +95,7 @@
 {
     NSMutableDictionary* _attribs;  // XMLQName->NSString
     NSMutableArray*      _children;
-    XMLElement*          _parent;
+    XMLElement*          __weak _parent;
     XMLQName*            _name;
     NSString*            _defaultURI;
     NSMutableDictionary* _namespaces; // NSString:URI->NSString:prefix
@@ -124,10 +124,10 @@
 -(XMLCData*)   addCData:(NSString*)cdata;
 
 // Enumerators
--(NSEnumerator*) childElementsEnumerator;
+@property (readonly, strong) NSEnumerator *childElementsEnumerator;
 
 // Raw child management
-@property (readonly, assign) id<XMLNode> firstChild;
+@property (readonly, unsafe_unretained) id<XMLNode> firstChild;
 -(void) appendChildNode:(id <XMLNode>)node;
 -(void) detachChildNode:(id <XMLNode>)node;
 
@@ -161,7 +161,7 @@
 -(XMLQName*) getQName:(NSString*)name ofURI:(NSString*)uri;
 -(XMLQName*) getQName:(const char*)expatname;
 
-@property (assign) XMLElement *parent;
+@property (weak) XMLElement *parent;
 @property (readonly, copy) NSString*   defaultURI;
 
 -(NSString*) addUniqueIDAttribute;

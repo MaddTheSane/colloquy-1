@@ -54,7 +54,7 @@ the same [node@]domain, but differing by resource.
     @method jid
      @abstract get the userhost JID
      */
-@property (readonly, retain) JabberID *userhostJID;
+@property (readonly, strong) JabberID *userhostJID;
     /*!
     @method updatePresence
      @abstract add a new presence to the group, updating any previous
@@ -78,7 +78,7 @@ the same [node@]domain, but differing by resource.
      @abstract return the default presence for the group, being the
      presence with the highest priority
      */
-@property (readonly, retain) JabberPresence *defaultPresence;
+@property (readonly, strong) JabberPresence *defaultPresence;
     /*!
     @method isEmpty
      @abstract return if the group contains no presence information
@@ -101,15 +101,7 @@ the same [node@]domain, but differing by resource.
 	if (!(self = [super init])) return nil;
     _packets = [[NSMutableArray alloc] init];
     _userhost_jid = [jid userhostJID];
-    [_userhost_jid retain];
     return self;
-}
-
--(void) dealloc
-{
-    [_userhost_jid release];
-    [_packets release];
-    [super dealloc];
 }
 
 -(JabberID*) userhostJID
@@ -203,7 +195,7 @@ the same [node@]domain, but differing by resource.
 
 @implementation JabberPresenceTracker
 
--(id) initWithSession:(id)session
+-(instancetype) initWithSession:(id)session
 {
 	if (!(self = [super init])) return nil;
     _items = [[NSMutableDictionary alloc] init];
@@ -218,8 +210,6 @@ the same [node@]domain, but differing by resource.
 -(void)dealloc
 {
     [_session removeObserver:self];
-    [_items release];
-    [super dealloc];
 }
 
 -(void) onSessionStarted:(NSNotification*)n
@@ -241,13 +231,12 @@ the same [node@]domain, but differing by resource.
     [_session removeObserver:self xpath:@"/presence[@type='unsubscribed']"];
     // XXX: It may be desirable to fire notifications for all the presences
     // going unavailable
-    [_items release];
     _items = [[NSMutableDictionary alloc] init];
 }
 
 -(id) copyWithZone:(NSZone*)zone
 {
-    return [self retain];
+    return self;
 }
 
 -(void) onAvailPresence:(NSNotification*)n
@@ -261,7 +250,6 @@ the same [node@]domain, but differing by resource.
     {
         pgroup = [[PGroup alloc] initWithJID:userhost_jid];
         _items[userhost_jid] = pgroup;
-        [pgroup release];
     }
     
     // If the updatePresence call indicates the default was changed,

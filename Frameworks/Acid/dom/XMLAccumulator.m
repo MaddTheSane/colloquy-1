@@ -27,23 +27,16 @@
 
 @implementation XMLAccumulator
 
--(id) init:(NSMutableString*)data 
+-(instancetype) init:(NSMutableString*)data 
 {
     if(self = [super init]){
         _prefixes = [[NSMutableDictionary alloc] init];
         _overrides = [[NSMutableDictionary alloc] init];
-        _data = [data retain];
+        _data = data;
     }
     return self;
 }
 
--(void) dealloc
-{
-    [_data release];
-    [_prefixes release];
-    [_overrides release];
-    [super dealloc];
-}
 
 -(void) addOverridePrefix:(NSString*)prefix forURI:(NSString*)uri 
 {
@@ -58,7 +51,6 @@
     {
         prefix = [[NSString alloc] initWithFormat:@"xn%d", _prefix_counter++];
         _prefixes[uri] = prefix;
-        [prefix autorelease];
     }
     return prefix;
 }
@@ -207,12 +199,10 @@
         NSMutableString* result = [[NSMutableString alloc] initWithCapacity:512];
         XMLAccumulator* acc = [[XMLAccumulator alloc] init:result];
         [element description:acc];
-        [acc release];
         
         // Let go of the autorelease pool
     }
     // Now autorelase the result string
-    [result autorelease];
     return result;
 }
 

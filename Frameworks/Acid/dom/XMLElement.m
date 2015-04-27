@@ -41,16 +41,10 @@
 {
     if (self =[self init])
     {
-        _elements = [elems retain];
+        _elements = elems;
         _index = 0;
     }
     return self;
-}
-
--(void) dealloc
-{
-    [_elements release];
-    [super dealloc];
 }
 
 -(NSArray*) allObjects
@@ -79,7 +73,7 @@
 }
 
 // Basic initializers
--(id) init
+-(instancetype) init
 {
     if (self = [super init])
     {
@@ -89,41 +83,31 @@
     return self;
 }
 
--(void) dealloc
-{
-    [_attribs release];
-    [_children release];
-    [_name release];
-    [_defaultURI release];
-    [super dealloc];
-}
-
 // Extended initializers
--(id) initWithQName:(XMLQName*)qname
+-(instancetype) initWithQName:(XMLQName*)qname
      withAttributes:(NSMutableDictionary*)atts
      withDefaultURI:(NSString*)uri
 {
     if (self = [self init])
 	{
-		_name  = [qname retain];
-		_defaultURI = [uri retain];
-		[_attribs release];
-		_attribs = [atts retain];
+		_name  = [qname copy];
+		_defaultURI = [uri copy];
+		_attribs = [atts copy];
 	}
     return self;
 }
 
--(id) initWithQName:(XMLQName*)qname
+-(instancetype) initWithQName:(XMLQName*)qname
 {
     return [self initWithQName:qname withDefaultURI:[qname uri]];
 }
 
--(id) initWithQName:(XMLQName*)qname withDefaultURI:(NSString*)uri
+-(instancetype) initWithQName:(XMLQName*)qname withDefaultURI:(NSString*)uri
 {
     if (self = [self init])
 	{
-		_name  = [qname retain];
-		_defaultURI = [uri retain];
+		_name  = [qname copy];
+		_defaultURI = [uri copy];
 	}
     return self;
 }
@@ -164,7 +148,6 @@
     // Add the new node to us as a child
     [self addElement:result];
 
-    [result release];
     return result;
 }
 
@@ -180,7 +163,6 @@
     {
         XMLCData* result = [[XMLCData alloc] initWithCharPtr:cdata ofLength:cdatasz];
         [_children addObject:result];
-        [result release];
         return result;
     }
 }
@@ -197,7 +179,6 @@
     {
         XMLCData* result = [[XMLCData alloc] initWithString:cdata];
         [_children addObject:result];
-        [result release];
         return result;
     }    
 }
@@ -318,7 +299,6 @@
 -(NSEnumerator*) childElementsEnumerator
 {
     NSEnumerator* result = [[_ElementEnumerator alloc] initWithArray:_children];
-    [result autorelease];
     return result;
 }
 
