@@ -44,13 +44,7 @@
   @abstract Jabber-enabled socket class.
 */
 @interface JabberSocket : NSObject <XMLElementStreamListener>
-{
-	dispatch_queue_t  _connectionDelegateQueue;
-    GCDAsyncSocket*   _socket;
-    XMLElementStream* _parser;
-    JabberSession*    _session;
-    NSTimer*          _timer;
-}
+
 @property (nonatomic) BOOL useSSL;
 
 /*!

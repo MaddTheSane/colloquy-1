@@ -30,14 +30,14 @@
     NSArray*        _elements;
     NSUInteger    _index;
 }
--(id) initWithArray:(NSArray*)elems;
+-(instancetype) initWithArray:(NSArray*)elems;
 -(NSArray*) allObjects;
 -(id) nextObject;
 @end
 
 @implementation _ElementEnumerator
 
--(id) initWithArray:(NSArray*)elems
+-(instancetype) initWithArray:(NSArray*)elems
 {
     if (self =[self init])
     {
@@ -69,9 +69,6 @@
 {
     NSMutableDictionary* _attribs;  // XMLQName->NSString
     NSMutableArray*      _children;
-    XMLElement*          __weak _parent;
-    XMLQName*            _name;
-    NSString*            _defaultURI;
     NSMutableDictionary* _namespaces; // NSString:URI->NSString:prefix
 }
 
@@ -281,12 +278,9 @@
 
 -(void) description:(XMLAccumulator*)acc
 {
-    id it;
-    NSEnumerator* attrib_keys = [_attribs keyEnumerator];
-
     [acc openElement:self];
 
-    while ((it = [attrib_keys nextObject]))
+    for (id it in _attribs)
     {
         [acc addAttribute:it withValue:_attribs[it] ofElement:self];
     }
@@ -332,11 +326,6 @@
 -(XMLQName*) getQName:(const char*)expatname
 {
     return [XMLQName construct:expatname];
-}
-
--(NSString*) defaultURI
-{
-    return _defaultURI;
 }
 
 -(NSString*) addUniqueIDAttribute

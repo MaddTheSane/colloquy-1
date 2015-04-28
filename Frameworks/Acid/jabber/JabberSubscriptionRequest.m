@@ -23,7 +23,7 @@
 //
 //============================================================================
 
-#import "acid.h"
+#import "Acid.h"
 
 NSString* JXML_SUB_REQUEST = @"/presence[@type='subscribe']";        // subscribe
 NSString* JXML_SUB_GRANTED = @"/presence[@type='subscribed']";        // subscribed
@@ -73,9 +73,9 @@ NSString* JXML_SUB_CANCEL_REQUEST = @"/presence[@type='unsubscribe']"; // unsubs
 
     if(!PRESSUBTYPE) {
         PRESSUBTYPE = @{@"subscribe": @(JSUBSCRIBE),
-            @"subscribed": @(JSUBSCRIBED),
-            @"unsubscribed": @(JUNSUBSCRIBE),
-            @"unsubscribed": @(JUNSUBSCRIBED)};
+                        @"subscribed": @(JSUBSCRIBED),
+                        @"unsubscribed": @(JUNSUBSCRIBE),
+                        @"unsubscribed": @(JUNSUBSCRIBED)};
     }
 
     _to      = [[JabberID alloc] initWithString:[self getAttribute:@"to"]];

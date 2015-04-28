@@ -28,7 +28,7 @@
 
 @interface JRGroup : NSObject <JabberGroup>
 {
-    NSString*       _name;
+@private
     NSMutableArray* _items;
 }
 +(instancetype) groupWithName: (NSString*) name;
@@ -116,9 +116,7 @@
 -(BOOL) onAddedItem: (id)item
 {
     BOOL retval = NO;
-    id groupName;
-    NSEnumerator *e = [[item groups] objectEnumerator];
-    while ((groupName = [e nextObject]))
+    for (id groupName in [item groups])
     {
         if ([self item: item addedToGroup: groupName])
         {
@@ -131,9 +129,7 @@
 -(BOOL) onRemovedItem: (id)item
 {
     BOOL retval = NO;
-    id groupName;
-    NSEnumerator *e = [[item groups] objectEnumerator];
-    while ((groupName = [e nextObject]))
+    for (id groupName in [item groups])
     {
         if ([self item: item removedFromGroup: groupName])
         {
@@ -157,13 +153,10 @@
 {
     if ((self = [self init]))
     {
-        id item;
-        NSEnumerator *e;
         _groups = [[NSMutableDictionary alloc] init];
         _groupArray = [[NSMutableArray alloc] init];
 
-        e = [roster itemEnumerator];
-        while ((item = [e nextObject]))
+        for (id item in roster)
         {
             if (object != nil)
             {

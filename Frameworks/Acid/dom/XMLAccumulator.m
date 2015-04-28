@@ -176,16 +176,13 @@
 
 -(void) addChildren:(NSArray*)children ofElement:(XMLElement*)elem
 {
-    id<XMLNode> curobj;
-    NSEnumerator* e = [children objectEnumerator];
-
     // First add the closing ">" on the string; this makes the
     // assumption that addChildren is only called after all the
     // attributes have been added
     [_data appendString:@">"];
 
     // Process child nodes
-    while ((curobj = [e nextObject]))
+    for (id<XMLNode> curobj in children)
     {
         [curobj description:self];
     }

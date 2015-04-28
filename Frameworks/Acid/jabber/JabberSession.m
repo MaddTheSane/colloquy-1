@@ -48,7 +48,7 @@ NSString* JSESSION_ERROR_REGFAILED  = @"/error/session/registrationFailed";
 NSString* JSESSION_ERROR_XMLPARSER  = @"/error/session/xmlparser";
 NSString* JSESSION_ERROR_CONNECT_FAILED = @"/error/session/connectFailed";
 
-NSString* STREAM_ROOT = @"<stream:stream xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' to='%@'>";
+#define STREAM_ROOT @"<stream:stream xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' to='%@'>"
 
 
 @implementation JabberSession
@@ -57,16 +57,9 @@ NSString* STREAM_ROOT = @"<stream:stream xmlns='jabber:client' xmlns:stream='htt
     NSMutableDictionary*   _expressions;
     NSNotificationCenter*  _ncenter;
     JabberSocket*          _jsocket;
-    JabberRoster*          _roster;
-    JabberPresenceTracker* _pres;
     ChatManager*     _chat;
     SessionState     _state;
-    JabberID*        _jid;
-    NSString*        _sid;
-    unsigned long    _curr_id;
-    id               _authMgr;
-    BOOL             _useSSL;
-    BOOL             _do_auth;
+    intptr_t         _curr_id;
 }
 
 -(instancetype) init
@@ -249,9 +242,7 @@ NSString* STREAM_ROOT = @"<stream:stream xmlns='jabber:client' xmlns:stream='htt
     // Walk list of xpath queries passing this element off to each one
     // that matches
     NSArray* values = [_expressions allValues];
-    NSEnumerator* en = [values objectEnumerator];
-    id curr;
-    while ((curr = [en nextObject]))
+    for (id curr in values)
     {
         if ([curr matches:elem])
         {
@@ -368,9 +359,7 @@ NSString* STREAM_ROOT = @"<stream:stream xmlns='jabber:client' xmlns:stream='htt
 @synthesize sessionID = _sid;
 @synthesize roster = _roster;
 @synthesize presenceTracker = _pres;
--(id) authManager
-{
-    return _authMgr;
-}
+@synthesize authOnConnected = _do_auth;
+@synthesize authManager = _authMgr;
 
 @end

@@ -96,7 +96,6 @@
 @end
 
 @interface XPathQuery : NSObject {
-    NSString*        _path;
     id               _expression;
 }
 

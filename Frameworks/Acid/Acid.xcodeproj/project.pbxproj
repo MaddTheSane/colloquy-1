@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		55D85B1F1AED9ECD000492A9 /* libexpat.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D85B1E1AED9ECD000492A9 /* libexpat.dylib */; };
 		922453C2168905B700BFF3FF /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 922453C1168905B700BFF3FF /* GCDAsyncSocket.h */; };
-		DD8ADFBD0BD1741A009AB74D /* acid.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8ADF5D0BD1741A009AB74D /* acid.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD8ADFBD0BD1741A009AB74D /* Acid.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8ADF5D0BD1741A009AB74D /* Acid.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD8ADFC90BD1741A009AB74D /* acid-dom.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8ADF6E0BD1741A009AB74D /* acid-dom.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD8ADFCA0BD1741A009AB74D /* XMLAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF6F0BD1741A009AB74D /* XMLAccumulator.m */; };
 		DD8ADFCB0BD1741A009AB74D /* XMLCData.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF700BD1741A009AB74D /* XMLCData.m */; };
@@ -53,7 +53,7 @@
 		8DC2EF5B0486A6940098B216 /* Acid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Acid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		922453C1168905B700BFF3FF /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = "../../../Chat Core/GCDAsyncSocket.h"; sourceTree = "<group>"; };
 		DD438C530BD87CBD0042117F /* Acid.exp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.exports; path = Acid.exp; sourceTree = "<group>"; };
-		DD8ADF5D0BD1741A009AB74D /* acid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = acid.h; sourceTree = "<group>"; };
+		DD8ADF5D0BD1741A009AB74D /* Acid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Acid.h; sourceTree = "<group>"; };
 		DD8ADF6E0BD1741A009AB74D /* acid-dom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "acid-dom.h"; sourceTree = "<group>"; };
 		DD8ADF6F0BD1741A009AB74D /* XMLAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAccumulator.m; sourceTree = "<group>"; };
 		DD8ADF700BD1741A009AB74D /* XMLCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLCData.m; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 			children = (
 				DD438C530BD87CBD0042117F /* Acid.exp */,
 				DDCB77A00BD5CB8700693892 /* Acid.pch */,
-				DD8ADF5D0BD1741A009AB74D /* acid.h */,
+				DD8ADF5D0BD1741A009AB74D /* Acid.h */,
 				DD8ADF6D0BD1741A009AB74D /* dom */,
 				DD8ADF8A0BD1741A009AB74D /* extensions */,
 				DD8ADF900BD1741A009AB74D /* jabber */,
@@ -275,7 +275,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD8ADFBD0BD1741A009AB74D /* acid.h in Headers */,
+				DD8ADFBD0BD1741A009AB74D /* Acid.h in Headers */,
 				DD8ADFC90BD1741A009AB74D /* acid-dom.h in Headers */,
 				DD8ADFE70BD1741A009AB74D /* acid-jabber.h in Headers */,
 				DD8AE0090BD1741A009AB74D /* acid-xpath.h in Headers */,
@@ -375,6 +375,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -441,6 +442,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

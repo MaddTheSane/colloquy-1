@@ -74,8 +74,6 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 -(void) setGroups:(NSMutableSet*)groups withDelegate:(id)delegate
 {
     // Setup enumerator stuff
-    NSEnumerator* e;
-    id cur;
     NSMutableSet* oldgroups;
 
     // Shortcut out if there are no groups
@@ -83,8 +81,7 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
     {
         // Notify delegate that all old groups (if any) are 
         // getting deleted
-        e = [_groups objectEnumerator];
-        while ((cur = [e nextObject]))
+        for (id cur in _groups)
         {
             if (cur != nil)
                 [delegate onItem:self removedFromGroup:cur];
@@ -101,19 +98,19 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
     oldgroups = [NSMutableSet setWithSet:_groups];
 
     // Update groups to point to new final group set
-    _groups = [NSSet setWithSet:groups];
+    _groups = [[NSSet alloc] initWithSet:groups];
 
     // Determine groups which have been added (new - old)
     [groups minusSet:oldgroups];
-    e = [groups objectEnumerator];
-    while ((cur = [e nextObject]))
+    for (id cur in groups)
         [delegate onItem:self addedToGroup:cur];
 
     // Determine groups which need to be removed (old - new)
     [oldgroups minusSet:_groups];
-    e = [oldgroups objectEnumerator];
-    while ((cur = [e nextObject]))
+    for (id cur in oldgroups)
+    {
         [delegate onItem:self removedFromGroup:cur];
+    }
 }
 
 @end
@@ -129,14 +126,10 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(void) parseItems:(NSArray*)items
 {
-    NSEnumerator* e = [items objectEnumerator];
-    XMLElement* cur;
-    while ((cur = [e nextObject]))
+    for (XMLElement *cur in items)
     {
         JabberID* jid = [JabberID withString:[cur getAttribute:@"jid"]];
         NSString* nick = [cur getAttribute:@"name"];
-        bool remove;
-        JRItem* item;
 
         NSMutableSet* groups =
 	    [NSMutableSet setWithArray:[_groups_query queryForStringList:cur]];
@@ -147,21 +140,18 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
             continue;
         }
 
-        remove = [[cur getAttribute:@"subscription"] isEqual:@"remove"];
-        item = _items[[jid userhostJID]];
+        BOOL remove = [[cur getAttribute:@"subscription"] isEqual:@"remove"];
+        JRItem* item = _items[[jid userhostJID]];
 
         if (remove)
         {
-            NSEnumerator* group_itr;
-            id group_cur;
             // How did we get here? Remove for something which doesn't exist..guess
             // we just move along
             if (item == nil)
                 continue;
 
             // Cleanup all groups
-            group_itr = [[item groups] objectEnumerator];
-            while ((group_cur = [group_itr nextObject]))
+            for (id group_cur in item.groups)
                 [_delegate onItem:item removedFromGroup:group_cur];
 
             // Remove the item
@@ -212,12 +202,11 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(void) onSessionStarted:(NSNotification*)n
 {
-    JabberIQ* iq;
     // Setup items data structure
     _items = [[NSMutableDictionary alloc] initWithCapacity:50];
 
     // Construct IQ to do initial roster retrieval
-    iq = [JabberIQ constructIQGet:@"jabber:iq:roster" withSession:_session];
+    JabberIQ* iq = [JabberIQ constructIQGet:@"jabber:iq:roster" withSession:_session];
     [iq setObserver:self withSelector:@selector(onInitialRosterPush:)];
     [iq execute];
 }
@@ -282,22 +271,15 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(void) updateJabberID:(JabberID*)jid withNickname:(NSString*)name andGroups:(NSSet*)groups
 {
-    NSString *groupName;
-    JabberIQ *iq;
-    XMLElement *item;
-    NSEnumerator *e;
-    
     // Construct IQ to do roster set
-    iq = [JabberIQ constructIQSet:@"jabber:iq:roster" withSession:_session];
+    JabberIQ *iq = [JabberIQ constructIQSet:@"jabber:iq:roster" withSession:_session];
 
-    item = [(XMLElement *)[iq firstChild] addElementWithName:@"item"];
+    XMLElement *item = [(XMLElement *)[iq firstChild] addElementWithName:@"item"];
     [item putAttribute:@"jid" withValue:[jid userhost]];
     if (name)
         [item putAttribute:@"name" withValue:name];
 
-    e = [groups objectEnumerator];
-    while ((groupName = [e nextObject]))
-    {
+    for (NSString *groupName in groups) {
         XMLElement *elem = [item addElementWithName:@"group"];
         [elem addCData:groupName];
     }
@@ -308,13 +290,10 @@ NSString* XP_ROSTERPUSH = @"/iq[@type='set']/query[%jabber:iq:roster]";
 
 -(void) removeJabberID:(JabberID*)jid
 {
-    JabberIQ *iq;
-    XMLElement *item;
-
     // Construct IQ to do roster set
-    iq = [JabberIQ constructIQSet:@"jabber:iq:roster" withSession:_session];
+    JabberIQ *iq = [JabberIQ constructIQSet:@"jabber:iq:roster" withSession:_session];
 
-    item = [[iq queryElement] addElementWithName:@"item"];
+    XMLElement *item = [[iq queryElement] addElementWithName:@"item"];
     [item putAttribute:@"jid" withValue:[jid userhost]];
     [item putAttribute:@"subscription" withValue:@"remove"];
 

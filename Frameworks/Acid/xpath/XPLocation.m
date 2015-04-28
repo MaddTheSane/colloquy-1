@@ -115,8 +115,7 @@
     if (_next != nil)
     {
         NSEnumerator* e = [elem childElementsEnumerator];
-        id curr;
-        while ((curr = [e nextObject]))
+        for (id curr in e)
         {
             if ([_next matches:curr])
                 return YES;
@@ -141,8 +140,7 @@
         if (_next != nil)
         {
             NSEnumerator* e = [elem childElementsEnumerator];
-            id curr;
-            while ((curr = [e nextObject]))
+            for (id curr in e)
             {
                 [_next queryForString:curr withResultBuffer:result];
             }
@@ -175,8 +173,7 @@
         if (_next != nil)
         {
             NSEnumerator* e = [elem childElementsEnumerator];
-            id curr;
-            while ((curr = [e nextObject]))
+            for (id curr in e)
             {
                 [_next queryForList:curr withResultArray:result];
             }
@@ -207,8 +204,7 @@
         if (_next != nil)
         {
             NSEnumerator* e = [elem childElementsEnumerator];
-            id curr;
-            while ((curr = [e nextObject]))
+            for (id curr in e)
             {
                 [_next queryForStringList:curr withResultArray:result];
             }
@@ -231,9 +227,7 @@
 
     if (_predicates != nil)
     {
-        NSEnumerator* e = [_predicates objectEnumerator];
-        id curr;
-        while ((curr = [e nextObject]))
+        for (id curr in _predicates)
         {
             if (![curr matches:elem])
                 return NO;

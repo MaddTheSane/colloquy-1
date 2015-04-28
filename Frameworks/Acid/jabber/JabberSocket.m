@@ -30,6 +30,13 @@
 @end
 
 @implementation JabberSocket
+{
+    dispatch_queue_t  _connectionDelegateQueue;
+    GCDAsyncSocket*   _socket;
+    XMLElementStream* _parser;
+    JabberSession*    _session;
+    NSTimer*          _timer;
+}
 @synthesize useSSL = _useSSL;
 
 -(instancetype) initWithJabberSession:(JabberSession*)session

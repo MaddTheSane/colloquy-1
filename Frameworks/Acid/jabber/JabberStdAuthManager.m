@@ -22,11 +22,11 @@
 // $Id: JabberStdAuthManager.m,v 1.2 2005/04/29 18:44:44 gbooker Exp $
 //============================================================================
 
-#import "acid.h"
+#import "Acid.h"
 #include <CommonCrypto/CommonCrypto.h>
 #include <CommonCrypto/CommonDigest.h>
 
-NSString* DFMT = @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x";
+#define DFMT @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
 
 @implementation JabberStdAuthManager
 {
