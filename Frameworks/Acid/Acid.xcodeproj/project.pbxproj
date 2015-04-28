@@ -33,10 +33,6 @@
 		DD8ADFF20BD1741A009AB74D /* JabberSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9C0BD1741A009AB74D /* JabberSocket.m */; };
 		DD8ADFF30BD1741A009AB74D /* JabberStdAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9D0BD1741A009AB74D /* JabberStdAuthManager.m */; };
 		DD8ADFF40BD1741A009AB74D /* JabberSubscriptionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADF9E0BD1741A009AB74D /* JabberSubscriptionRequest.m */; };
-		DD8ADFF90BD1741A009AB74D /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFA50BD1741A009AB74D /* base64.c */; };
-		DD8ADFFA0BD1741A009AB74D /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFA60BD1741A009AB74D /* buffer.c */; };
-		DD8ADFFC0BD1741A009AB74D /* esession.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFA80BD1741A009AB74D /* esession.c */; };
-		DD8ADFFE0BD1741A009AB74D /* keycache.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFAA0BD1741A009AB74D /* keycache.c */; };
 		DD8AE0030BD1741A009AB74D /* nfkc.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFB00BD1741A009AB74D /* nfkc.c */; };
 		DD8AE0040BD1741A009AB74D /* profiles.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFB10BD1741A009AB74D /* profiles.c */; };
 		DD8AE0050BD1741A009AB74D /* stringprep.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFB20BD1741A009AB74D /* stringprep.c */; };
@@ -46,16 +42,12 @@
 		DD8AE00A0BD1741A009AB74D /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFB80BD1741A009AB74D /* XPathQuery.m */; };
 		DD8AE00B0BD1741A009AB74D /* XPLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFB90BD1741A009AB74D /* XPLocation.m */; };
 		DD8AE00C0BD1741A009AB74D /* XPPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8ADFBA0BD1741A009AB74D /* XPPredicate.m */; };
-		DDBE55910BD1845D004ED228 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBE55900BD1845D004ED228 /* libssl.dylib */; };
-		DDBE55BA0BD187D5004ED228 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBE55B90BD187D5004ED228 /* libcrypto.dylib */; };
 		DDE46AAD0BD7246C0064D202 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE46AAC0BD7246C0064D202 /* CoreServices.framework */; };
 		DDF45AC40BD5CC500050911E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		1CF24BB60C6E2648006BD6A5 /* keycache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keycache.h; sourceTree = "<group>"; };
-		1CF24BFC0C6E26F2006BD6A5 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		55D85B1E1AED9ECD000492A9 /* libexpat.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libexpat.dylib; path = usr/lib/libexpat.dylib; sourceTree = SDKROOT; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Acid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Acid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,12 +79,6 @@
 		DD8ADF9C0BD1741A009AB74D /* JabberSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JabberSocket.m; sourceTree = "<group>"; };
 		DD8ADF9D0BD1741A009AB74D /* JabberStdAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JabberStdAuthManager.m; sourceTree = "<group>"; };
 		DD8ADF9E0BD1741A009AB74D /* JabberSubscriptionRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JabberSubscriptionRequest.m; sourceTree = "<group>"; };
-		DD8ADFA50BD1741A009AB74D /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
-		DD8ADFA60BD1741A009AB74D /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
-		DD8ADFA70BD1741A009AB74D /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
-		DD8ADFA80BD1741A009AB74D /* esession.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esession.c; sourceTree = "<group>"; };
-		DD8ADFA90BD1741A009AB74D /* esession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esession.h; sourceTree = "<group>"; };
-		DD8ADFAA0BD1741A009AB74D /* keycache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keycache.c; sourceTree = "<group>"; };
 		DD8ADFAD0BD1741A009AB74D /* gunicomp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gunicomp.h; sourceTree = "<group>"; };
 		DD8ADFAE0BD1741A009AB74D /* gunidecomp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gunidecomp.h; sourceTree = "<group>"; };
 		DD8ADFAF0BD1741A009AB74D /* internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = internal.h; sourceTree = "<group>"; };
@@ -119,8 +105,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				55D85B1F1AED9ECD000492A9 /* libexpat.dylib in Frameworks */,
-				DDBE55910BD1845D004ED228 /* libssl.dylib in Frameworks */,
-				DDBE55BA0BD187D5004ED228 /* libcrypto.dylib in Frameworks */,
 				DDF45AC40BD5CC500050911E /* Foundation.framework in Frameworks */,
 				DDE46AAD0BD7246C0064D202 /* CoreServices.framework in Frameworks */,
 			);
@@ -243,25 +227,9 @@
 			isa = PBXGroup;
 			children = (
 				922453C1168905B700BFF3FF /* GCDAsyncSocket.h */,
-				DD8ADFA40BD1741A009AB74D /* esession */,
 				DD8ADFAC0BD1741A009AB74D /* idn */,
 			);
 			path = utility;
-			sourceTree = "<group>";
-		};
-		DD8ADFA40BD1741A009AB74D /* esession */ = {
-			isa = PBXGroup;
-			children = (
-				DD8ADFA50BD1741A009AB74D /* base64.c */,
-				1CF24BFC0C6E26F2006BD6A5 /* base64.h */,
-				DD8ADFA60BD1741A009AB74D /* buffer.c */,
-				DD8ADFA70BD1741A009AB74D /* buffer.h */,
-				DD8ADFA80BD1741A009AB74D /* esession.c */,
-				DD8ADFA90BD1741A009AB74D /* esession.h */,
-				DD8ADFAA0BD1741A009AB74D /* keycache.c */,
-				1CF24BB60C6E2648006BD6A5 /* keycache.h */,
-			);
-			path = esession;
 			sourceTree = "<group>";
 		};
 		DD8ADFAC0BD1741A009AB74D /* idn */ = {
@@ -388,10 +356,6 @@
 				DD8ADFF20BD1741A009AB74D /* JabberSocket.m in Sources */,
 				DD8ADFF30BD1741A009AB74D /* JabberStdAuthManager.m in Sources */,
 				DD8ADFF40BD1741A009AB74D /* JabberSubscriptionRequest.m in Sources */,
-				DD8ADFF90BD1741A009AB74D /* base64.c in Sources */,
-				DD8ADFFA0BD1741A009AB74D /* buffer.c in Sources */,
-				DD8ADFFC0BD1741A009AB74D /* esession.c in Sources */,
-				DD8ADFFE0BD1741A009AB74D /* keycache.c in Sources */,
 				DD8AE0030BD1741A009AB74D /* nfkc.c in Sources */,
 				DD8AE0040BD1741A009AB74D /* profiles.c in Sources */,
 				DD8AE0050BD1741A009AB74D /* stringprep.c in Sources */,
