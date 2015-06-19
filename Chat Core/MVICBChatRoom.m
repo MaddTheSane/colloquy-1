@@ -37,6 +37,8 @@
 #import "MVChatConnectionPrivate.h"
 #import "MVChatString.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation MVICBChatRoom
 
 #pragma mark Constructors and finalizers
@@ -46,7 +48,7 @@
 	if( ( self = [self init] ) ) {
 		_connection = connection;
 		_name = name;
-		_uniqueIdentifier = [[name lowercaseString] retain];
+		_uniqueIdentifier = [name lowercaseString];
 		[_connection _addKnownRoom:self];
 	}
 	return self;
@@ -54,7 +56,7 @@
 
 #pragma mark Generic room handling
 
-- (void) partWithReason:(MVChatString *) reason {
+- (void) partWithReason:(MVChatString * __nullable) reason {
 }
 
 - (void) changeTopic:(MVChatString *) newTopic {
@@ -78,3 +80,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

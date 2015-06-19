@@ -1,12 +1,15 @@
-#import <Acid/acid.h>
+#import "XMPPFramework.h"
 
 #import "MVXMPPChatUser.h"
 #import "MVXMPPChatConnection.h"
 #import "MVUtilities.h"
 #import "MVChatString.h"
+#import "NSNotificationAdditions.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation MVXMPPChatUser
-- (id) initWithJabberID:(JabberID *) identifier andConnection:(MVXMPPChatConnection *) userConnection {
+- (id) initWithJabberID:(XMPPJID *) identifier andConnection:(MVXMPPChatConnection *) userConnection {
 	if( ( self = [self init] ) ) {
 		_type = MVChatRemoteUserType;
 		_connection = userConnection; // prevent circular retain
@@ -18,9 +21,7 @@
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-	[super dealloc];
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -44,11 +45,11 @@
 }
 
 - (NSString *) address {
-	return [_uniqueIdentifier hostname];
+	return [_uniqueIdentifier domain];
 }
 
 - (NSString *) serverAddress {
-	return [_uniqueIdentifier hostname];
+	return [_uniqueIdentifier domain];
 }
 
 #pragma mark -
@@ -66,11 +67,10 @@
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary *) attributes {
 	NSParameterAssert( message != nil );
 
-	JabberMessage *jabberMsg = [[JabberMessage alloc] initWithRecipient:_uniqueIdentifier andBody:[message string]];
-	[jabberMsg setType:@"chat"];
-	[jabberMsg addComposingRequest];
-	[[(MVXMPPChatConnection *)_connection _chatSession] sendElement:jabberMsg];
-	[jabberMsg release];
+	XMPPMessage *xmppMessage = [XMPPMessage messageWithType:@"chat" to:_uniqueIdentifier];
+	[xmppMessage addBody:[message string]];
+
+	[[(MVXMPPChatConnection *)_connection _chatSession] sendElement:xmppMessage];
 }
 @end
 
@@ -85,3 +85,5 @@
 	return _roomMember;
 }
 @end
+
+NS_ASSUME_NONNULL_END

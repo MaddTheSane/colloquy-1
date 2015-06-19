@@ -5,19 +5,23 @@
 #import "MVChatConnectionPrivate.h"
 #import "MVFileTransfer.h"
 #import "MVUtilities.h"
+#import "NSNotificationAdditions.h"
 
+#undef ENABLE_AUTO_PORT_MAPPING
 #if ENABLE(AUTO_PORT_MAPPING)
 #import <TCMPortMapper/TCMPortMapper.h>
 #endif
 
 #import <arpa/inet.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 NSString *MVDCCFriendlyAddress( NSString *address ) {
 	NSURL *url = [NSURL URLWithString:@"http://colloquy.info/ip.php"];
 	NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:3.];
 	NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:NULL error:NULL];
 	if( result.length >= 6 && result.length <= 40 ) // should be a valid IPv4 or IPv6 address
-		address = [[[NSString alloc] initWithData:result encoding:NSASCIIStringEncoding] autorelease];
+		address = [[NSString alloc] initWithData:result encoding:NSASCIIStringEncoding];
 	if( address && [address rangeOfString:@"."].location != NSNotFound )
 		return [NSString stringWithFormat:@"%d", ntohl( inet_addr( [address UTF8String] ) )];
 	return address;
@@ -38,39 +42,17 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 #pragma mark -
 
 @implementation MVDirectClientConnection
-- (void) finalize {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-	_done = YES;
-
-	[_acceptConnection disconnect];
-	[_connection disconnect];
-
-#if ENABLE(AUTO_PORT_MAPPING)
-	if (_portMapping) {
-		[[TCMPortMapper sharedInstance] removePortMapping:_portMapping];
-		if (![[[TCMPortMapper sharedInstance] portMappings] count])
-			[[TCMPortMapper sharedInstance] stop];
-	}
-#endif
-
-	[super finalize];
-}
-
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 
 	_done = YES;
 
 	[_acceptConnection disconnect];
 	[_acceptConnection setDelegate:nil];
-	[_acceptConnection release];
 
 	[_connection disconnect];
 	[_connection setDelegate:nil];
-	[_connection release];
 
-	[_threadWaitLock release];
 
 #if ENABLE(AUTO_PORT_MAPPING)
 	if (_portMapping) {
@@ -79,13 +61,7 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 			[[TCMPortMapper sharedInstance] stop];
 	}
 
-	[_portMapping release];
 #endif
-
-	if (_connectionDelegateQueue)
-		dispatch_release(_connectionDelegateQueue);
-
-	[super dealloc];
 }
 
 #pragma mark -
@@ -97,9 +73,8 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 
 	if( ! _connectionThread ) return;
 
-	NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithUnsignedShort:port], @"port", host, @"host", nil];
+	NSDictionary *info = @{ @"port": @(port), @"host": host };
 	[self performSelector:@selector( _connect: ) withObject:info inThread:_connectionThread];
-	[info release];
 }
 
 - (void) acceptConnectionOnFirstPortInRange:(NSRange) ports {
@@ -151,7 +126,7 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 
 #pragma mark -
 
-- (void) setDelegate:(id) delegate {
+- (void) setDelegate:(id __nullable) delegate {
 	_delegate = delegate;
 }
 
@@ -162,14 +137,12 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 #pragma mark -
 
 - (void) socket:(GCDAsyncSocket *) sock didAcceptNewSocket:(GCDAsyncSocket *) newSocket {
-	if( ! _connection ) _connection = [newSocket retain];
+	if( ! _connection ) _connection = newSocket;
 	else [newSocket disconnect];
 
-	id old = _acceptConnection;
+	[_acceptConnection setDelegate:nil];
+	[_acceptConnection disconnect];
 	_acceptConnection = nil;
-	[old setDelegate:nil];
-	[old disconnect];
-	[old release];
 }
 
 - (void) socket:(GCDAsyncSocket *) sock didConnectToHost:(NSString *) host port:(UInt16) port {
@@ -238,7 +211,6 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 
 	[_threadWaitLock lockWhenCondition:1];
 	[_threadWaitLock unlockWithCondition:0];
-	[_threadWaitLock release];
 	_threadWaitLock = nil;
 }
 
@@ -247,8 +219,8 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 
 	_connection = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:_connectionDelegateQueue socketQueue:_connectionDelegateQueue];
 
-	NSString *host = [info objectForKey:@"host"];
-	NSNumber *port = [info objectForKey:@"port"];
+	NSString *host = info[@"host"];
+	NSNumber *port = info[@"port"];
 
 	if( ! [_connection connectToHost:host onPort:[port unsignedShortValue] error:NULL] ) {
 		NSLog(@"can't connect to DCC %@ on port %d", host, [port unsignedShortValue] );
@@ -262,7 +234,7 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 	_acceptConnection = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:_connectionDelegateQueue socketQueue:_connectionDelegateQueue];
 
 	NSRange ports = [portsObject rangeValue];
-	NSUInteger port = ports.location;
+	unsigned short port = ports.location;
 	BOOL success = NO;
 
 	while( ! success ) {
@@ -289,15 +261,14 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 			if (![[[TCMPortMapper sharedInstance] portMappings] count])
 				[[TCMPortMapper sharedInstance] stop];
 
-			[[NSNotificationCenter defaultCenter] removeObserver:self name:TCMPortMappingDidChangeMappingStatusNotification object:_portMapping];
+			[[NSNotificationCenter chatCenter] removeObserver:self name:TCMPortMappingDidChangeMappingStatusNotification object:_portMapping];
 
-			[_portMapping release];
 			_portMapping = nil;
 		}
 
 		_portMapping = [[TCMPortMapping alloc] initWithLocalPort:port desiredExternalPort:port transportProtocol:TCMPortMappingTransportProtocolTCP userInfo:nil];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_portMappingStatusChanged:) name:TCMPortMappingDidChangeMappingStatusNotification object:_portMapping];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(_portMappingStatusChanged:) name:TCMPortMappingDidChangeMappingStatusNotification object:_portMapping];
 
 		[[TCMPortMapper sharedInstance] addPortMapping:_portMapping];
 		[[TCMPortMapper sharedInstance] start];
@@ -325,32 +296,25 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 		if (![[[TCMPortMapper sharedInstance] portMappings] count])
 			[[TCMPortMapper sharedInstance] stop];
 
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:TCMPortMappingDidChangeMappingStatusNotification object:_portMapping];
+		[[NSNotificationCenter chatCenter] removeObserver:self name:TCMPortMappingDidChangeMappingStatusNotification object:_portMapping];
 
-		[_portMapping release];
 		_portMapping = nil;
 	}
 #endif
 
-	id old = _acceptConnection;
+	[_acceptConnection setDelegate:nil];
+	[_acceptConnection disconnect];
 	_acceptConnection = nil;
-	[old setDelegate:nil];
-	[old disconnect];
-	[old release];
 
-	old = _connection;
+	[_connection setDelegate:nil];
+	[_connection disconnect];
 	_connection = nil;
-	[old setDelegate:nil];
-	[old disconnect];
-	[old release];
 
 	_done = YES;
 }
 
 - (oneway void) _dccRunloop {
 	@autoreleasepool {
-		[self retain];
-
 		[_threadWaitLock lockWhenCondition:0];
 
 		NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
@@ -368,7 +332,6 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 		@autoreleasepool {
 			NSDate *timeout = [[NSDate alloc] initWithTimeIntervalSinceNow:5.];
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:timeout];
-			[timeout release];
 		}
 	}
 
@@ -380,7 +343,8 @@ NSString *MVDCCFriendlyAddress( NSString *address ) {
 			_connectionThread = nil;
 
 		[self _finish];
-		[self release];
 	}
 }
 @end
+
+NS_ASSUME_NONNULL_END

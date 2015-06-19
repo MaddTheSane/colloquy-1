@@ -9,7 +9,7 @@
 @implementation CQTextCompletionView
 @synthesize delegate = _delegate;
 
-- (id) initWithFrame:(CGRect) frame {
+- (instancetype) initWithFrame:(CGRect) frame {
 	if (!(self = [super initWithFrame:frame]))
 		return nil;
 	self.opaque = NO;
@@ -99,7 +99,7 @@
 		CGPathAddLineToPoint(path, NULL, enclosingRect.origin.x + offset - CompletionMargin, CGRectGetMinY(enclosingRect));
 		CGPathCloseSubpath(path);
 
-		CGContextRef ctx = UIGraphicsGetCurrentContext();
+		ctx = UIGraphicsGetCurrentContext();
 
 		CGContextSetRGBStrokeColor(ctx, (10. / 255.), (55. / 255.), (175. / 255.), 1.);
 		CGContextSetRGBFillColor(ctx, (25. / 255.), (121. / 255.), (227. / 255.), 1.);

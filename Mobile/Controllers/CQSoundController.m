@@ -13,7 +13,12 @@
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
-- (id) initWithSoundNamed:(NSString *) soundName {
+- (instancetype) init {
+	NSAssert(NO, @"Please use [CQSoundController initWithSoundNamed:]");
+	return nil;
+}
+
+- (instancetype) initWithSoundNamed:(NSString *) soundName {
 	NSParameterAssert(soundName);
 
 	if (!(self = [super init]))

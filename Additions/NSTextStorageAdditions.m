@@ -45,7 +45,7 @@
 
 - (void) setItalicState:(BOOL) italic {
 	NSFont *font = [self attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
-	if( bold ) font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSItalicFontMask];
+	if( italic ) font = [[NSFontManager sharedFontManager] convertFont:font toHaveTrait:NSItalicFontMask];
 	else font = [[NSFontManager sharedFontManager] convertFont:font toNotHaveTrait:NSItalicFontMask];
 	if( font ) [self addAttribute:NSFontAttributeName value:font range:NSMakeRange( 0, [self length] )];
 }
@@ -93,5 +93,16 @@
 - (void) setXHTMLEnd:(NSString *) html {
 	if( ! [html isKindOfClass:[NSString class]] ) [self removeAttribute:@"XHTMLEnd" range:NSMakeRange( 0, [self length] )];
 	else [self addAttribute:@"XHTMLEnd" value:html range:NSMakeRange( 0, [self length] )];
+}
+
+- (NSTextStorage *) cq_stringByRemovingCharactersInSet:(NSCharacterSet *) set {
+	NSTextStorage *mutableStorage = [self copy];
+	NSRange range = [[self string] rangeOfCharacterFromSet:set];
+	while (range.location != NSNotFound) {
+		[mutableStorage replaceCharactersInRange:range withString:@""];
+		range = [[self string] rangeOfCharacterFromSet:set];
+	}
+
+	return mutableStorage;
 }
 @end

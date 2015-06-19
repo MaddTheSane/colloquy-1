@@ -1,24 +1,26 @@
 #import "MVAvailability.h"
 #import "MVChatString.h"
 
-typedef enum {
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM(NSInteger, MVChatUserType) {
 	MVChatRemoteUserType = 'remT',
 	MVChatLocalUserType = 'locL',
 	MVChatWildcardUserType = 'wilD'
-} MVChatUserType;
+};
 
-typedef enum {
+typedef NS_ENUM(NSInteger, MVChatUserStatus) {
 	MVChatUserUnknownStatus = 'uKnw',
 	MVChatUserOfflineStatus = 'oflN',
 	MVChatUserDetachedStatus = 'detA',
 	MVChatUserAvailableStatus = 'avaL',
 	MVChatUserAwayStatus = 'awaY'
-} MVChatUserStatus;
+};
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, MVChatUserMode) {
 	MVChatUserNoModes = 0,
 	MVChatUserInvisibleMode = 1 << 0
-} MVChatUserMode;
+};
 
 extern NSString *MVChatUserKnownRoomsAttribute;
 extern NSString *MVChatUserPictureAttribute;
@@ -42,6 +44,16 @@ extern NSString *MVChatUserServerDigitalSignatureAttribute;
 extern NSString *MVChatUserBanServerAttribute;
 extern NSString *MVChatUserBanAuthorAttribute;
 extern NSString *MVChatUserBanDateAttribute;
+extern NSString *MVChatUserSSLCertFingerprintAttribute;
+extern NSString *MVChatUserEmailAttribute;
+extern NSString *MVChatUserPhoneAttribute;
+extern NSString *MVChatUserWebsiteAttribute;
+extern NSString *MVChatUserIMServiceAttribute;
+extern NSString *MVChatUserCurrentlyPlayingAttribute;
+extern NSString *MVChatUserStatusAttribute;
+extern NSString *MVChatUserClientNameAttribute;
+extern NSString *MVChatUserClientVersionAttribute;
+extern NSString *MVChatUserClientUnknownAttributes;
 
 extern NSString *MVChatUserNicknameChangedNotification;
 extern NSString *MVChatUserStatusChangedNotification;
@@ -56,11 +68,12 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 
 @interface MVChatUser : NSObject {
 @protected
-	MVChatConnection *_connection;
+	__weak MVChatConnection *_connection;
 	id _uniqueIdentifier;
 	NSString *_nickname;
 	NSString *_realName;
 	NSString *_username;
+	NSString *_account;
 	NSString *_address;
 	NSString *_serverAddress;
 	NSData *_publicKey;
@@ -69,6 +82,7 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 	NSDate *_dateDisconnected;
 	NSDate *_dateUpdated;
 	NSData *_awayStatusMessage;
+	NSDate *_mostRecentUserActivity;
 	NSMutableDictionary *_attributes;
 	MVChatUserType _type;
 	MVChatUserStatus _status;
@@ -80,11 +94,11 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 	BOOL _serverOperator;
 	BOOL _onlineNotificationSent;
 }
-+ (id) wildcardUserFromString:(NSString *) mask;
-+ (id) wildcardUserWithNicknameMask:(NSString *) nickname andHostMask:(NSString *) host;
-+ (id) wildcardUserWithFingerprint:(NSString *) fingerprint;
++ (instancetype) wildcardUserFromString:(NSString *) mask;
++ (instancetype) wildcardUserWithNicknameMask:(NSString * __nullable) nickname andHostMask:(NSString * __nullable) host;
++ (instancetype) wildcardUserWithFingerprint:(NSString *) fingerprint;
 
-@property(readonly) MVChatConnection *connection;
+@property(strong, readonly) MVChatConnection *connection;
 @property(readonly) MVChatUserType type;
 
 @property(readonly, getter=isRemoteUser) BOOL remoteUser;
@@ -95,32 +109,36 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 @property(readonly, getter=isServerOperator) BOOL serverOperator;
 
 @property(readonly) MVChatUserStatus status;
-@property(readonly) NSData *awayStatusMessage;
+@property(strong, readonly) NSData *awayStatusMessage;
 
-@property(readonly) NSDate *dateConnected;
-@property(readonly) NSDate *dateDisconnected;
-@property(readonly) NSDate *dateUpdated;
+@property(strong, readonly) NSDate *dateConnected;
+@property(strong, readonly) NSDate *dateDisconnected;
+@property(strong, readonly) NSDate *dateUpdated;
+@property(nonatomic, copy) NSDate *mostRecentUserActivity;
 
 @property(readonly) NSTimeInterval idleTime;
 @property(readonly) NSTimeInterval lag;
 
-@property(readonly) NSString *displayName;
-@property(readonly) NSString *nickname;
-@property(readonly) NSString *realName;
-@property(readonly) NSString *username;
-@property(readonly) NSString *address;
-@property(readonly) NSString *serverAddress;
-@property(readonly) NSString *maskRepresentation;
+@property(strong, readonly) NSString *displayName;
+@property(strong, readonly) NSString *nickname;
+@property(strong, readonly) NSString *realName;
+@property(strong, readonly) NSString *username;
+@property(strong, readonly) NSString *account;
+@property(strong, readonly) NSString *address;
+@property(strong, readonly) NSString *serverAddress;
+@property(strong, readonly) NSString *maskRepresentation;
 
-@property(readonly) id uniqueIdentifier;
-@property(readonly) NSData *publicKey;
-@property(readonly) NSString *fingerprint;
+@property(strong, readonly) id uniqueIdentifier;
+@property(strong, readonly) NSData *publicKey;
+@property(strong, readonly) NSString *fingerprint;
 
 @property(readonly) NSUInteger supportedModes;
 @property(readonly) NSUInteger modes;
 
-@property(readonly) NSSet *supportedAttributes;
-@property(readonly) NSDictionary *attributes;
+@property(strong, readonly) NSSet *supportedAttributes;
+@property(strong, readonly) NSDictionary *attributes;
+
+@property NSUInteger roomCount;
 
 - (BOOL) isEqual:(id) object;
 - (BOOL) isEqualToChatUser:(MVChatUser *) anotherUser;
@@ -139,7 +157,7 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 
 - (BOOL) hasAttributeForKey:(NSString *) key;
 - (id) attributeForKey:(NSString *) key;
-- (void) setAttribute:(id) attribute forKey:(id) key;
+- (void) setAttribute:(id __nullable) attribute forKey:(id) key;
 
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding asAction:(BOOL) action;
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary *) attributes;
@@ -148,8 +166,11 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 
 - (MVUploadFileTransfer *) sendFile:(NSString *) path passively:(BOOL) passive;
 
-- (void) sendSubcodeRequest:(NSString *) command withArguments:(id) arguments;
-- (void) sendSubcodeReply:(NSString *) command withArguments:(id) arguments;
+- (void) sendSubcodeRequest:(NSString *) command withArguments:(id __nullable) arguments;
+- (void) sendSubcodeReply:(NSString *) command withArguments:(id __nullable) arguments;
+
+- (void) requestRecentActivity;
+- (void) persistLastActivityDate;
 @end
 
 #pragma mark -
@@ -160,3 +181,5 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 @property(readonly) NSScriptObjectSpecifier *objectSpecifier;
 @end
 #endif
+
+NS_ASSUME_NONNULL_END

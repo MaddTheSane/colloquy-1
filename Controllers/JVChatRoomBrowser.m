@@ -19,7 +19,7 @@
 
 @implementation JVChatRoomBrowser
 - (id) initWithWindowNibName:(NSString *) windowNibName {
-	if( ( self = [super initWithWindowNibName:@"JVChatRoomBrowser"] ) ) {
+	if( ( self = [super initWithWindowNibName:windowNibName] ) ) {
 		_self = self;
 		_connection = nil;
 		_roomResults = nil;
@@ -30,14 +30,14 @@
 		_collapsed = YES;
 		_needsRefresh = NO;
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _connectionChange: ) name:MVChatConnectionDidConnectNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _connectionChange: ) name:MVChatConnectionDidDisconnectNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _connectionChange: ) name:MVChatConnectionDidConnectNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _connectionChange: ) name:MVChatConnectionDidDisconnectNotification object:nil];
 	}
 	return self;
 }
 
 - (id) initWithConnection:(MVChatConnection *) connection {
-	if( ( self = [self initWithWindowNibName:nil] ) ) {
+	if( ( self = [self initWithWindowNibName:@"JVChatRoomBrowser"] ) ) {
 		[self setConnection:connection];
 	}
 	return self;
@@ -56,7 +56,7 @@
 	[roomsTable setDelegate:nil];
 	[roomsTable setDataSource:nil];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 
 
 	_connection = nil;
@@ -73,7 +73,7 @@
 	[roomsTable accessibilitySetOverrideValue:NSLocalizedString(@"Chat rooms", "VoiceOver title for chat rooms table") forAttribute:NSAccessibilityDescriptionAttribute];
 
 	theColumn = [roomsTable tableColumnWithIdentifier:@"members"];
-	[[theColumn headerCell] setImage:[NSImage imageNamed:@"personHeader"]];
+	[[theColumn headerCell] setImage:[NSImage imageNamed:@"person"]];
 	[[theColumn headerCell] accessibilitySetOverrideValue:NSLocalizedString(@"Participants", "VoiceOver title for number of connected users in chat room browser table") forAttribute:NSAccessibilityDescriptionAttribute];
 
 	[self tableView:roomsTable didClickTableColumn:[roomsTable tableColumnWithIdentifier:_sortColumn]];
@@ -238,7 +238,7 @@
 - (void) setConnection:(MVChatConnection *) connection {
 	if( _connection ) {
 		[self _stopFetch];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:_connection];
+		[[NSNotificationCenter chatCenter] removeObserver:self name:nil object:_connection];
 	}
 
 	_connection = connection;
@@ -246,7 +246,11 @@
 	if( _connection && ! _collapsed )
 		[self _startFetch];
 
-	if( _connection ) [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _needToRefreshResults: ) name:MVChatConnectionChatRoomListUpdatedNotification object:_connection];
+	__weak __typeof__((self)) weakSelf = self;
+	dispatch_async(dispatch_get_main_queue(), ^{
+		__strong __typeof__((weakSelf)) strongSelf = weakSelf;
+		if( strongSelf->_connection ) [[NSNotificationCenter chatCenter] addObserver:strongSelf selector:@selector( _needToRefreshResults: ) name:MVChatConnectionChatRoomListUpdatedNotification object:strongSelf->_connection];
+	});
 
 	_roomResults = [_connection chatRoomListResults];
 
@@ -417,14 +421,14 @@ static NSComparisonResult sortByRoomNameDescending( NSString *room1, NSString *r
 
 static NSComparisonResult sortByNumberOfMembersAscending( NSString *room1, NSString *room2, void *context ) {
 	NSDictionary *info = (__bridge NSDictionary *)(context);
-	NSComparisonResult res = [(NSNumber *)[[info objectForKey:room1] objectForKey:@"users"] compare:[[info objectForKey:room2] objectForKey:@"users"]];
+	NSComparisonResult res = [(NSNumber *)[info[room1] objectForKey:@"users"] compare:[info[room2] objectForKey:@"users"]];
 	if( res != NSOrderedSame ) return res;
 	return [room1 caseInsensitiveCompare:room2];
 }
 
 static NSComparisonResult sortByNumberOfMembersDescending( NSString *room1, NSString *room2, void *context ) {
 	NSDictionary *info = (__bridge NSDictionary *)(context);
-	NSComparisonResult res = [(NSNumber *)[[info objectForKey:room2] objectForKey:@"users"] compare:[[info objectForKey:room1] objectForKey:@"users"]];
+	NSComparisonResult res = [(NSNumber *)[info[room2] objectForKey:@"users"] compare:[info[room1] objectForKey:@"users"]];
 	if( res != NSOrderedSame ) return res;
 	return [room1 caseInsensitiveCompare:room2];
 }

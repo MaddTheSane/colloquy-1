@@ -1,7 +1,9 @@
 #import <ChatCore/MVAvailability.h>
 #import <ChatCore/MVChatString.h>
 
-typedef enum {
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_OPTIONS(NSUInteger, MVChatRoomMode) {
 	MVChatRoomNoModes = 0,
 	MVChatRoomPrivateMode = 1 << 0,
 	MVChatRoomSecretMode = 1 << 1,
@@ -12,21 +14,21 @@ typedef enum {
 	MVChatRoomNoOutsideMessagesMode = 1 << 6,
 	MVChatRoomPassphraseToJoinMode = 1 << 7,
 	MVChatRoomLimitNumberOfMembersMode = 1 << 8
-} MVChatRoomMode;
+};
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberMode) {
 	MVChatRoomMemberNoModes = 0,
 	MVChatRoomMemberVoicedMode = 1 << 0,
 	MVChatRoomMemberHalfOperatorMode = 1 << 1,
 	MVChatRoomMemberOperatorMode = 1 << 2,
 	MVChatRoomMemberAdministratorMode = 1 << 3,
 	MVChatRoomMemberFounderMode = 1 << 4
-} MVChatRoomMemberMode;
+};
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberDisciplineMode) {
 	MVChatRoomMemberNoDisciplineModes = 0,
 	MVChatRoomMemberDisciplineQuietedMode = 1 << 0
-} MVChatRoomMemberDisciplineMode;
+};
 
 extern NSString *MVChatRoomMemberQuietedFeature;
 extern NSString *MVChatRoomMemberVoicedFeature;
@@ -61,11 +63,12 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 
 @interface MVChatRoom : NSObject {
 @protected
-	MVChatConnection *_connection;
+	__weak MVChatConnection *_connection;
 	id _uniqueIdentifier;
 	NSString *_name;
 	NSDate *_dateJoined;
 	NSDate *_dateParted;
+	NSDate *_mostRecentUserActivity;
 	NSData *_topic;
 	MVChatUser *_topicAuthor;
 	NSDate *_dateTopicChanged;
@@ -80,34 +83,35 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 	NSUInteger _hash;
 	BOOL _releasing;
 }
-@property(readonly) MVChatConnection *connection;
+@property(strong, readonly) MVChatConnection *connection;
 
-@property(readonly) NSURL *url;
-@property(readonly) NSString *name;
-@property(readonly) NSString *displayName;
-@property(readonly) id uniqueIdentifier;
+@property(strong, readonly) NSURL *url;
+@property(strong, readonly) NSString *name;
+@property(strong, readonly) NSString *displayName;
+@property(strong, readonly) id uniqueIdentifier;
 
 @property(readonly, getter=isJoined) BOOL joined;
-@property(readonly) NSDate *dateJoined;
-@property(readonly) NSDate *dateParted;
+@property(strong, readonly) NSDate *dateJoined;
+@property(strong, readonly) NSDate *dateParted;
+@property(nonatomic, copy) NSDate *mostRecentUserActivity;
 
 @property NSStringEncoding encoding;
 
-@property(readonly) NSData *topic;
-@property(readonly) MVChatUser *topicAuthor;
-@property(readonly) NSDate *dateTopicChanged;
+@property(strong, readonly) NSData *topic;
+@property(strong, readonly) MVChatUser *topicAuthor;
+@property(strong, readonly) NSDate *dateTopicChanged;
 
-@property(readonly) NSSet *supportedAttributes;
-@property(readonly) NSDictionary *attributes;
+@property(strong, readonly) NSSet *supportedAttributes;
+@property(strong, readonly) NSDictionary *attributes;
 
 @property(readonly) NSUInteger supportedModes;
 @property(readonly) NSUInteger supportedMemberUserModes;
 @property(readonly) NSUInteger supportedMemberDisciplineModes;
 @property(readonly) NSUInteger modes;
 
-@property(readonly) MVChatUser *localMemberUser;
-@property(readonly) NSSet *memberUsers;
-@property(readonly) NSSet *bannedUsers;
+@property(strong, readonly) MVChatUser *localMemberUser;
+@property(strong, readonly) NSSet *memberUsers;
+@property(strong, readonly) NSSet *bannedUsers;
 
 - (BOOL) isEqual:(id) object;
 - (BOOL) isEqualToChatRoom:(MVChatRoom *) anotherUser;
@@ -118,7 +122,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 - (void) join;
 - (void) part;
 
-- (void) partWithReason:(MVChatString *) reason;
+- (void) partWithReason:(MVChatString * __nullable) reason;
 
 - (void) changeTopic:(MVChatString *) topic;
 
@@ -143,7 +147,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 
 - (void) setModes:(NSUInteger) modes;
 - (void) setMode:(MVChatRoomMode) mode;
-- (void) setMode:(MVChatRoomMode) mode withAttribute:(id) attribute;
+- (void) setMode:(MVChatRoomMode) mode withAttribute:(id __nullable) attribute;
 - (void) removeMode:(MVChatRoomMode) mode;
 
 - (NSSet *) memberUsersWithModes:(NSUInteger) modes;
@@ -152,7 +156,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 - (MVChatUser *) memberUserWithUniqueIdentifier:(id) identifier;
 - (BOOL) hasUser:(MVChatUser *) user;
 
-- (void) kickOutMemberUser:(MVChatUser *) user forReason:(MVChatString *) reason;
+- (void) kickOutMemberUser:(MVChatUser *) user forReason:(MVChatString * __nullable) reason;
 
 - (void) addBanForUser:(MVChatUser *) user;
 - (void) removeBanForUser:(MVChatUser *) user;
@@ -166,6 +170,9 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 
 - (void) setDisciplineMode:(MVChatRoomMemberDisciplineMode) mode forMemberUser:(MVChatUser *) user;
 - (void) removeDisciplineMode:(MVChatRoomMemberDisciplineMode) mode forMemberUser:(MVChatUser *) user;
+
+- (void) requestRecentActivity;
+- (void) persistLastActivityDate;
 @end
 
 #pragma mark -
@@ -176,3 +183,5 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 @property(readonly) NSScriptObjectSpecifier *objectSpecifier;
 @end
 #endif
+
+NS_ASSUME_NONNULL_END

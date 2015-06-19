@@ -2,15 +2,14 @@
 #import "MVSILCChatConnection.h"
 #import "MVChatString.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation MVSILCChatUser
 - (id) initLocalUserWithConnection:(MVSILCChatConnection *) userConnection {
 	if( ( self = [self initWithClientEntry:[userConnection _silcConn] -> local_entry andConnection:userConnection] ) ) {
 		_type = MVChatLocalUserType;
 
 		// this info will be pulled live from the connection
-		[_nickname release];
-		[_realName release];
-		[_username release];
 
 		_nickname = nil;
 		_realName = nil;
@@ -36,7 +35,7 @@
 - (void) updateWithClientEntry:(SilcClientEntry) clientEntry {
 	SilcLock( [[self connection] _silcClient] );
 
-	[self retain];
+	__strong id me = self;
 
 	if( _uniqueIdentifier )
 		[_connection _removeKnownUser:self];
@@ -71,14 +70,14 @@
 	[self _setServerOperator:( clientEntry -> mode & SILC_UMODE_SERVER_OPERATOR || clientEntry -> mode & SILC_UMODE_ROUTER_OPERATOR )];
 
 	unsigned char *identifier = silc_id_id2str( clientEntry -> id, SILC_ID_CLIENT );
-	unsigned len = silc_id_get_len( clientEntry -> id, SILC_ID_CLIENT );
+	SilcUInt32 len = silc_id_get_len( clientEntry -> id, SILC_ID_CLIENT );
 	[self _setUniqueIdentifier:[NSData dataWithBytes:identifier length:len]];
 
 	_clientEntry = clientEntry;
 
 	[_connection _addKnownUser:self];
 
-	[self release];
+	me = nil;
 
 	SilcUnlock( [[self connection] _silcClient] );
 }
@@ -144,3 +143,5 @@
 	silc_buffer_free( userBuffer );
 }
 @end
+
+NS_ASSUME_NONNULL_END

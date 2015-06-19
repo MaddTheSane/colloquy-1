@@ -5,6 +5,8 @@
 
 #import "NSDataAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 static char encodingTable[64] = {
 		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
 		'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
@@ -13,10 +15,10 @@ static char encodingTable[64] = {
 
 @implementation NSData (NSDataAdditions)
 + (NSData *) dataWithBase64EncodedString:(NSString *) string {
-	return [[[NSData alloc] initWithBase64EncodedString:string] autorelease];
+	return [[NSData alloc] initWithBase64EncodedString:string];
 }
 
-- (id) initWithBase64EncodedString:(NSString *) string {
+- (instancetype) initWithBase64EncodedString:(NSString *) string {
 	NSMutableData *mutableData = nil;
 
 	if( string ) {
@@ -156,3 +158,5 @@ static char encodingTable[64] = {
 	return ( memcmp( ((const char *)[self bytes] + (self.length - length)), suffix, length ) == 0 );
 }
 @end
+
+NS_ASSUME_NONNULL_END

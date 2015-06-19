@@ -227,7 +227,7 @@ static NSSize		rightCapSize;
     //Background
     if(selected && !ignoreSelection){
         //Draw the left cap
-        [tabFrontLeft compositeToPoint:NSMakePoint(rect.origin.x, rect.origin.y) operation:NSCompositeSourceOver];
+		[tabFrontLeft compositeToPoint:NSMakePoint(rect.origin.x, rect.origin.y) operation:NSCompositeSourceOver];
 
         //Draw the middle
         sourceRect = NSMakeRect(0, 0, [tabFrontMiddle size].width, [tabFrontMiddle size].height);
@@ -237,13 +237,12 @@ static NSSize		rightCapSize;
             if((destRect.origin.x + destRect.size.width) > middleRightEdge){
                 sourceRect.size.width -= (destRect.origin.x + destRect.size.width) - middleRightEdge;
             }
-            [tabFrontMiddle compositeToPoint:destRect.origin fromRect:sourceRect operation:NSCompositeSourceOver];
+			[tabFrontMiddle compositeToPoint:destRect.origin fromRect:sourceRect operation:NSCompositeSourceOver];
             destRect.origin.x += destRect.size.width;
         }
 
         //Draw the right cap
-        [tabFrontRight compositeToPoint:NSMakePoint(middleRightEdge, rect.origin.y) operation:NSCompositeSourceOver];
-
+		[tabFrontRight compositeToPoint:NSMakePoint(middleRightEdge, rect.origin.y) operation:NSCompositeSourceOver];
     }else if(highlighted){
         [[NSColor colorWithCalibratedWhite:0.0 alpha:0.1] set];
         [NSBezierPath fillRect:NSMakeRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)];

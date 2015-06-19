@@ -1,4 +1,4 @@
-#import <Acid/acid.h>
+#import "XMPPFramework.h"
 
 #import "MVXMPPChatRoom.h"
 #import "MVXMPPChatUser.h"
@@ -7,8 +7,10 @@
 #import "NSStringAdditions.h"
 #import "MVChatString.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation MVXMPPChatRoom
-- (id) initWithJabberID:(JabberID *) identifier andConnection:(MVXMPPChatConnection *) connection {
+- (id) initWithJabberID:(XMPPJID *) identifier andConnection:(MVXMPPChatConnection *) connection {
 	if( ( self = [self init] ) ) {
 		_connection = connection; // prevent circular retain
 		MVSafeRetainAssign( _uniqueIdentifier, identifier );
@@ -16,11 +18,6 @@
 	}
 
 	return self;
-}
-
-- (void) dealloc {
-	[_localMemberUser release];
-	[super dealloc];
 }
 
 #pragma mark -
@@ -36,7 +33,7 @@
 #pragma mark -
 
 - (NSURL *) url {
-	NSString *urlString = [NSString stringWithFormat:@"%@:%@?join", [[self connection] urlScheme], [[_uniqueIdentifier userhost] stringByEncodingIllegalURLCharacters]];
+	NSString *urlString = [NSString stringWithFormat:@"%@:%@?join", [[self connection] urlScheme], [[_uniqueIdentifier domain] stringByEncodingIllegalURLCharacters]];
 	if( urlString ) return [NSURL URLWithString:urlString];
 	return nil;
 }
@@ -47,7 +44,7 @@
 
 #pragma mark -
 
-- (void) partWithReason:(MVChatString *) reason {
+- (void) partWithReason:(MVChatString * __nullable) reason {
 	if( ! [self isJoined] ) return;
 	[self _setDateParted:[NSDate date]];
 }
@@ -64,15 +61,15 @@
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) msgEncoding withAttributes:(NSDictionary *) attributes {
 	NSParameterAssert( message != nil );
 
-	JabberMessage *jabberMsg = [[JabberMessage alloc] initWithRecipient:_uniqueIdentifier andBody:[message string]];
-	[jabberMsg setType:@"groupchat"];
-	[[(MVXMPPChatConnection *)_connection _chatSession] sendElement:jabberMsg];
-	[jabberMsg release];
+	XMPPMessage *xmppMessage = [XMPPMessage messageWithType:@"groupchat" to:_uniqueIdentifier];
+	[xmppMessage addBody:[message string]];
+
+	[[(MVXMPPChatConnection *)_connection _chatSession] sendElement:xmppMessage];
 }
 
 #pragma mark -
 
-- (void) setMode:(MVChatRoomMode) mode withAttribute:(id) attribute {
+- (void) setMode:(MVChatRoomMode) mode withAttribute:(id __nullable) attribute {
 	[super setMode:mode withAttribute:attribute];
 
 }
@@ -108,7 +105,7 @@
 
 #pragma mark -
 
-- (void) kickOutMemberUser:(MVChatUser *) user forReason:(MVChatString *) reason {
+- (void) kickOutMemberUser:(MVChatUser *) user forReason:(MVChatString * __nullable) reason {
 	[super kickOutMemberUser:user forReason:reason];
 
 }
@@ -129,3 +126,5 @@
 	MVSafeRetainAssign( _localMemberUser, user );
 }
 @end
+
+NS_ASSUME_NONNULL_END

@@ -118,12 +118,12 @@ NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 
 	[self _refreshList];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_favoritesListDidUpdate:) name:MVFavoritesListDidUpdateNotification object:nil];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(_favoritesListDidUpdate:) name:MVFavoritesListDidUpdateNotification object:nil];
 }
 
 - (void) dealloc {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 
 	if( [self isWindowLoaded] ) {
 		[[self window] setDelegate:nil];
@@ -856,7 +856,6 @@ NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 
 	if( [org size].width > maxSideSize || [org size].height > maxSideSize ) {
 		NSImage *ret = [[item icon] copyWithZone:nil];
-		[ret setScalesWhenResized:YES];
 		[ret setSize:NSMakeSize( maxSideSize, maxSideSize )];
 		org = ret;
 	}
@@ -888,8 +887,10 @@ NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 
 	[[JVInspectorController sharedInspector] inspectObject:[self objectToInspect]];
 
-	if( [item conformsToProtocol:@protocol( JVChatViewController )] && item != (id) _activeViewController )
-		[self _refreshWindow];
+	if( [item conformsToProtocol:@protocol( JVChatViewController )] && item != (id) _activeViewController ) {
+		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_refreshWindow) object:nil];
+		[self performSelector:@selector(_refreshWindow) withObject:nil afterDelay:0.];
+	}
 
 	[self _deferRefreshSelectionMenu];
 }

@@ -7,7 +7,10 @@
 	NSIndexPath *_selectedIndexPath;
 }
 
-- (id) initWithRootPlist;
+- (instancetype) initWithNibName:(NSString *) nibNameOrNil bundle:(NSBundle *) nibBundleOrNil NS_UNAVAILABLE;
+- (instancetype) initWithStyle:(UITableViewStyle) style NS_UNAVAILABLE;
+- (instancetype) initWithCoder:(NSCoder *) aDecoder NS_UNAVAILABLE;
 
-- (id) initWithPlistNamed:(NSString *) plist;
+- (instancetype) initWithRootPlist;
+- (instancetype) initWithPlistNamed:(NSString *) plist NS_DESIGNATED_INITIALIZER;
 @end

@@ -348,7 +348,7 @@ static  NSImage			*tabDivider = nil;
 		AICustomTabCell		*tabCell;
 
 		//Create a new tab cell
-		tabCell = [AICustomTabCell customTabForTabViewItem:tabViewItem customTabsView:self];
+		 tabCell = [AICustomTabCell customTabForTabViewItem:(NSTabViewItem <AICustomTabViewItem> *)tabViewItem customTabsView:self];
 		[tabCell setSelected:(tabViewItem == [tabView selectedTabViewItem])];
 		[tabCell setAllowsInactiveTabClosing:allowsInactiveTabClosing];
 
@@ -553,8 +553,7 @@ static  NSImage			*tabDivider = nil;
 				if((ignoreSelection ||
 					(tabCell != selectedCustomTabCell && (!nextTabCell || nextTabCell != selectedCustomTabCell)))
 				   && [tabCellArray indexOfObject:tabCell] != tabGapIndex - 1){
-					[tabDivider compositeToPoint:NSMakePoint(cellFrame.origin.x + cellFrame.size.width, cellFrame.origin.y)
-									   operation:NSCompositeSourceOver];
+					[tabDivider compositeToPoint:NSMakePoint(cellFrame.origin.x + cellFrame.size.width, cellFrame.origin.y) operation:NSCompositeSourceOver];
 				}
 			}
 		}
@@ -843,8 +842,8 @@ static NSRect AIConstrainRectWidth(NSRect rect, float left, float right)
 		if(hoverIndex >= [tabCellArray count]) hoverIndex = [tabCellArray count];
 
 		if(outIndex) *outIndex = hoverIndex;
-		return([[self window] convertBaseToScreen:[self convertPoint:NSMakePoint(lastLocation,0) toView:nil]]);
 
+		return([[self window] convertBaseToScreen:[self convertPoint:NSMakePoint(lastLocation,0) toView:nil]]);
 	}else{
 		NSTabViewItem		*tabViewItem = [[AICustomTabDragging sharedInstance] draggedTabViewItem];
 		int					hover;
@@ -885,8 +884,7 @@ static NSRect AIConstrainRectWidth(NSRect rect, float left, float right)
         NSPoint			localPoint;
 
         //Local mouse location
-        localPoint = [[self window] convertScreenToBase:[NSEvent mouseLocation]];
-        localPoint = [self convertPoint:localPoint fromView:nil];
+		localPoint = [[self window] convertScreenToBase:[NSEvent mouseLocation]];
 
         //Install tracking rects for each tab
         enumerator = [tabCellArray objectEnumerator];

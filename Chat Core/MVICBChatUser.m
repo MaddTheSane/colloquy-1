@@ -37,14 +37,16 @@
 #import "MVChatConnectionPrivate.h"
 #import "MVChatString.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation MVICBChatUser
 
 #pragma mark Constructors and finalizers
 
 - (id) initLocalUserWithConnection:(MVICBChatConnection *) connection {
-	if( ( self = [self initWithNickname:nil andConnection:connection] ) ) {
+	if( ( self = [self initWithNickname:@"" andConnection:connection] ) ) {
 		_type = MVChatLocalUserType;
-		_uniqueIdentifier = [[[self nickname] lowercaseString] retain];
+		_uniqueIdentifier = [[self nickname] lowercaseString];
 		_status = MVChatUserAvailableStatus;
 	}
 
@@ -55,8 +57,8 @@
        andConnection:(MVICBChatConnection *) connection {
 	if( ( self = [super init] ) ) {
 		_connection = connection;
-		_nickname = [nickname retain];
-		_uniqueIdentifier = [[nickname lowercaseString] retain];
+		_nickname = nickname;
+		_uniqueIdentifier = [nickname lowercaseString];
 		_type = MVChatRemoteUserType;
 		_status = MVChatUserAvailableStatus;
 		[_connection _addKnownUser:self];
@@ -77,3 +79,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

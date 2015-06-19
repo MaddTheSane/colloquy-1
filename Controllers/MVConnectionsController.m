@@ -1,3 +1,4 @@
+#import "CQKeychain.h"
 #import "NSURLAdditions.h"
 #import "MVApplicationController.h"
 #import "MVConnectionsController.h"
@@ -13,7 +14,11 @@
 #import <ChatCore/MVChatConnection.h>
 #import <ChatCore/MVChatRoom.h>
 
+#import <SecurityInterface/SFCertificateTrustPanel.h>
+
 static MVConnectionsController *sharedInstance = nil;
+
+static NSString *const connectionInvalidSSLCertAction = nil;
 
 static NSString *MVToolbarConnectToggleItemIdentifier = @"MVToolbarConnectToggleItem";
 static NSString *MVToolbarEditItemIdentifier = @"MVToolbarEditItem";
@@ -52,11 +57,11 @@ static NSMenu *favoritesMenu = nil;
 + (MVConnectionsController *) defaultController {
 	if( ! sharedInstance ) {
 		sharedInstance = [self alloc];
-		sharedInstance = [sharedInstance initWithWindowNibName:nil];
+		sharedInstance = [sharedInstance initWithWindowNibName:@"MVConnections"];
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_refreshFavoritesMenu) name:MVChatRoomJoinedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_refreshFavoritesMenu) name:MVChatRoomPartedNotification object:nil];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(_refreshFavoritesMenu) name:MVChatRoomJoinedNotification object:nil];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(_refreshFavoritesMenu) name:MVChatRoomPartedNotification object:nil];
 
 	return sharedInstance;
 }
@@ -81,7 +86,6 @@ static NSMenu *favoritesMenu = nil;
 	}
 
 	NSImage *icon = [[NSImage imageNamed:@"room"] copy];
-	[icon setScalesWhenResized:YES];
 	[icon setSize:NSMakeSize( 16., 16. )];
 
 	for( NSDictionary *item in favorites ) {
@@ -160,10 +164,11 @@ static NSMenu *favoritesMenu = nil;
 }
 
 - (id) initWithWindowNibName:(NSString *) windowNibName {
-	if( ( self = [super initWithWindowNibName:@"MVConnections"] ) ) {
+	if( ( self = [super initWithWindowNibName:windowNibName] ) ) {
 		_bookmarks = nil;
 		_passConnection = nil;
 
+		_connectionToErrorToAlertMap = [NSMapTable strongToStrongObjectsMapTable];
 		_joinRooms = [[NSMutableArray allocWithZone:nil] init];
 		_publicKeyRequestQueue = [[NSMutableSet allocWithZone:nil] init];
 
@@ -193,6 +198,7 @@ static NSMenu *favoritesMenu = nil;
 			if ([favorites writeToFile:[@"~/Library/Application Support/Colloquy/Favorites/Favorites.plist" stringByExpandingTildeInPath] atomically:YES])
 				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"JVFavoritesMigrated"];
 		}
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(_peerTrustFeedbackNotification:) name:MVChatConnectionNeedTLSPeerTrustFeedbackNotification object:nil];
 	}
 
 	return self;
@@ -210,6 +216,7 @@ static NSMenu *favoritesMenu = nil;
 	[userSelectionTable setDelegate:nil];
 	[userSelectionTable setDataSource:nil];
 
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	if( self == sharedInstance ) sharedInstance = nil;
 
@@ -411,6 +418,37 @@ static NSMenu *favoritesMenu = nil;
 	[[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/Network.prefPane"];
 }
 
+- (void) _peerTrustFeedbackNotification:(NSNotification *) notification {
+	void (^completionHandler)(BOOL shouldTrustPeer) = notification.userInfo[@"completionHandler"];
+	if ([connectionInvalidSSLCertAction isEqualToString:@"Deny"]) {
+		completionHandler(NO);
+		return;
+	}
+
+	if ([connectionInvalidSSLCertAction isEqualToString:@"Allow"]) {
+		completionHandler(YES);
+		return;
+	}
+
+	// Ask people what to do, if its ever been turned on
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MVAskOnInvalidCertificates"] || [[[MVKeyChain defaultKeyChain] genericPasswordForService:@"MVAskOnInvalidCertificates" account:@"MVSecurePrefs"] boolValue]) {
+		[[MVKeyChain defaultKeyChain] setGenericPassword:@"1" forService:@"MVAskOnInvalidCertificates" account:@"MVSecurePrefs"];
+
+		SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
+		panel.showsHelp = YES;
+
+		[panel setDefaultButtonTitle:NSLocalizedString(@"Continue", @"Continue button")];
+		[panel setAlternateButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
+
+		SecTrustRef trust = (__bridge SecTrustRef)notification.userInfo[@"trust"];
+		NSInteger shouldTrust = [panel runModalForTrust:trust showGroup:YES];
+
+		completionHandler(shouldTrust == NSOKButton);
+	} else {
+		completionHandler(YES);
+	}
+}
+
 - (IBAction) connectNewConnection:(id) sender {
 	if( ! [[newNickname stringValue] length] ) {
 		[[self window] makeFirstResponder:newNickname];
@@ -441,7 +479,7 @@ static NSMenu *favoritesMenu = nil;
 	}
 
 	NSMutableCharacterSet *allowedCharacters = (NSMutableCharacterSet *)[NSMutableCharacterSet alphanumericCharacterSet];
-	[allowedCharacters addCharactersInString:@"`_-|^{}[]@."];
+	[allowedCharacters addCharactersInString:@"`_-|^{}[]@./"];
 
 	NSCharacterSet *illegalCharacters = [allowedCharacters invertedSet];
 
@@ -549,7 +587,7 @@ static NSMenu *favoritesMenu = nil;
 	if( [sender tag] ) {
 		[_passConnection setNicknamePassword:[authPassword stringValue]];
 		if( [authKeychain state] == NSOnState ) {
-			[[MVKeyChain defaultKeyChain] setInternetPassword:[authPassword stringValue] forServer:[_passConnection server] securityDomain:[_passConnection server] account:[_passConnection nickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+			[[CQKeychain standardKeychain] setPassword:[authPassword stringValue] forServer:_passConnection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", _passConnection.preferredNickname] displayValue:_passConnection.server];
 		}
 	}
 
@@ -566,7 +604,7 @@ static NSMenu *favoritesMenu = nil;
 		[ourConnection authenticateCertificateWithPassword:[certificatePassphrase stringValue]];
 
 		if( [certificateKeychain state] == NSOnState ) {
-			[[MVKeyChain defaultKeyChain] setGenericPassword:[certificatePassphrase stringValue] forService:[ourConnection certificateServiceName] account:@"Colloquy"];
+			[[CQKeychain standardKeychain] setPassword:[certificatePassphrase stringValue] forServer:ourConnection.uniqueIdentifier area:@"Colloquy" displayValue:ourConnection.server];
 		}
 	}
 }
@@ -597,7 +635,7 @@ static NSMenu *favoritesMenu = nil;
 
 		if( note ) {
 			[_publicKeyRequestQueue removeObject:note];
-			[[NSNotificationCenter defaultCenter] postNotification:note];
+			[[NSNotificationCenter chatCenter] postNotification:note];
 		}
 	}
 }
@@ -691,7 +729,7 @@ static NSMenu *favoritesMenu = nil;
 	if( ! keep ) [info setObject:[NSNumber numberWithBool:YES] forKey:@"temporary"];
 
 	if( keep && [[connection password] length] ) {
-		[[MVKeyChain defaultKeyChain] setInternetPassword:[connection password] forServer:[connection server] securityDomain:[connection server] account:nil path:nil port:[connection serverPort] protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+		[[CQKeychain standardKeychain] setPassword:[connection password] forServer:connection.uniqueIdentifier area:@"Server" displayValue:connection.server];
 	}
 
 	[_bookmarks addObject:info];
@@ -740,9 +778,8 @@ static NSMenu *favoritesMenu = nil;
 
 	[self _deregisterNotificationsForConnection:connection];
 
-	[[MVKeyChain defaultKeyChain] setInternetPassword:nil forServer:[connection server] securityDomain:[connection server] account:[connection nickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
-	[[MVKeyChain defaultKeyChain] setInternetPassword:nil forServer:[connection server] securityDomain:[connection server] account:nil path:nil port:[connection serverPort] protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
-
+	[[CQKeychain standardKeychain] removePasswordForServer:connection.uniqueIdentifier area:@"Server"];
+	[[CQKeychain standardKeychain] removePasswordForServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname]];
 
 	[_bookmarks removeObjectAtIndex:index];
 	[self _saveBookmarkList];
@@ -766,9 +803,8 @@ static NSMenu *favoritesMenu = nil;
 
 	[self _deregisterNotificationsForConnection:oldConnection];
 
-	[[MVKeyChain defaultKeyChain] setInternetPassword:nil forServer:[oldConnection server] securityDomain:[oldConnection server] account:[oldConnection nickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
-	[[MVKeyChain defaultKeyChain] setInternetPassword:nil forServer:[oldConnection server] securityDomain:[oldConnection server] account:nil path:nil port:[oldConnection serverPort] protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
-
+	[[CQKeychain standardKeychain] removePasswordForServer:connection.uniqueIdentifier area:@"Server"];
+	[[CQKeychain standardKeychain] removePasswordForServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname]];
 
 	[self _registerNotificationsForConnection:connection];
 
@@ -1185,9 +1221,10 @@ static NSMenu *favoritesMenu = nil;
 	}
 }
 
-- (BOOL) tableView:(NSTableView *) view writeRows:(NSArray *) rows toPasteboard:(NSPasteboard *) board {
-	if( view == connections ) {
-		NSInteger row = [[rows lastObject] intValue];
+
+- (BOOL) tableView:(NSTableView *) tableView writeRowsWithIndexes:(NSIndexSet *) rowIndexes toPasteboard:(NSPasteboard *) board {
+	if( tableView == connections ) {
+		NSInteger row = rowIndexes.lastIndex;
 		NSDictionary *info = nil;
 		MVChatConnection *connection = nil;
 		NSString *string = nil;
@@ -1385,8 +1422,8 @@ static NSMenu *favoritesMenu = nil;
 		[toolbarItem setPaletteLabel:NSLocalizedString( @"Delete Connection", "name for delete connection button in customize palette" )];
 
 		[toolbarItem setToolTip:NSLocalizedString( @"Delete Connection", "delete connection button tooltip" )];
-		[toolbarItem setImage:[NSImage imageNamed:@"delete"]];
-
+		NSImage *deleteImage = [NSImage imageNamed:@"delete"];
+		[toolbarItem setImage:deleteImage];
 		[toolbarItem setTarget:self];
 		[toolbarItem setAction:NULL];
 	} else if( [itemIdent isEqualToString:MVToolbarConsoleItemIdentifier] ) {
@@ -1443,42 +1480,42 @@ static NSMenu *favoritesMenu = nil;
 }
 
 - (void) _registerNotificationsForConnection:(MVChatConnection *) connection {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionWillConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionDidConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionDidNotConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionDidDisconnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionNicknameAcceptedNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionWillConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionDidConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionDidNotConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionDidDisconnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _refresh: ) name:MVChatConnectionNicknameAcceptedNotification object:connection];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _willConnect: ) name:MVChatConnectionWillConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _didConnect: ) name:MVChatConnectionDidConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _didDisconnect: ) name:MVChatConnectionDidDisconnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _errorOccurred : ) name:MVChatConnectionErrorNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _willConnect: ) name:MVChatConnectionWillConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _didConnect: ) name:MVChatConnectionDidConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _didDisconnect: ) name:MVChatConnectionDidDisconnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _errorOccurred : ) name:MVChatConnectionErrorNotification object:connection];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _requestPassword: ) name:MVChatConnectionNeedNicknamePasswordNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _requestCertificatePassword: ) name:MVChatConnectionNeedCertificatePasswordNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _requestPublicKeyVerification: ) name:MVChatConnectionNeedPublicKeyVerificationNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _didIdentify: ) name:MVChatConnectionDidIdentifyWithServicesNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _machineDidBecomeIdle: ) name:JVMachineBecameIdleNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _machineDidStopIdling: ) name:JVMachineStoppedIdlingNotification object:connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _gotConnectionError: ) name:MVChatConnectionGotErrorNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _requestPassword: ) name:MVChatConnectionNeedNicknamePasswordNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _requestCertificatePassword: ) name:MVChatConnectionNeedCertificatePasswordNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _requestPublicKeyVerification: ) name:MVChatConnectionNeedPublicKeyVerificationNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _didIdentify: ) name:MVChatConnectionDidIdentifyWithServicesNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _machineDidBecomeIdle: ) name:JVMachineBecameIdleNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _machineDidStopIdling: ) name:JVMachineStoppedIdlingNotification object:connection];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _gotConnectionError: ) name:MVChatConnectionGotErrorNotification object:connection];
 }
 
 - (void) _deregisterNotificationsForConnection:(MVChatConnection *) connection {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionWillConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionDidConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionDidNotConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionDidDisconnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionWillConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionDidConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionDidNotConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionDidDisconnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:connection];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionWillConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionDidConnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionDidDisconnectNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionErrorNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionWillConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionDidConnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionDidDisconnectNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionErrorNotification object:connection];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNeedNicknamePasswordNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNeedCertificatePasswordNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNeedPublicKeyVerificationNotification object:connection];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionDidIdentifyWithServicesNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNeedNicknamePasswordNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNeedCertificatePasswordNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNeedPublicKeyVerificationNotification object:connection];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionDidIdentifyWithServicesNotification object:connection];
 }
 
 - (void) _refresh:(NSNotification *) notification {
@@ -1502,7 +1539,8 @@ static NSMenu *favoritesMenu = nil;
 - (void) _errorOccurred:(NSNotification *) notification {
 	NSString *errorTitle = nil;
 
-	switch ( [(NSError *)[[notification userInfo] objectForKey:@"error"] code] ) {
+	NSError *error = notification.userInfo[@"error"];
+	switch ( error.code ) {
 		case MVChatConnectionCantSendToRoomError:
 			errorTitle = NSLocalizedString( @"Can't Send to Room", "cannot send to room error title" );
 			break;
@@ -1540,15 +1578,27 @@ static NSMenu *favoritesMenu = nil;
 	[context setObject:[[[notification userInfo] objectForKey:@"error"] localizedDescription] forKey:@"description"];
 	[[JVNotificationController defaultController] performNotification:@"JVChatError" withContextInfo:context];
 
-	NSAlert *chatErrorAlert = [[NSAlert alloc] init];
+	NSMapTable *errorToAlertMappingsForConnection = [_connectionToErrorToAlertMap objectForKey:notification.object];
+	if (!errorToAlertMappingsForConnection) {
+		errorToAlertMappingsForConnection = [NSMapTable strongToStrongObjectsMapTable];
+		[_connectionToErrorToAlertMap setObject:errorToAlertMappingsForConnection forKey:notification.object];
+	}
+
+	NSAlert *chatErrorAlert = [errorToAlertMappingsForConnection objectForKey:@(error.code)];
+	if (chatErrorAlert) return;
+
+	chatErrorAlert = [[NSAlert alloc] init];
+
+	[errorToAlertMappingsForConnection setObject:chatErrorAlert forKey:@(error.code)];
+
 	[chatErrorAlert setMessageText:errorTitle];
-	if( [[[[notification userInfo] objectForKey:@"error"] userInfo] objectForKey:@"errorLiteralReason"] )
+	if( error.userInfo[@"errorLiteralReason"] )
 		[chatErrorAlert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"%@\n\nServer Details:\n%@", "error alert informative text with literal reason"), [[[notification userInfo] objectForKey:@"error"] localizedDescription], [[[[notification userInfo] objectForKey:@"error"] userInfo] objectForKey:@"errorLiteralReason"]]];
 	else [chatErrorAlert setInformativeText:[[[notification userInfo] objectForKey:@"error"] localizedDescription]];
 
 	[chatErrorAlert setAlertStyle:NSInformationalAlertStyle];
 
-	if ( [(NSError *)[[notification userInfo] objectForKey:@"error"] code] == MVChatConnectionServicesDownError ) {
+	if ( error.code == MVChatConnectionServicesDownError ) {
 		// ask the user if we want to continue auto joining rooms without identification (== no hostmask cloaking) now that we know services are down
 		// add "Continue Auto Join Sequence without identification?" to InformativeText
 		[chatErrorAlert addButtonWithTitle:NSLocalizedString( @"Join", "join button" )];
@@ -1556,7 +1606,7 @@ static NSMenu *favoritesMenu = nil;
 		if ( [chatErrorAlert runModal] == NSAlertFirstButtonReturn ) {
 			[self _didIdentify:[NSNotification notificationWithName:@"continueConnectWithoutIdentification" object:[notification object]]];
 		}
-	} else if ( [(NSError *)[[notification userInfo] objectForKey:@"error"] code] == MVChatConnectionRoomPasswordIncorrectError && floor( NSAppKitVersionNumber ) > NSAppKitVersionNumber10_4) {
+	} else if ( error.code == MVChatConnectionRoomPasswordIncorrectError && floor( NSAppKitVersionNumber ) > NSAppKitVersionNumber10_4) {
 		// in case of incorrect password we can simplytry again with the correct one. leopard only for now, because NSAlert's setAccessoryView is 10.5+ only, 10.4 would need a new NIB for this feature:
 		[chatErrorAlert addButtonWithTitle:NSLocalizedString( @"Join", "join button" )];
 		[chatErrorAlert addButtonWithTitle:NSLocalizedString( @"Cancel", "cancel button" )];
@@ -1572,6 +1622,8 @@ static NSMenu *favoritesMenu = nil;
 	} else {
 		[chatErrorAlert runModal];
 	}
+
+	[errorToAlertMappingsForConnection removeObjectForKey:@(error.code)];
 
 /*	MVChatConnection *connection = [notification object];
 	MVChatError error = (MVChatError) [[[notification userInfo] objectForKey:@"error"] intValue];
@@ -1715,41 +1767,36 @@ static NSMenu *favoritesMenu = nil;
 		if( ! [(NSString *)[info objectForKey:@"type"] length] )
 		    type = MVChatConnectionIRCType;
 		else {
-			if( [[info objectForKey:@"type"] isEqualToString:@"icb"] )
-				type = MVChatConnectionICBType;
-			else if( [[info objectForKey:@"type"] isEqualToString:@"irc"] )
-				type = MVChatConnectionIRCType;
-		    else if( [[info objectForKey:@"type"] isEqualToString:@"silc"] )
-		        type = MVChatConnectionSILCType;
-		    else if( [[info objectForKey:@"type"] isEqualToString:@"xmpp"] )
-		        type = MVChatConnectionXMPPType;
+			if( [info[@"type"] isEqualToString:@"icb"] ) type = MVChatConnectionICBType;
+			else if( [info[@"type"] isEqualToString:@"irc"] ) type = MVChatConnectionIRCType;
+		    else if( [info[@"type"] isEqualToString:@"silc"] ) type = MVChatConnectionSILCType;
+		    else if( [info[@"type"] isEqualToString:@"xmpp"] ) type = MVChatConnectionXMPPType;
 			else type = MVChatConnectionIRCType;
 		}
 
-		if( [info objectForKey:@"url"] ) {
-			connection = [[MVChatConnection alloc] initWithURL:[NSURL URLWithString:[info objectForKey:@"url"]]];
+		if( info[@"url"] ) {
+			connection = [[MVChatConnection alloc] initWithURL:[NSURL URLWithString:info[@"url"]]];
 		} else {
-			connection = [[MVChatConnection alloc] initWithServer:[info objectForKey:@"server"] type:type port:[[info objectForKey:@"port"] unsignedShortValue] user:[info objectForKey:@"nickname"]];
+			connection = [[MVChatConnection alloc] initWithServer:info[@"server"] type:type port:[info[@"port"] unsignedShortValue] user:info[@"nickname"]];
 		}
 
 		if( ! connection ) continue;
 
-		if ([info objectForKey:@"uniqueIdentifier"]) [connection setUniqueIdentifier:[info objectForKey:@"uniqueIdentifier"]];
+		if (info[@"uniqueIdentifier"]) connection.uniqueIdentifier = info[@"uniqueIdentifier"];
 
-		[connection setPersistentInformation:[info objectForKey:@"persistentInformation"]];
+		connection.persistentInformation = info[@"persistentInformation"];
+		connection.proxyType = [info[@"proxy"] unsignedLongValue];
 
-		[connection setProxyType:[[info objectForKey:@"proxy"] unsignedLongValue]];
+		if( [info[@"encoding"] longValue] ) connection.encoding = [info[@"encoding"] longValue];
+		else connection.encoding = [[NSUserDefaults standardUserDefaults] integerForKey:@"JVChatEncoding"];
 
-		if( [[info objectForKey:@"encoding"] longValue] ) [connection setEncoding:[[info objectForKey:@"encoding"] longValue]];
-		else [connection setEncoding:[[NSUserDefaults standardUserDefaults] integerForKey:@"JVChatEncoding"]];
+		connection.outgoingChatFormat = [[NSUserDefaults standardUserDefaults] integerForKey:@"JVChatFormat"];
 
-		[connection setOutgoingChatFormat:[[NSUserDefaults standardUserDefaults] integerForKey:@"JVChatFormat"]];
-
-		if( [info objectForKey:@"realName"] ) [connection setRealName:[info objectForKey:@"realName"]];
-		if( [info objectForKey:@"nickname"] ) [connection setPreferredNickname:[info objectForKey:@"nickname"]];
-		if( [info objectForKey:@"username"] ) [connection setUsername:[info objectForKey:@"username"]];
-		if( [info objectForKey:@"alternateNicknames"] )
-			[connection setAlternateNicknames:[info objectForKey:@"alternateNicknames"]];
+		if( info[@"realName"] ) connection.realName = info[@"realName"];
+		if( info[@"nickname"] ) connection.preferredNickname = info[@"nickname"];
+		if( info[@"username"] ) connection.username = info[@"username"];
+		if( info[@"alternateNicknames"] )
+			connection.alternateNicknames = info[@"alternateNicknames"];
 
 		NSMutableArray *permIgnores = [NSMutableArray array];
 		for( NSData *rule in [info objectForKey:@"ignores"] ) {
@@ -1757,23 +1804,39 @@ static NSMenu *favoritesMenu = nil;
 			if( archive ) [permIgnores addObject:archive];
 		}
 
-		[info setObject:permIgnores forKey:@"ignores"];
-		
-		[connection setSecure:[[info objectForKey:@"secure"] boolValue]];
-		connection.requestsSASL = [[info objectForKey:@"requestsSASL"] boolValue];
-		connection.roomsWaitForIdentification = [[info objectForKey:@"roomsWaitForIdentification"] boolValue];
+		info[@"ignores"] = permIgnores;
 
-		[info setObject:connection forKey:@"connection"];
+		connection.secure = [info[@"secure"] boolValue];
+		connection.requestsSASL = [[info objectForKey:@"requestsSASL"] boolValue];
+		connection.roomsWaitForIdentification = [info[@"roomsWaitForIdentification"] boolValue];
+		info[@"connection"] = connection;
 
 		[_bookmarks addObject:info];
 
 		[self _registerNotificationsForConnection:connection];
 
-		if( [[info objectForKey:@"automatic"] boolValue] && ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) ) {
-			[connection setPassword:[[MVKeyChain defaultKeyChain] internetPasswordForServer:[connection server] securityDomain:[connection server] account:nil path:nil port:[connection serverPort] protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault]];
-			[connection setNicknamePassword:[[MVKeyChain defaultKeyChain] internetPasswordForServer:[connection server] securityDomain:[connection server] account:[connection preferredNickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault]];
-			[connection connect];
+		NSString *password = [[CQKeychain standardKeychain] passwordForServer:connection.uniqueIdentifier area:@"Server"];;
+		if (!password) {
+			password = [[MVKeyChain defaultKeyChain] internetPasswordForServer:connection.server securityDomain:connection.server account:nil path:nil port:connection.serverPort protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+			if (password.length) {
+				[[MVKeyChain defaultKeyChain] removeInternetPasswordForServer:connection.server securityDomain:connection.server account:nil path:nil port:connection.serverPort protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+				[[CQKeychain standardKeychain] setPassword:password forServer:connection.uniqueIdentifier area:@"Server" displayValue:connection.server];
+			}
 		}
+		connection.password = password;
+
+		NSString *nicknamePassword = [[CQKeychain standardKeychain] passwordForServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname]];
+		if (!nicknamePassword) {
+			nicknamePassword = [[MVKeyChain defaultKeyChain] internetPasswordForServer:[connection server] securityDomain:[connection server] account:[connection preferredNickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+			if (nicknamePassword.length) {
+				[[MVKeyChain defaultKeyChain] removeInternetPasswordForServer:connection.server securityDomain:connection.server account:connection.preferredNickname path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+				[[CQKeychain standardKeychain] setPassword:nicknamePassword forServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname] displayValue:connection.server];
+			}
+		}
+		connection.nicknamePassword = nicknamePassword;
+
+		if( [info[@"automatic"] boolValue] && ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) )
+			[connection connect];
 	}
 
 	[connections noteNumberOfRowsChanged];

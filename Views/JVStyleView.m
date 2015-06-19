@@ -27,29 +27,14 @@ NSString *JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeStylesN
 #pragma mark -
 
 @interface WebView (WebViewLeopard)
-- (void) setDrawsBackground:(BOOL) draws; // supported in 10.3.9/Tiger
-- (BOOL) drawsBackground; // supported in 10.3.9/Tiger
 - (void) setBackgroundColor:(NSColor *) color; // new in Safari 3/Leopard
 - (void) setProhibitsMainFrameScrolling:(BOOL) prohibit; // new in Safari 3/Leopard
-- (WebFrame *) selectedFrame;
 @end
 
 #pragma mark -
 
 @interface WebView (WebViewPrivate)
 - (WebFrame *) _frameForCurrentSelection;
-@end
-
-#pragma mark -
-
-@interface DOMNode (DOMNodeLeopard)
-- (DOMNode *) insertBefore:(DOMNode *) newChild refChild:(DOMNode *) refChild;
-@end
-
-#pragma mark -
-
-@interface DOMElement (DOMElementLeopard)
-- (void) setAttribute:(NSString *) name value:(NSString *) value;
 @end
 
 #pragma mark -
@@ -187,7 +172,7 @@ NSString *JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeStylesN
 
 - (void) dealloc {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:JVStyleVariantChangedNotification object:nil];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:JVStyleVariantChangedNotification object:nil];
 
 	nextTextView = nil;
 	_transcript = nil;
@@ -277,8 +262,8 @@ NSString *JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeStylesN
 	NSString *timeFormatParameter = [NSString stringWithFormat:@"'%@'", [NSDate formattedShortTimeStringForDate:[NSDate date]]];
 	[_styleParameters setObject:timeFormatParameter forKey:@"timeFormat"];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:JVStyleVariantChangedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _styleVariantChanged: ) name:JVStyleVariantChangedNotification object:style];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:JVStyleVariantChangedNotification object:nil];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _styleVariantChanged: ) name:JVStyleVariantChangedNotification object:style];
 
 	_switchingStyles = YES;
 	_requiresFullMessage = YES;
@@ -770,7 +755,7 @@ NSString *JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeStylesN
 		[[self window] enableFlushWindow];
 
 	_contentFrameReady = YES;
-	[[NSNotificationCenter defaultCenter] postNotificationName:JVStyleViewDidClearNotification object:self];
+	[[NSNotificationCenter chatCenter] postNotificationName:JVStyleViewDidClearNotification object:self];
 	if( _switchingStyles )
 		[NSThread detachNewThreadSelector:@selector( _switchStyle ) toTarget:self withObject:nil];
 }
@@ -842,7 +827,7 @@ quickEnd:
 		[self performSelectorOnMainThread:@selector( _switchingStyleFinished: ) withObject:nil waitUntilDone:YES];
 
 		NSNotification *note = [NSNotification notificationWithName:JVStyleViewDidChangeStylesNotification object:self userInfo:nil];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:note];
+		[[NSNotificationCenter chatCenter] postNotificationOnMainThread:note];
 	}
 }
 

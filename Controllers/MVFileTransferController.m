@@ -86,7 +86,7 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 + (MVFileTransferController *) defaultController {
 	if( ! sharedInstance ) {
 		sharedInstance = [self alloc];
-		sharedInstance = [sharedInstance initWithWindowNibName:nil];
+		sharedInstance = [sharedInstance initWithWindowNibName:@"MVFileTransfer"];
 	}
 
 	return sharedInstance;
@@ -95,14 +95,14 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 #pragma mark -
 
 - (id) initWithWindowNibName:(NSString *) windowNibName {
-	if( ( self = [super initWithWindowNibName:@"MVFileTransfer"] ) ) {
+	if( ( self = [super initWithWindowNibName:windowNibName] ) ) {
 		_transferStorage = [[NSMutableArray allocWithZone:nil] init];
 		_calculationItems = [[NSMutableArray allocWithZone:nil] init];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _incomingFile: ) name:MVDownloadFileTransferOfferNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _fileTransferStarted: ) name:MVFileTransferStartedNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _fileTransferFinished: ) name:MVFileTransferFinishedNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _fileTransferError: ) name:MVFileTransferErrorOccurredNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _incomingFile: ) name:MVDownloadFileTransferOfferNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _fileTransferStarted: ) name:MVFileTransferStartedNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _fileTransferFinished: ) name:MVFileTransferFinishedNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _fileTransferError: ) name:MVFileTransferErrorOccurredNotification object:nil];
 
 		NSRange range = NSRangeFromString( [[NSUserDefaults standardUserDefaults] stringForKey:@"JVFileTransferPortRange"] );
 		[MVFileTransfer setFileTransferPortRange:range];
@@ -118,7 +118,7 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 	if( self == sharedInstance ) {
 		sharedInstance = nil;
 		[_updateTimer invalidate];
@@ -292,7 +292,7 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 	[[currentFiles selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger i, BOOL *stop) {
 		[array addObject:[[self _infoForTransferAtIndex:i] objectForKey:@"path"]];
 		[string appendString:[[[self _infoForTransferAtIndex:i] objectForKey:@"path"] lastPathComponent]];
-		if ( ! ( [[currentFiles selectedRowIndexes] lastIndex] == i ) ) [string appendString:@"\n"];
+		if ( ! ( [[self->currentFiles selectedRowIndexes] lastIndex] == i ) ) [string appendString:@"\n"];
 	}];
 
 	[[NSPasteboard generalPasteboard] setPropertyList:array forType:NSFilenamesPboardType];
@@ -312,7 +312,6 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 	if( [[column identifier] isEqual:@"file"] ) {
 		NSString *path = [[self _infoForTransferAtIndex:row] objectForKey:@"path"];
 		NSImage *fileIcon = [[NSWorkspace sharedWorkspace] iconForFileType:[path pathExtension]];
-		[fileIcon setScalesWhenResized:YES];
 		[fileIcon setSize:NSMakeSize( 16., 16. )];
 		return fileIcon;
 	} else if( [[column identifier] isEqual:@"size"] ) {
@@ -365,21 +364,21 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 
 	[_calculationItems removeAllObjects];
 	[[currentFiles selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
-		[_calculationItems addObject:[self _infoForTransferAtIndex:index]];
+		[self->_calculationItems addObject:[self _infoForTransferAtIndex:index]];
 	}];
 }
 
-- (BOOL) tableView:(NSTableView *) view writeRows:(NSArray *) rows toPasteboard:(NSPasteboard *) board {
+- (BOOL) tableView:(NSTableView *) tableView writeRowsWithIndexes:(NSIndexSet *) rowIndexes toPasteboard:(NSPasteboard *) pboard {
 	NSMutableArray *array = [NSMutableArray array];
 
-	[board declareTypes:[NSArray arrayWithObjects:NSFilenamesPboardType,nil] owner:self];
+	[pboard declareTypes:[NSArray arrayWithObjects:NSFilenamesPboardType,nil] owner:self];
 
-	for( id row in rows ) {
-		NSString *path = [[self _infoForTransferAtIndex:[row unsignedIntValue]] objectForKey:@"path"];
+	[rowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+		NSString *path = [[self _infoForTransferAtIndex:idx] objectForKey:@"path"];
 		if( path ) [array addObject:path];
-	}
+	}];
 
-	[board setPropertyList:array forType:NSFilenamesPboardType];
+	[pboard setPropertyList:array forType:NSFilenamesPboardType];
 	return YES;
 }
 

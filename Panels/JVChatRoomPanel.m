@@ -10,6 +10,7 @@
 #import "MVTextView.h"
 #import "JVStyleView.h"
 #import "NSAttributedStringMoreAdditions.h"
+#import "NSRegularExpressionAdditions.h"
 #import "MVChatUserAdditions.h"
 #import "MVApplicationController.h"
 
@@ -48,25 +49,24 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 		_sortedMembers = [[NSMutableArray allocWithZone:nil] initWithCapacity:100];
 		_preferredTabCompleteNicknames = [[NSMutableArray allocWithZone:nil] initWithCapacity:10];
 		_nextMessageAlertMembers = [[NSMutableSet allocWithZone:nil] initWithCapacity:5];
-		_memberRegexes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 		_cantSendMessages = YES;
 		_kickedFromRoom = NO;
 		_banListSynced = NO;
 		_joinCount = 0;
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _partedRoom: ) name:MVChatRoomPartedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _kicked: ) name:MVChatRoomKickedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberJoined: ) name:MVChatRoomUserJoinedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberParted: ) name:MVChatRoomUserPartedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberKicked: ) name:MVChatRoomUserKickedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _roomModeChanged: ) name:MVChatRoomModesChangedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberModeChanged: ) name:MVChatRoomUserModeChangedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberBanned: ) name:MVChatRoomUserBannedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberBanRemoved: ) name:MVChatRoomUserBanRemovedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _membersSynced: ) name:MVChatRoomMemberUsersSyncedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _bannedMembersSynced: ) name:MVChatRoomBannedUsersSyncedNotification object:target];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _memberNicknameChanged: ) name:MVChatUserNicknameChangedNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _userBricked: ) name:MVChatRoomUserBrickedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _partedRoom: ) name:MVChatRoomPartedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _kicked: ) name:MVChatRoomKickedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberJoined: ) name:MVChatRoomUserJoinedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberParted: ) name:MVChatRoomUserPartedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberKicked: ) name:MVChatRoomUserKickedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _roomModeChanged: ) name:MVChatRoomModesChangedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberModeChanged: ) name:MVChatRoomUserModeChangedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberBanned: ) name:MVChatRoomUserBannedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberBanRemoved: ) name:MVChatRoomUserBanRemovedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _membersSynced: ) name:MVChatRoomMemberUsersSyncedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _bannedMembersSynced: ) name:MVChatRoomBannedUsersSyncedNotification object:target];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _memberNicknameChanged: ) name:MVChatUserNicknameChangedNotification object:nil];
+		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _userBricked: ) name:MVChatRoomUserBrickedNotification object:target];
 	}
 
 	return self;
@@ -75,7 +75,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 - (void) awakeFromNib {
 	[super awakeFromNib];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _didClearDisplay: ) name:JVStyleViewDidClearNotification object:display];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _didClearDisplay: ) name:JVStyleViewDidClearNotification object:display];
 
 	[display setBodyTemplate:@"chatRoom"];
 	[display addBanner:@"roomTopicBanner"];
@@ -85,7 +85,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	[self partChat:nil];
 
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter chatCenter] removeObserver:self];
 
 	[_sortedMembers makeObjectsPerformSelector:@selector( _detach )];
 	[_nextMessageAlertMembers makeObjectsPerformSelector:@selector( _detach )];
@@ -160,9 +160,6 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 #pragma mark -
 
 - (NSImage *) icon {
-	BOOL smallIcons = [[[self windowController] preferenceForKey:@"small drawer icons"] boolValue];
-	if( smallIcons || [_windowController isMemberOfClass:[JVTabbedChatWindowController class]] )
-		return [NSImage imageNamed:@"roomTab"];
 	return [NSImage imageNamed:@"room"];
 }
 
@@ -306,7 +303,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 
 	[MVConnectionsController refreshFavoritesMenu];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:MVFavoritesListDidUpdateNotification object:self];
+	[[NSNotificationCenter chatCenter] postNotificationName:MVFavoritesListDidUpdateNotification object:self];
 }
 
 - (IBAction) toggleAutoJoin:(id) sender {
@@ -356,7 +353,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 		[context setObject:[[self windowTitle] stringByAppendingString:@"JVChatRoomActivity"] forKey:@"coalesceKey"];
 		[context setObject:self forKey:@"target"];
 		[context setObject:NSStringFromSelector( @selector( activate: ) ) forKey:@"action"];
-		[context setObject:[NSString stringWithFormat:@"%@: %@", self.target, [message bodyAsPlainText]] forKey:@"subtitle"];
+		[context setObject:[NSString stringWithFormat:@"%@ — %@: %@", [member displayName], self.target, [message bodyAsPlainText]] forKey:@"subtitle"];
 		[self performNotification:@"JVChatRoomActivity" withContextInfo:context];
 	}
 
@@ -373,38 +370,15 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 		[_nextMessageAlertMembers removeObject:[message sender]];
 	}
 
-	static NSCharacterSet *escapeSet = nil;
-	if (!escapeSet)
-		escapeSet = [NSCharacterSet characterSetWithCharactersInString:@"^[]{}()\\.$*+?|"];
 
-	for( member in _sortedMembers ) {
-		NSString *plainText = [message bodyAsPlainText];
-
-		// if the message is shorter than the nickname, it can't be a match. stop sooner
-		if( [[member nickname] length] > [plainText length] )
-			continue;
-
-		AGRegex *regex = (id)CFDictionaryGetValue(_memberRegexes, (__bridge const void *)(member));
-		if( !regex ) {
-			NSMutableString *escapedName = [[member nickname] mutableCopy];
-			[escapedName escapeCharactersInSet:escapeSet];
-
-			NSString *pattern = [[NSString alloc] initWithFormat:@"(?<=^|\\s|[^\\w])%@(?=$|\\s|[^\\w])", escapedName];
-			regex = [AGRegex regexWithPattern:pattern options:AGRegexCaseInsensitive];
-
-			 CFDictionarySetValue(_memberRegexes, (__bridge const void *)(member), (__bridge const void *)(regex));
-		}
-
-		NSArray *matches = [regex findAllInString:plainText];
-
-		for( AGRegexMatch *match in matches ) {
-			NSRange foundRange = [match range];
-			// don't highlight nicks in the middle of a link
-			if( ! [[message body] attribute:NSLinkAttributeName atIndex:foundRange.location effectiveRange:NULL] ) {
-				NSMutableSet *classes = [NSMutableSet setWithSet:[[message body] attribute:@"CSSClasses" atIndex:foundRange.location effectiveRange:NULL]];
-				[classes addObject:@"member"];
-				[[message body] addAttribute:@"CSSClasses" value:[NSSet setWithSet:classes] range:foundRange];
-			}
+	NSString *plainText = [message bodyAsPlainText];
+	for( NSTextCheckingResult *match in [_membersRegex cq_matchesInString:plainText] ) {
+		NSRange foundRange = [match range];
+		// don't highlight nicks in the middle of a link
+		if( ! [[message body] attribute:NSLinkAttributeName atIndex:foundRange.location effectiveRange:NULL] ) {
+			NSMutableSet *classes = [NSMutableSet setWithSet:[[message body] attribute:@"CSSClasses" atIndex:foundRange.location effectiveRange:NULL]];
+			[classes addObject:@"member"];
+			[[message body] addAttribute:@"CSSClasses" value:[NSSet setWithSet:classes] range:foundRange];
 		}
 	}
 
@@ -463,11 +437,11 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 
 	[[MVChatPluginManager defaultManager] makePluginsPerformInvocation:invocation];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatRoomTopicChangedNotification object:nil];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:nil];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatRoomTopicChangedNotification object:nil];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _selfNicknameChanged: ) name:MVChatConnectionNicknameAcceptedNotification object:[self connection]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _topicChanged: ) name:MVChatRoomTopicChangedNotification object:[self target]];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _selfNicknameChanged: ) name:MVChatConnectionNicknameAcceptedNotification object:[self connection]];
+	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _topicChanged: ) name:MVChatRoomTopicChangedNotification object:[self target]];
 
 	[self _topicChanged:nil];
 
@@ -487,8 +461,8 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 
 		[[MVChatPluginManager defaultManager] makePluginsPerformInvocation:invocation];
 
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:nil];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatRoomTopicChangedNotification object:nil];
+		[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:nil];
+		[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatRoomTopicChangedNotification object:nil];
 	}
 }
 
@@ -571,6 +545,23 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVSortRoomMembersByStatus"] ) {
 		[_sortedMembers sortUsingSelector:@selector( compareUsingStatus: )];
 	} else [_sortedMembers sortUsingSelector:@selector( compare: )];
+
+	static NSCharacterSet *escapeSet = nil;
+	if (!escapeSet)
+		escapeSet = [NSCharacterSet characterSetWithCharactersInString:@"^[]{}()\\.$*+?|"];
+
+	NSMutableString *regexEscapedNicknames = [NSMutableString string];
+	for( MVChatUser *member in _sortedMembers ) {
+		NSMutableString *escapedName = [[member nickname] mutableCopy];
+		[escapedName escapeCharactersInSet:escapeSet];
+		[regexEscapedNicknames appendFormat:@"%@|", escapedName];
+	}
+
+	if( regexEscapedNicknames.length )
+		[regexEscapedNicknames deleteCharactersInRange:NSMakeRange(regexEscapedNicknames.length - 1, 1)];
+
+	NSString *pattern = [[NSString alloc] initWithFormat:@"(?<=^|\\s|[^\\w])%@(?=$|\\s|[^\\w])", regexEscapedNicknames];
+	_membersRegex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
 
 	[_windowController reloadListItem:self andChildren:YES];
 }
@@ -760,8 +751,8 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	[super _didDisconnect:notification];
 	[_windowController reloadListItem:self andChildren:YES];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MVChatRoomTopicChangedNotification object:nil];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatConnectionNicknameAcceptedNotification object:nil];
+	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatRoomTopicChangedNotification object:nil];
 }
 
 - (void) _partedRoom:(NSNotification *) notification {
@@ -959,9 +950,6 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 }
 
 - (void) _selfNicknameChanged:(NSNotification *) notification {
-	JVChatRoomMember *member = [self chatRoomMemberForUser:[[notification object] localUser]];
-	CFDictionaryRemoveValue(_memberRegexes, (__bridge const void *)(member));
-
 	[self resortMembers];
 	[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"You are now known as <span class=\"member\">%@</span>.", "you changed nicknames" ), [[[self connection] nickname] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"newNickname" andAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[self localChatRoomMember], @"who", nil]];
 }
@@ -973,8 +961,6 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 
 	JVChatRoomMember *member = [self chatRoomMemberForUser:[notification object]];
 	if( ! member ) return;
-
-	CFDictionaryRemoveValue(_memberRegexes, (__bridge const void *)(member));
 
 	NSString *oldNickname = [[notification userInfo] objectForKey:@"oldNickname"];
 
@@ -1054,8 +1040,6 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	[_sortedMembers removeObjectIdenticalTo:mbr];
 	[_nextMessageAlertMembers removeObject:mbr];
 	[_windowController reloadListItem:self andChildren:YES];
-
-	CFDictionaryRemoveValue(_memberRegexes, (__bridge const void *)(mbr)); 
 }
 
 - (void) _userBricked:(NSNotification *) notification {
@@ -1595,7 +1579,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 }
 
 - (void) setScriptTypedTopic:(NSString *) topic {
-	NSAttributedString *attributeMsg = [NSAttributedString attributedStringWithHTMLFragment:topic baseURL:nil];
+	NSAttributedString *attributeMsg = [NSAttributedString attributedStringWithHTMLFragment:topic];
 	[[self target] changeTopic:attributeMsg];
 }
 @end

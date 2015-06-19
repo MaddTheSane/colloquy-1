@@ -13,7 +13,7 @@ extern NSString *const MVFavoritesListDidUpdateNotification;
 	BOOL _kickedFromRoom;
 	BOOL _banListSynced;
 	NSUInteger _joinCount;
-	CFMutableDictionaryRef _memberRegexes;
+	NSRegularExpression *_membersRegex;
 }
 - (void) joined;
 - (void) parting;

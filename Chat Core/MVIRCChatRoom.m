@@ -4,13 +4,18 @@
 #import "MVIRCChatUser.h"
 #import "NSStringAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation MVIRCChatRoom
-- (id) initWithName:(NSString *) roomName andConnection:(MVIRCChatConnection *) roomConnection {
+- (instancetype) initWithName:(NSString *) roomName andConnection:(MVIRCChatConnection *) roomConnection {
 	if( ( self = [self init] ) ) {
 		_connection = roomConnection; // prevent circular retain
 		_name = [roomName copy];
-		_uniqueIdentifier = [[roomName lowercaseString] retain];
-		[_connection _addKnownRoom:self];
+		_uniqueIdentifier = [roomName lowercaseString];
+		[roomConnection _addKnownRoom:self];
+
+		NSString *recentActivityDateKey = [NSString stringWithFormat:@"%@-%@", self.connection.uniqueIdentifier, self.uniqueIdentifier];
+		_mostRecentUserActivity = [[NSUserDefaults standardUserDefaults] objectForKey:recentActivityDateKey];
 	}
 
 	return self;
@@ -36,15 +41,17 @@
 
 #pragma mark -
 
-- (void) partWithReason:(MVChatString *) reason {
+- (void) partWithReason:(MVChatString * __nullable) reason {
 	if( ! [self isJoined] ) return;
 
 	if( reason.length ) {
 		NSData *reasonData = [MVIRCChatConnection _flattenedIRCDataForMessage:reason withEncoding:[self encoding] andChatFormat:[[self connection] outgoingChatFormat]];
 		NSString *prefix = [[NSString alloc] initWithFormat:@"PART %@ :", [self name]];
 		[[self connection] sendRawMessageWithComponents:prefix, reasonData, nil];
-		[prefix release];
 	} else [[self connection] sendRawMessageImmediatelyWithFormat:@"PART %@", [self name]];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 #pragma mark -
@@ -54,19 +61,27 @@
 	NSData *msg = [MVIRCChatConnection _flattenedIRCDataForMessage:newTopic withEncoding:[self encoding] andChatFormat:[[self connection] outgoingChatFormat]];
 	NSString *prefix = [[NSString alloc] initWithFormat:@"TOPIC %@ :", [self name]];
 	[[self connection] sendRawMessageWithComponents:prefix, msg, nil];
-	[prefix release];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 #pragma mark -
 
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) msgEncoding withAttributes:(NSDictionary *) attributes {
 	NSParameterAssert( message != nil );
-	[[self connection] _sendMessage:message withEncoding:msgEncoding toTarget:self withTargetPrefix:nil withAttributes:attributes localEcho:NO];
+	[[self connection] _sendMessage:message withEncoding:msgEncoding toTarget:self withTargetPrefix:@"" withAttributes:attributes localEcho:NO];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) sendCommand:(NSString *) command withArguments:(MVChatString *) arguments withEncoding:(NSStringEncoding) encoding {
 	NSParameterAssert( command != nil );
 	[[self connection] _sendCommand:command withArguments:arguments withEncoding:encoding toTarget:self];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 #pragma mark -
@@ -76,10 +91,12 @@
 	if( arguments && [arguments isKindOfClass:[NSData class]] && [arguments length] ) {
 		NSString *prefix = [[NSString alloc] initWithFormat:@"PRIVMSG %@ :\001%@ ", [self name], command];
 		[[self connection] sendRawMessageWithComponents:prefix, arguments, @"\001", nil];
-		[prefix release];
 	} else if( arguments && [arguments isKindOfClass:[NSString class]] && [arguments length] ) {
 		[[self connection] sendRawMessageWithFormat:@"PRIVMSG %@ :\001%@ %@\001", [self name], command, arguments];
 	} else [[self connection] sendRawMessageWithFormat:@"PRIVMSG %@ :\001%@\001", [self name], command];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) sendSubcodeReply:(NSString *) command withArguments:(id) arguments {
@@ -87,15 +104,17 @@
 	if( arguments && [arguments isKindOfClass:[NSData class]] && [arguments length] ) {
 		NSString *prefix = [[NSString alloc] initWithFormat:@"NOTICE %@ :\001%@ ", [self name], command];
 		[[self connection] sendRawMessageWithComponents:prefix, arguments, @"\001", nil];
-		[prefix release];
 	} else if( arguments && [arguments isKindOfClass:[NSString class]] && [arguments length] ) {
 		[[self connection] sendRawMessageWithFormat:@"NOTICE %@ :\001%@ %@\001", [self name], command, arguments];
 	} else [[self connection] sendRawMessageWithFormat:@"NOTICE %@ :\001%@\001", [self name], command];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 #pragma mark -
 
-- (void) setMode:(MVChatRoomMode) mode withAttribute:(id) attribute {
+- (void) setMode:(MVChatRoomMode) mode withAttribute:(id __nullable) attribute {
 	[super setMode:mode withAttribute:attribute];
 
 	switch( mode ) {
@@ -125,6 +144,9 @@
 	default:
 		break;
 	}
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) removeMode:(MVChatRoomMode) mode {
@@ -157,6 +179,9 @@
 	default:
 		break;
 	}
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 #pragma mark -
@@ -183,6 +208,9 @@
 	default:
 		break;
 	}
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) removeMode:(MVChatRoomMemberMode) mode forMemberUser:(MVChatUser *) user {
@@ -207,6 +235,9 @@
 	default:
 		break;
 	}
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) setDisciplineMode:(MVChatRoomMemberDisciplineMode) mode forMemberUser:(MVChatUser *) user {
@@ -219,6 +250,9 @@
 	default:
 		break;
 	}
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) removeDisciplineMode:(MVChatRoomMemberDisciplineMode) mode forMemberUser:(MVChatUser *) user {
@@ -231,6 +265,9 @@
 	default:
 		break;
 	}
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 #pragma mark -
@@ -257,15 +294,17 @@
 
 #pragma mark -
 
-- (void) kickOutMemberUser:(MVChatUser *) user forReason:(MVChatString *) reason {
+- (void) kickOutMemberUser:(MVChatUser *) user forReason:(MVChatString * __nullable) reason {
 	[super kickOutMemberUser:user forReason:reason];
 
 	if( reason ) {
 		NSData *msg = [MVIRCChatConnection _flattenedIRCDataForMessage:reason withEncoding:[self encoding] andChatFormat:[[self connection] outgoingChatFormat]];
 		NSString *prefix = [[NSString alloc] initWithFormat:@"KICK %@ %@ :", [self name], [user nickname]];
 		[[self connection] sendRawMessageImmediatelyWithComponents:prefix, msg, nil];
-		[prefix release];
 	} else [[self connection] sendRawMessageImmediatelyWithFormat:@"KICK %@ %@", [self name], [user nickname]];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) addBanForUser:(MVChatUser *) user {
@@ -282,6 +321,9 @@
 		[[self connection] sendRawMessageImmediatelyWithFormat:@"MODE %@ +b *!*%@*@%@", [self name], [user username], addressToBan ];
 	}
 	[super addBanForUser:user];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (void) removeBanForUser:(MVChatUser *) user {
@@ -298,6 +340,9 @@
 		[[self connection] sendRawMessageImmediatelyWithFormat:@"MODE %@ -b *!*%@*@%@", [self name], [user username], addressToBan ];
 	}
 	[super removeBanForUser:user];
+
+	_mostRecentUserActivity = [NSDate date];
+	[self persistLastActivityDate];
 }
 
 - (NSString *) modifyAddressForBan:(MVChatUser *) user {
@@ -334,6 +379,19 @@
 	return addressMask;
 }
 
+#pragma mark -
+
+- (void) requestRecentActivity {
+	if( [[[self connection] supportedFeatures] containsObject:MVIRCChatConnectionZNCPluginPlaybackFeature] )
+		[[self connection] sendRawMessageImmediatelyWithFormat:@"PRIVMSG *playback PLAY %@ %.3f", self.name, [self.mostRecentUserActivity timeIntervalSince1970]];
+}
+
+- (void) persistLastActivityDate {
+	if ( _mostRecentUserActivity && [[[self connection] supportedFeatures] containsObject:MVIRCChatConnectionZNCPluginPlaybackFeature] ) {
+		NSString *recentActivityDateKey = [NSString stringWithFormat:@"%@-%@", self.connection.uniqueIdentifier, self.uniqueIdentifier];
+		[[NSUserDefaults standardUserDefaults] setObject:_mostRecentUserActivity forKey:recentActivityDateKey];
+	}
+}
 @end
 
 #pragma mark -
@@ -365,3 +423,5 @@
 	[self _setBansSynced:NO];
 }
 @end
+
+NS_ASSUME_NONNULL_END

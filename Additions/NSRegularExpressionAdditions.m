@@ -1,5 +1,7 @@
 #import "NSRegularExpressionAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSRegularExpression (Additions)
 + (NSRegularExpression *) cachedRegularExpressionWithPattern:(NSString *) pattern options:(NSRegularExpressionOptions) options error:(NSError *__autoreleasing*) error {
 	static NSMutableDictionary *dangerousCache = nil;
@@ -8,10 +10,15 @@
 		dangerousCache = [[NSMutableDictionary alloc] init];
 	});
 
+	NSString *patternKey = dangerousCache[pattern];
+	if (!patternKey) {
+		patternKey = [NSRegularExpression escapedPatternForString:pattern];
+		dangerousCache[pattern] = patternKey;
+	}
 #if SYSTEM(MAC)
-	NSString *key = [NSString stringWithFormat:@"%ld-%@", options, pattern];
+	NSString *key = [NSString stringWithFormat:@"%ld-%@", options, patternKey];
 #else
-	NSString *key = [NSString stringWithFormat:@"%tu-%@", options, pattern];
+	NSString *key = [NSString stringWithFormat:@"%tu-%@", options, patternKey];
 #endif
 	NSRegularExpression *regularExpression = dangerousCache[key];
 
@@ -24,4 +31,10 @@
 
 	return regularExpression;
 }
+
+- (NSArray *) cq_matchesInString:(NSString *) string {
+	return [self matchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, string.length)];
+}
 @end
+
+NS_ASSUME_NONNULL_END

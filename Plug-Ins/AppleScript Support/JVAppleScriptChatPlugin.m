@@ -22,7 +22,7 @@
 #pragma mark -
 
 @interface NSScriptObjectSpecifier (NSScriptObjectSpecifierPrivate) // Private Foundation Methods
-+ (id) _objectSpecifierFromDescriptor:(NSAppleEventDescriptor *) descriptor inCommandConstructionContext:(id) context;
++ (id) _objectSpecifierFromDescriptor:(NSAppleEventDescriptor *) descriptor inCommandConstructionContext:(id __nullable) context;
 - (NSAppleEventDescriptor *) _asDescriptor;
 @end
 
@@ -444,7 +444,6 @@
 					}
 					
 					if( [mitem image] && ! NSEqualSizes( size, NSZeroSize ) ) {
-						[[mitem image] setScalesWhenResized:YES];
 						[[mitem image] setSize:size];
 					}
 				} else if( [iconPath isKindOfClass:[NSArray class]] && [(NSArray *)iconPath count] == 3 ) {

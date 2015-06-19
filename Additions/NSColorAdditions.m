@@ -1,7 +1,10 @@
+#if SYSTEM(MAC)
 #import "NSColorAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSAEDescriptorTranslator : NSObject // Private Foundation Class
-+ (id) _descriptorByTranslatingColor:(NSColor *) color ofType:(id) type inSuite:(id) suite;
++ (id) _descriptorByTranslatingColor:(NSColor *) color ofType:(id __nullable) type inSuite:(id __nullable) suite;
 @end
 
 #pragma mark -
@@ -160,3 +163,6 @@
 	return [NSAEDescriptorTranslator _descriptorByTranslatingColor:self ofType:nil inSuite:nil];
 }
 @end
+#endif
+
+NS_ASSUME_NONNULL_END

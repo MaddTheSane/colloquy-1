@@ -59,11 +59,11 @@ static NSString *const CQPSListTypeFont = @"Font";
 	BOOL _active;
 }
 
-- (id) initWithRootPlist {
+- (instancetype) initWithRootPlist {
 	return [self initWithPlistNamed:@"Root"];
 }
 
-- (id) initWithPlistNamed:(NSString *) plist {
+- (instancetype) initWithPlistNamed:(NSString *) plist {
 	if (!(self = [super initWithStyle:UITableViewStyleGrouped]))
 		return nil;
 
@@ -72,6 +72,21 @@ static NSString *const CQPSListTypeFont = @"Font";
 	[self performSelectorInBackground:@selector(_readSettingsFromPlist:) withObject:plist];
 
 	return self;
+}
+
+- (instancetype) initWithStyle:(UITableViewStyle) style {
+	NSAssert(NO, @"use -[CQPreferencesDisplayViewController initWithPlistNamed:] instead");
+	return nil;
+}
+
+- (instancetype) initWithNibName:(NSString *) nibNameOrNil bundle:(NSBundle *) nibBundleOrNil {
+	NSAssert(NO, @"use -[CQPreferencesDisplayViewController initWithPlistNamed:] instead");
+	return nil;
+}
+
+- (instancetype) initWithCoder:(NSCoder *) aDecoder {
+	NSAssert(NO, @"use -[CQPreferencesDisplayViewController initWithPlistNamed:] instead");
+	return nil;
 }
 
 #pragma mark -
@@ -333,6 +348,7 @@ static NSString *const CQPSListTypeFont = @"Font";
 			preferencesListViewController.listType = CQPreferencesListTypeImage;
 		else if ([listType isCaseInsensitiveEqualToString:CQPSListTypeFont])
 			preferencesListViewController.listType = CQPreferencesListTypeFont;
+		preferencesListViewController.values = rowDictionary[CQPSValues];
 		viewController = preferencesListViewController;
 	} else if ([rowDictionary[CQPSType] isEqualToString:CQPSTitleValueSpecifier]) {
 		NSString *address = rowDictionary[CQPSAddress];
