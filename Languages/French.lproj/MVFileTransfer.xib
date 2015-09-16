@@ -49,6 +49,8 @@
 					<characters key="NS.bytes">View</characters>
 				</object>
 				<nil key="NSUserInterfaceItemIdentifier"/>
+				<string key="NSWindowContentMaxSize">{700, 450}</string>
+				<string key="NSWindowContentMinSize">{350, 129}</string>
 				<object class="NSView" key="NSWindowView" id="272598407">
 					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -105,7 +107,7 @@
 							<array class="NSMutableArray" key="NSSubviews">
 								<object class="NSClipView" id="634202820">
 									<reference key="NSNextResponder" ref="178875974"/>
-									<int key="NSvFlags">2304</int>
+									<int key="NSvFlags">2322</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSTableView" id="43403032">
 											<reference key="NSNextResponder" ref="634202820"/>
@@ -304,7 +306,7 @@
 								</object>
 								<object class="NSScroller" id="682257498">
 									<reference key="NSNextResponder" ref="178875974"/>
-									<int key="NSvFlags">256</int>
+									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{-100, -100}, {308, 15}}</string>
 									<reference key="NSSuperview" ref="178875974"/>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -317,7 +319,7 @@
 								</object>
 								<object class="NSClipView" id="333543269">
 									<reference key="NSNextResponder" ref="178875974"/>
-									<int key="NSvFlags">2304</int>
+									<int key="NSvFlags">2338</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<reference ref="187703697"/>
 									</array>
@@ -339,6 +341,7 @@
 							<reference key="NSHScroller" ref="682257498"/>
 							<reference key="NSContentView" ref="634202820"/>
 							<reference key="NSHeaderClipView" ref="333543269"/>
+							<reference key="NSCornerView" ref="451998557"/>
 							<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 							<double key="NSMinMagnification">0.25</double>
 							<double key="NSMaxMagnification">4</double>
@@ -347,7 +350,7 @@
 					</array>
 					<string key="NSFrameSize">{350, 187}</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1920, 1057}}</string>
 				<string key="NSMinSize">{350, 145}</string>
 				<string key="NSMaxSize">{700, 466}</string>
 				<string key="NSFrameAutosaveName">transfer</string>
