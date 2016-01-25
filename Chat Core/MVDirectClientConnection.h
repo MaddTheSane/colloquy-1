@@ -1,4 +1,5 @@
-#import <ChatCore/MVAvailability.h>
+#import <Cocoa/Cocoa.h>
+#import "MVAvailability.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

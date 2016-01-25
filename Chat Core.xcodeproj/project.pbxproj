@@ -313,6 +313,7 @@
 		32C46E1A0B3AB37E00B96B27 /* MVICBChatUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C46E180B3AB37E00B96B27 /* MVICBChatUser.h */; };
 		32C46E1B0B3AB37E00B96B27 /* MVICBChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C46E190B3AB37E00B96B27 /* MVICBChatUser.m */; };
 		431261C3072EE37A00720AD1 /* MVSILCFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */; };
+		555906561C555D8100FA6B72 /* NSStringAdditions_Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */; };
 		55B748171AD2E6FD001459F7 /* RunOnMainThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B748161AD2E6FD001459F7 /* RunOnMainThread.h */; };
 		55B748181AD2E6FD001459F7 /* RunOnMainThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B748161AD2E6FD001459F7 /* RunOnMainThread.h */; };
 		899F4EFE12617870003B9D9A /* NSFileManagerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 899F4EFC12617870003B9D9A /* NSFileManagerAdditions.h */; };
@@ -743,6 +744,7 @@
 		32C46E190B3AB37E00B96B27 /* MVICBChatUser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MVICBChatUser.m; path = "Chat Core/MVICBChatUser.m"; sourceTree = "<group>"; };
 		431261C0072EE37A00720AD1 /* MVSILCFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = MVSILCFileTransfer.h; path = "Chat Core/MVSILCFileTransfer.h"; sourceTree = "<group>"; };
 		431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = MVSILCFileTransfer.m; path = "Chat Core/MVSILCFileTransfer.m"; sourceTree = "<group>"; };
+		555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSStringAdditions_Swift.swift; path = Additions/NSStringAdditions_Swift.swift; sourceTree = "<group>"; };
 		5596BE781B37206C0078571A /* build-libidn-OSX.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-libidn-OSX.sh"; sourceTree = "<group>"; };
 		55AA73C81C554FD000BD820C /* ChatCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = ChatCore.modulemap; sourceTree = "<group>"; };
 		55B748161AD2E6FD001459F7 /* RunOnMainThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RunOnMainThread.h; path = Additions/RunOnMainThread.h; sourceTree = "<group>"; };
@@ -1756,6 +1758,7 @@
 				F5E98623018B412B01EE70DE /* NSAttributedStringAdditions.h */,
 				1CD020B305759347000F93B4 /* NSStringAdditions.m */,
 				1CD020B205759347000F93B4 /* NSStringAdditions.h */,
+				555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */,
 				1C3D55BA05A4CBBE00F25F5E /* NSNumberAdditions.m */,
 				1C3D55B905A4CBBE00F25F5E /* NSNumberAdditions.h */,
 				1CD020BD057593A9000F93B4 /* NSColorAdditions.m */,
@@ -2032,10 +2035,10 @@
 			buildConfigurationList = 1C041DDA08553AD200A5A5BA /* Build configuration list for PBXNativeTarget "Chat Core (Framework)" */;
 			buildPhases = (
 				1CAF64A8099EAB390036A727 /* Unarchive Frameworks */,
+				1C51B46F052DE0CB00BB459B /* Headers */,
 				1C51B47B052DE0CB00BB459B /* Sources */,
 				1C51B484052DE0CB00BB459B /* Frameworks */,
 				1C51B47A052DE0CB00BB459B /* Resources */,
-				1C51B46F052DE0CB00BB459B /* Headers */,
 			);
 			buildRules = (
 			);
@@ -2244,6 +2247,7 @@
 				1C91405D07051A9100CBA5F1 /* MVChatUser.m in Sources */,
 				19A7A9A61B28E7A90022172F /* XMPPOutgoingFileTransfer.m in Sources */,
 				19A7A9901B28E7A90022172F /* XMPPJID.m in Sources */,
+				555906561C555D8100FA6B72 /* NSStringAdditions_Swift.swift in Sources */,
 				19A7AA2B1B28E7A90022172F /* XMPPCapabilities.m in Sources */,
 				1C914B160705BFE100CBA5F1 /* MVIRCChatUser.m in Sources */,
 				1C914D360706148800CBA5F1 /* MVIRCChatRoom.m in Sources */,
@@ -2367,6 +2371,7 @@
 		1C041DDC08553AD200A5A5BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -2390,6 +2395,7 @@
 				);
 				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					Frameworks/XMPPFramework/Vendor/libidn/dependencies/lib,
 					"$(inherited)",
@@ -2404,6 +2410,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.chatCore;
 				PRODUCT_NAME = ChatCore;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -2441,6 +2448,7 @@
 		1C7F2DB408553C1900D41FB0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -2464,6 +2472,7 @@
 				);
 				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					Frameworks/XMPPFramework/Vendor/libidn/dependencies/lib,
 					"$(inherited)",
