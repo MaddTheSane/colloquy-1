@@ -12,9 +12,9 @@
 #import "JVToolbarItem.h"
 #import "JVSpeechController.h"
 #import "MVBuddyListController.h"
-#import "MVChatConnection.h"
-#import "MVChatRoom.h"
-#import "MVChatUser.h"
+#import <ChatCore/MVChatConnection.h>
+#import <ChatCore/MVChatRoom.h>
+#import <ChatCore/MVChatUser.h>
 #import "MVConnectionsController.h"
 #import "MVFileTransferController.h"
 #import "NSAttributedStringAdditions.h"
@@ -296,8 +296,8 @@ NSString *JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
 		[self removeScriptGlobalsForWebView:_webview];
 	}
 
-	NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"plugin" ofType:@"html"];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:path] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:5.];
+	NSURL *path = [[NSBundle bundleForClass:[self class]] URLForResource:@"plugin" withExtension:@"html"];
+	NSURLRequest *request = [NSURLRequest requestWithURL:path cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:5.];
 	[[_webview mainFrame] loadRequest:request];
 }
 
