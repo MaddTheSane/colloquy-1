@@ -1,6 +1,9 @@
+#import <Cocoa/Cocoa.h>
+
+@class JVMark;
 
 @interface JVMarkedScroller : NSScroller {
-	NSMutableSet *_marks;
+	NSMutableSet<JVMark*> *_marks;
 	NSMutableArray *_shades;
 	unsigned long long _nearestPreviousMark;
 	unsigned long long _nearestNextMark;
@@ -30,7 +33,7 @@
 - (void) removeMarksInRange:(NSRange) range;
 - (void) removeAllMarks;
 
-@property (copy) NSSet *marks;
+@property (copy) NSSet<JVMark*> *marks;
 
 - (void) startShadedAreaAt:(unsigned long long) location;
 - (void) stopShadedAreaAt:(unsigned long long) location;
