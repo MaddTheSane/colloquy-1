@@ -1,4 +1,4 @@
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import "MVAvailability.h"
 
 NS_ASSUME_NONNULL_BEGIN

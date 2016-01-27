@@ -265,7 +265,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 	return contents;
 }
 
-- (NSResponder *) firstResponder {
+- (nullable NSResponder *) firstResponder {
 	return send;
 }
 

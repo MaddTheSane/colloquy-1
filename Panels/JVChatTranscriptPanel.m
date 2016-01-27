@@ -181,7 +181,7 @@ NSString *JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem";
 	return contents;
 }
 
-- (NSResponder *) firstResponder {
+- (nullable NSResponder *) firstResponder {
 	return display;
 }
 

@@ -3,6 +3,7 @@
 #import "AICustomTabsView.h"
 #import "JVChatTabItem.h"
 #import "MVApplicationController.h"
+#import "Colloquy-Swift.h"
 
 @interface JVTabbedChatWindowController (JVTabbedChatWindowControllerPrivate)
 - (void) _supressTabBarHiding:(BOOL) supress;

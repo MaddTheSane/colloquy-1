@@ -183,6 +183,7 @@
 		1CF80311070C894100C9B54C /* libsilcclient.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030D070C893500C9B54C /* libsilcclient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		556CEBE51BCB795600F00EAA /* Tabs Interface Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 556CEBE41BCB795600F00EAA /* Tabs Interface Images.xcassets */; };
 		5575C7BF1AFAB53D001EEF98 /* widgets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5575C7BE1AFAB53D001EEF98 /* widgets.xcassets */; };
+		558E11081C5845A300F9C85B /* JVChatTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558E11071C5845A300F9C85B /* JVChatTabItem.swift */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
 		55B0EF3618CE3DE10000E4CA /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B0EF3518CE3DE10000E4CA /* libxml2.dylib */; };
 		55B0EF3718CE3E040000E4CA /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B0EF3518CE3DE10000E4CA /* libxml2.dylib */; };
@@ -661,6 +662,8 @@
 		5530388F171722A200652D45 /* GetMetadataForFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetMetadataForFile.h; sourceTree = "<group>"; };
 		556CEBE41BCB795600F00EAA /* Tabs Interface Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Tabs Interface Images.xcassets"; sourceTree = "<group>"; };
 		5575C7BE1AFAB53D001EEF98 /* widgets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = widgets.xcassets; sourceTree = "<group>"; };
+		558E11011C5834DB00F9C85B /* Colloquy (Application)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Colloquy (Application)-Bridging-Header.h"; sourceTree = "<group>"; };
+		558E11071C5845A300F9C85B /* JVChatTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JVChatTabItem.swift; path = Panels/JVChatTabItem.swift; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
 		55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
 		55B0EF3518CE3DE10000E4CA /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -1130,6 +1133,7 @@
 				1C9014BE07A2D798002942A7 /* MVChatUserAdditions.h */,
 				1C2391A80677E6B7000E89A7 /* JVChatTabItem.m */,
 				1C2391A70677E6B7000E89A7 /* JVChatTabItem.h */,
+				558E11071C5845A300F9C85B /* JVChatTabItem.swift */,
 			);
 			name = "Panels & List Items";
 			sourceTree = "<group>";
@@ -1304,6 +1308,7 @@
 				92823CF0168FFA0A000EC36E /* KAIgnoreRule.h */,
 				F551EE490209FB3301EE70DE /* MVKeyChain.m */,
 				F551EE4A0209FB3301EE70DE /* MVKeyChain.h */,
+				558E11011C5834DB00F9C85B /* Colloquy (Application)-Bridging-Header.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2078,6 +2083,7 @@
 				1C6A45210841746500572AB6 /* JVChatViewCriterionController.m in Sources */,
 				1C7780DE08FA1D82006AD8E5 /* JVSpeechController.m in Sources */,
 				1C710A0209F23730007B4515 /* JVSidebarChatWindowController.m in Sources */,
+				558E11081C5845A300F9C85B /* JVChatTabItem.swift in Sources */,
 				C23298991C3D98230085CBF7 /* NSWindow+CQMCoordinateSpaceConversion.m in Sources */,
 				1C710A6C09F23AF0007B4515 /* JVSideSplitView.m in Sources */,
 				1C710A6E09F23AF0007B4515 /* JVSideStatusView.m in Sources */,
@@ -2648,6 +2654,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Colloquy;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				EXPORTED_SYMBOLS_FILE = Colloquy.exp;
@@ -2662,12 +2669,15 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_CFLAGS = (
 					"-fconstant-cfstrings",
 					"-Wno-arc-performSelector-leaks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy;
 				PRODUCT_NAME = Colloquy;
+				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2732,6 +2742,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Colloquy;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				EXPORTED_SYMBOLS_FILE = Colloquy.exp;
@@ -2746,6 +2757,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LLVM_LTO = YES;
 				OTHER_CFLAGS = (
 					"-fconstant-cfstrings",
@@ -2761,6 +2773,7 @@
 					"-e",
 					start,
 				);
+				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
