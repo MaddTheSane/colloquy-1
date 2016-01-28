@@ -312,6 +312,7 @@
 		32C46E1B0B3AB37E00B96B27 /* MVICBChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C46E190B3AB37E00B96B27 /* MVICBChatUser.m */; };
 		431261C3072EE37A00720AD1 /* MVSILCFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */; };
 		555906561C555D8100FA6B72 /* NSStringAdditions_Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */; };
+		5577DD0F1C599B48001A76E1 /* MVMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 5577DD0E1C599B48001A76E1 /* MVMessaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55B748171AD2E6FD001459F7 /* RunOnMainThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B748161AD2E6FD001459F7 /* RunOnMainThread.h */; };
 		55B748181AD2E6FD001459F7 /* RunOnMainThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B748161AD2E6FD001459F7 /* RunOnMainThread.h */; };
 		899F4EFE12617870003B9D9A /* NSFileManagerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 899F4EFC12617870003B9D9A /* NSFileManagerAdditions.h */; };
@@ -741,6 +742,7 @@
 		431261C0072EE37A00720AD1 /* MVSILCFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = MVSILCFileTransfer.h; path = "Chat Core/MVSILCFileTransfer.h"; sourceTree = "<group>"; };
 		431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = MVSILCFileTransfer.m; path = "Chat Core/MVSILCFileTransfer.m"; sourceTree = "<group>"; };
 		555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSStringAdditions_Swift.swift; path = Additions/NSStringAdditions_Swift.swift; sourceTree = "<group>"; };
+		5577DD0E1C599B48001A76E1 /* MVMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVMessaging.h; path = "Chat Core/MVMessaging.h"; sourceTree = "<group>"; };
 		5596BE781B37206C0078571A /* build-libidn-OSX.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-libidn-OSX.sh"; sourceTree = "<group>"; };
 		55AA73C81C554FD000BD820C /* ChatCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = ChatCore.modulemap; sourceTree = "<group>"; };
 		55B748161AD2E6FD001459F7 /* RunOnMainThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RunOnMainThread.h; path = Additions/RunOnMainThread.h; sourceTree = "<group>"; };
@@ -1728,6 +1730,7 @@
 				922453B91689057200BFF3FF /* GCDAsyncSocket.h */,
 				1CD6290D096118B900BD1DD2 /* InterThreadMessaging.m */,
 				1CD6290C096118B900BD1DD2 /* InterThreadMessaging.h */,
+				5577DD0E1C599B48001A76E1 /* MVMessaging.h */,
 			);
 			fileEncoding = 4;
 			indentWidth = 4;
@@ -1871,6 +1874,7 @@
 				19A7A9CA1B28E7A90022172F /* XMPPIQ+LastActivity.h in Headers */,
 				19A7A9DB1B28E7A90022172F /* XMPPRoomMessageHybridCoreDataStorageObject.h in Headers */,
 				19A7A9B41B28E7A90022172F /* XMPPUserCoreDataStorageObject.h in Headers */,
+				5577DD0F1C599B48001A76E1 /* MVMessaging.h in Headers */,
 				1C63E9ED086E59D700A40DD4 /* ChatCore.h in Headers */,
 				1CE4630F095ECCFE00AB7732 /* MVChatUserPrivate.h in Headers */,
 				19A7AA2A1B28E7A90022172F /* XMPPCapabilities.h in Headers */,

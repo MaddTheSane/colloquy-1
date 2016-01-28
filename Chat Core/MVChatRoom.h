@@ -2,6 +2,7 @@
 
 #import "MVAvailability.h"
 #import "MVChatString.h"
+#import "MVMessaging.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -64,7 +65,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 @class MVChatConnection;
 @class MVChatUser;
 
-@interface MVChatRoom : NSObject {
+@interface MVChatRoom : NSObject <MVMessaging> {
 @protected
 	__weak MVChatConnection *_connection;
 	id _uniqueIdentifier;

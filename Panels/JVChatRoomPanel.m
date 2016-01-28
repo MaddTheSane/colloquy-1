@@ -1,3 +1,4 @@
+#import <ChatCore/ChatCore.h>
 #import "JVChatController.h"
 #import "JVTabbedChatWindowController.h"
 #import "MVConnectionsController.h"
