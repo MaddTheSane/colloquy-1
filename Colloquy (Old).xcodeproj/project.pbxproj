@@ -84,6 +84,9 @@
 		1C710AC009F23D9D007B4515 /* sidebarResizeWidget.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C710ABC09F23D9C007B4515 /* sidebarResizeWidget.png */; };
 		1C710AC109F23D9D007B4515 /* sidebarStatusAreaBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C710ABD09F23D9C007B4515 /* sidebarStatusAreaBackground.png */; };
 		1C7780DE08FA1D82006AD8E5 /* JVSpeechController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7780DC08FA1D81006AD8E5 /* JVSpeechController.m */; };
+		1C77822908FA4104006AD8E5 /* topicBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C77822808FA4101006AD8E5 /* topicBackground.png */; };
+		1C77831208FA4EA2006AD8E5 /* topicToggleDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C77831008FA4EA2006AD8E5 /* topicToggleDown.png */; };
+		1C77831308FA4EA2006AD8E5 /* topicToggleUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C77831108FA4EA2006AD8E5 /* topicToggleUp.png */; };
 		1C7F30160855467F00D41FB0 /* Colloquy.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = CBF685150820186F00F498FB /* Colloquy.mdimporter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1C8444A30F26C7D600701E36 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 89EB91A90F269BEF0028B3E3 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1C8BDCF4054345160035B84A /* JVChatUserInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C8BDCF2054345160035B84A /* JVChatUserInspector.m */; };
@@ -108,10 +111,8 @@
 		1CB2CD2F052DDC560094AAA4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5394C0B0378E44D01A35792 /* Localizable.strings */; };
 		1CB2CD30052DDC560094AAA4 /* Chat.clr in Resources */ = {isa = PBXBuildFile; fileRef = F51F91D7037967CB01A35792 /* Chat.clr */; };
 		1CB2CD31052DDC560094AAA4 /* GPL.txt in Resources */ = {isa = PBXBuildFile; fileRef = F52BA284037C13C201A35792 /* GPL.txt */; };
-		1CB2CD33052DDC560094AAA4 /* Colloquy.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5DD34730382E5E501000102 /* Colloquy.icns */; };
 		1CB2CD34052DDC560094AAA4 /* MVConnections.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5C4977B0385785401000102 /* MVConnections.xib */; };
 		1CB2CD50052DDC560094AAA4 /* template.html in Resources */ = {isa = PBXBuildFile; fileRef = 1C3C116005029DE1000001C8 /* template.html */; };
-		1CB2CD52052DDC560094AAA4 /* Generic.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1C5959010507803F000001C8 /* Generic.icns */; };
 		1CB2CD54052DDC560094AAA4 /* default.xsl in Resources */ = {isa = PBXBuildFile; fileRef = 1CBECDCF0508C8AB000001C8 /* default.xsl */; };
 		1CB2CD56052DDC560094AAA4 /* JVChatWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1CBECE390508D58F000001C8 /* JVChatWindow.xib */; };
 		1CB2CD57052DDC560094AAA4 /* JVDirectChat.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1CBECE3A0508D58F000001C8 /* JVDirectChat.xib */; };
@@ -469,7 +470,6 @@
 		1C51B4CC052DE14B00BB459B /* Info-StandardCommands.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-StandardCommands.plist"; sourceTree = "<group>"; };
 		1C51B4CD052DE14B00BB459B /* Standard Commands.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Standard Commands.plugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C51B89D052DF91E00BB459B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1C5959010507803F000001C8 /* Generic.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Generic.icns; sourceTree = "<group>"; };
 		1C59A91F09FDEBA3000682B8 /* JVChatWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatWindowControllerTests.m; sourceTree = "<group>"; };
 		1C59BD61059E2E02001487E2 /* ChatPlugIn.scriptSuite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptSuite; path = ChatPlugIn.scriptSuite; sourceTree = "<group>"; };
 		1C59BD63059E2E16001487E2 /* ChatPlugIn.scriptTerminology */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptTerminology; path = ChatPlugIn.scriptTerminology; sourceTree = "<group>"; };
@@ -478,7 +478,7 @@
 		1C5EF35907B45C1F004E66D3 /* JVChatEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JVChatEvent.m; path = Models/JVChatEvent.m; sourceTree = "<group>"; };
 		1C5EF36907B45FBF004E66D3 /* JVChatSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JVChatSession.h; path = Models/JVChatSession.h; sourceTree = "<group>"; };
 		1C5EF36A07B45FBF004E66D3 /* JVChatSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JVChatSession.m; path = Models/JVChatSession.m; sourceTree = "<group>"; };
-		1C6075E005138ED600A8FE6E /* colloquy-alpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "colloquy-alpha.png"; path = "Resources/colloquy-alpha.png"; sourceTree = SOURCE_ROOT; };
+		1C6075E005138ED600A8FE6E /* colloquy-alpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "colloquy-alpha.png"; sourceTree = "<group>"; };
 		1C6266D2103CC9A900A6B346 /* JVAnalyticsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JVAnalyticsController.h; path = Controllers/JVAnalyticsController.h; sourceTree = "<group>"; };
 		1C6266D3103CC9A900A6B346 /* JVAnalyticsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JVAnalyticsController.m; path = Controllers/JVAnalyticsController.m; sourceTree = "<group>"; };
 		1C6268E4103E6D3400A6B346 /* SparkleUpdatePublicDSAKey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SparkleUpdatePublicDSAKey.pem; sourceTree = "<group>"; };
@@ -513,6 +513,9 @@
 		1C746A95050CF86B000001C8 /* emoticons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = emoticons.plist; sourceTree = "<group>"; };
 		1C7780DB08FA1D81006AD8E5 /* JVSpeechController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JVSpeechController.h; path = Controllers/JVSpeechController.h; sourceTree = "<group>"; };
 		1C7780DC08FA1D81006AD8E5 /* JVSpeechController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JVSpeechController.m; path = Controllers/JVSpeechController.m; sourceTree = "<group>"; };
+		1C77822808FA4101006AD8E5 /* topicBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicBackground.png; sourceTree = "<group>"; };
+		1C77831008FA4EA2006AD8E5 /* topicToggleDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicToggleDown.png; sourceTree = "<group>"; };
+		1C77831108FA4EA2006AD8E5 /* topicToggleUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicToggleUp.png; sourceTree = "<group>"; };
 		1C7B83C50668D732004F1EFE /* NSNotificationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNotificationAdditions.h; path = Additions/NSNotificationAdditions.h; sourceTree = "<group>"; };
 		1C7C76E507DBA1C100FB5F83 /* NSCoreSuite.scriptSuite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptSuite; path = NSCoreSuite.scriptSuite; sourceTree = "<group>"; };
 		1C7C76E607DBA1C100FB5F83 /* NSCoreSuite.scriptTerminology */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptTerminology; path = NSCoreSuite.scriptTerminology; sourceTree = "<group>"; };
@@ -919,7 +922,6 @@
 		F5C497740385713801000102 /* MVConnectionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVConnectionsController.h; path = Controllers/MVConnectionsController.h; sourceTree = "<group>"; };
 		F5C497750385713801000102 /* MVConnectionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MVConnectionsController.m; path = Controllers/MVConnectionsController.m; sourceTree = "<group>"; };
 		F5C4977C0385785401000102 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Languages/en.lproj/MVConnections.xib; sourceTree = "<group>"; };
-		F5DD34730382E5E501000102 /* Colloquy.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Colloquy.icns; path = Resources/Colloquy.icns; sourceTree = SOURCE_ROOT; };
 		F5E2538403882A8501000102 /* MVColorPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVColorPanel.h; path = Views/MVColorPanel.h; sourceTree = "<group>"; };
 		F5E2538503882A8501000102 /* MVColorPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MVColorPanel.m; path = Views/MVColorPanel.m; sourceTree = "<group>"; };
 		F5E98623018B412B01EE70DE /* NSAttributedStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSAttributedStringAdditions.h; path = Additions/NSAttributedStringAdditions.h; sourceTree = "<group>"; };
@@ -1237,7 +1239,7 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		1CC478470427BB2C00000102 /* Plug–Ins */ = {
+		1CC478470427BB2C00000102 /* Plug-Ins */ = {
 			isa = PBXGroup;
 			children = (
 				1CC478480427BB5500000102 /* Standard Commands */,
@@ -1247,7 +1249,6 @@
 				1C0A199A08B0416C00324E25 /* Python Support */,
 				1CA56CCD042A713E00000102 /* iTunes */,
 			);
-			name = "Plug–Ins";
 			path = "Plug-Ins";
 			sourceTree = "<group>";
 		};
@@ -1434,7 +1435,7 @@
 				1CABFD090658622600801C15 /* Panels & List Items */,
 				1CFAFED5053C1BA500C702F9 /* Inspectors */,
 				1CBC62F405488D5A009E59E1 /* Preferences */,
-				1CC478470427BB2C00000102 /* Plug–Ins */,
+				1CC478470427BB2C00000102 /* Plug-Ins */,
 				CBF684F00820174000F498FB /* Metadata Importer */,
 			);
 			indentWidth = 4;
@@ -1482,8 +1483,6 @@
 				1C51B48A052DE0CB00BB459B /* Info-ChatCore.plist */,
 				1C51B4CC052DE14B00BB459B /* Info-StandardCommands.plist */,
 				1C6268E4103E6D3400A6B346 /* SparkleUpdatePublicDSAKey.pem */,
-				F5DD34730382E5E501000102 /* Colloquy.icns */,
-				1C5959010507803F000001C8 /* Generic.icns */,
 				F52BA284037C13C201A35792 /* GPL.txt */,
 				1C043B4913DC8B7200B8FD9E /* Credits.rtf */,
 				F5394C0B0378E44D01A35792 /* Localizable.strings */,
@@ -1566,6 +1565,9 @@
 		F52955590181EB5901EE70DE /* Misc. Icons */ = {
 			isa = PBXGroup;
 			children = (
+				1C77822808FA4101006AD8E5 /* topicBackground.png */,
+				1C77831008FA4EA2006AD8E5 /* topicToggleDown.png */,
+				1C77831108FA4EA2006AD8E5 /* topicToggleUp.png */,
 				1C6075E005138ED600A8FE6E /* colloquy-alpha.png */,
 				55D0E36C1B86605A00DD27B9 /* Miscellaneous.xcassets */,
 			);
@@ -1830,10 +1832,8 @@
 				1CB2CD2F052DDC560094AAA4 /* Localizable.strings in Resources */,
 				1CB2CD30052DDC560094AAA4 /* Chat.clr in Resources */,
 				1CB2CD31052DDC560094AAA4 /* GPL.txt in Resources */,
-				1CB2CD33052DDC560094AAA4 /* Colloquy.icns in Resources */,
 				1CB2CD34052DDC560094AAA4 /* MVConnections.xib in Resources */,
 				1CB2CD50052DDC560094AAA4 /* template.html in Resources */,
-				1CB2CD52052DDC560094AAA4 /* Generic.icns in Resources */,
 				1CB2CD54052DDC560094AAA4 /* default.xsl in Resources */,
 				55D0E36D1B86605A00DD27B9 /* Miscellaneous.xcassets in Resources */,
 				1CB2CD56052DDC560094AAA4 /* JVChatWindow.xib in Resources */,
@@ -1879,6 +1879,9 @@
 				1CE6916E08B183C7006D9CA0 /* Colloquy.scriptSuite in Resources */,
 				1CE6916F08B183C7006D9CA0 /* NSTextSuite.scriptTerminology in Resources */,
 				1CE6917008B183C8006D9CA0 /* NSTextSuite.scriptSuite in Resources */,
+				1C77822908FA4104006AD8E5 /* topicBackground.png in Resources */,
+				1C77831208FA4EA2006AD8E5 /* topicToggleDown.png in Resources */,
+				1C77831308FA4EA2006AD8E5 /* topicToggleUp.png in Resources */,
 				1C1AFB3D09C295D900BF3E2A /* base.html in Resources */,
 				1C1AFDAB09C3BC5000BF3E2A /* roomTopicBanner.html in Resources */,
 				1C710A2009F2396C007B4515 /* JVSidebarChatWindow.xib in Resources */,

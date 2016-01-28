@@ -64,7 +64,7 @@ extern NSString *JVChatViewPboardType;
 - (IBAction) selectNextPanel:(nullable id) sender;
 - (IBAction) selectNextActivePanel:(nullable id) sender;
 
-@property (readonly, copy) NSToolbarItem *toggleChatDrawerToolbarItem;
+- (NSToolbarItem *) toggleChatDrawerToolbarItem;
 - (IBAction) toggleViewsDrawer:(nullable id) sender;
 - (IBAction) openViewsDrawer:(nullable id) sender;
 - (IBAction) closeViewsDrawer:(nullable id) sender;
@@ -111,7 +111,7 @@ extern NSString *JVChatViewPboardType;
 - (nullable NSResponder *) firstResponder;
 - (NSString *) toolbarIdentifier;
 - (NSString *) windowTitle;
-@property (readonly) NSString *identifier;
+@property (readonly) NSString * identifier;
 
 @optional
 - (void) willSelect;
