@@ -1,4 +1,4 @@
-#import "CQKeychain.h"
+#import "Colloquy-Swift.h"
 #import "JVConnectionInspector.h"
 #import "MVConnectionsController.h"
 #import "KAIgnoreRule.h"

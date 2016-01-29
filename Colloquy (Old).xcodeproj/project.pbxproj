@@ -29,7 +29,6 @@
 		0A3187FC067ECEB600271E42 /* TSCustomBan.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A3187FA067ECEB600271E42 /* TSCustomBan.xib */; };
 		0A5B683F0810EC9700398D5A /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B683E0810EC9700398D5A /* default.css */; };
 		0AA8117B0826E08000A3BF2D /* default.js in Resources */ = {isa = PBXBuildFile; fileRef = 0AA811220826DB8800A3BF2D /* default.js */; };
-		19937ADB1AEAAC71005D6C44 /* CQKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 19937ADA1AEAAC71005D6C44 /* CQKeychain.m */; };
 		1C043B4B13DC8B7200B8FD9E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1C043B4913DC8B7200B8FD9E /* Credits.rtf */; };
 		1C05E1EF08F262F500E097BC /* ColloquyScripting.r in Rez */ = {isa = PBXBuildFile; fileRef = 1C7C76ED07DBA1D000FB5F83 /* ColloquyScripting.r */; };
 		1C06052606471FFB002438AF /* JVMixedTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C06052406471FFB002438AF /* JVMixedTableColumn.m */; };
@@ -185,6 +184,7 @@
 		5577DD0D1C599207001A76E1 /* JVStandardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577DD0C1C599207001A76E1 /* JVStandardCommands.swift */; };
 		558E11081C5845A300F9C85B /* JVChatTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558E11071C5845A300F9C85B /* JVChatTabItem.swift */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
+		55910A7C1C5AF83900FCE02D /* CQKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55910A7B1C5AF83900FCE02D /* CQKeychain.swift */; };
 		55B0EF3618CE3DE10000E4CA /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B0EF3518CE3DE10000E4CA /* libxml2.dylib */; };
 		55B0EF3718CE3E040000E4CA /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B0EF3518CE3DE10000E4CA /* libxml2.dylib */; };
 		55B0EF3A18CE3E250000E4CA /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B0EF3818CE3E250000E4CA /* libexslt.dylib */; };
@@ -669,6 +669,7 @@
 		558E11011C5834DB00F9C85B /* Colloquy (Application)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Colloquy (Application)-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		558E11071C5845A300F9C85B /* JVChatTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JVChatTabItem.swift; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
+		55910A7B1C5AF83900FCE02D /* CQKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CQKeychain.swift; path = Shared/Controllers/CQKeychain.swift; sourceTree = SOURCE_ROOT; };
 		55AD12391C597212009F258C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Languages/Base.lproj/TSCustomBan.xib; sourceTree = "<group>"; };
 		55AD123B1C597223009F258C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Languages/en.lproj/TSCustomBan.strings; sourceTree = "<group>"; };
 		55AD123C1C59722F009F258C /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Languages/nl.lproj/TSCustomBan.strings; sourceTree = "<group>"; };
@@ -1301,6 +1302,7 @@
 		1CFAFE9A053C1B3D00C702F9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				55910A7B1C5AF83900FCE02D /* CQKeychain.swift */,
 				19937ADA1AEAAC71005D6C44 /* CQKeychain.m */,
 				19937AD91AEAAC71005D6C44 /* CQKeychain.h */,
 				1CEE3F04057AEC0200AD6DE2 /* JVBuddy.m */,
@@ -2055,6 +2057,7 @@
 				1CC6FC570549FDD70075807C /* JVBehaviorPreferencesViewController.m in Sources */,
 				1CC6FD65054B70BC0075807C /* JVFontPreviewField.m in Sources */,
 				1CD0201305758CE7000F93B4 /* MVBuddyListController.m in Sources */,
+				55910A7C1C5AF83900FCE02D /* CQKeychain.swift in Sources */,
 				1CEE3F06057AEC0200AD6DE2 /* JVBuddy.m in Sources */,
 				1CDEE25E05823C26000B9075 /* JVFileTransferPreferencesViewController.m in Sources */,
 				1CDEE47A0583DC58000B9075 /* JVBuddyInspector.m in Sources */,
@@ -2067,7 +2070,6 @@
 				1CB3717A060CC81C00F6A81F /* KABubbleWindowView.m in Sources */,
 				1C94370B0639F86700618CD9 /* JVMarkedScroller.m in Sources */,
 				1C06052606471FFB002438AF /* JVMixedTableColumn.m in Sources */,
-				19937ADB1AEAAC71005D6C44 /* CQKeychain.m in Sources */,
 				1C06077C064A5DE8002438AF /* JVColorWellCell.m in Sources */,
 				1CABF8780656414100801C15 /* NSBundleAdditions.m in Sources */,
 				1CABFCB20657F10900801C15 /* JVSplitView.m in Sources */,
