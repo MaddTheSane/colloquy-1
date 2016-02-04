@@ -1096,7 +1096,8 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 					[cmessage setAction:action];
 
 					[self sendMessage:cmessage];
-					[self echoSentMessageToDisplay:cmessage]; // echo after the plugins process the message
+					if( ! [[[self connection] supportedFeatures] containsObject:MVChatConnectionEchoMessageFeature] )
+						[self echoSentMessageToDisplay:cmessage]; // echo after the plugins process the message, if the server won't echo it for us
 				}
 			}
 		}
@@ -1336,9 +1337,9 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 	NSRect splitViewFrame = [splitView frame];
 	NSSize contentSize = [send minimumSizeForContent];
 	NSRect sendFrame = [[[send superview] superview] frame];
-	float dividerThickness = [splitView dividerThickness];
-	float maxContentHeight = ( NSHeight( splitViewFrame ) - dividerThickness - 75. );
-	float newContentHeight =  MIN( maxContentHeight, MAX( 22., contentSize.height + 8. ) );
+	CGFloat dividerThickness = [splitView dividerThickness];
+	CGFloat maxContentHeight = ( NSHeight( splitViewFrame ) - dividerThickness - 75. );
+	CGFloat newContentHeight =  MIN( maxContentHeight, MAX( 22., contentSize.height + 8. ) );
 
 	if( newContentHeight == NSHeight( sendFrame ) ) return;
 
@@ -1390,7 +1391,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 }
 
 - (void) splitView:(NSSplitView *) sender resizeSubviewsWithOldSize:(NSSize) oldSize {
-	float dividerThickness = [sender dividerThickness];
+	CGFloat dividerThickness = [sender dividerThickness];
 	NSRect newFrame = [sender frame];
 
 	// Keep the size of the send box constant during window resizes
