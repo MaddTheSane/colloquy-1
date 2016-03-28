@@ -180,6 +180,11 @@
 		1CF8030F070C893500C9B54C /* libsilcclient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030D070C893500C9B54C /* libsilcclient.framework */; };
 		1CF80310070C894100C9B54C /* libsilc.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030C070C893500C9B54C /* libsilc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1CF80311070C894100C9B54C /* libsilcclient.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030D070C893500C9B54C /* libsilcclient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5503608B1CA90E8A00BEBDB0 /* iNetToNSURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5503608A1CA90E8A00BEBDB0 /* iNetToNSURL.m */; };
+		5503608D1CA90E8A00BEBDB0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5503608C1CA90E8A00BEBDB0 /* main.m */; };
+		550360921CA90E8A00BEBDB0 /* iNetToNSURL.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = 550360861CA90E8A00BEBDB0 /* iNetToNSURL.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		550360981CA90EDA00BEBDB0 /* NSURLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 550360971CA90EDA00BEBDB0 /* NSURLAdditions.m */; };
+		5503609A1CA90FA500BEBDB0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550360991CA90FA500BEBDB0 /* Carbon.framework */; };
 		556CEBE51BCB795600F00EAA /* Tabs Interface Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 556CEBE41BCB795600F00EAA /* Tabs Interface Images.xcassets */; };
 		5575C7BF1AFAB53D001EEF98 /* widgets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5575C7BE1AFAB53D001EEF98 /* widgets.xcassets */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
@@ -265,6 +270,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
 			remoteInfo = "JavaScript Support Plugin";
+		};
+		5503608F1CA90E8A00BEBDB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 550360851CA90E8A00BEBDB0;
+			remoteInfo = iNetToNSURL;
 		};
 		55C8A2DD180735D200A7BB42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -376,6 +388,17 @@
 				1C9D83DA0C98670000BB6C58 /* iTunes.scpt in Copy Plugins */,
 			);
 			name = "Copy Plugins";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		550360911CA90E8A00BEBDB0 /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+				550360921CA90E8A00BEBDB0 /* iNetToNSURL.xpc in Embed XPC Services */,
+			);
+			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -652,6 +675,15 @@
 		1CF79CBD07AC77E600696918 /* JVChatTranscript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatTranscript.m; sourceTree = "<group>"; };
 		1CF8030C070C893500C9B54C /* libsilc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libsilc.framework; path = Frameworks/libsilc.framework; sourceTree = SOURCE_ROOT; };
 		1CF8030D070C893500C9B54C /* libsilcclient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libsilcclient.framework; path = Frameworks/libsilcclient.framework; sourceTree = SOURCE_ROOT; };
+		550360861CA90E8A00BEBDB0 /* iNetToNSURL.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = iNetToNSURL.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		550360881CA90E8A00BEBDB0 /* iNetToNSURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iNetToNSURLProtocol.h; sourceTree = "<group>"; };
+		550360891CA90E8A00BEBDB0 /* iNetToNSURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iNetToNSURL.h; sourceTree = "<group>"; };
+		5503608A1CA90E8A00BEBDB0 /* iNetToNSURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNetToNSURL.m; sourceTree = "<group>"; };
+		5503608C1CA90E8A00BEBDB0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5503608E1CA90E8A00BEBDB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		550360961CA90EDA00BEBDB0 /* NSURLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLAdditions.h; sourceTree = "<group>"; };
+		550360971CA90EDA00BEBDB0 /* NSURLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLAdditions.m; sourceTree = "<group>"; };
+		550360991CA90FA500BEBDB0 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		5530388F171722A200652D45 /* GetMetadataForFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetMetadataForFile.h; sourceTree = "<group>"; };
 		556CEBE41BCB795600F00EAA /* Tabs Interface Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Tabs Interface Images.xcassets"; sourceTree = "<group>"; };
 		5575C7BE1AFAB53D001EEF98 /* widgets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = widgets.xcassets; sourceTree = "<group>"; };
@@ -956,6 +988,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		550360831CA90E8A00BEBDB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5503609A1CA90FA500BEBDB0 /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55C8A2CD180735D100A7BB42 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -987,8 +1027,10 @@
 				F5185C82018626F701EE70DE /* Interfaces */,
 				F50B0AA10170C89301A84BDE /* Resources */,
 				1C6A13E608666DDC009EE6D2 /* Configurations */,
+				550360871CA90E8A00BEBDB0 /* iNetToNSURL */,
 				089C1671FE841209C02AAC07 /* Frameworks */,
 				1CB2C8CC052DDA360094AAA4 /* Products */,
+				550360861CA90E8A00BEBDB0 /* iNetToNSURL.xpc */,
 			);
 			name = "Massinova Menu Extra";
 			sourceTree = "<group>";
@@ -996,6 +1038,7 @@
 		089C1671FE841209C02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				550360991CA90FA500BEBDB0 /* Carbon.framework */,
 				C2BFB18A1BBFFAFA004FAE14 /* MASPreferences.xcodeproj */,
 				92A711941A4A5166009E80F0 /* SecurityInterface.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
@@ -1371,6 +1414,20 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		550360871CA90E8A00BEBDB0 /* iNetToNSURL */ = {
+			isa = PBXGroup;
+			children = (
+				550360961CA90EDA00BEBDB0 /* NSURLAdditions.h */,
+				550360971CA90EDA00BEBDB0 /* NSURLAdditions.m */,
+				550360881CA90E8A00BEBDB0 /* iNetToNSURLProtocol.h */,
+				550360891CA90E8A00BEBDB0 /* iNetToNSURL.h */,
+				5503608A1CA90E8A00BEBDB0 /* iNetToNSURL.m */,
+				5503608C1CA90E8A00BEBDB0 /* main.m */,
+				5503608E1CA90E8A00BEBDB0 /* Info.plist */,
+			);
+			path = iNetToNSURL;
+			sourceTree = "<group>";
+		};
 		55C8A2D5180735D100A7BB42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -1637,17 +1694,36 @@
 				1C51B53B104E160600791856 /* Copy Bouncer Plugin */,
 				1CB2CD88052DDC560094AAA4 /* Copy Plugins */,
 				1C2EDE8B0A3568EF0051E9C2 /* Update Build Number */,
+				550360911CA90E8A00BEBDB0 /* Embed XPC Services */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				1CEEAB19095BD24100166A54 /* PBXTargetDependency */,
 				C22A35591BC00BB7001757D7 /* PBXTargetDependency */,
+				550360901CA90E8A00BEBDB0 /* PBXTargetDependency */,
 			);
 			name = "Colloquy (Application)";
 			productName = "Massinova (Application)";
 			productReference = 1CB2CD8C052DDC570094AAA4 /* Colloquy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		550360851CA90E8A00BEBDB0 /* iNetToNSURL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 550360931CA90E8A00BEBDB0 /* Build configuration list for PBXNativeTarget "iNetToNSURL" */;
+			buildPhases = (
+				550360821CA90E8A00BEBDB0 /* Sources */,
+				550360831CA90E8A00BEBDB0 /* Frameworks */,
+				550360841CA90E8A00BEBDB0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iNetToNSURL;
+			productName = iNetToNSURL;
+			productReference = 550360861CA90E8A00BEBDB0 /* iNetToNSURL.xpc */;
+			productType = "com.apple.product-type.xpc-service";
 		};
 		55C8A2CF180735D100A7BB42 /* Colloquy Tests */ = {
 			isa = PBXNativeTarget;
@@ -1692,6 +1768,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
 				LastUpgradeCheck = 0720;
+				TargetAttributes = {
+					550360851CA90E8A00BEBDB0 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
 			};
 			buildConfigurationList = 1C041A700854E97700A5A5BA /* Build configuration list for PBXProject "Colloquy (Old)" */;
 			compatibilityVersion = "Xcode 6.3";
@@ -1746,6 +1827,7 @@
 				CBF685140820186F00F498FB /* Colloquy (Metadata Importer) */,
 				9295C92416782ECB009F9014 /* Colloquy (Aggregate) */,
 				55C8A2CF180735D100A7BB42 /* Colloquy Tests */,
+				550360851CA90E8A00BEBDB0 /* iNetToNSURL */,
 			);
 		};
 /* End PBXProject section */
@@ -1881,6 +1963,13 @@
 				9200338D13D92515005B69BA /* MVFileTransfer.xib in Resources */,
 				55F42AC01AEC39A00085CA56 /* AppIcon.xcassets in Resources */,
 				1C043B4B13DC8B7200B8FD9E /* Credits.rtf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		550360841CA90E8A00BEBDB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2094,6 +2183,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		550360821CA90E8A00BEBDB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				550360981CA90EDA00BEBDB0 /* NSURLAdditions.m in Sources */,
+				5503608D1CA90E8A00BEBDB0 /* main.m in Sources */,
+				5503608B1CA90E8A00BEBDB0 /* iNetToNSURL.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55C8A2CC180735D100A7BB42 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2118,6 +2217,11 @@
 			isa = PBXTargetDependency;
 			name = "Chat Core (Framework)";
 			targetProxy = 1CEEAB18095BD24100166A54 /* PBXContainerItemProxy */;
+		};
+		550360901CA90E8A00BEBDB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 550360851CA90E8A00BEBDB0 /* iNetToNSURL */;
+			targetProxy = 5503608F1CA90E8A00BEBDB0 /* PBXContainerItemProxy */;
 		};
 		55C8A2DE180735D200A7BB42 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2651,6 +2755,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Colloquy;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				EXPORTED_SYMBOLS_FILE = Colloquy.exp;
@@ -2735,6 +2840,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = Colloquy;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				EXPORTED_SYMBOLS_FILE = Colloquy.exp;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
@@ -2799,6 +2905,69 @@
 				SYMROOT = build;
 			};
 			name = Release;
+		};
+		550360941CA90E8A00BEBDB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = iNetToNSURL/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.iNetToNSURL;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		550360951CA90E8A00BEBDB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = iNetToNSURL/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.iNetToNSURL;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
 		};
 		55C8A2DF180735D200A7BB42 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -2927,6 +3096,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		550360931CA90E8A00BEBDB0 /* Build configuration list for PBXNativeTarget "iNetToNSURL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				550360941CA90E8A00BEBDB0 /* Release */,
+				550360951CA90E8A00BEBDB0 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		55C8A2E3180735D200A7BB42 /* Build configuration list for PBXNativeTarget "Colloquy Tests" */ = {
 			isa = XCConfigurationList;
