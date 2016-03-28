@@ -13,6 +13,7 @@
 #import <ChatCore/MVChatConnection.h>
 #import <ChatCore/MVChatRoom.h>
 #import <Carbon/Carbon.h>
+#import "iNetToNSURLProtocol.h"
 
 #import <SecurityInterface/SFCertificateTrustPanel.h>
 
@@ -206,18 +207,43 @@ static NSMenu *favoritesMenu = nil;
 		// this can likely be removed when 3.0 starts, if we even keep MVConnectionsController around (zach)
 		// agreed. and once we do, we should document it in a list of "retired user defaults keys". (alex)
 		if( ! [[NSUserDefaults standardUserDefaults] boolForKey:@"JVFavoritesMigrated"] ) {
-			NSString *path = [@"~/Library/Application Support/Colloquy/Favorites" stringByExpandingTildeInPath];
+			NSString *path;
+			NSFileManager *fm = [NSFileManager defaultManager];
+			{
+				NSURL *urlPath = [fm URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+				urlPath = [urlPath URLByAppendingPathComponent:@"Colloquy" isDirectory:YES];
+				urlPath = [urlPath URLByAppendingPathComponent:@"Favorites" isDirectory:YES];
+				path = urlPath.path;
+			}
 
 			NSArray *directoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+			
+			NSXPCConnection *_connectionToService = [[NSXPCConnection alloc] initWithServiceName:@"com.github.maddthesane.iNetToNSURL"];
+			_connectionToService.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(iNetToNSURLProtocol)];
+			[_connectionToService resume];
+			const NSInteger totalCount = directoryContents.count;
+			__block NSInteger handled = 0;
+			NSMutableArray *favorites = [[NSMutableArray alloc] initWithCapacity:totalCount];
+
 			for ( NSString *item in directoryContents ) {
 				if ( ![[item pathExtension] isEqualToString:@"inetloc"] ) {
+					handled++;
 					continue;
 				}
+				NSString *filePath = [path stringByAppendingPathComponent:item];
 
 				// This code previously migrated favorites from being resource fork based (.inetloc files) to the newer
 				// plist (shipped 4 versions with it from 2012 to at least 2015), now it just deletes the old files.
-
-				[[NSFileManager defaultManager] removeItemAtPath:item error:nil];
+				[[_connectionToService remoteObjectProxy] carbonURLResourceAtPathToURL:filePath withReply:^(NSURL *url) {
+					[favorites addObject:@{@"target": [url.path lastPathComponent],
+										   @"server": url.host, @"scheme": url.scheme}];
+					handled++;
+					[fm removeItemAtPath:item error:nil];
+					if (handled == totalCount) {
+						[favorites writeToFile:[path stringByAppendingPathComponent:@"Favorites.plist"] atomically:YES];
+						[_connectionToService invalidate];
+					}
+				}];
 			}
 
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"JVFavoritesMigrated"];
