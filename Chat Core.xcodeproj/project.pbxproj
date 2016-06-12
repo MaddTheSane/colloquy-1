@@ -330,7 +330,7 @@
 		55A3A06E1D0BB9F7001F92CA /* MVDirectClientConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0FE8A90B4F647D00855B9C /* MVDirectClientConnection.m */; };
 		55A3A06F1D0BB9F7001F92CA /* MVDirectChatConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C9C13380B50A7AC005F9F28 /* MVDirectChatConnection.m */; };
 		55A3A0701D0BB9F7001F92CA /* NSFileManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 899F4EFD12617870003B9D9A /* NSFileManagerAdditions.m */; };
-		55A3A0711D0BB9F7001F92CA /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 922453BA1689057200BFF3FF /* GCDAsyncSocket.m */; };
+		55A3A0711D0BB9F7001F92CA /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 922453BA1689057200BFF3FF /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-Wno-receiver-is-weak -Wno-implicit-retain-self -Wno-pointer-arith"; }; };
 		55A3A0721D0BB9F7001F92CA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 922B1FF41692C42F002ECDFD /* DDLog.m */; };
 		55A3A0731D0BB9F7001F92CA /* MVDelegateLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 922B1FF61692C42F002ECDFD /* MVDelegateLogger.m */; };
 		55A3A0751D0BB9F7001F92CA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CCB3C3705228EFD000001C8 /* SystemConfiguration.framework */; };
@@ -2721,7 +2721,7 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MODULEMAP_FILE = ChatCore.modulemap;
 				OTHER_LDFLAGS = (
 					"-seg1addr",
@@ -2776,7 +2776,7 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MODULEMAP_FILE = ChatCore.modulemap;
 				OTHER_LDFLAGS = (
 					"-seg1addr",
