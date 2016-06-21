@@ -16,31 +16,34 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	}
 	
 	public func handleFileSendWithArguments(arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
-		/*
-		NSString *to = nil, *path = nil;
-		BOOL passive = [[NSUserDefaults standardUserDefaults] boolForKey:@"JVSendFilesPassively"];
-		NSScanner *scanner = [NSScanner scannerWithString:arguments];
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:nil];
-		[scanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:&to];
-		[scanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\r"] intoString:&path];
+		var to: NSString?
+		var path: NSString?
+		let passive = NSUserDefaults.standardUserDefaults().boolForKey("JVSendFilesPassively")
+		let scanner = NSScanner(string: arguments)
+		scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: nil)
+		scanner.scanCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: nil)
+		scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &to)
+		scanner.scanCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: nil)
+		scanner.scanUpToCharactersFromSet(NSCharacterSet(charactersInString: "\n\r"), intoString: &path)
+		guard let to2 = to where to2.length > 0 else {
+			return false
+		}
+		var directory: ObjCBool = false
+		path = path?.stringByStandardizingPath as NSString?
+		if let path = path where path.length > 0 && !NSFileManager.defaultManager().fileExistsAtPath(path as String, isDirectory: &directory) {
+			return true
+		}
+		if directory {
+			return true
+		}
 		
-		if( ! to.length ) return NO;
+		let user = connection.chatUsersWithNickname(to2 as String).first
 		
-		BOOL directory = NO;
-		path = [path stringByStandardizingPath];
-		if( path.length && ! [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&directory] ) return YES;
-		if( directory ) return YES;
-		
-		MVChatUser *user = [[connection chatUsersWithNickname:to] anyObject];
-		
-		if( ! path.length )
-		[user sendFile:nil];
-		else [[NSNotificationCenter chatCenter] postNotificationName:MVFileTransferStartedNotification object:[user sendFile:path passively:passive]];
-		
-		return YES;
-		*/
+		if let path = path where path.length > 0 {
+			NSNotificationCenter.chatCenter().postNotificationName(MVFileTransferStartedNotification, object: user?.sendFile(path as String, passively: passive))
+		} else {
+			user?.sendFile(nil)
+		}
 		return true
 	}
 	
@@ -123,12 +126,11 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		if channels.count == 1 {
 			connection.joinedChatRoomWithName(channels[0]).partWithReason(reason)
 			return true;
-		} else if( channels.count > 1 ) {
-			
+		} else if channels.count > 1 {
 			for channel in channels {
-				//channel = [channel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-				if channel.characters.count != 0 {
-					connection.joinedChatRoomWithName(channel).partWithReason(reason)
+				let channel1 = channel.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+				if channel1.characters.count != 0 {
+					connection.joinedChatRoomWithName(channel1).partWithReason(reason)
 				}
 			}
 			
@@ -243,7 +245,8 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public func handleIgnoreWithArguments(var args: String, inView view: JVChatViewController!) -> Bool {
+	public func handleIgnoreWithArguments(args1: String, inView view: JVChatViewController!) -> Bool {
+		var args = args1
 		// USAGE: /ignore -[p|m|n] [nickname|/regex/] ["message"|/regex/|word] [#rooms ...]
 		// p makes the ignore permanent (i.e. the ignore is saved to disk)
 		// m is to specify a message
@@ -269,7 +272,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		if args.characters.count == 0 {
 			let info = JVInspectorController.inspectorOfObject(view.connection()!)
 			info.show(nil)
-			info.inspector.performSelector("selectTabWithIdentifier:", withObject: "Ignores")
+			info.inspector.performSelector(#selector(JVConnectionInspector.selectTabWithIdentifier(_:)), withObject: "Ignores")
 			return true;
 		}
 		
@@ -286,7 +289,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				member = true;
 			}
 			
-			offset++; // lookup next arg.
+			offset += 1; // lookup next arg.
 		}
 		
 		// check for wrong number of arguments
@@ -296,7 +299,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		
 		if member {
 			memberString = argsArray[offset];
-			offset++;
+			offset += 1;
 			args = argsArray[offset..<(argsArray.count - offset)].joinWithSeparator(" ")
 			// without that, the / test in message could have matched the / from the nick...
 		}
@@ -332,7 +335,8 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public func handleUnignoreWithArguments(var args: String, inView view: JVChatViewController!) -> Bool {
+	public func handleUnignoreWithArguments(args1: String, inView view: JVChatViewController!) -> Bool {
+		var args = args1
 		// USAGE: /unignore -[m|n] [nickname|/regex/] ["message"|/regex/|word] [#rooms ...]
 		// m is to specify a message
 		// n is to specify a nickname
@@ -356,7 +360,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		if args.characters.count == 0 {
 			let info = JVInspectorController.inspectorOfObject(view.connection()!)
 			info.show(nil)
-			info.inspector.performSelector("selectTabWithIdentifier:", withObject: "Ignores")
+			info.inspector.performSelector(#selector(JVConnectionInspector.selectTabWithIdentifier(_:)), withObject: "Ignores")
 			return true;
 		}
 		
@@ -370,7 +374,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				member = true
 			}
 			
-			offset++; // lookup next arg.
+			offset += 1; // lookup next arg.
 		}
 		
 		// check for wrong number of arguments
@@ -380,7 +384,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		
 		if member {
 			memberString = argsArray[offset];
-			offset++;
+			offset += 1;
 			args = argsArray[offset...(argsArray.count - offset)].joinWithSeparator(" ")
 			// without that, the / test in message could have matched the / from the nick...
 		}
@@ -404,19 +408,22 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		}
 		
 		let rules = MVConnectionsController.defaultController().ignoreRulesForConnection(view.connection())
-		for var i = 0; i < rules.count; i++ {
+		var i = 0
+		while i < rules.count {
 			let rule = rules[i] as! KAIgnoreRule
 			if( ( rule.user == nil || rule.user!.isCaseInsensitiveEqualToString(memberString) ) && ( rule.message == nil || rule.message!.isCaseInsensitiveEqualToString(messageString) ) && ( rule.rooms == nil || rule.rooms! == rooms ) ) {
 				rules.removeObjectAtIndex(i)
-				i--;
+				i -= 1;
 				break;
 			}
+			i += 1
 		}
 		
 		return true;
 	}
 	
-	public override func processUserCommand(var command: String!, withArguments arguments: NSAttributedString!, toConnection connection: MVChatConnection!, inView view: JVChatViewController!) -> Bool {
+	public override func processUserCommand(command1: String!, withArguments arguments: NSAttributedString!, toConnection connection: MVChatConnection!, inView view: JVChatViewController!) -> Bool {
+		var command = command1
 		let isChatRoom = view is JVChatRoomPanel
 		let isDirectChat = view is JVDirectChatPanel;
 		command = command.lowercaseString
@@ -483,7 +490,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		}
 	
 		if isChatRoom {
-			switch command {
+			switch command.lowercaseString {
 			case "leave", "part":
 				if arguments.length == 0 {
 					//return [self handlePartWithArguments:((MVChatRoom *)room.target).name forConnection:room.connection]
@@ -502,7 +509,33 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 					return false;
 				}
 				
+			case "names":
+				if arguments.string.characters.count == 0 {
+					room?.windowController()?.openViewsDrawer(nil)
+					if let wc = room?.windowController(), room = room where wc.isListItemExpanded(room) {
+						wc.collapseListItem(room)
+					} else {
+						room?.windowController()?.expandListItem(room!)
+					}
+					return true;
+				}
 				
+			case "cycle", "hop":
+				if arguments.string.characters.count == 0 {
+					room?.partChat(nil)
+					room?.joinChat(nil)
+					return true
+				}
+				
+			case "invite":
+				if connection.type == .IRCType {
+					
+				}
+				
+			case "help":
+				NSWorkspace.sharedWorkspace().openURL(NSURL(string: "http://project.colloquy.info/wiki/Documentation/CommandReference")!)
+				return true
+
 			default:
 				break
 				
@@ -510,23 +543,6 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		}
 		
 	/*
-			if( ! [command caseInsensitiveCompare:@"topic"] || ! [command caseInsensitiveCompare:@"t"] ) {
-	if( ! arguments.length && connection.type == MVChatConnectionIRCType ) {
-	[[room.display windowScriptObject] callWebScriptMethod:@"toggleTopic" withArguments:nil];
-	return YES;
-	} else if( arguments.length ) {
-	[room.target changeTopic:arguments];
-	return YES;
-	} else return NO;
-	} else if( ! [command caseInsensitiveCompare:@"names"] && ! arguments.string.length ) {
-	[[room windowController] openViewsDrawer:nil];
-	if( [[room windowController] isListItemExpanded:room] ) [[room windowController] collapseListItem:room];
-	else [[room windowController] expandListItem:room];
-	return YES;
-	} else if( ( ! [command caseInsensitiveCompare:@"cycle"] || ! [command caseInsensitiveCompare:@"hop"] ) && ! arguments.string.length ) {
-	[room partChat:nil];
-	[room joinChat:nil];
-	return YES;
 	} else if( ! [command caseInsensitiveCompare:@"invite"] && connection.type == MVChatConnectionIRCType ) {
 	NSString *nick = nil;
 	NSString *roomName = nil;
