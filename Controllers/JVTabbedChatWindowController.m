@@ -1,5 +1,6 @@
 #import "JVChatController.h"
 #import "JVTabbedChatWindowController.h"
+#import "MVApplicationController.h"
 #import "AICustomTabsView.h"
 #import "JVChatTabItem.h"
 #import "MVApplicationController.h"
@@ -409,9 +410,11 @@
 	NSString *type = [[sender draggingPasteboard] availableTypeFromArray:@[TAB_CELL_IDENTIFIER]];
 	if( ! sender || type ) [self _supressTabBarHiding:NO]; // hide the tab bar
 }
+@end
 
 #pragma mark -
 
+@implementation JVTabbedChatWindowController (JVTabbedChatWindowControllerPrivate)
 - (void) _claimMenuCommands {
 	[super _claimMenuCommands];
 
@@ -512,7 +515,7 @@
 	if( ! item ) return;
 
 	if( ( [item conformsToProtocol:@protocol( JVChatViewController )] && item != (id) _activeViewController ) || ( ! _activeViewController && [[item parent] conformsToProtocol:@protocol( JVChatViewController )] && ( item = [item parent] ) ) ) {
-		id lastActive = _activeViewController;
+		id<JVChatViewController> lastActive = _activeViewController;
 		if( [_activeViewController respondsToSelector:@selector( willUnselect )] )
 			[(id<JVChatViewController>)_activeViewController willUnselect];
 		if( [item respondsToSelector:@selector( willSelect )] )
@@ -525,9 +528,9 @@
 		[self _refreshToolbar];
 
 		if( [lastActive respondsToSelector:@selector( didUnselect )] )
-			[(id<JVChatViewController>)lastActive didUnselect];
+			[lastActive didUnselect];
 		if( [_activeViewController respondsToSelector:@selector( didSelect )] )
-			[(id<JVChatViewController>)_activeViewController didSelect];
+			[_activeViewController didSelect];
 	} else if( ! [_views count] || ! _activeViewController ) {
 		[[self window] setContentView:[[NSView alloc] initWithFrame:[[[self window] contentView] frame]]];
 		[[[self window] toolbar] setDelegate:nil];

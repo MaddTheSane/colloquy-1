@@ -318,7 +318,7 @@ static JVBuddyName _mainPreferredName = JVBuddyFullName;
 	if( [firstName length] && ! [lastName length] )
 		return firstName;
 	if( [firstName length] && [lastName length] )
-		return [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+		return [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
 
 	firstName = [self givenNickname];
 	if( [firstName length] )
@@ -362,13 +362,13 @@ static JVBuddyName _mainPreferredName = JVBuddyFullName;
 
 - (void) editInAddressBook {
 	if( ! _person ) return;
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"addressbook://%@?edit", [_person uniqueId]]];
+	NSURL *url = [NSURL URLWithString:[[NSString alloc] initWithFormat:@"addressbook://%@?edit", [_person uniqueId]]];
 	[[NSWorkspace sharedWorkspace] openURL:url];
 }
 
 - (void) viewInAddressBook {
 	if( ! _person ) return;
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"addressbook://%@", [_person uniqueId]]];
+	NSURL *url = [NSURL URLWithString:[[NSString alloc] initWithFormat:@"addressbook://%@", [_person uniqueId]]];
 	[[NSWorkspace sharedWorkspace] openURL:url];
 }
 

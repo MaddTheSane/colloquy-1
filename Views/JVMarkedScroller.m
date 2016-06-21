@@ -313,7 +313,7 @@
 
 - (void) shiftMarksAndShadedAreasBy:(long long) displacement {
 	BOOL negative = ( displacement >= 0 ? NO : YES );
-	NSMutableSet *shiftedMarks = [NSMutableSet set];
+	NSMutableSet *shiftedMarks = [[NSMutableSet alloc] init];
 	unsigned long long unsignedDisplacement = (unsigned long long)ABS( displacement );
 
 	if( ! ( negative && _nearestPreviousMark < unsignedDisplacement ) ) _nearestPreviousMark += unsignedDisplacement;

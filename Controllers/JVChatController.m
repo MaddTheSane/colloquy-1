@@ -61,7 +61,11 @@ static NSMenu *smartTranscriptMenu = nil;
 		if( [panel newMessagesWaiting] > 0 ) title = [NSString stringWithFormat:@"%@ (%ld)", [panel title], [panel newMessagesWaiting]];
 		menuItem = [[NSMenuItem alloc] initWithTitle:title action:@selector( showView: ) keyEquivalent:@""];
 		if( [panel newMessagesWaiting] ) [menuItem setImage:[NSImage imageNamed:@"smartTranscriptTabActivity"]];
-		else [menuItem setImage:[NSImage imageNamed:@"smartTranscriptTab"]];
+		else {
+			NSImage *icon = [NSImage imageNamed:@"smartTranscript"];
+			icon.size = NSMakeSize(16, 16);
+			[menuItem setImage:icon];
+		}
 		[menuItem setTarget:[self defaultController]];
 		[menuItem setRepresentedObject:panel];
 		[smartTranscriptMenu addItem:menuItem];
@@ -451,9 +455,11 @@ static NSMenu *smartTranscriptMenu = nil;
 
 	return ignoreResult;
 }
+@end
 
 #pragma mark -
 
+@implementation JVChatController (JVChatControllerPrivate)
 - (void) _joinedRoom:(NSNotification *) notification {
 	MVChatRoom *rm = [notification object];
 	if( ! [[MVConnectionsController defaultController] managesConnection:[rm connection]] ) return;
@@ -580,7 +586,7 @@ static NSMenu *smartTranscriptMenu = nil;
 			[[JVNotificationController defaultController] performNotification:@"JVNewMemosFromServer" withContextInfo:context];
 
 		} else {
-			NSMutableDictionary *context = [NSMutableDictionary dictionary];
+			NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
 			context[@"title"] = [NSString stringWithFormat:NSLocalizedString( @"Notice from %@", "notice message from user title" ), [user displayName]];
 			context[@"description"] = messageString;
 			context[@"image"] = [NSImage imageNamed:@"activityNewImportant"];

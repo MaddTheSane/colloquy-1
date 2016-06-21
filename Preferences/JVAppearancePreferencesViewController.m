@@ -662,7 +662,7 @@
 			info[@"value"] = object;
 
 			for( NSDictionary *styleInfo in info[@"layouts"][0] ) {
-				NSString *setting = [NSString stringWithFormat:styleInfo[@"value"], path];
+				NSString *setting = [[NSString alloc] initWithFormat:styleInfo[@"value"], path];
 				[self setStyleProperty:styleInfo[@"property"] forSelector:styleInfo[@"selector"] toValue:setting];
 			}
 
@@ -687,7 +687,7 @@
 	NSString *setting = nil;
 
 	for( NSDictionary *styleInfo in style ) {
-		setting = [NSString stringWithFormat:styleInfo[@"value"], value];
+		setting = [[NSString alloc] initWithFormat:styleInfo[@"value"], value];
 		[self setStyleProperty:styleInfo[@"property"] forSelector:styleInfo[@"selector"] toValue:setting];
 	}
 
@@ -793,9 +793,10 @@
 	[name replaceOccurrencesOfString:@"/" withString:@"-" options:NSLiteralSearch range:NSMakeRange( 0, [name length] )];
 	[name replaceOccurrencesOfString:@":" withString:@"-" options:NSLiteralSearch range:NSMakeRange( 0, [name length] )];
 
-	[[NSFileManager defaultManager] createDirectoryAtPath:[[NSString stringWithFormat:@"~/Library/Application Support/Colloquy/Styles/Variants/%@/", [self.style identifier]] stringByExpandingTildeInPath] withIntermediateDirectories:YES attributes:nil error:nil];
+	NSString *varDir = [[NSString stringWithFormat:@"~/Library/Application Support/Colloquy/Styles/Variants/%@/", [self.style identifier]] stringByExpandingTildeInPath];
+	[[NSFileManager defaultManager] createDirectoryAtPath:varDir withIntermediateDirectories:YES attributes:nil error:nil];
 
-	NSString *path = [[NSString stringWithFormat:@"~/Library/Application Support/Colloquy/Styles/Variants/%@/%@.css", [self.style identifier], name] stringByExpandingTildeInPath];
+	NSString *path = [[varDir stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"css"];
 
 	[self.userStyle writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:NULL];
 

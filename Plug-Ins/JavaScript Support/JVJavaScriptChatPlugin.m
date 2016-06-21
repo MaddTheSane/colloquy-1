@@ -153,11 +153,12 @@ NSString *JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
 	if( sender == _webview ) {
 		_loading = NO;
 
-		NSString *contents = [NSString stringWithContentsOfFile:[self scriptFilePath] encoding:NSUTF8StringEncoding error:NULL];
+		NSString *contents = [[NSString alloc] initWithContentsOfFile:[self scriptFilePath] encoding:NSUTF8StringEncoding error:NULL];
 
 		[[sender windowScriptObject] evaluateWebScript:contents];
 
 		[self performSelector:@selector( load )];
+		[contents release];
 	}
 }
 

@@ -109,6 +109,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 #pragma mark -
 
 @implementation JVDirectChatPanel
+@synthesize target = _target;
 - (instancetype) init {
 	if( ( self = [super init] ) ) {
 		send = nil;
@@ -231,10 +232,6 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 }
 
 #pragma mark -
-
-- (nullable id) target {
-	return _target;
-}
 
 - (nullable MVChatUser *) user {
 	if( [[self target] isKindOfClass:[MVChatUser class]] )
@@ -551,7 +548,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 		logs = [logs URLByAppendingPathComponent:serverAddress];
 		if( ! [logs checkResourceIsReachableAndReturnError:NULL] ) [fileManager createDirectoryAtURL:logs withIntermediateDirectories:YES attributes:nil error:nil];
 	} else if( org == 2 ) {
-		logs = [logs URLByAppendingPathComponent:[NSString stringWithFormat:@"%@ (%@)", [self target], serverAddress]];
+		logs = [logs URLByAppendingPathComponent:[[NSString alloc] initWithFormat:@"%@ (%@)", [self target], serverAddress]];
 		if( ! [logs checkResourceIsReachableAndReturnError:NULL] ) [fileManager createDirectoryAtURL:logs withIntermediateDirectories:YES attributes:nil error:nil];
 	} else { // if( org == 3 ) {
 		logs = [logs URLByAppendingPathComponent:serverAddress];
@@ -947,7 +944,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 		cformat = nil;
 	}
 
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:@([self encoding]), @"StringEncoding", cformat, @"FormatType", nil];
+	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedLong:[self encoding]], @"StringEncoding", cformat, @"FormatType", nil];
 	NSData *msgData = [[message body] chatFormatWithOptions:options]; // we could save this back to the message object before sending
 	[self addMessageToDisplay:msgData fromUser:[message sender] withAttributes:[message attributes] withIdentifier:[message messageIdentifier] andType:[message type]];
 }
@@ -1995,11 +1992,11 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 
 #pragma mark -
 
-- (unsigned long) scriptTypedEncoding {
+- (OSType) scriptTypedEncoding {
 	return [NSString scriptTypedEncodingFromStringEncoding:[self encoding]];
 }
 
-- (void) setScriptTypedEncoding:(unsigned long) encoding {
+- (void) setScriptTypedEncoding:(OSType) encoding {
 	[self setPreference:@(encoding) forKey:@"encoding"];
 	[self changeEncoding:self];
 }
@@ -2007,7 +2004,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 
 #pragma mark -
 
-@interface JVAddEventMessageScriptCommand : NSScriptCommand {}
+@interface JVAddEventMessageScriptCommand : NSScriptCommand
 @end
 
 @implementation JVAddEventMessageScriptCommand

@@ -52,7 +52,7 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 
 - (instancetype) initWithScriptAtPath:(NSString *) path withManager:(MVChatPluginManager *) manager {
 	if( ( self = [self initWithManager:manager] ) ) {
-		_path = [path copyWithZone:nil];
+		_path = [path copy];
 		_uniqueModuleName = [NSString locallyUniqueString];
 		_firstLoad = YES;
 
@@ -77,6 +77,7 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 	_scriptModule = NULL;
 
 
+	_path = nil;
 	_uniqueModuleName = nil;
 	_manager = nil;
 	_modDate = nil;
@@ -285,7 +286,7 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 		return realRet;
 	}
 
-	NSDictionary *error = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Function named \"%@\" could not be found or is not callable", functionName]};
+	NSDictionary *error = @{NSLocalizedDescriptionKey: [[NSString alloc] initWithFormat:@"Function named \"%@\" could not be found or is not callable", functionName]};
 	return [NSError errorWithDomain:JVPythonErrorDomain code:-1 userInfo:error];
 }
 

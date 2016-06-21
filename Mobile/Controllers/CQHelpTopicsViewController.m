@@ -3,16 +3,12 @@
 #import "CQColloquyApplication.h"
 #import "CQHelpTopicViewController.h"
 
-#import <MediaPlayer/MPMoviePlayerController.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?locale=%@";
 
 @implementation CQHelpTopicsViewController {
-	MPMoviePlayerController *_moviePlayer;
 	NSMutableArray *_helpSections;
-	NSMutableData *_helpData;
 	BOOL _loading;
 }
 
@@ -39,43 +35,22 @@ static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?l
 
 	_loading = YES;
 
-	_helpData = [[NSMutableData alloc] initWithCapacity:4096];
-
 	NSString *urlString = [NSString stringWithFormat:CQHelpTopicsURLFormatString, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15.];
-	[NSURLConnection connectionWithRequest:request delegate:self];
+	[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		_loading = NO;
+
+		NSArray *help = data.length ? [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL] : nil;
+		if (help.count)
+			[self _generateSectionsFromHelpContent:help];
+		else [self loadDefaultHelpContent];
+	}];
 }
 
 - (void) loadDefaultHelpContent {
 	NSArray *help = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Help" ofType:@"plist"]];
 
 	[self _generateSectionsFromHelpContent:help];
-}
-
-#pragma mark -
-
-- (void) connection:(NSURLConnection *) connection didReceiveData:(NSData *) data {
-	[_helpData appendData:data];
-}
-
-- (void) connectionDidFinishLoading:(NSURLConnection *) connection {
-	_loading = NO;
-
-	NSArray *help = [NSPropertyListSerialization propertyListWithData:_helpData options:NSPropertyListImmutable format:NULL error:NULL];
-
-	_helpData = nil;
-
-	if (help.count)
-		[self _generateSectionsFromHelpContent:help];
-	else [self loadDefaultHelpContent];
-}
-
-- (void) connection:(NSURLConnection *) connection didFailWithError:(NSError *) error {
-	_loading = NO;
-
-	_helpData = nil;
-
-	[self loadDefaultHelpContent];
 }
 
 #pragma mark -
@@ -135,9 +110,6 @@ static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?l
 	if (info[@"Content"]) {
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.accessoryView = nil;
-	} else if (info[@"Screencast"]) {
-		UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"screencast.png"] highlightedImage:[UIImage imageNamed:@"screencastSelected.png"]];
-		cell.accessoryView = imageView;
 	} else if (info[@"Link"]) {
 		UIImageView *imageView = nil;
 		NSURL *url = [NSURL URLWithString:info[@"Link"]];
@@ -169,25 +141,6 @@ static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?l
 		helpTopicController.title = info[@"Title"];
 
 		[self.navigationController pushViewController:helpTopicController animated:YES];
-	} else if (info[@"Screencast"]) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayer];
-
-		_moviePlayer = nil;
-
-		@try {
-			_moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:info[@"Screencast"]]];
-			_moviePlayer.scalingMode = MPMovieScalingModeAspectFit;
-
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_screencastDidFinishPlaying) name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayer];
-
-			[_moviePlayer play];
-		} @catch (__unused NSException *exception) {
-			[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-
-			[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayer];
-
-			_moviePlayer = nil;
-		}
 	} else if (info[@"Link"]) {
 		NSURL *url = [NSURL URLWithString:info[@"Link"]];
 
@@ -202,15 +155,6 @@ static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?l
 }
 
 #pragma mark -
-
-- (void) _screencastDidFinishPlaying {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayer];
-
-	[_moviePlayer stop];
-	_moviePlayer = nil;
-
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-}
 
 - (void) _generateSectionsFromHelpContent:(NSArray *) help {
 	_helpSections = [[NSMutableArray alloc] initWithCapacity:5];

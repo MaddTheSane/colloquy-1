@@ -25,7 +25,7 @@ static JVNotificationController *sharedInstance = nil;
 
 - (instancetype) init {
 	if( ( self = [super init] ) ) {
-		_bubbles = [NSMutableDictionary dictionary];
+		_bubbles = [[NSMutableDictionary alloc] init];
 		_sounds = [[NSMutableDictionary alloc] init];
 
 		if( floor( NSAppKitVersionNumber ) < NSAppKitVersionNumber10_8 )
@@ -180,9 +180,18 @@ static JVNotificationController *sharedInstance = nil;
 
 - (void) _playSound:(NSString *) path {
 	if( ! path ) return;
+	NSString *oldPath = path;
 
-	if( ! [path isAbsolutePath] )
-		path = [[NSString stringWithFormat:@"%@/Sounds", [[NSBundle mainBundle] resourcePath]] stringByAppendingPathComponent:path];
+	if( ! [path isAbsolutePath] ) {
+		path = [[NSBundle mainBundle] pathForResource:path ofType:nil inDirectory:@"Sounds"];
+		if (!path) {
+			// fall-back in case the sound file isn't there.
+			// so the dictionary doesn't get sent nil.
+			path = [[[NSString alloc] initWithFormat:@"%@/Sounds", [[NSBundle mainBundle] resourcePath]] stringByAppendingPathComponent:oldPath];
+		}
+	}
+	
+	oldPath = nil;
 
 	NSSound *sound;
 	if( ! (sound = _sounds[path]) ) {
@@ -200,7 +209,7 @@ static JVNotificationController *sharedInstance = nil;
 }
 
 - (NSDictionary *) registrationDictionaryForGrowl {
-	NSMutableArray *notifications = [NSMutableArray array];
+	NSMutableArray *notifications = [[NSMutableArray alloc] init];
 	for( NSDictionary *info in [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"notifications" ofType:@"plist"]] ) {
 		if( ! info[@"seperator"] )
 			[notifications addObject:info[@"identifier"]];

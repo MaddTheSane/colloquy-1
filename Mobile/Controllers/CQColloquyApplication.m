@@ -3,6 +3,7 @@
 #import "CQAlertView.h"
 #import "CQAnalyticsController.h"
 #import "CQChatController.h"
+#import "CQChatCreationViewController.h"
 #import "CQConnectionsController.h"
 #import "CQConnectionsNavigationController.h"
 #import "CQRootContainerViewController.h"
@@ -144,7 +145,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 		if (self.modalViewController)
 			_userDefaultsChanged = YES;
-		else [self reloadSplitViewController];
+		else [self _reloadSplitViewController];
 
 		BOOL disableSingleSwipe = (![[UIDevice currentDevice] isPadModel] && !(self.splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden || self.splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryOverlay));
 		if (disableSingleSwipe)
@@ -234,9 +235,10 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	[self updateAnalytics];
 
 	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(userDefaultsChanged) name:CQSettingsDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_accessibilityDarkerSystemColorsStatus:) name:UIAccessibilityDarkerSystemColorsStatusDidChangeNotification object:nil];
 }
 
-- (void) handleNotificationWithUserInfo:(NSDictionary *) userInfo {
+- (void) handleNotificationWithUserInfo:(NSDictionary *__nullable) userInfo {
 	if (!userInfo.count)
 		return;
 
@@ -275,12 +277,41 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 #pragma mark -
 
-- (void) reloadSplitViewController {
+- (void) _accessibilityDarkerSystemColorsStatus:(NSNotification *) notification {
+	[self _applyTintColor];
+}
+
+- (void) _applyTintColor {
+	BOOL darkerColorsEnabled = UIAccessibilityDarkerSystemColorsEnabled();
+
+	// rgb(109, 22, 101) == hsb(306°, 80%, 43%)
+	CGFloat hue = 306 * (darkerColorsEnabled ? 1.13 : 1.0);
+	CGFloat saturation = .8;
+	CGFloat brightness = .43 * (darkerColorsEnabled ? 0.88 : 1.0);
+
+	_mainWindow.tintColor = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1.0];
+}
+
+#pragma mark -
+
+- (BOOL)_handleOpenURL:(NSURL *)url {
+	if ([url.scheme isCaseInsensitiveEqualToString:@"colloquy"]) {
+		[[NSNotificationCenter chatCenter] postNotificationName:@"CQPocketShouldConvertTokenFromTokenNotification" object:nil];
+
+		return YES;
+	}
+
+	return [[CQConnectionsController defaultController] handleOpenURL:url];
+}
+
+- (void) _reloadSplitViewController {
 	[_rootContainerViewController buildRootViewController];
 
 	_mainViewController = _rootContainerViewController;
 	_mainWindow.rootViewController = _mainViewController;
 }
+
+#pragma mark -
 
 - (BOOL) application:(UIApplication *) application willFinishLaunchingWithOptions:(NSDictionary *__nullable) launchOptions {
 	NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Defaults" ofType:@"plist"]];
@@ -311,16 +342,11 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	if (![[CQChatController defaultController] hasPendingChatController] && [UIDevice currentDevice].isPadModel)
 		[[CQChatController defaultController] setFirstChatController];
 
-	_mainWindow.tintColor = [UIColor colorWithRed:0.427 green:0.086 blue:0.396 alpha:1];
-	if (UIAccessibilityDarkerSystemColorsEnabled()) {
-		CGFloat hue, saturation, brightness, alpha = 0.;
-		[_mainWindow.tintColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
-		_mainWindow.tintColor = [UIColor colorWithHue:hue saturation:saturation * 1.13 brightness:brightness * .88 alpha:alpha];
-	}
+	[self _applyTintColor];
 
 	[self userDefaultsChanged];
 
-	[self reloadSplitViewController];
+	[self _reloadSplitViewController];
 
 	[_mainWindow makeKeyAndVisible];
 
@@ -392,13 +418,11 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 #endif
 
 - (BOOL) application:(UIApplication *) application handleOpenURL:(NSURL *) url {
-	if ([url.scheme isCaseInsensitiveEqualToString:@"colloquy"]) {
-		[[NSNotificationCenter chatCenter] postNotificationName:@"CQPocketShouldConvertTokenFromTokenNotification" object:nil];
+	return [self _handleOpenURL:url];
+}
 
-		return YES;
-	}
-
-	return [[CQConnectionsController defaultController] handleOpenURL:url];
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary <NSString *, id> *)options {
+	return [self _handleOpenURL:url];
 }
 
 - (void) applicationWillTerminate:(UIApplication *) application {
@@ -471,7 +495,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	if (_userDefaultsChanged) {
 		_userDefaultsChanged = NO;
 
-		[self reloadSplitViewController];
+		[self _reloadSplitViewController];
 	}
 }
 
@@ -536,7 +560,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 - (NSString *) applicationNameForURL:(NSURL *) url {
 	if (!url)
-		return nil;
+		return @"";
 	NSString *scheme = url.scheme;
 #if !TARGET_IPHONE_SIMULATOR
 	NSString *host = url.host;
@@ -547,7 +571,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 #endif
 	if ([scheme isCaseInsensitiveEqualToString:@"http"] || [scheme isCaseInsensitiveEqualToString:@"https"])
 		return NSLocalizedString(@"Safari", @"Safari application name");
-	return nil;
+	return @"";
 }
 
 - (BOOL) openURL:(NSURL *) url {
@@ -598,7 +622,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 #pragma mark -
 
-- (UIColor *) tintColor {
+- (UIColor *__nullable) tintColor {
 	if ([UIDevice currentDevice].isPadModel)
 		return nil;
 
@@ -616,12 +640,14 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 - (void) updateAppShortcuts {
 	CQAppIconOptions options = CQAppIconOptionNone;
 
-	if ([CQConnectionsController defaultController].connectedConnections.count)
-		options |= CQAppIconOptionDisconnect;
-	if ([CQConnectionsController defaultController].connectedConnections.count != [CQConnectionsController defaultController].connections.count)
-		options |= CQAppIconOptionConnect;
-	if ([CQChatController defaultController].totalImportantUnreadCount || [CQChatController defaultController].totalUnreadCount)
-		options |= CQAppIconOptionMarkAllAsRead;
+	if ([CQConnectionsController defaultController].connections.count) {
+		if ([CQConnectionsController defaultController].connectedConnections.count != [CQConnectionsController defaultController].connections.count)
+			options |= CQAppIconOptionConnect;
+		options |= CQAppIconOptionNewChat;
+		options |= CQAppIconOptionNewPrivateChat;
+	}
+
+	options |= CQAppIconOptionNewConnection;
 
 	self.appIconOptions = options;
 }
@@ -633,14 +659,14 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	_appIconOptions = appIconOptions;
 
 	NSMutableArray <UIMutableApplicationShortcutItem *> *options = [NSMutableArray array];
+	if ((appIconOptions & CQAppIconOptionNewConnection) == CQAppIconOptionNewConnection)
+		[options addObject:[[UIMutableApplicationShortcutItem alloc] initWithType:@"CQAppShortcutNewConnection" localizedTitle:NSLocalizedString(@"New Connection", @"New Connection shortcut title")]];
 	if ((appIconOptions & CQAppIconOptionConnect) == CQAppIconOptionConnect)
 		[options addObject:[[UIMutableApplicationShortcutItem alloc] initWithType:@"CQAppShortcutConnect" localizedTitle:NSLocalizedString(@"Connect", @"Connect")]];
-
-	if ((appIconOptions & CQAppIconOptionDisconnect) == CQAppIconOptionDisconnect)
-		[options addObject:[[UIMutableApplicationShortcutItem alloc] initWithType:@"CQAppShortcutDisconnect" localizedTitle:NSLocalizedString(@"Disconnect", @"Disconnect")]];
-
-	if ((appIconOptions & CQAppIconOptionMarkAllAsRead) == CQAppIconOptionMarkAllAsRead)
-		[options addObject:[[UIMutableApplicationShortcutItem alloc] initWithType:@"CQAppShortcutMarkAsRead" localizedTitle:NSLocalizedString(@"Mark Messages As Read", @"Mark Messages As Read")]];
+	if ((appIconOptions & CQAppIconOptionNewChat) == CQAppIconOptionNewChat)
+		[options addObject:[[UIMutableApplicationShortcutItem alloc] initWithType:@"CQAppShortcutNewChat" localizedTitle:NSLocalizedString(@"Join Chat Room", @"Join Chat Room shortcut title")]];
+	if ((appIconOptions & CQAppIconOptionNewPrivateChat) == CQAppIconOptionNewPrivateChat)
+		[options addObject:[[UIMutableApplicationShortcutItem alloc] initWithType:@"CQAppShortcutNewPrivateChat" localizedTitle:NSLocalizedString(@"Send Private Message", @"Send Private Message shortcut title")]];
 
 	self.shortcutItems = options;
 }
@@ -648,10 +674,21 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 - (void) application:(UIApplication *) application performActionForShortcutItem:(UIApplicationShortcutItem *) shortcutItem completionHandler:(void(^)(BOOL succeeded)) completionHandler {
 	if ([shortcutItem.type isEqualToString:@"CQAppShortcutConnect"])
 		[[CQConnectionsController defaultController] openAllConnections];
-	else if ([shortcutItem.type isEqualToString:@"CQAppShortcutDisconnect"])
-		[[CQConnectionsController defaultController] closeAllConnections];
-	else if ([shortcutItem.type isEqualToString:@"CQAppShortcutMarkAsread"])
-		[[CQChatController defaultController] resetTotalUnreadCount];
+	else if ([shortcutItem.type isEqualToString:@"CQAppShortcutNewChat"]) {
+		CQChatCreationViewController *creationViewController = [[CQChatCreationViewController alloc] init];
+		creationViewController.roomTarget = YES;
+
+		[self presentModalViewController:creationViewController animated:YES];
+	} else if ([shortcutItem.type isEqualToString:@"CQAppShortcutNewPrivateChat"]) {
+		CQChatCreationViewController *creationViewController = [[CQChatCreationViewController alloc] init];
+		creationViewController.roomTarget = NO;
+
+		[self presentModalViewController:creationViewController animated:YES];
+	} else if ([shortcutItem.type isEqualToString:@"CQAppShortcutNewConnection"]) {
+		[[CQConnectionsController defaultController] showConnectionCreationView:nil];
+	}
+
+	[self updateAppShortcuts];
 }
 
 #pragma mark -

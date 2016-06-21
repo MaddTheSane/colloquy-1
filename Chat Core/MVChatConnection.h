@@ -112,6 +112,9 @@ extern NSString *MVChatConnectionCapNotifyFeature;
 extern NSString *MVChatConnectionInviteFeature;
 extern NSString *MVChatConnectionEchoMessageFeature;
 
+// IRC3v3 Prototypes
+extern NSString *MVChatConnectionSTSFeature;
+
 // InspIRCd Enhancements
 extern NSString *MVChatConnectionNamesxFeature;
 
@@ -161,7 +164,6 @@ extern NSString *MVChatConnectionErrorDomain;
 
 	NSString *_uniqueIdentifier;
 
-	NSString *_npassword;
 	NSMapTable *_knownUsers;
 	NSMutableDictionary<NSString*,MVChatRoom*> *_knownRooms;
 	NSMutableSet *_joinedRooms;
@@ -246,7 +248,7 @@ extern NSString *MVChatConnectionErrorDomain;
 @property(copy) NSArray <NSString *> *alternateNicknames;
 @property(strong, readonly) NSString *nextAlternateNickname;
 
-@property(copy, null_resettable) NSString *nicknamePassword;
+@property(copy, nullable) NSString *nicknamePassword;
 
 @property(strong, readonly) NSString *certificateServiceName;
 @property(strong, readonly) NSString *certificatePassword;
@@ -256,6 +258,7 @@ extern NSString *MVChatConnectionErrorDomain;
 @property(copy) NSString *username;
 
 @property(copy) NSString *server;
+- (void)setServer:(NSString * _Nonnull)server NS_REQUIRES_SUPER;
 
 @property unsigned short serverPort;
 
@@ -292,7 +295,7 @@ extern NSString *MVChatConnectionErrorDomain;
 
 @property(strong, readonly) NSSet<MVChatUserWatchRule*> *chatUserWatchRules;
 
-@property(copy, nonatomic, null_resettable) MVChatString *awayStatusMessage;
+@property(copy, null_resettable) MVChatString *awayStatusMessage;
 
 @property(readonly, getter=isConnected) BOOL connected;
 @property(strong, readonly) NSDate *connectedDate;

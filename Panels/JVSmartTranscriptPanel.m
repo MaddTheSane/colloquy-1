@@ -39,7 +39,7 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 
 		_rules = [settings[@"rules"] mutableCopy];
 		_title = [settings[@"title"] copy];
-		_operation = [settings[@"operation"] intValue];
+		_operation = [settings[@"operation"] unsignedIntegerValue];
 		_ignoreCase = [settings[@"ignoreCase"] boolValue];
 
 		[[NSNotificationCenter chatCenter] addObserver:self selector:@selector( _messageDisplayed: ) name:JVChatMessageWasProcessedNotification object:nil];
@@ -54,7 +54,7 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 		settings[@"rules"] = [coder decodeObjectForKey:@"rules"];
 		settings[@"title"] = [coder decodeObjectForKey:@"title"];
 		settings[@"ignoreCase"] = @([coder decodeBoolForKey:@"ignoreCase"]);
-		settings[@"operation"] = @([coder decodeIntegerForKey:@"operation"]);
+		settings[@"operation"] = @([coder decodeIntForKey:@"operation"]);
 		return [self initWithSettings:settings];
 	} else [NSException raise:NSInvalidArchiveOperationException format:@"Only supports NSKeyedArchiver coders"];
 	return nil;
@@ -64,7 +64,7 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 	if( [coder allowsKeyedCoding] ) {
 		[coder encodeObject:[self rules] forKey:@"rules"];
 		[coder encodeObject:[self title] forKey:@"title"];
-		[coder encodeInteger:_operation forKey:@"operation"];
+		[coder encodeInt:_operation forKey:@"operation"];
 		[coder encodeBool:_ignoreCase forKey:@"ignoreCase"];
 	} else [NSException raise:NSInvalidArchiveOperationException format:@"Only supports NSKeyedArchiver coders"];
 }
@@ -109,7 +109,7 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 }
 
 - (NSString *) identifier {
-	return [NSString stringWithFormat:@"Smart Transcript %@", [self title]];
+	return [[NSString alloc] initWithFormat:@"Smart Transcript %@", [self title]];
 }
 
 - (nullable NSString *) information {
@@ -150,9 +150,11 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 
 - (NSImage *) icon {
 	BOOL smallIcons = [[[self windowController] preferenceForKey:@"small drawer icons"] boolValue];
-	if( smallIcons || [_windowController isMemberOfClass:[JVTabbedChatWindowController class]] )
-		return [NSImage imageNamed:@"smartTranscriptTab"];
-	return [NSImage imageNamed:@"smartTranscript"];
+	if( smallIcons || [_windowController isMemberOfClass:[JVTabbedChatWindowController class]] ) {
+		NSImage *icon = [NSImage imageNamed:@"smartTranscript"];
+		icon.size = NSMakeSize(16, 16);
+		return icon;
+	} return [NSImage imageNamed:@"smartTranscript"];
 }
 
 - (nullable NSImage *) statusImage {
@@ -433,14 +435,14 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 }
 
 - (NSArray *) toolbarDefaultItemIdentifiers:(NSToolbar *) toolbar {
-	NSMutableArray *list = [NSMutableArray arrayWithArray:[super toolbarDefaultItemIdentifiers:toolbar]];
+	NSMutableArray *list = [[NSMutableArray alloc] initWithArray:[super toolbarDefaultItemIdentifiers:toolbar]];
 	[list addObject:NSToolbarFlexibleSpaceItemIdentifier];
 	[list addObject:JVToolbarRuleSettingsItemIdentifier];
 	return list;
 }
 
 - (NSArray *) toolbarAllowedItemIdentifiers:(NSToolbar *) toolbar {
-	NSMutableArray *list = [NSMutableArray arrayWithArray:[super toolbarAllowedItemIdentifiers:toolbar]];
+	NSMutableArray *list = [[NSMutableArray alloc] initWithArray:[super toolbarAllowedItemIdentifiers:toolbar]];
 	[list addObject:JVToolbarRuleSettingsItemIdentifier];
 	[list addObject:JVToolbarClearScrollbackItemIdentifier];
 	return list;

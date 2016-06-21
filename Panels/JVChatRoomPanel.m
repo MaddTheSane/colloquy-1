@@ -284,17 +284,24 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 }
 
 - (IBAction) toggleFavorites:(nullable id) sender {
-	NSString *favoritesPath = [@"~/Library/Application Support/Colloquy/Favorites/Favorites.plist" stringByExpandingTildeInPath];
-	NSMutableArray *favorites = [NSMutableArray arrayWithContentsOfFile:favoritesPath];
+	NSURL *appSupport = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
+	appSupport = [[appSupport URLByAppendingPathComponent:@"Colloquy"] URLByAppendingPathComponent:@"Favorites"];
+	appSupport = [appSupport URLByAppendingPathComponent:@"Favorites.plist" isDirectory:NO];
+	NSMutableArray *favorites = [[NSMutableArray alloc] initWithContentsOfURL:appSupport];
+	if (!favorites) {
+		//fall-back to old location/method
+		NSString *favoritesPath = [@"~/Library/Application Support/Colloquy/Favorites/Favorites.plist" stringByExpandingTildeInPath];
+		favorites = [[NSMutableArray alloc] initWithContentsOfFile:favoritesPath];
+	}
 	if (!favorites)
-		favorites = [NSMutableArray array];
+		favorites = [[NSMutableArray alloc] init];
 
 	NSInteger favoriteIndex = [self _roomIndexInFavoritesMenu];
 	if (favoriteIndex != NSNotFound)
 		[favorites removeObjectAtIndex:favoriteIndex];
 	else [favorites addObject:@{@"target": [_target description], @"server": [[self connection] server], @"scheme": [[self connection] urlScheme]}];
 
-	[favorites writeToFile:favoritesPath atomically:YES];
+	[favorites writeToURL:appSupport atomically:YES];
 
 	[MVConnectionsController refreshFavoritesMenu];
 
@@ -352,7 +359,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	}
 
 	if( [message ignoreStatus] == JVNotIgnored && [_nextMessageAlertMembers containsObject:[message sender]] ) {
-		NSMutableDictionary *context = [NSMutableDictionary dictionary];
+		NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
 		context[@"title"] = [NSString stringWithFormat:NSLocalizedString( @"%@ Replied", "member replied bubble title" ), [[message sender] title]];
 		context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"%@ has possibly replied to your message.", "new room messages bubble text" ), [[message sender] title]];
 		context[@"image"] = [NSImage imageNamed:@"activityNewImportant"];
@@ -726,7 +733,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 }
 
 - (NSArray *) toolbarDefaultItemIdentifiers:(NSToolbar *) toolbar {
-	NSMutableArray *list = [NSMutableArray arrayWithArray:[super toolbarDefaultItemIdentifiers:toolbar]];
+	NSMutableArray *list = [[super toolbarDefaultItemIdentifiers:toolbar] mutableCopy];
 	[list addObject:JVToolbarTextEncodingItemIdentifier];
 	[list addObject:NSToolbarFlexibleSpaceItemIdentifier];
 	[list addObject:JVToolbarMarkItemIdentifier];
@@ -1231,8 +1238,8 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVSortRoomMembersByStatus"] )
 		[self resortMembers];
 
-	MVChatUser *user = [notification userInfo][@"who"];
-	MVChatUser *byUser = [notification userInfo][@"by"];
+	MVChatUser *user = [[notification userInfo] objectForKey:@"who"];
+	MVChatUser *byUser = [[notification userInfo] objectForKey:@"by"];
 
 	if( ! user ) return;
 
@@ -1244,8 +1251,8 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	NSString *title = nil;
 	NSString *description = nil;
 	NSString *notificationKey = nil;
-	NSUInteger mode = [[notification userInfo][@"mode"] unsignedLongValue];
-	BOOL enabled = [[notification userInfo][@"enabled"] boolValue];
+	NSUInteger mode = [[[notification userInfo] objectForKey:@"mode"] unsignedLongValue];
+	BOOL enabled = [[[notification userInfo] objectForKey:@"enabled"] boolValue];
 
 	if( mode == MVChatRoomMemberFounderMode && enabled ) {
 		name = @"memberPromotedToFounder";
@@ -1435,7 +1442,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 		}
 	}
 
-	[self addEventMessageToDisplay:message withName:name andAttributes:@{@"who": ( mbr ? (id) mbr : (id) user ), @"by": ( byMbr ? (id) byMbr : (id) byUser )}];
+	[self addEventMessageToDisplay:message withName:name andAttributes:[NSDictionary dictionaryWithObjectsAndKeys:( mbr ? (id) mbr : (id) user ), @"who", ( byMbr ? (id) byMbr : (id) byUser ), @"by", nil]];
 
 	if( title && description && notificationKey ) {
 		NSMutableDictionary *context = [NSMutableDictionary dictionary];
@@ -1489,9 +1496,9 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 
 	if( topic && [[self target] topicAuthor] && sender ) {
 		if( [[[self target] topicAuthor] isLocalUser] ) {
-			[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"You changed the topic to \"%@\".", "you changed the topic chat room status message" ), topicString] withName:@"topicChanged" andAttributes:@{@"by": ( author ? (id) author : (id) [[self target] topicAuthor] ), @"topic": topic}];
+			[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"You changed the topic to \"%@\".", "you changed the topic chat room status message" ), topicString] withName:@"topicChanged" andAttributes:[NSDictionary dictionaryWithObjectsAndKeys:( author ? (id) author : (id) [[self target] topicAuthor] ), @"by", topic, @"topic", nil]];
 		} else {
-			[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"Topic changed to \"%@\" by <span class=\"member\">%@</span>.", "topic changed chat room status message" ), topicString, ( author ? [[author title] stringByEncodingXMLSpecialCharactersAsEntities] : [[[[self target] topicAuthor] displayName] stringByEncodingXMLSpecialCharactersAsEntities] )] withName:@"topicChanged" andAttributes:@{@"by": ( author ? (id) author : (id) [[self target] topicAuthor] ), @"topic": topic}];
+			[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"Topic changed to \"%@\" by <span class=\"member\">%@</span>.", "topic changed chat room status message" ), topicString, ( author ? [[author title] stringByEncodingXMLSpecialCharactersAsEntities] : [[[[self target] topicAuthor] displayName] stringByEncodingXMLSpecialCharactersAsEntities] )] withName:@"topicChanged" andAttributes:[NSDictionary dictionaryWithObjectsAndKeys:( author ? (id) author : (id) [[self target] topicAuthor] ), @"by", topic, @"topic", nil]];
 		}
 
 		NSMethodSignature *signature = [NSMethodSignature methodSignatureWithReturnAndArgumentTypes:@encode( void ), @encode( NSAttributedString * ), @encode( JVChatRoomPanel * ), @encode( JVChatRoomMember * ), nil];
@@ -1521,8 +1528,10 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 }
 
 - (NSInteger) _roomIndexInFavoritesMenu {
-	NSString *favoritesPath = [@"~/Library/Application Support/Colloquy/Favorites/Favorites.plist" stringByExpandingTildeInPath];
-	NSMutableArray *favorites = [NSMutableArray arrayWithContentsOfFile:favoritesPath];
+	NSURL *appSupport = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
+	appSupport = [[appSupport URLByAppendingPathComponent:@"Colloquy"] URLByAppendingPathComponent:@"Favorites"];
+	appSupport = [appSupport URLByAppendingPathComponent:@"Favorites.plist" isDirectory:NO];
+	NSMutableArray *favorites = [[NSMutableArray alloc] initWithContentsOfURL:appSupport];
 	if (!favorites)
 		return NSNotFound;
 

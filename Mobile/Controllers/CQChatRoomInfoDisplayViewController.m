@@ -60,10 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 	_room = room;
 
+	MVChatConnection *connection = room.connection;
 	if (infoType == CQChatRoomInfoModes)
-		[_room.connection sendRawMessageWithFormat:@"MODE %@", _room.name];
+		[connection sendRawMessageWithFormat:@"MODE %@", _room.name];
 	else if (infoType == CQChatRoomInfoBans)
-		[_room.connection sendRawMessageWithFormat:@"MODE %@ b", _room.name];
+		[connection sendRawMessageWithFormat:@"MODE %@ b", _room.name];
 
 	_infoType = infoType;
 
@@ -147,9 +148,17 @@ NS_ASSUME_NONNULL_BEGIN
 		CQPreferencesTextViewCell *textViewCell = [CQPreferencesTextViewCell reusableTableViewCellInTableView:tableView];
 		textViewCell.textView.text = [[NSString alloc] initWithData:_room.topic encoding:_room.encoding];
 		textViewCell.textView.placeholder = NSLocalizedString(@"Enter Room Topic", @"Enter Room Topic");
+
+		MVChatConnection *connection = _room.connection;
+		NSUInteger localUserModes = (connection.localUser ? [_room modesForMemberUser:connection.localUser] : 0);
+		textViewCell.textView.editable = (localUserModes > MVChatRoomMemberVoicedMode) || connection.localUser.isServerOperator;
+		textViewCell.textView.linkTextAttributes = @{
+			NSForegroundColorAttributeName: [UIColor colorWithRed:0.431 green:0.314 blue:.964 alpha:1.],
+			NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)
+		};
 		textViewCell.textView.delegate = self;
 #if !SYSTEM(TV)
-		textViewCell.textView.dataDetectorTypes = UIDataDetectorTypeNone;
+		textViewCell.textView.dataDetectorTypes = UIDataDetectorTypeAll;
 #endif
 
 		return textViewCell;
@@ -171,8 +180,9 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	if (_infoType == CQChatRoomInfoModes) {
-		NSUInteger localUserModes = (_room.connection.localUser ? [_room modesForMemberUser:_room.connection.localUser] : 0);
-		BOOL canEditModes = (localUserModes > MVChatRoomMemberVoicedMode) || _room.connection.localUser.isServerOperator;
+		MVChatConnection *connection = _room.connection;
+		NSUInteger localUserModes = (connection.localUser ? [_room modesForMemberUser:connection.localUser] : 0);
+		BOOL canEditModes = (localUserModes > MVChatRoomMemberVoicedMode) || connection.localUser.isServerOperator;
 
 		NSString *title = nil;
 		MVChatRoomMode mode = 0;
@@ -307,6 +317,10 @@ NS_ASSUME_NONNULL_BEGIN
 	return YES;
 }
 
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)range {
+	return YES;
+}
+
 #pragma mark -
 
 - (void) _presentUserList {
@@ -329,8 +343,9 @@ NS_ASSUME_NONNULL_BEGIN
 	if (_infoType == CQChatRoomInfoBans) {
 		self.title = NSLocalizedString(@"Bans", @"Bans segment title");
 
-		NSUInteger localUserModes = (_room.connection.localUser ? [_room modesForMemberUser:_room.connection.localUser] : 0);
-		BOOL canEditModes = (localUserModes > MVChatRoomMemberVoicedMode) || _room.connection.localUser.isServerOperator;
+		MVChatConnection *connection = _room.connection;
+		NSUInteger localUserModes = (connection.localUser ? [_room modesForMemberUser:connection.localUser] : 0);
+		BOOL canEditModes = (localUserModes > MVChatRoomMemberVoicedMode) || connection.localUser.isServerOperator;
 
 		if (canEditModes) {
 			[self.navigationItem setRightBarButtonItem:self.editButtonItem animated:[UIView areAnimationsEnabled]];

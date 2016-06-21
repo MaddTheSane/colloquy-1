@@ -90,5 +90,4 @@
 	[[self window] makeFirstResponder:self];
 	[[NSFontManager sharedFontManager] orderFrontFontPanel:nil];
 }
-
 @end

@@ -38,9 +38,10 @@ NSString *JVFScriptErrorDomain = @"JVFScriptErrorDomain";
 			return nil;
 		}
 
-		NSString *contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
+		NSString *contents = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
 
 		FSInterpreterResult *result = [[self scriptInterpreter] execute:contents];
+		[contents release];
 		if( ! [result isOk] ) {
 			NSRunCriticalAlertPanel( NSLocalizedStringFromTableInBundle( @"F-Script Plugin Error", nil, [NSBundle bundleForClass:[self class]], "F-Script plugin error title" ), NSLocalizedStringFromTableInBundle( @"The F-Script plugin \"%@\" had an error while loading. The error occured near character %d.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "F-Script plugin error message" ), nil, nil, nil, [[path lastPathComponent] stringByDeletingPathExtension], [result errorRange].location, [result errorMessage] );
 			[self release];
@@ -101,9 +102,10 @@ NSString *JVFScriptErrorDomain = @"JVFScriptErrorDomain";
 		if( ! [identifier isEqualToString:@"sys"] )
 			[[self scriptInterpreter] setObject:nil forIdentifier:identifier];
 
-	NSString *contents = [NSString stringWithContentsOfFile:[self scriptFilePath] encoding:NSUTF8StringEncoding error:NULL];
+	NSString *contents = [[NSString alloc] initWithContentsOfFile:[self scriptFilePath] encoding:NSUTF8StringEncoding error:NULL];
 
 	FSInterpreterResult *result = [[self scriptInterpreter] execute:contents];
+	[contents release];
 
 	[self performSelector:@selector( load )];
 
@@ -190,7 +192,7 @@ NSString *JVFScriptErrorDomain = @"JVFScriptErrorDomain";
 		}
 	}
 
-	NSDictionary *error = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Block with identifier \"%@\" not found", blockName]};
+	NSDictionary *error = @{NSLocalizedDescriptionKey: [[NSString alloc] initWithFormat:@"Block with identifier \"%@\" not found", blockName]};
 	return [NSError errorWithDomain:JVFScriptErrorDomain code:-1 userInfo:error];
 }
 

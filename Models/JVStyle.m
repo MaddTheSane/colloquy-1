@@ -34,7 +34,7 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 @implementation JVStyle
 + (void) scanForStyles {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSMutableSet *styles = [NSMutableSet set];
+	NSMutableSet *styles = [[NSMutableSet alloc] init];
 	if( ! allStyles ) allStyles = styles;
 
 	NSString *bundleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
@@ -274,7 +274,7 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 
 		NSMutableDictionary *pms = (NSMutableDictionary *)[self mainParameters];
 		if( parameters ) {
-			pms = [NSMutableDictionary dictionaryWithDictionary:[self mainParameters]];
+			pms = [[NSMutableDictionary alloc] initWithDictionary:[self mainParameters]];
 			[pms addEntriesFromDictionary:parameters];
 		}
 
@@ -320,7 +320,7 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 
 - (NSArray *) variantStyleSheetNames {
 	if( ! _variants ) {
-		NSMutableArray *ret = [NSMutableArray array];
+		NSMutableArray *ret = [[NSMutableArray alloc] init];
 		NSArray *files = [_bundle pathsForResourcesOfType:@"css" inDirectory:@"Variants"];
 
 		for( NSString *file in files )
@@ -334,8 +334,8 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 
 - (NSArray *) userVariantStyleSheetNames {
 	if( ! _userVariants ) {
-		NSMutableArray *ret = [NSMutableArray array];
-		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSString stringWithFormat:@"~/Library/Application Support/%@/Styles/Variants/%@/", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"], [self identifier]] stringByExpandingTildeInPath] error:nil];
+		NSMutableArray *ret = [[NSMutableArray alloc] init];
+		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[[NSString alloc] initWithFormat:@"~/Library/Application Support/%@/Styles/Variants/%@/", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"], [self identifier]] stringByExpandingTildeInPath] error:nil];
 
 		for( NSString *file in files )
 			if( [[file pathExtension] isEqualToString:@"css"] || [[file pathExtension] isEqualToString:@"colloquyVariant"] )
@@ -444,8 +444,8 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 		}
 	}
 	NSString *path;
-	NSString *root = [[NSString stringWithFormat:@"~/Library/Application Support/%@/Styles/Variants/", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]] stringByStandardizingPath];
-	path = [[NSString stringWithFormat:@"%@/%@/%@.css", root, [self identifier], name] stringByExpandingTildeInPath];
+	NSString *root = [[[NSString alloc] initWithFormat:@"~/Library/Application Support/%@/Styles/Variants/", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]] stringByStandardizingPath];
+	path = [[[NSString alloc] initWithFormat:@"%@/%@/%@.css", root, [self identifier], name] stringByExpandingTildeInPath];
 	if( [path hasPrefix:root] && [fm isReadableFileAtPath:path] )
 		return [NSURL fileURLWithPath:path];
 

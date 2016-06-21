@@ -95,8 +95,16 @@ static NSMenu *favoritesMenu = nil;
 		favoritesMenu = [[NSMenu alloc] initWithTitle:@""];
 	else [favoritesMenu removeAllItems];
 
-	NSString *path = [@"~/Library/Application Support/Colloquy/Favorites/Favorites.plist" stringByExpandingTildeInPath];
-	NSArray *favorites = [NSArray arrayWithContentsOfFile:path];
+
+	NSURL *appSupport = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
+	appSupport = [[appSupport URLByAppendingPathComponent:@"Colloquy"] URLByAppendingPathComponent:@"Favorites"];
+	appSupport = [appSupport URLByAppendingPathComponent:@"Favorites.plist" isDirectory:NO];
+	NSArray *favorites = [[NSArray alloc] initWithContentsOfURL:appSupport];
+	if (!favorites) {
+		NSString *path = [@"~/Library/Application Support/Colloquy/Favorites/Favorites.plist" stringByExpandingTildeInPath];
+		favorites = [[NSArray alloc] initWithContentsOfFile:path];
+		[favorites writeToURL:appSupport atomically:YES];
+	}
 
 	NSMenuItem *menuItem = nil;
 	if( ! [favorites count] ) {
@@ -112,10 +120,10 @@ static NSMenu *favoritesMenu = nil;
 		NSString *server = item[@"server"];
 		NSString *target = item[@"target"];
 
-		menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ (%@)", target, server] action:@selector( _connectToFavorite: ) keyEquivalent:@""];
+		menuItem = [[NSMenuItem alloc] initWithTitle:[[NSString alloc] initWithFormat:@"%@ (%@)", target, server] action:@selector( _connectToFavorite: ) keyEquivalent:@""];
 		[menuItem setImage:icon];
 		[menuItem setTarget:self];
-		[menuItem setRepresentedObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@", item[@"scheme"], item[@"server"], item[@"target"]]]];
+		[menuItem setRepresentedObject:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@://%@/%@", scheme, server, target]]];
 
 		for (MVChatConnection *connection in [[MVConnectionsController defaultController] connections]) {
 			if (!(connection.isConnected || connection.status == MVChatConnectionConnectingStatus))
@@ -445,8 +453,8 @@ static NSMenu *favoritesMenu = nil;
 	}
 
 	// Ask people what to do, if its ever been turned on
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MVAskOnInvalidCertificates"] || [[[MVKeyChain defaultKeyChain] genericPasswordForService:@"MVAskOnInvalidCertificates" account:@"MVSecurePrefs"] boolValue]) {
-		[[MVKeyChain defaultKeyChain] setGenericPassword:@"1" forService:@"MVAskOnInvalidCertificates" account:@"MVSecurePrefs"];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MVAskOnInvalidCertificates"] || [[[CQKeychain standardKeychain] passwordForServer:@"MVAskOnInvalidCertificates" area:@"MVSecurePrefs"] boolValue]) {
+		[[CQKeychain standardKeychain] setPassword:@"1" forServer:@"MVAskOnInvalidCertificates" area:@"MVSecurePrefs"];
 
 		SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
 		panel.showsHelp = YES;
@@ -951,7 +959,7 @@ static NSMenu *favoritesMenu = nil;
 		if( info[@"connection"] == connection ) {
 			NSMutableArray *ret = info[@"rooms"];
 			if( ! ret ) {
-				ret = [NSMutableArray array];
+				ret = [[NSMutableArray alloc] init];
 				info[@"rooms"] = ret;
 			}
 			return ret;
@@ -1715,8 +1723,8 @@ static NSMenu *favoritesMenu = nil;
 			data[@"secure"] = @([connection isSecure]);
 			data[@"requestsSASL"] = @(connection.requestsSASL);
 			data[@"roomsWaitForIdentification"] = @(connection.roomsWaitForIdentification);
-			data[@"proxy"] = [NSNumber numberWithLong:[connection proxyType]];
-			data[@"encoding"] = [NSNumber numberWithLong:[connection encoding]];
+			data[@"proxy"] = @([connection proxyType]);
+			data[@"encoding"] = @([connection encoding]);
 			data[@"uniqueIdentifier"] = [connection uniqueIdentifier];
 			data[@"server"] = [connection server];
 			data[@"port"] = @([connection serverPort]);
@@ -1773,7 +1781,7 @@ static NSMenu *favoritesMenu = nil;
 	_bookmarks = [[NSMutableArray alloc] init];
 
 	for( __strong NSMutableDictionary *info in list ) {
-		info = [NSMutableDictionary dictionaryWithDictionary:info];
+		info = [info mutableCopy];
 
 		MVChatConnection *connection = nil;
 
@@ -1781,15 +1789,16 @@ static NSMenu *favoritesMenu = nil;
 		if( ! [(NSString *)info[@"type"] length] )
 		    type = MVChatConnectionIRCType;
 		else {
-			if( [info[@"type"] isEqualToString:@"icb"] )
+			if( [info[@"type"] isEqualToString:@"icb"] ) {
 				type = MVChatConnectionICBType;
-			else if( [info[@"type"] isEqualToString:@"irc"] )
+			} else if( [info[@"type"] isEqualToString:@"irc"] ) {
 				type = MVChatConnectionIRCType;
-		    else if( [info[@"type"] isEqualToString:@"silc"] )
+			} else if( [info[@"type"] isEqualToString:@"silc"] ) {
 		        type = MVChatConnectionSILCType;
-		    else if( [info[@"type"] isEqualToString:@"xmpp"] )
+			} else if( [info[@"type"] isEqualToString:@"xmpp"] ) {
 		        type = MVChatConnectionXMPPType;
-			else type = MVChatConnectionIRCType;
+			} else
+				type = MVChatConnectionIRCType;
 		}
 
 		if( info[@"url"] ) {
@@ -1836,6 +1845,7 @@ static NSMenu *favoritesMenu = nil;
 		NSString *password = [[CQKeychain standardKeychain] passwordForServer:connection.uniqueIdentifier area:@"Server"];;
 		if (!password) {
 			password = [[MVKeyChain defaultKeyChain] internetPasswordForServer:connection.server securityDomain:connection.server account:nil path:nil port:connection.serverPort protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+
 			if (password.length) {
 				[[MVKeyChain defaultKeyChain] removeInternetPasswordForServer:connection.server securityDomain:connection.server account:nil path:nil port:connection.serverPort protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
 				[[CQKeychain standardKeychain] setPassword:password forServer:connection.uniqueIdentifier area:@"Server" displayValue:connection.server];
@@ -1846,6 +1856,7 @@ static NSMenu *favoritesMenu = nil;
 		NSString *nicknamePassword = [[CQKeychain standardKeychain] passwordForServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname]];
 		if (!nicknamePassword) {
 			nicknamePassword = [[MVKeyChain defaultKeyChain] internetPasswordForServer:[connection server] securityDomain:[connection server] account:[connection preferredNickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
+
 			if (nicknamePassword.length) {
 				[[MVKeyChain defaultKeyChain] removeInternetPasswordForServer:connection.server securityDomain:connection.server account:connection.preferredNickname path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault];
 				[[CQKeychain standardKeychain] setPassword:nicknamePassword forServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname] displayValue:connection.server];
@@ -1938,6 +1949,11 @@ static NSMenu *favoritesMenu = nil;
 	MVChatConnection *connection = [notification object];
 
 	NSString *pass = [[MVKeyChain defaultKeyChain] genericPasswordForService:[connection certificateServiceName] account:@"Colloquy"];
+	if( pass.length ) {
+		[[CQKeychain standardKeychain] setPassword:pass forServer:[connection certificateServiceName] area:@"Colloquy"];
+		[[MVKeyChain defaultKeyChain] removeGenericPasswordForService:[connection certificateServiceName] account:@"Colloquy"];
+	}
+
 	if( [pass length] ) {
 		// if authenticateCertificateWithPassword returns NO, its the wrong password.
 		if( [connection authenticateCertificateWithPassword:pass] ) return;
@@ -2016,7 +2032,7 @@ static NSMenu *favoritesMenu = nil;
 	MVChatConnection *connection = [notification object];
 
 	if ( [[notification name] isEqualToString:MVChatConnectionDidIdentifyWithServicesNotification] ) {
-		NSMutableDictionary *context = [NSMutableDictionary dictionary];
+		NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
 		context[@"title"] = NSLocalizedString( @"You Have Been Identified", "identified bubble title" );
 		context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"%@ has identified you as %@ on %@.", "identified bubble message, server message and server name" ), [notification userInfo][@"user"], [notification userInfo][@"target"], [connection server]];
 		context[@"image"] = [NSImage imageNamed:@"Keychain"];
@@ -2066,9 +2082,10 @@ static NSMenu *favoritesMenu = nil;
 
 - (void) _connect:(id) sender {
 	if( [connections selectedRow] == -1 ) return;
-	MVChatConnection *connection = _bookmarks[[connections selectedRow]][@"connection"];
-	[connection setPassword:[[MVKeyChain defaultKeyChain] internetPasswordForServer:[connection server] securityDomain:[connection server] account:nil path:nil port:[connection serverPort] protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault]];
-	[connection setNicknamePassword:[[MVKeyChain defaultKeyChain] internetPasswordForServer:[connection server] securityDomain:[connection server] account:[connection preferredNickname] path:nil port:0 protocol:MVKeyChainProtocolIRC authenticationType:MVKeyChainAuthenticationTypeDefault]];
+	MVChatConnection *connection = [[_bookmarks objectAtIndex:[connections selectedRow]] objectForKey:@"connection"];
+
+	connection.password = [[CQKeychain standardKeychain] passwordForServer:connection.uniqueIdentifier area:@"Server"];
+	connection.nicknamePassword = [[CQKeychain standardKeychain] passwordForServer:connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", connection.preferredNickname]];
 	[connection connect];
 }
 
@@ -2125,7 +2142,7 @@ static NSMenu *favoritesMenu = nil;
 	MVChatConnection *connection = [notification object];
 	NSMutableDictionary *context = [NSMutableDictionary dictionary];
 	context[@"title"] = NSLocalizedString( @"Connected", "connected bubble title" );
-	context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"You're now connected to %@ as %@.", "you are now connected bubble text" ), [connection server], [connection nickname]];
+	context[@"description"] = [[NSString alloc] initWithFormat:NSLocalizedString( @"You're now connected to %@ as %@.", "you are now connected bubble text" ), [connection server], [connection nickname]];
 	context[@"image"] = [NSImage imageNamed:@"connect"];
 	[[JVNotificationController defaultController] performNotification:@"JVChatConnected" withContextInfo:context];
 
@@ -2138,7 +2155,7 @@ static NSMenu *favoritesMenu = nil;
 	if( [connection status] == MVChatConnectionServerDisconnectedStatus ) {
 		NSMutableDictionary *context = [NSMutableDictionary dictionary];
 		context[@"title"] = NSLocalizedString( @"Disconnected", "disconnected bubble title" );
-		context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"You're were disconnected from %@.", "you were disconnected bubble text" ), [connection server]];
+		context[@"description"] = [[NSString alloc] initWithFormat:NSLocalizedString( @"You're were disconnected from %@.", "you were disconnected bubble text" ), [connection server]];
 		context[@"image"] = [NSImage imageNamed:@"disconnect"];
 		[[JVNotificationController defaultController] performNotification:@"JVChatDisconnected" withContextInfo:context];
 	}

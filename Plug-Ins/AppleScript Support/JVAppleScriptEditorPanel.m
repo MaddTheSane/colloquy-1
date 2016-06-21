@@ -116,7 +116,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
 - (NSView *) view {
 	if( ! _nibLoaded ) {
-		_nibLoaded = [[NSBundle bundleForClass:[self class]] loadNibFile:@"AppleScriptPanel" externalNameTable:[NSDictionary dictionaryWithObject:self forKey:@"NSOwner"] withZone:[self zone]];
+		_nibLoaded = [[NSBundle bundleForClass:[self class]] loadNibFile:@"AppleScriptPanel" externalNameTable:[[NSDictionary alloc] initWithObject:self forKey:@"NSOwner"] withZone:[self zone]];
 	}
 
 	return contents;
@@ -214,7 +214,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 	if( returnCode == NSOKButton && [self compile:nil] ) {
 		[[[self plugin] script] saveToFile:[sheet filename]];
 		[[self plugin] setScriptFilePath:[sheet filename]];
-		[[NSFileManager defaultManager] changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:@([sheet isExtensionHidden]), NSFileExtensionHidden, nil] atPath:[sheet filename]];
+		[[NSFileManager defaultManager] changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:[sheet isExtensionHidden]], NSFileExtensionHidden, nil] atPath:[sheet filename]];
 	}
 }
 
@@ -312,4 +312,5 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
 	return [[list retain] autorelease];
 }
+
 @end

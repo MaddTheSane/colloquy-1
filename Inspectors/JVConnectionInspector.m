@@ -2,6 +2,7 @@
 #import "JVConnectionInspector.h"
 #import "MVConnectionsController.h"
 #import "KAIgnoreRule.h"
+#import "NSImageAdditions.h"
 
 @implementation MVChatConnection (MVChatConnectionInspection)
 - (id <JVInspector>) inspector {
@@ -21,7 +22,7 @@
 
 @implementation JVConnectionInspector
 - (instancetype) initWithConnection:(MVChatConnection *) connection {
-	if( ( self = [self init] ) )
+	if( ( self = [super init] ) )
 		_connection = connection;
 	return self;
 }
@@ -173,7 +174,7 @@
 		[_connection setAlternateNicknames:[[sender stringValue] componentsSeparatedByString:@" "]];
 	} else if( sender == editPassword ) {
 		_connection.nicknamePassword = nil;
-		[[CQKeychain standardKeychain] setPassword:[sender stringValue] forServer:_connection.uniqueIdentifier area:[NSString stringWithFormat:@"Nickname %@", _connection.preferredNickname] displayValue:_connection.server];
+		[[CQKeychain standardKeychain] setPassword:[sender stringValue] forServer:_connection.uniqueIdentifier area:[[NSString alloc] initWithFormat:@"Nickname %@", _connection.preferredNickname] displayValue:_connection.server];
 	} else if( sender == editServerPassword ) {
 		_connection.password = [sender stringValue];
 		[[CQKeychain standardKeychain] setPassword:[sender stringValue] forServer:_connection.uniqueIdentifier area:@"Server" displayValue:_connection.server];
@@ -380,7 +381,11 @@
 		KAIgnoreRule *rule = _ignoreRules[row];
 		if( [[column identifier] isEqualToString:@"icon"] ) {
 			if( [rule user] && [rule message] ) return [NSImage imageNamed:@"privateChatTab"];
-			else if( [rule user] ) return [NSImage imageNamed:@"person"];
+			else if( [rule user] ) {
+				NSImage *image = [[NSImage imageNamed:@"person"] copy];
+				image.size = NSMakeSize(14., 14.);
+				return image;
+			}
 			else return [NSImage imageNamed:@"roomTabNewMessage"];
 		} else {
 			if( ! [rule isPermanent] ) return [[NSAttributedString alloc] initWithString:[rule friendlyName] attributes:@{NSForegroundColorAttributeName: [[NSColor blackColor] colorWithAlphaComponent:0.67]}];

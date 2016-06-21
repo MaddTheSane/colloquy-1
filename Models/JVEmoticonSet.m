@@ -15,6 +15,7 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 @implementation JVEmoticonSet
 @synthesize bundle = _bundle;
 + (void) scanForEmoticonSets {
+	NSFileManager *fm = [NSFileManager defaultManager];
 	NSMutableSet *styles = [NSMutableSet set];
 	if( ! allEmoticonSets ) allEmoticonSets = styles;
 
@@ -23,14 +24,17 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 	[paths addObject:[[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"Emoticons"]];
 	if( ! [[NSBundle mainBundle] isEqual:[NSBundle bundleForClass:[self class]]] )
 		[paths addObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Emoticons"]];
-	[paths addObject:[[NSString stringWithFormat:@"~/Library/Application Support/%@/Emoticons", bundleName] stringByExpandingTildeInPath]];
-	[paths addObject:[NSString stringWithFormat:@"/Library/Application Support/%@/Emoticons", bundleName]];
-	[paths addObject:[NSString stringWithFormat:@"/Network/Library/Application Support/%@/Emoticons", bundleName]];
+	NSArray *urls = [fm URLsForDirectory:NSApplicationSupportDirectory inDomains:NSAllDomainsMask & ~NSSystemDomainMask];
+	for (NSURL *url in urls) {
+		NSURL *newURL = [url URLByAppendingPathComponent:bundleName];
+		newURL = [newURL URLByAppendingPathComponent:@"Emoticons" isDirectory:YES];
+		[paths addObject:[newURL path]];
+	}
 
 	for( NSString *path in paths ) {
-		for( NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil] ) {
+		for( NSString *file in [fm contentsOfDirectoryAtPath:path error:nil] ) {
 			NSString *fullPath = [path stringByAppendingPathComponent:file];
-			NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fullPath error:nil];
+			NSDictionary *attributes = [fm attributesOfItemAtPath:fullPath error:nil];
 			if( /* [[NSWorkspace sharedWorkspace] isFilePackageAtPath:fullPath] && */ ( [[file pathExtension] caseInsensitiveCompare:@"colloquyEmoticons"] == NSOrderedSame || ( [attributes[NSFileHFSTypeCode] unsignedIntValue] == 'coEm' && [attributes[NSFileHFSCreatorCode] unsignedIntValue] == 'coRC' ) ) ) {
 				NSBundle *bundle = nil;
 				JVEmoticonSet *emoticon = nil;
@@ -200,7 +204,7 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 		[ret addObject:menuItem];
 	}
 
-	return [NSArray arrayWithArray:ret];
+	return [ret copy];
 }
 
 #pragma mark -

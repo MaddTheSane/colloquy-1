@@ -64,9 +64,9 @@ static NSMutableSet *inspectors = nil;
 		} else [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( keyWindowChanged: ) name:NSWindowDidBecomeKeyNotification object:nil];
 		if( _object == nil )
 			[self _inspectWindow:[[NSApplication sharedApplication] keyWindow]];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _applicationQuitting: ) name:NSApplicationWillTerminateNotification object:nil];
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( _applicationQuitting: ) name:NSApplicationWillTerminateNotification object:nil];
 	return self;
 }
 

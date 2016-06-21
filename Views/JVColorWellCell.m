@@ -44,7 +44,7 @@ NSString *JVColorWellCellColorDidChangeNotification = @"JVColorWellCellColorDidC
 	}
 
 	if( ( self = [super initImageCell:nil] ) ) {
-		if( ! colorWellCells ) colorWellCells = [NSMutableSet set];
+		if( ! colorWellCells ) colorWellCells = [[NSMutableSet alloc] init];
 		[colorWellCells addObject:self];
 		_releasing = NO;
 
@@ -174,16 +174,6 @@ NSString *JVColorWellCellColorDidChangeNotification = @"JVColorWellCellColorDidC
 
 #pragma mark -
 
-- (void) setTarget:(id) object {
-	[NSException raise:NSIllegalSelectorException format:@"JVColorWellCell does not implement setTarget:"];
-}
-
-- (void) setAction:(SEL) action {
-	[NSException raise:NSIllegalSelectorException format:@"JVColorWellCell does not implement setAction:"];
-}
-
-#pragma mark -
-
 - (BOOL) hasValidObjectValue {
 	return YES;
 }
@@ -209,5 +199,4 @@ NSString *JVColorWellCellColorDidChangeNotification = @"JVColorWellCellColorDidC
 - (void) setStringValue:(NSString *) string {
 	[self setColor:[NSColor colorWithCSSAttributeValue:string]];
 }
-
 @end

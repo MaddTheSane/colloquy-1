@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 	[ret appendFormat:@">%@</%@>", [[self displayName] stringByEncodingXMLSpecialCharactersAsEntities], tag];
 
 	[ret stripIllegalXMLCharacters];
-	return [NSString stringWithString:ret];
+	return [ret copy];
 }
 
 - (nullable KAIgnoreRule *) _tempIgnoreRule {

@@ -6,11 +6,12 @@
 #import "JVDetailCell.h"
 #import "JVInspectorController.h"
 #import "JVNotificationController.h"
+#import "MVApplicationController.h"
 #import "MVChatUserAdditions.h"
 #import "MVConnectionsController.h"
 #import "MVFileTransferController.h"
 #import "MVTableView.h"
-#import "MVApplicationController.h"
+#import "NSImageAdditions.h"
 
 static MVBuddyListController *sharedInstance = nil;
 
@@ -131,7 +132,9 @@ static MVBuddyListController *sharedInstance = nil;
 		if( buddyRep ) [list addObject:buddyRep];
 	}
 
-	[list writeToFile:[@"~/Library/Application Support/Colloquy/Buddy List.plist" stringByExpandingTildeInPath] atomically:YES];
+	NSURL *saveURL = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
+	saveURL = [[saveURL URLByAppendingPathComponent:@"Colloquy"] URLByAppendingPathComponent:@"Buddy List.plist" isDirectory:NO];
+	[list writeToURL:saveURL atomically:YES];
 }
 
 #pragma mark -
@@ -682,7 +685,7 @@ static MVBuddyListController *sharedInstance = nil;
 - (NSString *) tableView:(MVTableView *) tableView toolTipForTableColumn:(NSTableColumn *) column row:(NSInteger) row {
 	if( tableView != buddies || row == -1 || row >= (int)[_buddyOrder count] ) return nil;
 
-	NSMutableString *ret = [NSMutableString string];
+	NSMutableString *ret = [[NSMutableString alloc] init];
 	JVBuddy *buddy = _buddyOrder[row];
 	MVChatUser *user = [buddy activeUser];
 
@@ -972,7 +975,10 @@ static MVBuddyListController *sharedInstance = nil;
 }
 
 - (void) _loadBuddyList {
-	NSArray *list = [[NSArray alloc] initWithContentsOfFile:[@"~/Library/Application Support/Colloquy/Buddy List.plist" stringByExpandingTildeInPath]];
+	NSURL *saveURL = [[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
+	saveURL = [[saveURL URLByAppendingPathComponent:@"Colloquy"] URLByAppendingPathComponent:@"Buddy List.plist" isDirectory:NO];
+
+	NSArray *list = [[NSArray alloc] initWithContentsOfURL:saveURL];
 	if( ! [list count] ) [self _importOldBuddyList];
 
 	for( NSDictionary *buddyDictionary in list ) {

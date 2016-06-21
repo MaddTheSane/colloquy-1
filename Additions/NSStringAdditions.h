@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-BOOL isValidUTF8( const char *string, NSUInteger length );
+extern BOOL isValidUTF8( const char *string, NSUInteger length );
 
 #define is7Bit(ch) (((ch) & 0x80) == 0)
 #define isUTF8Tupel(ch) (((ch) & 0xE0) == 0xC0)
@@ -41,8 +41,8 @@ BOOL isValidUTF8( const char *string, NSUInteger length );
 - (NSString *) stringByEscapingCharactersInSet:(NSCharacterSet *) set;
 - (NSString *) stringByReplacingCharactersInSet:(NSCharacterSet *) set withString:(NSString *) string;
 
-@property (readonly, copy) NSString *stringByEncodingIllegalURLCharacters;
-@property (readonly, copy) NSString *stringByDecodingIllegalURLCharacters;
+@property (readonly, copy, nullable) NSString *stringByEncodingIllegalURLCharacters;
+@property (readonly, copy, nullable) NSString *stringByDecodingIllegalURLCharacters;
 
 @property (readonly, copy) NSString *stringByStrippingIllegalXMLCharacters;
 @property (readonly, copy) NSString *stringByStrippingXMLTags;
@@ -75,8 +75,8 @@ BOOL isValidUTF8( const char *string, NSUInteger length );
 - (NSRange) rangeOfRegex:(NSString *) regex inRange:(NSRange) range;
 - (NSRange) rangeOfRegex:(NSString *) regex options:(NSRegularExpressionOptions) options inRange:(NSRange) range capture:(NSInteger) capture error:(NSError **) error;
 
-- (nullable NSString *) stringByMatching:(NSString *) regex capture:(NSInteger) capture;
-- (nullable NSString *) stringByMatching:(NSString *) regex options:(NSRegularExpressionOptions) options inRange:(NSRange) range capture:(NSInteger) capture error:(NSError **) error;
+- (NSString *__nullable) stringByMatching:(NSString *) regex capture:(NSInteger) capture;
+- (NSString *__nullable) stringByMatching:(NSString *) regex options:(NSRegularExpressionOptions) options inRange:(NSRange) range capture:(NSInteger) capture error:(NSError **) error;
 
 - (nullable NSArray <NSString *> *) captureComponentsMatchedByRegex:(NSString *) regex options:(NSRegularExpressionOptions) options range:(NSRange) range error:(NSError **) error;
 

@@ -996,11 +996,16 @@ static NSString *colorForHTML( unsigned char red, unsigned char green, unsigned 
 
 #pragma mark -
 
-- (NSString *) stringByEncodingIllegalURLCharacters {
-	return [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@",;:/?@&$=|^~`\{}[]"]];
+- (NSString *__nullable) stringByEncodingIllegalURLCharacters {
+	static NSCharacterSet *illegalURLCharacters = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		illegalURLCharacters = [NSCharacterSet characterSetWithCharactersInString:@",;:/?@&$=|^~`\{}[]"];
+	});
+	return [self stringByAddingPercentEncodingWithAllowedCharacters:illegalURLCharacters];
 }
 
-- (NSString *) stringByDecodingIllegalURLCharacters {
+- (NSString *__nullable) stringByDecodingIllegalURLCharacters {
 	return [self stringByRemovingPercentEncoding];
 }
 
@@ -1156,11 +1161,11 @@ static NSCharacterSet *typicalEmoticonCharacters;
 	return foundRange;
 }
 
-- (nullable NSString *) stringByMatching:(NSString *) regex capture:(NSInteger) capture {
+- (NSString *__nullable) stringByMatching:(NSString *) regex capture:(NSInteger) capture {
 	return [self stringByMatching:regex options:0 inRange:NSMakeRange(0, self.length) capture:capture error:nil];
 }
 
-- (nullable NSString *) stringByMatching:(NSString *) regex options:(NSRegularExpressionOptions) options inRange:(NSRange) range capture:(NSInteger) capture error:(NSError **) error {
+- (NSString *__nullable) stringByMatching:(NSString *) regex options:(NSRegularExpressionOptions) options inRange:(NSRange) range capture:(NSInteger) capture error:(NSError **) error {
 	NSRegularExpression *regularExpression = [NSRegularExpression cachedRegularExpressionWithPattern:regex options:options error:error];
 	NSTextCheckingResult *result = [regularExpression firstMatchInString:self options:NSMatchingReportCompletion range:range];
 

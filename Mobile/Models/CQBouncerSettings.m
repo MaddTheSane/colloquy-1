@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 	else _identifier = [[NSString locallyUniqueString] copy];
 
 	if (info[@"bouncerType"])
-		self.type = [info[@"bouncerType"] unsignedLongValue];
+		self.type = [info[@"bouncerType"] unsignedIntValue];
 
 	if (info[@"bouncerDescription"])
 		self.displayName = info[@"bouncerDescription"];
@@ -78,17 +78,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void) setType:(MVChatConnectionBouncer) type {
-	NSParameterAssert(type != MVChatConnectionNoProxy);
+	NSParameterAssert(type != MVChatConnectionNoBouncer);
 	_type = type;
 }
 
-- (NSString *) password {
+- (NSString *__nullable) password {
 	if (!_password && _server && _username)
 		_password = [[[CQKeychain standardKeychain] passwordForServer:_identifier area:@"Bouncer"] copy];
 	return _password;
 }
 
-- (void) setPassword:(NSString *) password {
+- (void) setPassword:(NSString *__nullable) password {
 	if (_password != password) {
 		_password = [password copy];
 	}

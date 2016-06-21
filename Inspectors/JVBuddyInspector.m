@@ -12,7 +12,7 @@
 
 @implementation JVBuddyInspector
 - (instancetype) initWithBuddy:(JVBuddy *) buddy {
-	if( ( self = [self init] ) )
+	if( ( self = [super init] ) )
 		_buddy = buddy;
 	return self;
 }
@@ -278,7 +278,7 @@
 
 - (id) tableView:(NSTableView *) tableView objectValueForTableColumn:(NSTableColumn *) column row:(NSInteger) row {
 	if( [tableView isEqual:identifiersTable] ) {
-		NSMutableString *description = [NSMutableString string];
+		NSMutableString *description = [[NSMutableString alloc] init];
 		MVChatUserWatchRule *rule = [_buddy watchRules][row];
 		NSUInteger count = 0;
 
