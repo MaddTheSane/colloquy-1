@@ -91,29 +91,26 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	}
 	
 	public func handleJoinWithArguments(arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
-		/*
-		NSArray *channels = [[arguments stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsSeparatedByString:@","];
-		
-		if( arguments.length && channels.count == 1 ) {
-			[connection joinChatRoomNamed:[arguments stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-			return YES;
-		} else if( arguments.length && channels.count > 1 ) {
+		let channels = arguments.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).componentsSeparatedByString(",")
+		if channels.count == 1 {
+			connection.joinChatRoomNamed(arguments.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
+			return true
+		} else if channels.count > 1 {
+			/*		
 			for( __strong NSString *channel in channels ) {
-				channel = [channel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-				if( channel.length )
-				[(NSMutableArray *)channels addObject:channel];
+			channel = [channel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+			if( channel.length )
+			[(NSMutableArray *)channels addObject:channel];
 			}
-			
-			[connection joinChatRoomsNamed:channels];
-			return YES;
+			*/
+			connection.joinChatRoomsNamed(channels)
+			return true
 		} else {
-			id browser = [JVChatRoomBrowser chatRoomBrowserForConnection:connection];
-			[browser showWindow:nil];
-			[browser showRoomBrowser:nil];
-			return YES;
-		}*/
-		
-		return false
+			let browser = JVChatRoomBrowser(forConnection: connection)
+			browser?.showWindow(nil)
+			browser?.showRoomBrowser(nil)
+			return true
+		}
 	}
 	
 	public func handlePartWithArguments(arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
@@ -214,21 +211,24 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	}
 	
 	public func handleMassMessageCommand(command: String, withMessage message: NSAttributedString!, forConnection connection: MVChatConnection!) -> Bool {
-		/*
-		if( ! message.length ) return NO;
-		
-		BOOL action = ( ! [command caseInsensitiveCompare:@"ame"] || ! [command caseInsensitiveCompare:@"bract"] );
-		
-		for( JVChatRoomPanel *room in [[JVChatController defaultController] chatViewControllersOfClass:[JVChatRoomPanel class]] ) {
-			JVMutableChatMessage *cmessage = [JVMutableChatMessage messageWithText:message sender:[room.connection localUser]];
-			[cmessage setAction:action];
-			[room sendMessage:cmessage];
-			[room echoSentMessageToDisplay:cmessage];
+		guard message.length > 0 else {
+			return false
 		}
 		
-		return YES;
-		*/
-		return false
+		let action: Bool = {
+			let cmd = command.lowercaseString
+			
+			return cmd == "ame" || cmd == "bract"
+		}()
+		
+		for room in (JVChatController.defaultController().chatViewControllersOfClass(JVChatRoomPanel.self) as! Set<JVChatRoomPanel>) {
+			let cMessage = JVMutableChatMessage(text: message, sender: room.connection()?.localUser)
+			cMessage.action = action
+			room.sendMessage(cMessage)
+			room.echoSentMessageToDisplay(cMessage)
+		}
+		
+		return true
 	}
 	
 	public func handleMassNickChangeWithName(nickname: String!) -> Bool {
