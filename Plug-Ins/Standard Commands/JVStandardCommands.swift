@@ -69,25 +69,33 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	}
 	
 	public func handleServerConnectWithArguments(arguments: String!) -> Bool {
-		/*
-		NSURL *url = nil;
-		if( arguments.length && [arguments rangeOfString:@"://"].location != NSNotFound && ( url = [NSURL URLWithString:arguments] ) ) {
-			[[MVConnectionsController defaultController] handleURL:url andConnectIfPossible:YES];
-		} else if( arguments.length ) {
-			NSString *address = nil;
-			int port = 0;
-			NSScanner *scanner = [NSScanner scannerWithString:arguments];
-			[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:&address];
-			[scanner scanInt:&port];
+		if let _ = arguments?.rangeOfString("://"), url = NSURL(string: arguments) {
+			MVConnectionsController.defaultController().handleURL(url, andConnectIfPossible: true)
+		} else if let arguments = arguments where arguments.characters.count > 0 {
+			var address: NSString?
+			var port: Int32 = 0
+			let scanner = NSScanner(string: arguments)
+			scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &address)
+			scanner.scanInt(&port)
+			var url: NSURL?
 			
-			if( address.length && port ) url = [NSURL URLWithString:[NSString stringWithFormat:@"irc://%@:%u", [address stringByEncodingIllegalURLCharacters], port]];
-			else if( address.length && ! port ) url = [NSURL URLWithString:[NSString stringWithFormat:@"irc://%@", [address stringByEncodingIllegalURLCharacters]]];
-			else [[MVConnectionsController defaultController] newConnection:nil];
+			if let address = address {
+				if port != 0 {
+					url = NSURL(string: "irc://\(address.stringByEncodingIllegalURLCharacters ?? ""):\(port)")
+				} else {
+					url = NSURL(string: "irc://\(address.stringByEncodingIllegalURLCharacters ?? "")")
+				}
+			} else {
+				MVConnectionsController.defaultController().newConnection(nil)
+			}
 			
-			if( url ) [[MVConnectionsController defaultController] handleURL:url andConnectIfPossible:YES];
-		} else [[MVConnectionsController defaultController] newConnection:nil];
-		return YES;*/
-		return false
+			if let url = url {
+				MVConnectionsController.defaultController().handleURL(url, andConnectIfPossible: true)
+			}
+		} else {
+			MVConnectionsController.defaultController().newConnection(nil)
+		}
+		return true
 	}
 	
 	public func handleJoinWithArguments(arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
@@ -138,74 +146,80 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	}
 	
 	public func handleMessageCommand(command: String!, withMessage message: NSAttributedString!, forConnection connection: MVChatConnection!, alwaysShow always: Bool) -> Bool {
-		/*
-		NSString *to = nil;
-		NSAttributedString *msg = nil;
-		NSScanner *scanner = [NSScanner scannerWithString:message.string];
+		var to1: NSString?
+		var msg: NSAttributedString?
+		let scanner = NSScanner(string: message.string)
 		
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:&to];
+		scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &to1)
 		
-		if( ! to.length ) return NO;
-		
-		if( message.length >= scanner.scanLocation + 1 ) {
-			scanner.scanLocation = scanner.scanLocation + 1;
-			msg = [message attributedSubstringFromRange:NSMakeRange( scanner.scanLocation, message.length - scanner.scanLocation )];
+		guard let to = to1 where to.length > 0 else {
+			return false
 		}
 		
-		BOOL show = NO;
-		show = ( ! [command caseInsensitiveCompare:@"query"] ? YES : show );
-		show = ( ! msg.length ? YES : show );
-		show = ( always ? YES : show );
+		if message.length >= scanner.scanLocation + 1 {
+			scanner.scanLocation += 1
+			msg = message.attributedSubstringFromRange(NSMakeRange(scanner.scanLocation, message.length - scanner.scanLocation))
+		}
 		
-		JVDirectChatPanel *chatView = nil;
-		
+		var show = false
+		show = ( command.caseInsensitiveCompare("query") == .OrderedSame ? true : show )
+		if let msg = msg where msg.length > 0 {
+			show = true
+		}
+		show = ( always ? true : show );
+		var chatView: JVDirectChatPanel? = nil
+
 		// this is an IRC specific command for sending to room operators only.
-		if( connection.type == MVChatConnectionIRCType ) {
-			NSScanner *scanner = [NSScanner scannerWithString:to];
+		if connection.type == .IRCType {
+			let scanner = NSScanner(string: to as String);
 			scanner.charactersToBeSkipped = nil;
-			[scanner scanCharactersFromSet:[connection _nicknamePrefixes] intoString:NULL];
-			
-			if( scanner.scanLocation ) {
-				NSString *roomTargetName = [to substringFromIndex:scanner.scanLocation];
-				if( roomTargetName.length > 1 && [connection.chatRoomNamePrefixes characterIsMember:[roomTargetName characterAtIndex:0]] ) {
-					[connection sendRawMessage:[NSString stringWithFormat:@"PRIVMSG %@ :%@", to, msg.string]];
+			scanner.scanCharactersFromSet(connection._nicknamePrefixes, intoString: nil)
+
+			if scanner.scanLocation > 0 {
+				let roomTargetName = to.substringFromIndex(scanner.scanLocation)
+				if roomTargetName.characters.count > 1 && connection.chatRoomNamePrefixes.characterIsMember((roomTargetName as NSString).characterAtIndex(0)) {
+					connection.sendRawMessage(NSString(string: "PRIVMSG \(to) :\(msg?.string ?? "")"))
 					
-					MVChatRoom *room = [connection joinedChatRoomWithName:roomTargetName];
-					if( room ) chatView = [[JVChatController defaultController] chatViewControllerForRoom:room ifExists:YES];
+					if let room = connection.joinedChatRoomWithName(roomTargetName) as MVChatRoom? {
+						chatView = JVChatController.defaultController().chatViewControllerForRoom(room, ifExists: true)
+					}
 					
-					JVMutableChatMessage *cmessage = [JVMutableChatMessage messageWithText:msg sender:connection.localUser];
-					[chatView sendMessage:cmessage];
-					[chatView echoSentMessageToDisplay:cmessage];
+					let cmessage = JVMutableChatMessage(text: msg ?? "", sender: connection.localUser)
+					chatView?.sendMessage(cmessage)
+					chatView?.echoSentMessageToDisplay(cmessage)
 					
-					return YES;
+					return true
 				}
 			}
 		}
 		
-		MVChatRoom *room = nil;
-		if( [command isCaseInsensitiveEqualToString:@"msg"] && to.length > 1 && [connection.chatRoomNamePrefixes characterIsMember:[to characterAtIndex:0]] ) {
-			room = [connection joinedChatRoomWithName:to];
-			if( room ) chatView = [[JVChatController defaultController] chatViewControllerForRoom:room ifExists:YES];
+		var room: MVChatRoom?
+		if command.caseInsensitiveCompare("msg") == .OrderedSame && to.length > 1 && connection.chatRoomNamePrefixes.characterIsMember(to.characterAtIndex(0)) {
+			room = connection.joinedChatRoomWithName(to as String)
+			if let room = room {
+				chatView = JVChatController.defaultController().chatViewControllerForRoom(room, ifExists: true)
+			}
 		}
 		
-		MVChatUser *user = nil;
-		if( ! chatView ) {
-			user = [[connection chatUsersWithNickname:to] anyObject];
-			if( user ) chatView = [[JVChatController defaultController] chatViewControllerForUser:user ifExists:( ! show )];
+		var user: MVChatUser?
+		if nil == chatView {
+			user = connection.chatUsersWithNickname(to as String).first
+			if let user = user {
+				chatView = JVChatController.defaultController().chatViewControllerForUser(user, ifExists: !show)
+			}
 		}
 		
-		if( chatView && msg.length ) {
-			JVMutableChatMessage *cmessage = [JVMutableChatMessage messageWithText:msg sender:connection.localUser];
-			[chatView sendMessage:cmessage];
-			[chatView addMessageToHistory:msg];
-			[chatView echoSentMessageToDisplay:cmessage];
-			return YES;
-		} else if( ( user || room ) && msg.length ) {
-			id target = room;
-			if( ! target ) target = user;
-			[target sendMessage:msg withEncoding:( room ? room.encoding : connection.encoding ) asAction:NO];
-			return YES;
-		}*/
+		if let chatView = chatView, msg = msg where msg.length > 0 {
+			let cmessage = JVMutableChatMessage(text: msg, sender: connection.localUser)
+			chatView.sendMessage(cmessage)
+			chatView.addMessageToHistory(msg)
+			chatView.echoSentMessageToDisplay(cmessage)
+			return true
+		} else if let msg = msg where (user != nil || room != nil) && msg.length > 0 {
+			let target: MVMessaging? = room ?? user
+			target!.sendMessage(msg, withEncoding: room?.encoding ?? connection.encoding, asAction: false)
+			return true
+		}
 		
 		return false
 	}
@@ -796,9 +810,6 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	[chat _reloadCurrentStyle:nil];
 	return YES;
 	}
-	} else if( ! [command caseInsensitiveCompare:@"help"] ) {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://project.colloquy.info/wiki/Documentation/CommandReference"]];
-	return YES;
 	} else if( ! [command caseInsensitiveCompare:@"globops"] && connection.type == MVChatConnectionIRCType ) {
 	[connection sendRawMessage:[NSString stringWithFormat:@"%@ :%@", command, arguments.string]];
 	return YES;
