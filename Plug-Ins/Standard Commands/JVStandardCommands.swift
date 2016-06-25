@@ -895,7 +895,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			var target: NSString? = nil;
 			var message: NSString? = nil;
 			let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-			var prefixes = connection.chatRoomNamePrefixes!.mutableCopy() as! NSMutableCharacterSet
+			let prefixes = connection.chatRoomNamePrefixes!.mutableCopy() as! NSMutableCharacterSet
 			prefixes.addCharactersInString("@")
 			
 			let scanner = NSScanner(string: arguments.string)
