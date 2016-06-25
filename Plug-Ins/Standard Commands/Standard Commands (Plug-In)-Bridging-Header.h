@@ -3,6 +3,7 @@
 //
 
 #import "Basic.pch"
+#import <ChatCore/ChatCore.h>
 #import "JVChatController.h"
 #import "MVConnectionsController.h"
 #import "MVChatUserAdditions.h"

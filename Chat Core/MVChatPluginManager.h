@@ -17,7 +17,7 @@ extern NSString *const MVChatPluginManagerDidFindInvalidPluginsNotification;
 + (MVChatPluginManager *) defaultManager;
 + (NSArray<NSString*> *) pluginSearchPaths;
 
-@property(strong, readonly) NSArray<id<MVChatPlugin>> *plugins;
+@property(copy, readonly) NSArray<id<MVChatPlugin>> *plugins;
 
 - (void) reloadPlugins;
 - (void) addPlugin:(id <MVChatPlugin>) plugin;

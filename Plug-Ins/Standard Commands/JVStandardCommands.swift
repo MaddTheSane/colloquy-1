@@ -104,14 +104,9 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			connection.joinChatRoomNamed(arguments.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
 			return true
 		} else if channels.count > 1 {
-			/*		
-			for( __strong NSString *channel in channels ) {
-			channel = [channel stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-			if( channel.length )
-			[(NSMutableArray *)channels addObject:channel];
-			}
-			*/
-			connection.joinChatRoomsNamed(channels)
+			var channels1 = channels.map({ return $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())}).filter({ return $0.characters.count != 0})
+			channels1 += channels
+			connection.joinChatRoomsNamed(channels1)
 			return true
 		} else {
 			let browser = JVChatRoomBrowser(forConnection: connection)
@@ -177,7 +172,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 
 			if scanner.scanLocation > 0 {
 				let roomTargetName = to.substringFromIndex(scanner.scanLocation)
-				if roomTargetName.characters.count > 1 && connection.chatRoomNamePrefixes.characterIsMember((roomTargetName as NSString).characterAtIndex(0)) {
+				if roomTargetName.characters.count > 1 && connection.chatRoomNamePrefixes!.characterIsMember((roomTargetName as NSString).characterAtIndex(0)) {
 					connection.sendRawMessage(NSString(string: "PRIVMSG \(to) :\(msg?.string ?? "")"))
 					
 					if let room = connection.joinedChatRoomWithName(roomTargetName) as MVChatRoom? {
@@ -194,7 +189,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		}
 		
 		var room: MVChatRoom?
-		if command.caseInsensitiveCompare("msg") == .OrderedSame && to.length > 1 && connection.chatRoomNamePrefixes.characterIsMember(to.characterAtIndex(0)) {
+		if command.caseInsensitiveCompare("msg") == .OrderedSame && to.length > 1 && (connection.chatRoomNamePrefixes?.characterIsMember(to.characterAtIndex(0)) ?? false) {
 			room = connection.joinedChatRoomWithName(to as String)
 			if let room = room {
 				chatView = JVChatController.defaultController().chatViewControllerForRoom(room, ifExists: true)
@@ -437,10 +432,9 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	}
 	
 	public override func processUserCommand(command1: String!, withArguments arguments: NSAttributedString!, toConnection connection: MVChatConnection!, inView view: JVChatViewController!) -> Bool {
-		var command = command1
+		let command = command1.lowercaseString
 		let isChatRoom = view is JVChatRoomPanel
-		let isDirectChat = view is JVDirectChatPanel;
-		command = command.lowercaseString
+		let isDirectChat = view is JVDirectChatPanel
 	
 		let chat = view as? JVDirectChatPanel
 		let room = view as? JVChatRoomPanel
@@ -449,7 +443,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			switch command {
 			case "me", "action", "say":
 				if arguments.length != 0 {
-					let message = JVMutableChatMessage(text:arguments, sender:chat!.connection()!.localUser)
+					let message = JVMutableChatMessage(text: arguments, sender: chat!.connection()!.localUser)
 					if command == "me" || command == "action" {
 						// This is so plugins can process /me actions as well
 						// We're avoiding /say for now, as that really should just output exactly what
@@ -504,7 +498,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		}
 	
 		if isChatRoom {
-			switch command.lowercaseString {
+			switch command {
 			case "leave", "part":
 				if arguments.length == 0 {
 					return handlePartWithArguments((room?.target as? MVChatRoom)?.name, forConnection: room?.connection())
@@ -753,7 +747,214 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			}
 		}
 		
-		switch command.lowercaseString {
+		switch command {
+		case "msg", "query":
+			return handleMessageCommand(command1, withMessage: arguments, forConnection: connection, alwaysShow: isChatRoom || isDirectChat)
+			
+		case "amsg", "ame", "broadcast", "bract":
+			return handleMassMessageCommand(command1, withMessage: arguments, forConnection: connection)
+			
+		case "away":
+			connection.awayStatusMessage = arguments
+			return true
+			
+		case "aaway":
+			return handleMassAwayWithMessage(arguments)
+			
+		case "anick":
+			return handleMassNickChangeWithName(arguments.string)
+			
+		case "j", "join":
+			return handleJoinWithArguments(arguments.string, forConnection: connection)
+			
+		case "leave", "part":
+			return handlePartWithArguments(arguments.string, forConnection: connection)
+			
+		case "server":
+			return handleServerConnectWithArguments(arguments.string)
+			
+		case "dcc":
+			var subcmd: NSString? = nil;
+			let scanner = NSScanner(string: arguments.string)
+			scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &subcmd)
+			
+			if (subcmd?.caseInsensitiveCompare("send") == .OrderedSame) ?? false {
+				return handleFileSendWithArguments(arguments.string, forConnection: connection)
+			} else if subcmd?.caseInsensitiveCompare("chat") == .OrderedSame {
+				var nick: NSString?
+				scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &nick)
+				
+				var user: MVChatUser?
+				user =  connection.chatUsersWithNickname(nick! as String).first
+				user?.startDirectChat(nil)
+				
+				return true
+			}
+			
+			return false;
+			
+		case "raw", "quote":
+			connection.sendRawMessage(arguments.string, immediately: true)
+			return true
+
+		case "umode":
+			guard connection.type == .IRCType else {
+				return false
+			}
+			
+			connection.sendRawMessage("MODE \(connection.nickname) \(arguments.string)")
+			return true
+			
+		case "wi":
+			connection.sendRawMessage("WHOIS \(arguments.string)")
+			return true
+			
+		case "wii":
+			connection.sendRawMessage("WHOIS \(arguments.string) \(arguments.string)")
+			return true
+			
+		case "list":
+			let browser = JVChatRoomBrowser(forConnection: connection)
+			connection.fetchChatRoomList()
+			browser.showWindow(nil)
+			browser.showRoomBrowser(nil)
+			browser.filter = arguments.string
+			return true
+
+		case "reconnect", "server":
+			connection.connect()
+			return true
+			
+		case "exit":
+			NSApplication.sharedApplication().terminate(nil)
+			return true
+			
+		case "ignore":
+			return handleIgnoreWithArguments(arguments.string, inView: room)
+			
+		case "unignore":
+			return handleUnignoreWithArguments(arguments.string, inView: room)
+			
+		case "invite":
+			guard connection.type == .IRCType else {
+				return false
+			}
+			var nick1: NSString?
+			var roomName1: NSString?
+			let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+			let scanner = NSScanner(string: arguments.string)
+			
+			scanner.scanUpToCharactersFromSet(whitespace, intoString: &nick1)
+			if !scanner.atEnd {
+				scanner.scanUpToCharactersFromSet(whitespace, intoString: &roomName1)
+			}
+			guard let nick = nick1 as? String, roomName = roomName1 as? String where nick.characters.count != 0 && roomName.characters.count != 0 else {
+				return false
+			}
+			
+			connection.sendRawMessage("INVITE \(nick) \(roomName)")
+			return true
+			
+		case "reload":
+			switch arguments.string.lowercaseString {
+			case "plugins", "scripts":
+				MVChatPluginManager.defaultManager().reloadPlugins()
+				return true
+				
+			case "styles":
+				JVStyle.scanForStyles()
+				return true
+				
+			case "emoticons":
+				JVEmoticonSet.scanForEmoticonSets()
+				return true
+				
+			case "all":
+				MVChatPluginManager.defaultManager().reloadPlugins()
+				JVEmoticonSet.scanForEmoticonSets()
+				JVStyle.scanForStyles()
+				if isChatRoom || isDirectChat {
+					chat?._reloadCurrentStyle(nil)
+				}
+				return true
+				
+			default:
+				return false
+			}
+		case "globops":
+			guard connection.type == .IRCType else {
+				return false
+			}
+			connection.sendRawMessage("\(command) :\(arguments.string)")
+			
+		case "notice", "onotice":
+			guard connection.type == .IRCType else {
+				return false
+			}
+			var targetPrefix: NSString? = nil;
+			var target: NSString? = nil;
+			var message: NSString? = nil;
+			let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+			var prefixes = connection.chatRoomNamePrefixes!.mutableCopy() as! NSMutableCharacterSet
+			prefixes.addCharactersInString("@")
+			
+			let scanner = NSScanner(string: arguments.string)
+			if scanner.scanCharactersFromSet(prefixes, intoString: &targetPrefix) || !isChatRoom {
+				scanner.scanUpToCharactersFromSet(whitespace, intoString: &target)
+				
+				if let targetPrefix = targetPrefix as? String {
+					target = targetPrefix + (target as! String)
+				}
+			} else if isChatRoom {
+				if command.caseInsensitiveCompare("onotice") == .OrderedSame {
+					target = (room?.target as? MVChatRoom)?.name
+				} else {
+					scanner.scanUpToCharactersFromSet(whitespace, intoString: &target)
+				}
+			}
+			
+			scanner.scanUpToCharactersFromSet(whitespace, intoString: nil)
+			scanner.scanUpToCharactersFromSet(NSCharacterSet(charactersInString: "\n"), intoString: &message)
+			
+			guard let target2 = target as? String, message1 = message as? String where target2.characters.count != 0 && message1.characters.count != 0 else {
+				return true
+			}
+			var target1 = target2
+			
+			if command.caseInsensitiveCompare("onotice") == .OrderedSame && !target1.hasPrefix("@") {
+				target1 = "@" + connection.properNameForChatRoomNamed(target1)
+			}
+			
+			connection.sendRawMessage("NOTICE \(target1) :\(message1)")
+			
+			let chanSet = connection.chatRoomNamePrefixes;
+			var chatView: JVDirectChatPanel? = nil;
+			
+			// this is an IRC specific command for sending to room operators only.
+			if target1.hasPrefix("@") && target1.characters.count > 1 {
+				target1 = target1.substringFromIndex(target1.characters.startIndex.successor())
+			}
+			
+			if chanSet?.characterIsMember((target1 as NSString).characterAtIndex(0)) ?? true {
+				if let room = connection.joinedChatRoomWithName(target1) as MVChatRoom? {
+					chatView = JVChatController.defaultController().chatViewControllerForRoom(room, ifExists: true)
+				}
+			}
+			
+			if chatView == nil {
+				if let user = connection.chatUsersWithNickname(target1).first {
+					chatView = JVChatController.defaultController().chatViewControllerForUser(user, ifExists: true)
+				}
+			}
+			
+			if let chatView = chatView {
+				let cmessage = JVMutableChatMessage(text: message1, sender: connection.localUser)
+				cmessage.type = .NoticeType
+				chatView.echoSentMessageToDisplay(cmessage)
+			}
+			
+			return true;
+
 		case "nick":
 			let newNickname = arguments.string
 			if newNickname.characters.count != 0 {
@@ -775,166 +976,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		default:
 			break
 		}
-
-	/*
-	if( ! [command caseInsensitiveCompare:@"msg"] || ! [command caseInsensitiveCompare:@"query"] ) {
-	return [self handleMessageCommand:command withMessage:arguments forConnection:connection alwaysShow:( isChatRoom || isDirectChat )];
-	} else if( ! [command caseInsensitiveCompare:@"amsg"] || ! [command caseInsensitiveCompare:@"ame"] || ! [command caseInsensitiveCompare:@"broadcast"] || ! [command caseInsensitiveCompare:@"bract"] ) {
-	return [self handleMassMessageCommand:command withMessage:arguments forConnection:connection];
-	} else if( ! [command caseInsensitiveCompare:@"away"] ) {
-	[connection setAwayStatusMessage:arguments];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"aaway"] ) {
-	return [self handleMassAwayWithMessage:arguments];
-	} else if( ! [command caseInsensitiveCompare:@"anick"] ) {
-	return [self handleMassNickChangeWithName:arguments.string];
-	} else if( ! [command caseInsensitiveCompare:@"j"] || ! [command caseInsensitiveCompare:@"join"] ) {
-	return [self handleJoinWithArguments:arguments.string forConnection:connection];
-	} else if( ! [command caseInsensitiveCompare:@"leave"] || ! [command caseInsensitiveCompare:@"part"] ) {
-	return [self handlePartWithArguments:arguments.string forConnection:connection];
-	} else if( ! [command caseInsensitiveCompare:@"server"] ) {
-	return [self handleServerConnectWithArguments:arguments.string];
-	} else if( ! [command caseInsensitiveCompare:@"dcc"] ) {
-	NSString *subcmd = nil;
-	NSScanner *scanner = [NSScanner scannerWithString:arguments.string];
-	[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:&subcmd];
-	if( ! [subcmd caseInsensitiveCompare:@"send"] ) {
-	return [self handleFileSendWithArguments:arguments.string forConnection:connection];
-	} else if( ! [subcmd caseInsensitiveCompare:@"chat"] ) {
-	NSString *nick = nil;
-	[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:&nick];
-	
-	MVChatUser *user = [[connection chatUsersWithNickname:nick] anyObject];
-	[user startDirectChat:nil];
-	return YES;
-	}
-	
-	return NO;
-	} else if( ! [command caseInsensitiveCompare:@"raw"] || ! [command caseInsensitiveCompare:@"quote"] ) {
-	[connection sendRawMessage:arguments.string immediately:YES];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"umode"] && connection.type == MVChatConnectionIRCType ) {
-	[connection sendRawMessage:[NSString stringWithFormat:@"MODE %@ %@", [connection nickname], arguments.string]];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"ctcp"] && connection.type == MVChatConnectionIRCType ) {
-	return [self handleCTCPWithArguments:arguments.string forConnection:connection];
-	} else if( ! [command caseInsensitiveCompare:@"wi"] ) {
-	[connection sendRawMessage:[NSString stringWithFormat:@"WHOIS %@", arguments.string]];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"wii"] ) {
-	[connection sendRawMessage:[NSString stringWithFormat:@"WHOIS %@ %@", arguments.string, arguments.string]];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"list"] ) {
-	JVChatRoomBrowser *browser = [JVChatRoomBrowser chatRoomBrowserForConnection:connection];
-	[connection fetchChatRoomList];
-	[browser showWindow:nil];
-	[browser showRoomBrowser:nil];
-	browser.filter = arguments.string;
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"quit"] || ! [command caseInsensitiveCompare:@"disconnect"] ) {
-	[connection disconnectWithReason:arguments];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"reconnect"] || ! [command caseInsensitiveCompare:@"server"] ) {
-	[connection connect];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"exit"] ) {
-	[[NSApplication sharedApplication] terminate:nil];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"ignore"] ) {
-	return [self handleIgnoreWithArguments:arguments.string inView:room];
-	} else if( ! [command caseInsensitiveCompare:@"unignore"] ) {
-	return [self handleUnignoreWithArguments:arguments.string inView:room];
-	} else if( ! [command caseInsensitiveCompare:@"invite"] && connection.type == MVChatConnectionIRCType ) {
-	NSString *nick = nil;
-	NSString *roomName = nil;
-	NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	NSScanner *scanner = [NSScanner scannerWithString:arguments.string];
-	
-	[scanner scanUpToCharactersFromSet:whitespace intoString:&nick];
-	if( ! nick.length || ! roomName.length ) return NO;
-	if( ! [scanner isAtEnd] ) [scanner scanUpToCharactersFromSet:whitespace intoString:&roomName];
-	
-	[connection sendRawMessage:[NSString stringWithFormat:@"INVITE %@ %@", nick, roomName]];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"reload"] ) {
-	if( ! [arguments.string caseInsensitiveCompare:@"plugins"] || ! [arguments.string caseInsensitiveCompare:@"scripts"] ) {
-	[[MVChatPluginManager defaultManager] reloadPlugins];
-	return YES;
-	} else if( ! [arguments.string caseInsensitiveCompare:@"styles"] ) {
-	[JVStyle scanForStyles];
-	return YES;
-	} else if( ! [arguments.string caseInsensitiveCompare:@"emoticons"] ) {
-	[JVEmoticonSet scanForEmoticonSets];
-	return YES;
-	} else if( ! [arguments.string caseInsensitiveCompare:@"all"] ) {
-	[[MVChatPluginManager defaultManager] reloadPlugins];
-	[JVEmoticonSet scanForEmoticonSets];
-	[JVStyle scanForStyles];
-	if( isChatRoom || isDirectChat )
-	[chat _reloadCurrentStyle:nil];
-	return YES;
-	}
-	} else if( ! [command caseInsensitiveCompare:@"globops"] && connection.type == MVChatConnectionIRCType ) {
-	[connection sendRawMessage:[NSString stringWithFormat:@"%@ :%@", command, arguments.string]];
-	return YES;
-	} else if( ( ! [command caseInsensitiveCompare:@"notice"] || ! [command caseInsensitiveCompare:@"onotice"] ) && connection.type == MVChatConnectionIRCType ) {
-	NSString *targetPrefix = nil;
-	NSString *target = nil;
-	NSString *message = nil;
-	NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	NSMutableCharacterSet *prefixes = [connection.chatRoomNamePrefixes mutableCopy];
-	[prefixes addCharactersInString:@"@"];
-	
-	NSScanner *scanner = [NSScanner scannerWithString:arguments.string];
-	if( [scanner scanCharactersFromSet:prefixes intoString:&targetPrefix] || ! isChatRoom ) {
-	[scanner scanUpToCharactersFromSet:whitespace intoString:&target];
-	if( targetPrefix.length ) target = [targetPrefix stringByAppendingString:target];
-	} else if( isChatRoom ) {
-	if( ! [command caseInsensitiveCompare:@"onotice"] )
-	target = ((MVChatRoom *)room.target).name;
-	else [scanner scanUpToCharactersFromSet:whitespace intoString:&target];
-	}
-	prefixes = nil;
-	
-	[scanner scanCharactersFromSet:whitespace intoString:NULL];
-	[scanner scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"] intoString:&message];
-	
-	if( ! target.length || ! message.length ) return YES;
-	
-	if( ! [command caseInsensitiveCompare:@"onotice"] && ! [target hasPrefix:@"@"] )
-	target = [@"@" stringByAppendingString:[connection properNameForChatRoomNamed:target]];
-	
-	[connection sendRawMessage:[NSString stringWithFormat:@"NOTICE %@ :%@", target, message]];
-	
-	NSCharacterSet *chanSet = connection.chatRoomNamePrefixes;
-	JVDirectChatPanel *chatView = nil;
-	
-	// this is an IRC specific command for sending to room operators only.
-	if( [target hasPrefix:@"@"] && target.length > 1 )
-	target = [target substringFromIndex:1];
-	
-	if( ! chanSet || [chanSet characterIsMember:[target characterAtIndex:0]] ) {
-	MVChatRoom *room = [connection joinedChatRoomWithName:target];
-	if( room ) chatView = [[JVChatController defaultController] chatViewControllerForRoom:room ifExists:YES];
-	}
-	
-	if( ! chatView ) {
-	MVChatUser *user = [[connection chatUsersWithNickname:target] anyObject];
-	if( user ) chatView = [[JVChatController defaultController] chatViewControllerForUser:user ifExists:YES];
-	}
-	
-	if( chatView ) {
-	JVMutableChatMessage *cmessage = [JVMutableChatMessage messageWithText:message sender:connection.localUser];
-	[cmessage setType:JVChatMessageNoticeType];
-	[chatView echoSentMessageToDisplay:cmessage];
-	}
-	
-	return YES;
-	}
-	
-	return NO;
-*/
-
-return false
+		
+		return false
 	}
 }
