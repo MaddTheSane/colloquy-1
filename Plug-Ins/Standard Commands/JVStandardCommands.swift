@@ -307,7 +307,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		}
 		
 		// check for wrong number of arguments
-		if( argsArray.count < ( offset + ( message ? 1 : 0 ) + ( member ? 1 : 0 ) ) ) {
+		if argsArray.count < ( offset + ( message ? 1 : 0 ) + ( member ? 1 : 0 ) ) {
 			return false
 		}
 		
@@ -507,9 +507,9 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			switch command.lowercaseString {
 			case "leave", "part":
 				if arguments.length == 0 {
-					//return [self handlePartWithArguments:((MVChatRoom *)room.target).name forConnection:room.connection]
+					return handlePartWithArguments((room?.target as? MVChatRoom)?.name, forConnection: room?.connection())
 				} else {
-					//return [self handlePartWithArguments:arguments.string forConnection:room.connection]
+					return handlePartWithArguments(arguments.string, forConnection: room?.connection())
 				}
 				
 			case "topic", "t":
@@ -543,176 +543,240 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				
 			case "invite":
 				if connection.type == .IRCType {
+					var nick: NSString? = nil;
+					var roomName: NSString? = nil;
+					let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+					let scanner = NSScanner(string: arguments.string)
 					
+					scanner.scanUpToCharactersFromSet(whitespace, intoString: &nick)
+					guard let nick1 = nick where nick1.length > 0 else {
+						return false
+					}
+					if !scanner.atEnd {
+						scanner.scanUpToCharactersFromSet(whitespace, intoString: &roomName)
+					}
+					
+					connection.sendRawMessage("INVITE \(nick1) \(roomName ?? room?.target!)")
+					return true
 				}
 				
 			case "help":
 				NSWorkspace.sharedWorkspace().openURL(NSURL(string: "http://project.colloquy.info/wiki/Documentation/CommandReference")!)
 				return true
 
+			case "kick":
+				var member: NSString? = nil;
+				let scanner = NSScanner(string: arguments.string)
+				
+				scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &member)
+				guard let member1 = member where member1.length > 0 else {
+					return false
+				}
+				
+				var reason: NSAttributedString? = nil;
+				if( arguments.length >= scanner.scanLocation + 1 ) {
+					reason = arguments.attributedSubstringFromRange(NSMakeRange(scanner.scanLocation + 1, arguments.length - scanner.scanLocation - 1))
+				}
+				
+				if let user = room?.target?.memberUsersWithNickname(member1 as String).first {
+					room?.target?.kickOutMemberUser(user, forReason: reason)
+				}
+				return true
+
+			case "kickban", "bankick", "bk", "kb":
+				var member1: NSString? = nil;
+				let scanner = NSScanner(string: arguments.string)
+				
+				scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &member1)
+				guard var member = member1 as? String where member.characters.count > 0 else {
+					return false
+				}
+				
+				var reason: NSAttributedString? = nil;
+				if arguments.length >= scanner.scanLocation + 1 {
+					reason = arguments.attributedSubstringFromRange(NSMakeRange(scanner.scanLocation + 1, (arguments.length - scanner.scanLocation - 1)))
+				}
+				
+				var user: MVChatUser? = nil;
+				if member.hasCaseInsensitiveSubstring("!") || member.hasCaseInsensitiveSubstring("@")  {
+					if !member.hasCaseInsensitiveSubstring("!") && member.hasCaseInsensitiveSubstring("@") {
+						member = "*!*" + member
+					}
+					user = MVChatUser.wildcardUserFromString(member)
+				} else {
+					user = room?.target?.memberUsersWithNickname(member).first
+				}
+				
+				if let user = user {
+					room?.target?.addBanForUser(user)
+					room?.target?.kickOutMemberUser(user, forReason: reason)
+					return true
+				}
+				return false;
+
+			case "op":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.setMode(.OperatorMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+				
+			case "deop":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.removeMode(.OperatorMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+
+			case "halfop":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.setMode(.HalfOperatorMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+				
+			case "dehalfop":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.removeMode(.HalfOperatorMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+
+			case "voice":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.setMode(.VoicedMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+				
+			case "devoice":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.removeMode(.VoicedMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+
+			case "quiet":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.setDisciplineMode(.DisciplineQuietedMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+				
+			case "dequiet":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg in args {
+					if arg.characters.count > 0 {
+						if let user = room?.target?.memberUsersWithNickname(arg).first {
+							room?.target?.removeDisciplineMode(.DisciplineQuietedMode, forMemberUser: user)
+						}
+					}
+				}
+				return true
+				
+			case "ban":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg1 in args {
+					var arg = arg1
+					var user: MVChatUser?
+					guard arg.characters.count != 0 else {
+						continue
+					}
+					if arg.hasCaseInsensitiveSubstring("!") || arg.hasCaseInsensitiveSubstring("@") || room?.target?.memberUsersWithNickname(arg) == nil {
+						if !arg.hasCaseInsensitiveSubstring("!") && arg.hasCaseInsensitiveSubstring("@") {
+						arg = "*!*" + arg;
+						}
+						user = MVChatUser.wildcardUserFromString(arg)
+					} else {
+						user = room?.target?.memberUsersWithNickname(arg).first
+					}
+					
+					if let user = user {
+						room?.target?.addBanForUser(user)
+					}
+				}
+				return true
+				
+			case "unban":
+				let args = arguments.string.componentsSeparatedByString(" ")
+				for arg1 in args {
+					var arg = arg1
+					var user: MVChatUser?
+					guard arg.characters.count != 0 else {
+						continue
+					}
+					if arg.hasCaseInsensitiveSubstring("!") || arg.hasCaseInsensitiveSubstring("@") || room?.target?.memberUsersWithNickname(arg) == nil {
+						if !arg.hasCaseInsensitiveSubstring("!") && arg.hasCaseInsensitiveSubstring("@") {
+							arg = "*!*" + arg;
+						}
+						user = MVChatUser.wildcardUserFromString(arg)
+					} else {
+						user = room?.target?.memberUsersWithNickname(arg).first
+					}
+					
+					if let user = user {
+						room?.target?.removeBanForUser(user)
+					}
+				}
+				return true
+
 			default:
 				break
-				
 			}
 		}
 		
+		switch command.lowercaseString {
+		case "nick":
+			let newNickname = arguments.string
+			if newNickname.characters.count != 0 {
+				connection.nickname = newNickname
+			}
+			return true
+			
+		case "google", "search":
+			guard let saveStr = arguments.string.stringByEncodingIllegalURLCharacters else {
+				return true
+			}
+			let url = NSURL(string: "http://www.google.com/search?q=\(saveStr)")!
+			let options = NSUserDefaults.standardUserDefaults().boolForKey("JVURLOpensInBackground") ? NSWorkspaceLaunchOptions.Default : NSWorkspaceLaunchOptions.WithoutActivation
+			
+			NSWorkspace.sharedWorkspace().openURLs([url], withAppBundleIdentifier: nil, options: options, additionalEventParamDescriptor: nil, launchIdentifiers: nil)
+			
+			return true
+			
+		default:
+			break
+		}
+
 	/*
-	} else if( ! [command caseInsensitiveCompare:@"invite"] && connection.type == MVChatConnectionIRCType ) {
-	NSString *nick = nil;
-	NSString *roomName = nil;
-	NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	NSScanner *scanner = [NSScanner scannerWithString:arguments.string];
-	
-	[scanner scanUpToCharactersFromSet:whitespace intoString:&nick];
-	if( ! nick.length ) return NO;
-	if( ! [scanner isAtEnd] ) [scanner scanUpToCharactersFromSet:whitespace intoString:&roomName];
-	
-	[connection sendRawMessage:[NSString stringWithFormat:@"INVITE %@ %@", nick, ( roomName.length ? roomName : room.target )]];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"kick"] ) {
-	NSString *member = nil;
-	NSScanner *scanner = [NSScanner scannerWithString:arguments.string];
-	
-	[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:&member];
-	if( ! member.length ) return NO;
-	
-	NSAttributedString *reason = nil;
-	if( arguments.length >= scanner.scanLocation + 1 )
-	reason = [arguments attributedSubstringFromRange:NSMakeRange( scanner.scanLocation + 1, ( arguments.length - scanner.scanLocation - 1 ) )];
-	
-	MVChatUser *user = [[room.target memberUsersWithNickname:member] anyObject];
-	if( user ) [room.target kickOutMemberUser:user forReason:reason];
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"kickban"] || ! [command caseInsensitiveCompare:@"bankick"] || ! [command caseInsensitiveCompare:@"bk"] || ! [command caseInsensitiveCompare:@"kb"] ) {
-	NSString *member = nil;
-	NSScanner *scanner = [NSScanner scannerWithString:arguments.string];
-	
-	[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:&member];
-	if( ! member.length ) return NO;
-	
-	NSAttributedString *reason = nil;
-	if( arguments.length >= scanner.scanLocation + 1 )
-	reason = [arguments attributedSubstringFromRange:NSMakeRange( scanner.scanLocation + 1, ( arguments.length - scanner.scanLocation - 1 ) )];
-	
-	MVChatUser *user = nil;
-	if ( [member hasCaseInsensitiveSubstring:@"!"] || [member hasCaseInsensitiveSubstring:@"@"] ) {
-	if ( ! [member hasCaseInsensitiveSubstring:@"!"] && [member hasCaseInsensitiveSubstring:@"@"] )
-	member = [@"*!*" stringByAppendingString:member];
-	user = [MVChatUser wildcardUserFromString:member];
-	} else user = [[room.target memberUsersWithNickname:member] anyObject];
-	
-	if( user ) {
-	[room.target addBanForUser:user];
-	[room.target kickOutMemberUser:user forReason:reason];
-	return YES;
-	}
-	return NO;
-	} else if( ! [command caseInsensitiveCompare:@"op"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target setMode:MVChatRoomMemberOperatorMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"deop"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target removeMode:MVChatRoomMemberOperatorMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"halfop"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target setMode:MVChatRoomMemberHalfOperatorMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"dehalfop"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target removeMode:MVChatRoomMemberHalfOperatorMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"voice"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target setMode:MVChatRoomMemberVoicedMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"devoice"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target removeMode:MVChatRoomMemberVoicedMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"quiet"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target setDisciplineMode:MVChatRoomMemberDisciplineQuietedMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"dequiet"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = [[room.target memberUsersWithNickname:arg] anyObject];
-	if( user ) [room.target removeDisciplineMode:MVChatRoomMemberDisciplineQuietedMode forMemberUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"ban"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( __strong NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = nil;
-	if ( [arg hasCaseInsensitiveSubstring:@"!"] || [arg hasCaseInsensitiveSubstring:@"@"] || ! [room.target memberUsersWithNickname:arg] ) {
-	if ( ! [arg hasCaseInsensitiveSubstring:@"!"] && [arg hasCaseInsensitiveSubstring:@"@"] )
-	arg = [@"*!*" stringByAppendingString:arg];
-	user = [MVChatUser wildcardUserFromString:arg];
-	} else user = [[room.target memberUsersWithNickname:arg] anyObject];
-	
-	if( user ) [room.target addBanForUser:user];
-	}
-	}
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"unban"] ) {
-	NSArray *args = [arguments.string componentsSeparatedByString:@" "];
-	for( __strong NSString *arg in args ) {
-	if( arg.length ) {
-	MVChatUser *user = nil;
-	if ( [arg hasCaseInsensitiveSubstring:@"!"] || [arg hasCaseInsensitiveSubstring:@"@"] || ! [room.target memberUsersWithNickname:arg] ) {
-	if ( ! [arg hasCaseInsensitiveSubstring:@"!"] && [arg hasCaseInsensitiveSubstring:@"@"] )
-	arg = [@"*!*" stringByAppendingString:arg];
-	user = [MVChatUser wildcardUserFromString:arg];
-	} else
-	user = [[room.target memberUsersWithNickname:arg] anyObject];
-	
-	if( user ) [room.target removeBanForUser:user];
-	}
-	}
-	return YES;
-	}
-	}
-	
 	if( ! [command caseInsensitiveCompare:@"msg"] || ! [command caseInsensitiveCompare:@"query"] ) {
 	return [self handleMessageCommand:command withMessage:arguments forConnection:connection alwaysShow:( isChatRoom || isDirectChat )];
 	} else if( ! [command caseInsensitiveCompare:@"amsg"] || ! [command caseInsensitiveCompare:@"ame"] || ! [command caseInsensitiveCompare:@"broadcast"] || ! [command caseInsensitiveCompare:@"bract"] ) {
@@ -864,18 +928,6 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 	[cmessage setType:JVChatMessageNoticeType];
 	[chatView echoSentMessageToDisplay:cmessage];
 	}
-	
-	return YES;
-	} else if( ! [command caseInsensitiveCompare:@"nick"] ) {
-	NSString *newNickname = arguments.string;
-	if( newNickname.length )
-	connection.nickname = newNickname;
-	return YES;
-	} else if ( ! [command caseInsensitiveCompare:@"google"] || ! [command caseInsensitiveCompare:@"search"] ) {
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com/search?q=%@", [arguments.string stringByEncodingIllegalURLCharacters]]];
-	NSWorkspaceLaunchOptions options = (![[NSUserDefaults standardUserDefaults] boolForKey:@"JVURLOpensInBackground"]) ? NSWorkspaceLaunchDefault : NSWorkspaceLaunchWithoutActivation;
-	
-	[[NSWorkspace sharedWorkspace] openURLs:@[url] withAppBundleIdentifier:nil options:options additionalEventParamDescriptor:nil launchIdentifiers:nil];
 	
 	return YES;
 	}
