@@ -10,7 +10,7 @@ import Foundation
 import ChatCore
 import WebKit
 
-public class JVStandardCommands : NSObject, MVChatPlugin {
+public class StandardCommands : NSObject, MVChatPlugin {
 	public required init(manager: MVChatPluginManager) {
 		super.init()
 	}
@@ -431,7 +431,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public override func processUserCommand(command1: String, withArguments arguments: NSAttributedString, toConnection connection: MVChatConnection, inView view: JVChatViewController) -> Bool {
+	public override func processUserCommand(command1: String, withArguments arguments: NSAttributedString, toConnection connection: MVChatConnection?, inView view: JVChatViewController?) -> Bool {
 		let command = command1.lowercaseString
 		let isChatRoom = view is JVChatRoomPanel
 		let isDirectChat = view is JVDirectChatPanel
@@ -485,7 +485,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				let scanner = NSScanner(string: arguments.string)
 				var nick: NSString? = nil;
 				scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &nick)
-				if let user = connection.chatUsersWithNickname(nick! as String).first {
+				if let user = connection?.chatUsersWithNickname(nick! as String).first {
 					JVInspectorController.inspectorOfObject(user).show(nil)
 					return true
 				} else {
@@ -507,7 +507,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				}
 				
 			case "topic", "t":
-				if arguments.length == 0 && connection.type == .IRCType {
+				if arguments.length == 0 && connection?.type == .IRCType {
 					room?.display.windowScriptObject.callWebScriptMethod("toggleTopic", withArguments: nil)
 					return true;
 				} else if arguments.length != 0 {
@@ -536,7 +536,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				}
 				
 			case "invite":
-				if connection.type == .IRCType {
+				if connection?.type == .IRCType {
 					var nick: NSString? = nil;
 					var roomName: NSString? = nil;
 					let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
@@ -550,7 +550,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 						scanner.scanUpToCharactersFromSet(whitespace, intoString: &roomName)
 					}
 					
-					connection.sendRawMessage("INVITE \(nick1) \(roomName ?? room?.target!)")
+					connection?.sendRawMessage("INVITE \(nick1) \(roomName ?? room?.target!)")
 					return true
 				}
 				
@@ -755,7 +755,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			return handleMassMessageCommand(command1, withMessage: arguments, forConnection: connection)
 			
 		case "away":
-			connection.awayStatusMessage = arguments
+			connection?.awayStatusMessage = arguments
 			return true
 			
 		case "aaway":
@@ -785,7 +785,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				scanner.scanUpToCharactersFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet(), intoString: &nick)
 				
 				var user: MVChatUser?
-				user =  connection.chatUsersWithNickname(nick! as String).first
+				user = connection?.chatUsersWithNickname(nick! as String).first
 				user?.startDirectChat(nil)
 				
 				return true
@@ -794,35 +794,35 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			return false;
 			
 		case "raw", "quote":
-			connection.sendRawMessage(arguments.string, immediately: true)
+			connection?.sendRawMessage(arguments.string, immediately: true)
 			return true
 
 		case "umode":
-			guard connection.type == .IRCType else {
+			guard connection?.type == .IRCType else {
 				return false
 			}
 			
-			connection.sendRawMessage("MODE \(connection.nickname) \(arguments.string)")
+			connection?.sendRawMessage("MODE \(connection!.nickname) \(arguments.string)")
 			return true
 			
 		case "wi":
-			connection.sendRawMessage("WHOIS \(arguments.string)")
+			connection?.sendRawMessage("WHOIS \(arguments.string)")
 			return true
 			
 		case "wii":
-			connection.sendRawMessage("WHOIS \(arguments.string) \(arguments.string)")
+			connection?.sendRawMessage("WHOIS \(arguments.string) \(arguments.string)")
 			return true
 			
 		case "list":
 			let browser = JVChatRoomBrowser(forConnection: connection)
-			connection.fetchChatRoomList()
+			connection?.fetchChatRoomList()
 			browser.showWindow(nil)
 			browser.showRoomBrowser(nil)
 			browser.filter = arguments.string
 			return true
 
 		case "reconnect", "server":
-			connection.connect()
+			connection?.connect()
 			return true
 			
 		case "exit":
@@ -836,7 +836,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			return handleUnignoreWithArguments(arguments.string, inView: room)
 			
 		case "invite":
-			guard connection.type == .IRCType else {
+			guard connection?.type == .IRCType else {
 				return false
 			}
 			var nick1: NSString?
@@ -852,7 +852,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				return false
 			}
 			
-			connection.sendRawMessage("INVITE \(nick) \(roomName)")
+			connection?.sendRawMessage("INVITE \(nick) \(roomName)")
 			return true
 			
 		case "reload":
@@ -882,20 +882,20 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				return false
 			}
 		case "globops":
-			guard connection.type == .IRCType else {
+			guard connection?.type == .IRCType else {
 				return false
 			}
-			connection.sendRawMessage("\(command) :\(arguments.string)")
+			connection?.sendRawMessage("\(command) :\(arguments.string)")
 			
 		case "notice", "onotice":
-			guard connection.type == .IRCType else {
+			guard connection?.type == .IRCType else {
 				return false
 			}
 			var targetPrefix: NSString? = nil;
 			var target: NSString? = nil;
 			var message: NSString? = nil;
 			let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-			let prefixes = connection.chatRoomNamePrefixes!.mutableCopy() as! NSMutableCharacterSet
+			let prefixes = connection!.chatRoomNamePrefixes!.mutableCopy() as! NSMutableCharacterSet
 			prefixes.addCharactersInString("@")
 			
 			let scanner = NSScanner(string: arguments.string)
@@ -922,12 +922,12 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			var target1 = target2
 			
 			if command.caseInsensitiveCompare("onotice") == .OrderedSame && !target1.hasPrefix("@") {
-				target1 = "@" + connection.properNameForChatRoomNamed(target1)
+				target1 = "@" + connection!.properNameForChatRoomNamed(target1)
 			}
 			
-			connection.sendRawMessage("NOTICE \(target1) :\(message1)")
+			connection?.sendRawMessage("NOTICE \(target1) :\(message1)")
 			
-			let chanSet = connection.chatRoomNamePrefixes;
+			let chanSet = connection!.chatRoomNamePrefixes;
 			var chatView: JVDirectChatPanel? = nil;
 			
 			// this is an IRC specific command for sending to room operators only.
@@ -936,19 +936,19 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 			}
 			
 			if chanSet?.characterIsMember((target1 as NSString).characterAtIndex(0)) ?? true {
-				if let room = connection.joinedChatRoomWithName(target1) as MVChatRoom? {
+				if let room = connection?.joinedChatRoomWithName(target1) as MVChatRoom? {
 					chatView = JVChatController.defaultController().chatViewControllerForRoom(room, ifExists: true)
 				}
 			}
 			
 			if chatView == nil {
-				if let user = connection.chatUsersWithNickname(target1).first {
+				if let user = connection?.chatUsersWithNickname(target1).first {
 					chatView = JVChatController.defaultController().chatViewControllerForUser(user, ifExists: true)
 				}
 			}
 			
 			if let chatView = chatView {
-				let cmessage = JVMutableChatMessage(text: message1, sender: connection.localUser)
+				let cmessage = JVMutableChatMessage(text: message1, sender: connection?.localUser)
 				cmessage.type = .NoticeType
 				chatView.echoSentMessageToDisplay(cmessage)
 			}
@@ -958,7 +958,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		case "nick":
 			let newNickname = arguments.string
 			if newNickname.characters.count != 0 {
-				connection.nickname = newNickname
+				connection?.nickname = newNickname
 			}
 			return true
 			
