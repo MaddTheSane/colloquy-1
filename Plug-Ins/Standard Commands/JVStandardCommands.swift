@@ -431,7 +431,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public override func processUserCommand(command1: String!, withArguments arguments: NSAttributedString!, toConnection connection: MVChatConnection!, inView view: JVChatViewController!) -> Bool {
+	public override func processUserCommand(command1: String, withArguments arguments: NSAttributedString, toConnection connection: MVChatConnection, inView view: JVChatViewController) -> Bool {
 		let command = command1.lowercaseString
 		let isChatRoom = view is JVChatRoomPanel
 		let isDirectChat = view is JVDirectChatPanel
@@ -472,7 +472,7 @@ public class JVStandardCommands : NSObject, MVChatPlugin {
 				
 			case "console":
 				let controller = JVChatController.defaultController().chatConsoleForConnection(chat!.connection()!, ifExists: false)
-				controller.windowController()?.showChatViewController(controller)
+				controller?.windowController()?.showChatViewController(controller!)
 				return true
 				
 			case "reload":
