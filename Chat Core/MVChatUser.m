@@ -484,7 +484,7 @@ NSString *MVChatUserAttributeUpdatedNotification = @"MVChatUserAttributeUpdatedN
 		return [self uniqueIdentifier];
 
 	if( [[self uniqueIdentifier] isKindOfClass:[NSData class]] )
-		return [[self uniqueIdentifier] colBase64Encoding];
+		return [[self uniqueIdentifier] base64EncodedStringWithOptions:0];
 
 	return [[self uniqueIdentifier] description];
 }
