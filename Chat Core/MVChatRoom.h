@@ -117,7 +117,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 @property(strong, readonly) NSSet<MVChatUser*> *memberUsers;
 @property(strong, readonly) NSSet<MVChatUser*> *bannedUsers;
 
-- (BOOL) isEqual:(id) object;
+- (BOOL) isEqual:(nullable id) object;
 - (BOOL) isEqualToChatRoom:(MVChatRoom *) anotherUser;
 
 - (NSComparisonResult) compare:(MVChatRoom *) otherRoom;
