@@ -2086,6 +2086,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 0720;
+				TargetAttributes = {
+					1C51B46E052DE0CB00BB459B = {
+						LastSwiftMigration = 0800;
+					};
+				};
 			};
 			buildConfigurationList = 1C041DDE08553AD200A5A5BA /* Build configuration list for PBXProject "Chat Core" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -2419,6 +2424,7 @@
 				PRODUCT_NAME = ChatCore;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -2494,6 +2500,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.chatCore;
 				PRODUCT_NAME = ChatCore;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

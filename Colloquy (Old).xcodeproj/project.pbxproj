@@ -1674,6 +1674,14 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
 				LastUpgradeCheck = 0720;
+				TargetAttributes = {
+					1C51B4BB052DE14B00BB459B = {
+						LastSwiftMigration = 0800;
+					};
+					1CB2CCF5052DDC560094AAA4 = {
+						LastSwiftMigration = 0800;
+					};
+				};
 			};
 			buildConfigurationList = 1C041A700854E97700A5A5BA /* Build configuration list for PBXProject "Colloquy (Old)" */;
 			compatibilityVersion = "Xcode 6.3";
@@ -2636,6 +2644,7 @@
 				PRODUCT_NAME = "Standard Commands";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Ins/Standard Commands/Standard Commands (Plug-In)-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -2669,6 +2678,7 @@
 				PRODUCT_NAME = Colloquy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2728,6 +2738,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.standard-commands";
 				PRODUCT_NAME = "Standard Commands";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Ins/Standard Commands/Standard Commands (Plug-In)-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;
@@ -2766,6 +2777,7 @@
 					Colloquy.order,
 				);
 				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

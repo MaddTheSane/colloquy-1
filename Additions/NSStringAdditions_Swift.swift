@@ -9,9 +9,9 @@
 import Foundation
 
 extension NSString {
-	@nonobjc public func rangeOfRegex(regex: String, options: NSRegularExpressionOptions, inRange range: NSRange, capture: Int) throws -> NSRange {
+	@nonobjc public func rangeOfRegex(_ regex: String, options: RegularExpression.Options, inRange range: NSRange, capture: Int) throws -> NSRange {
 		var errPtr: NSError? = nil
-		let regRange = rangeOfRegex(regex, options: options, inRange: range, capture: capture, error: &errPtr)
+		let regRange = self.range(ofRegex: regex, options: options, in: range, capture: capture, error: &errPtr)
 		if regRange.location == NSNotFound {
 			//TODO better fallback
 			throw errPtr ?? NSError(domain: NSCocoaErrorDomain, code: -1, userInfo: nil)
