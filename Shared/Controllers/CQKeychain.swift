@@ -25,12 +25,15 @@ final class CQKeychain : NSObject {
 	private override init() {
 		super.init()
 	}
+	@objc(standardKeychain)
 	static let standardKeychain = CQKeychain()
 	
+	@objc(setPassword:forServer:area:)
 	func setPassword(password: String, forServer server: String, area: String?) {
 		setPassword(password, forServer: server, area: area, displayValue: nil)
 	}
 	
+	@objc(setPassword:forServer:area:displayValue:)
 	func setPassword(password: String, forServer server: String, area: String?, displayValue: String?) {
 		guard password.characters.count != 0 else {
 			removePasswordForServer(server, area: area)
@@ -42,6 +45,7 @@ final class CQKeychain : NSObject {
 		setData(passwordData, forServer: server, area: area)
 	}
 	
+	@objc(passwordForServer:area:)
 	func passwordForServer(server: String, area: String?) -> String? {
 		if let data = dataForServer(server, area: area) {
 			return String(data: data, encoding: NSUTF8StringEncoding)
@@ -49,16 +53,19 @@ final class CQKeychain : NSObject {
 		return nil
 	}
 	
+	@objc(removePasswordForServer:area:)
 	func removePasswordForServer(server: String, area: String?) {
 		removeDataForServer(server, area: area)
 	}
 	
 	//MARK: -
 	
+	@objc(setData:forServer:area:)
 	func setData(passwordData: NSData, forServer server: String, area: String?) {
 		setData(passwordData, forServer: server, area: area, displayValue: nil)
 	}
 	
+	@objc(setData:forServer:area:displayValue:)
 	func setData(passwordData: NSData, forServer server: String, area: String?, displayValue: String?) {
 		guard passwordData.length != 0 else {
 			removeDataForServer(server, area: area)
@@ -82,6 +89,7 @@ final class CQKeychain : NSObject {
 		}
 	}
 	
+	@objc(dataForServer:area:)
 	func dataForServer(server: String, area: String?) -> NSData? {
 		var passwordQuery = createBaseDictionary(server, account: area);
 		
@@ -97,6 +105,7 @@ final class CQKeychain : NSObject {
 		return nil
 	}
 	
+	@objc(removeDataForServer:area:)
 	func removeDataForServer(server: String, area: String?) {
 		let passwordQuery = createBaseDictionary(server, account: area)
 		SecItemDelete(passwordQuery)
