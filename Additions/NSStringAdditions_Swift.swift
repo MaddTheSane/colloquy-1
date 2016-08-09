@@ -9,7 +9,7 @@
 import Foundation
 
 extension NSString {
-	@nonobjc public func rangeOfRegex(_ regex: String, options: RegularExpression.Options, inRange range: NSRange, capture: Int) throws -> NSRange {
+	@nonobjc public func rangeOfRegex(_ regex: String, options: NSRegularExpression.Options, inRange range: NSRange, capture: Int) throws -> NSRange {
 		var errPtr: NSError? = nil
 		let regRange = self.range(ofRegex: regex, options: options, in: range, capture: capture, error: &errPtr)
 		if regRange.location == NSNotFound {

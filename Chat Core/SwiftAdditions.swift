@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension MVChatConnectionError: ErrorType {
+extension MVChatConnectionError: Error {
 	public var _domain: String {
 		return MVChatConnectionErrorDomain
 	}
@@ -18,7 +18,7 @@ extension MVChatConnectionError: ErrorType {
 	}
 }
 
-extension MVFileTransferError: ErrorType {
+extension MVFileTransferError: Error {
 	public var _domain: String {
 		return MVFileTransferErrorDomain
 	}

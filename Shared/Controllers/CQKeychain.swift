@@ -26,7 +26,7 @@ final class CQKeychain : NSObject {
 		super.init()
 	}
 	@objc(standardKeychain)
-	static let standardKeychain = CQKeychain()
+	static let standard = CQKeychain()
 	
 	@objc(setPassword:forServer:area:)
 	func set(password: String, for server: String, area: String?) {
