@@ -505,7 +505,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	return [NSSet setWithSet:ret];
 }
 
-- (JVChatRoomMember *) firstChatRoomMemberWithName:(NSString *) name {
+- (nullable JVChatRoomMember *) firstChatRoomMemberWithName:(NSString *) name {
 	if( ! [name length] ) return nil;
 
 	JVChatRoomMember *member = nil;
@@ -521,7 +521,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	return nil;
 }
 
-- (JVChatRoomMember *) chatRoomMemberForUser:(MVChatUser *) user {
+- (nullable JVChatRoomMember *) chatRoomMemberForUser:(MVChatUser *) user {
 	if( ! user ) return nil;
 
 	JVChatRoomMember *member = nil;
@@ -533,7 +533,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	return nil;
 }
 
-- (JVChatRoomMember *) localChatRoomMember {
+- (nullable JVChatRoomMember *) localChatRoomMember {
 	JVChatRoomMember *member = nil;
 
 	for( member in _sortedMembers )
@@ -1565,7 +1565,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	return [self firstChatRoomMemberWithName:name];
 }
 
-- (JVChatRoomMember *) valueInChatMembersWithUniqueID:(id) identifier {
+- (nullable JVChatRoomMember *) valueInChatMembersWithUniqueID:(id) identifier {
 	JVChatRoomMember *member = nil;
 
 	for( member in _sortedMembers )

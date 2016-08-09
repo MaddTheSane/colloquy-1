@@ -89,7 +89,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 }
 @property(weak, nullable, readonly) MVChatConnection *connection;
 
-@property(strong, readonly) NSURL *url;
+@property(strong, readonly, nullable) NSURL *url;
 @property(strong, readonly) NSString *name;
 @property(strong, readonly) NSString *displayName;
 @property(strong, readonly) id uniqueIdentifier;
@@ -155,7 +155,7 @@ extern NSString *MVChatRoomAttributeUpdatedNotification;
 - (void) removeMode:(MVChatRoomMode) mode;
 
 - (NSSet<MVChatUser*> *) memberUsersWithModes:(NSUInteger) modes;
-- (NSSet<MVChatUser*> *) memberUsersWithNickname:(NSString *) nickname;
+- (nullable NSSet<MVChatUser*> *) memberUsersWithNickname:(NSString *) nickname;
 - (NSSet<MVChatUser*> *) memberUsersWithFingerprint:(NSString *) fingerprint;
 - (MVChatUser *) memberUserWithUniqueIdentifier:(id) identifier;
 - (BOOL) hasUser:(MVChatUser *) user;
