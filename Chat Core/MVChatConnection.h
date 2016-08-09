@@ -213,7 +213,7 @@ extern NSString *MVChatConnectionErrorDomain;
 	NSUInteger _hash;
 }
 + (BOOL) supportsURLScheme:(NSString *__nullable) scheme;
-+ (NSArray <NSNumber *> *) defaultServerPortsForType:(MVChatConnectionType) type;
++ (nullable NSArray <NSNumber *> *) defaultServerPortsForType:(MVChatConnectionType) type;
 + (NSUInteger) maxMessageLengthForType:(MVChatConnectionType) type;
 
 #pragma mark -
@@ -236,7 +236,7 @@ extern NSString *MVChatConnectionErrorDomain;
 @property(strong, readonly) NSError *serverError;
 
 @property(strong, readonly) NSString *urlScheme;
-@property(strong, readonly) NSURL *url;
+@property(strong, readonly, nullable) NSURL *url;
 
 @property(nonatomic) NSStringEncoding encoding;
 
@@ -246,7 +246,7 @@ extern NSString *MVChatConnectionErrorDomain;
 @property(copy) NSString *preferredNickname;
 
 @property(copy) NSArray <NSString *> *alternateNicknames;
-@property(strong, readonly) NSString *nextAlternateNickname;
+@property(strong, readonly, nullable) NSString *nextAlternateNickname;
 
 @property(copy, nullable) NSString *nicknamePassword;
 
@@ -364,13 +364,13 @@ extern NSString *MVChatConnectionErrorDomain;
 
 #pragma mark -
 
-- (MVChatRoom *) joinedChatRoomWithUniqueIdentifier:(id) identifier;
-- (MVChatRoom *) joinedChatRoomWithName:(NSString *) room;
+- (nullable MVChatRoom *) joinedChatRoomWithUniqueIdentifier:(id) identifier;
+- (nullable MVChatRoom *) joinedChatRoomWithName:(NSString *) room;
 
 #pragma mark -
 
 - (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
-- (MVChatRoom *) chatRoomWithName:(NSString *) room;
+- (nullable MVChatRoom *) chatRoomWithName:(NSString *) room;
 
 #pragma mark -
 

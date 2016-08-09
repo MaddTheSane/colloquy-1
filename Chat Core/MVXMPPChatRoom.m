@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 
-- (NSURL *) url {
+- (nullable NSURL *) url {
 	NSString *urlString = [NSString stringWithFormat:@"%@:%@?join", [[self connection] urlScheme], [[_uniqueIdentifier domain] stringByEncodingIllegalURLCharacters]];
 	if( urlString ) return [NSURL URLWithString:urlString];
 	return nil;
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return _localMemberUser;
 }
 
-- (NSSet *) memberUsersWithNickname:(NSString *) nickname {
+- (nullable NSSet *) memberUsersWithNickname:(NSString *) nickname {
 	MVChatUser *user = [self memberUserWithUniqueIdentifier:nickname];
 	if( user ) return [NSSet setWithObject:user];
 	return nil;

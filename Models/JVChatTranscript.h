@@ -65,15 +65,15 @@ extern NSString *JVChatTranscriptUpdatedNotification;
 
 - (nullable JVChatMessage *) appendMessage:(JVChatMessage *) message;
 - (nullable JVChatMessage *) appendMessage:(JVChatMessage *) message forceNewEnvelope:(BOOL) forceEnvelope;
-- (NSArray<JVChatMessage*> *) appendMessages:(NSArray *) messages;
-- (NSArray<JVChatMessage*> *) appendMessages:(NSArray *) messages forceNewEnvelope:(BOOL) forceEnvelope;
+- (NSArray<JVChatMessage*> *) appendMessages:(NSArray<JVChatMessage*> *) messages;
+- (NSArray<JVChatMessage*> *) appendMessages:(NSArray<JVChatMessage*> *) messages forceNewEnvelope:(BOOL) forceEnvelope;
 
 @property (readonly, copy) NSArray<JVChatSession*> *sessions;
 - (NSArray<JVChatSession*> *) sessionsInRange:(NSRange) range;
 - (JVChatSession *) sessionAtIndex:(NSUInteger) index;
-@property (readonly, strong) JVChatSession *lastSession;
+@property (readonly, strong, nullable) JVChatSession *lastSession;
 
-- (JVChatSession *) startNewSession;
+- (nullable JVChatSession *) startNewSession;
 - (JVChatSession *) appendSession:(JVChatSession *) session;
 
 @property (readonly, copy) NSArray<JVChatEvent*> *events;
@@ -85,8 +85,8 @@ extern NSString *JVChatTranscriptUpdatedNotification;
 
 - (JVChatEvent *) appendEvent:(JVChatEvent *) event;
 
-@property (copy) NSString *filePath;
-@property (readonly, copy) NSCalendarDate *dateBegan;
+@property (nonatomic, copy, nullable) NSString *filePath;
+@property (readonly, copy, nullable) NSCalendarDate *dateBegan;
 @property (strong, null_unspecified) NSURL *source;
 @property BOOL automaticallyWritesChangesToFile;
 
