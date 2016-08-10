@@ -124,13 +124,13 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		let reason = NSAttributedString(string: message)
 		
 		if channels.count == 1 {
-			connection.joinedChatRoomWithName(channels[0]).partWithReason(reason)
+			connection.joinedChatRoomWithName(channels[0])?.partWithReason(reason)
 			return true;
 		} else if channels.count > 1 {
 			for channel in channels {
 				let channel1 = channel.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
 				if channel1.characters.count != 0 {
-					connection.joinedChatRoomWithName(channel1).partWithReason(reason)
+					connection.joinedChatRoomWithName(channel1)?.partWithReason(reason)
 				}
 			}
 			
@@ -572,7 +572,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 					reason = arguments.attributedSubstringFromRange(NSMakeRange(scanner.scanLocation + 1, arguments.length - scanner.scanLocation - 1))
 				}
 				
-				if let user = room?.target?.memberUsersWithNickname(member1 as String).first {
+				if let user = room?.target?.memberUsersWithNickname(member1 as String)?.first {
 					room?.target?.kickOutMemberUser(user, forReason: reason)
 				}
 				return true
@@ -598,7 +598,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 					}
 					user = MVChatUser.wildcardUserFromString(member)
 				} else {
-					user = room?.target?.memberUsersWithNickname(member).first
+					user = room?.target?.memberUsersWithNickname(member)?.first
 				}
 				
 				if let user = user {
@@ -612,7 +612,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.setMode(.OperatorMode, forMemberUser: user)
 						}
 					}
@@ -623,7 +623,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.removeMode(.OperatorMode, forMemberUser: user)
 						}
 					}
@@ -634,7 +634,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.setMode(.HalfOperatorMode, forMemberUser: user)
 						}
 					}
@@ -645,7 +645,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.removeMode(.HalfOperatorMode, forMemberUser: user)
 						}
 					}
@@ -656,7 +656,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.setMode(.VoicedMode, forMemberUser: user)
 						}
 					}
@@ -667,7 +667,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.removeMode(.VoicedMode, forMemberUser: user)
 						}
 					}
@@ -678,7 +678,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.setDisciplineMode(.DisciplineQuietedMode, forMemberUser: user)
 						}
 					}
@@ -689,7 +689,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				let args = arguments.string.componentsSeparatedByString(" ")
 				for arg in args {
 					if arg.characters.count > 0 {
-						if let user = room?.target?.memberUsersWithNickname(arg).first {
+						if let user = room?.target?.memberUsersWithNickname(arg)?.first {
 							room?.target?.removeDisciplineMode(.DisciplineQuietedMode, forMemberUser: user)
 						}
 					}
@@ -710,7 +710,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 						}
 						user = MVChatUser.wildcardUserFromString(arg)
 					} else {
-						user = room?.target?.memberUsersWithNickname(arg).first
+						user = room?.target?.memberUsersWithNickname(arg)?.first
 					}
 					
 					if let user = user {
@@ -733,7 +733,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 						}
 						user = MVChatUser.wildcardUserFromString(arg)
 					} else {
-						user = room?.target?.memberUsersWithNickname(arg).first
+						user = room?.target?.memberUsersWithNickname(arg)?.first
 					}
 					
 					if let user = user {
