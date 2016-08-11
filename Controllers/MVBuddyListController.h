@@ -19,7 +19,7 @@ typedef NS_ENUM(OSType, MVBuddyListSortOrder) {
 	@private
 	IBOutlet MVTableView *buddies;
 	IBOutlet NSButton *sendMessageButton;
-	IBOutlet NSButton *actionButton;
+	IBOutlet NSPopUpButton *actionButton;
 	IBOutlet NSButton *infoButton;
 
 	IBOutlet NSWindow *pickerWindow;
@@ -54,6 +54,9 @@ typedef NS_ENUM(OSType, MVBuddyListSortOrder) {
 	BOOL _animating;
 }
 + (MVBuddyListController *) sharedBuddyList;
+#if __has_feature(objc_class_property)
+@property (readonly, strong, class) MVBuddyListController *sharedBuddyList;
+#endif
 
 - (void) save;
 

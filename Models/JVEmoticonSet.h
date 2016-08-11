@@ -12,10 +12,16 @@ extern NSString * __nonnull JVEmoticonSetsScannedNotification;
 }
 + (void) scanForEmoticonSets;
 + (NSSet<JVEmoticonSet*> *) emoticonSets;
-+ (nullable instancetype) emoticonSetWithIdentifier:(NSString *) identifier;
-+ (nullable instancetype) newWithBundle:(NSBundle *) bundle;
+#if __has_feature(objc_class_property)
+@property (readonly, class, copy) NSSet<JVEmoticonSet*> *emoticonSets;
+#endif
++ (nullable JVEmoticonSet*) emoticonSetWithIdentifier:(NSString *) identifier;
++ (nullable JVEmoticonSet*) newWithBundle:(NSBundle *) bundle NS_SWIFT_NAME(with(bundle:));
 
-+ (instancetype) textOnlyEmoticonSet;
++ (JVEmoticonSet*) textOnlyEmoticonSet;
+#if __has_feature(objc_class_property)
+@property (class, strong, readonly) JVEmoticonSet* textOnlyEmoticonSet;
+#endif
 
 - (nullable instancetype) initWithBundle:(nonnull NSBundle *) bundle;
 

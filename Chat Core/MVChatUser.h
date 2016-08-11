@@ -97,9 +97,9 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 	BOOL _serverOperator;
 	BOOL _onlineNotificationSent;
 }
-+ (instancetype) wildcardUserFromString:(NSString *) mask;
-+ (instancetype) wildcardUserWithNicknameMask:(NSString * __nullable) nickname andHostMask:(NSString * __nullable) host;
-+ (instancetype) wildcardUserWithFingerprint:(NSString *) fingerprint;
++ (MVChatUser*) wildcardUserFromString:(NSString *) mask;
++ (MVChatUser*) wildcardUserWithNicknameMask:(NSString * __nullable) nickname andHostMask:(NSString * __nullable) host;
++ (MVChatUser*) wildcardUserWithFingerprint:(NSString *) fingerprint;
 
 @property(weak, nullable, readonly) MVChatConnection *connection;
 @property(readonly) MVChatUserType type;
@@ -141,7 +141,7 @@ extern NSString *MVChatUserAttributeUpdatedNotification;
 @property(strong, readonly) NSSet<NSString*> *supportedAttributes;
 @property(strong, readonly) NSDictionary<NSString*,id> *attributes;
 
-- (BOOL) isEqual:(id) object;
+- (BOOL) isEqual:(nullable id) object;
 - (BOOL) isEqualToChatUser:(MVChatUser *) anotherUser;
 
 - (NSComparisonResult) compare:(MVChatUser *) otherUser;

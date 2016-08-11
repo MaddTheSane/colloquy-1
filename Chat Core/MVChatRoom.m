@@ -84,7 +84,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 
 #pragma mark -
 
-- (BOOL) isEqual:(id) object {
+- (BOOL) isEqual:(nullable id) object {
 	if( object == self ) return YES;
 	if( ! object || ! [object isKindOfClass:[self class]] ) return NO;
 	return [self isEqualToChatRoom:object];
@@ -119,7 +119,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 
 #pragma mark -
 
-- (NSURL *) url {
+- (nullable NSURL *) url {
 	MVChatConnection *connection = [self connection];
 	NSString *urlString = [NSString stringWithFormat:@"%@://%@/%@", [connection urlScheme], [[connection server] stringByEncodingIllegalURLCharacters], [[self name] stringByEncodingIllegalURLCharacters]];
 	if( urlString ) return [NSURL URLWithString:urlString];
@@ -342,7 +342,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 	return users;
 }
 
-- (NSSet *) memberUsersWithNickname:(NSString *) nickname {
+- (nullable NSSet *) memberUsersWithNickname:(NSString *) nickname {
 	NSMutableSet *users = [[NSMutableSet alloc] init];
 
 	@synchronized( _memberUsers ) {

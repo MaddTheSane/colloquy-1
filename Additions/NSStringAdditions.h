@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-BOOL isValidUTF8( const char *string, NSUInteger length );
+extern BOOL isValidUTF8( const char *string, NSUInteger length );
 
 #define is7Bit(ch) (((ch) & 0x80) == 0)
 #define isUTF8Tupel(ch) (((ch) & 0xE0) == 0xC0)
@@ -27,6 +27,10 @@ BOOL isValidUTF8( const char *string, NSUInteger length );
 
 + (NSArray <NSString *> *) knownEmoticons;
 + (NSSet <NSString *> *) knownEmojiWithEmoticons;
+#if __has_feature(objc_class_property)
+@property (class, readonly, copy) NSArray <NSString *> *knownEmoticons;
+@property (class, readonly, copy) NSSet <NSString *> *knownEmojiWithEmoticons;
+#endif
 
 - (instancetype) initWithChatData:(NSData *) data encoding:(NSStringEncoding) encoding;
 
@@ -58,7 +62,7 @@ BOOL isValidUTF8( const char *string, NSUInteger length );
 @property (readonly, copy) NSString *IRCNickname;
 @property (readonly, copy) NSString *IRCUsername;
 @property (readonly, copy) NSString *IRCHostname;
-@property (readonly, copy) NSString *IRCRealname;
+@property (readonly, copy, nullable) NSString *IRCRealname;
 
 @property (readonly) BOOL containsEmojiCharacters;
 - (BOOL) containsEmojiCharactersInRange:(NSRange) range;
