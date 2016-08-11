@@ -309,6 +309,10 @@
 		32C46E1A0B3AB37E00B96B27 /* MVICBChatUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C46E180B3AB37E00B96B27 /* MVICBChatUser.h */; };
 		32C46E1B0B3AB37E00B96B27 /* MVICBChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C46E190B3AB37E00B96B27 /* MVICBChatUser.m */; };
 		431261C3072EE37A00720AD1 /* MVSILCFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */; };
+		5584D7831D5D1A4100472F7A /* NSDateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 559110441CA9B1F300258B5F /* NSDateAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5584D7841D5D1A4D00472F7A /* NSRegularExpressionAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FC6D3916C7C04E00EF6568 /* NSRegularExpressionAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5584D7851D5D1A5500472F7A /* NSRegularExpressionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FC6D3A16C7C04E00EF6568 /* NSRegularExpressionAdditions.m */; };
+		5584D7861D5D1A5A00472F7A /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C504251D5D126B004D9B48 /* NSDateAdditions.m */; };
 		559110451CA9B1F300258B5F /* NSDateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 559110441CA9B1F300258B5F /* NSDateAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55A3A0541D0B8B29001F92CA /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A3A0531D0B8B29001F92CA /* libicucore.tbd */; };
 		55A3A0551D0B8B47001F92CA /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A7AE541B28EB200022172F /* libresolv.tbd */; };
@@ -2092,6 +2096,7 @@
 				55A3A0861D0BB9F7001F92CA /* NSScannerAdditions.h in Headers */,
 				55A3A0871D0BB9F7001F92CA /* NSNotificationAdditions.h in Headers */,
 				55A3A0891D0BB9F7001F92CA /* MVChatUserWatchRule.h in Headers */,
+				5584D7841D5D1A4D00472F7A /* NSRegularExpressionAdditions.h in Headers */,
 				55A3A0901D0BB9F7001F92CA /* InterThreadMessaging.h in Headers */,
 				55A3A0991D0BB9F7001F92CA /* DDLog.h in Headers */,
 				55A3A08A1D0BB9F7001F92CA /* MVUtilities.h in Headers */,
@@ -2106,6 +2111,7 @@
 				55A3A0931D0BB9F7001F92CA /* MVIRCChatUser.h in Headers */,
 				55A3A0941D0BB9F7001F92CA /* MVIRCFileTransfer.h in Headers */,
 				55A3A0951D0BB9F7001F92CA /* MVIRCNumerics.h in Headers */,
+				5584D7831D5D1A4100472F7A /* NSDateAdditions.h in Headers */,
 				55A3A0961D0BB9F7001F92CA /* NSFileManagerAdditions.h in Headers */,
 				55A3A0981D0BB9F7001F92CA /* GCDAsyncSocket.h in Headers */,
 				55A3A09A1D0BB9F7001F92CA /* MVDelegateLogger.h in Headers */,
@@ -2511,7 +2517,9 @@
 				55A3A06E1D0BB9F7001F92CA /* MVDirectClientConnection.m in Sources */,
 				55A3A06F1D0BB9F7001F92CA /* MVDirectChatConnection.m in Sources */,
 				55A3A0701D0BB9F7001F92CA /* NSFileManagerAdditions.m in Sources */,
+				5584D7861D5D1A5A00472F7A /* NSDateAdditions.m in Sources */,
 				55A3A0711D0BB9F7001F92CA /* GCDAsyncSocket.m in Sources */,
+				5584D7851D5D1A5500472F7A /* NSRegularExpressionAdditions.m in Sources */,
 				55A3A0721D0BB9F7001F92CA /* DDLog.m in Sources */,
 				55A3A0731D0BB9F7001F92CA /* MVDelegateLogger.m in Sources */,
 			);
