@@ -9,7 +9,7 @@
 import Foundation
 
 extension NSString {
-	@nonobjc public func rangeOfRegex(_ regex: String, options: NSRegularExpression.Options, in range: NSRange, capture: Int) throws -> NSRange {
+	@nonobjc public func range(ofRegex regex: String, options: NSRegularExpression.Options, in range: NSRange, capture: Int) throws -> NSRange {
 		var errPtr: NSError? = nil
 		let regRange = self.range(ofRegex: regex, options: options, in: range, capture: capture, error: &errPtr)
 		if regRange.location == NSNotFound {
@@ -40,12 +40,16 @@ extension String {
 		return NSMakeRange(Int(fromDistance), Int(toDistance))
 	}
 	
+	/// - parameter options: The regular expression options.<br>
+	/// Default is none.
 	/// - parameter range1: The range to search for the regex. If `nil`, 
 	/// searches the whole string.<br>
 	/// Default is `nil`
-	public func rangeOfRegex(_ regex: String, options: NSRegularExpression.Options = [], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> {
+	/// - parameter capture: Which capture to use.<br>
+	/// Default is `0`.
+	public func range(ofRegex regex: String, options: NSRegularExpression.Options = [], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> {
 		let range = range1 ?? startIndex ..< endIndex
-		let regRange = try (self as NSString).rangeOfRegex(regex, options: options, in: self.NSRange(from: range), capture: capture)
+		let regRange = try (self as NSString).range(ofRegex: regex, options: options, in: self.NSRange(from: range), capture: capture)
 		if regRange.location == NSNotFound {
 			//TODO better fallback
 			throw NSError(domain: NSCocoaErrorDomain, code: -1, userInfo: nil)
