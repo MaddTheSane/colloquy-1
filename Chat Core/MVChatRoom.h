@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 
-#import "MVAvailability.h"
-#import "MVChatString.h"
-#import "MVMessaging.h"
+#import <ChatCore/MVAvailability.h>
+#import <ChatCore/MVChatString.h>
+#import <ChatCore/MVMessaging.h>
 
 
 NS_ASSUME_NONNULL_BEGIN

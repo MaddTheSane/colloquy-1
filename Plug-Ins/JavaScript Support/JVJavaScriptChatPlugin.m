@@ -17,8 +17,8 @@
 #import <ChatCore/MVChatUser.h>
 #import "MVConnectionsController.h"
 #import "MVFileTransferController.h"
-#import "NSAttributedStringAdditions.h"
-#import "NSStringAdditions.h"
+#import <ChatCore/NSAttributedStringAdditions.h>
+#import <ChatCore/NSStringAdditions.h>
 
 #import <WebKit/WebKit.h>
 #import <objc/objc-runtime.h>

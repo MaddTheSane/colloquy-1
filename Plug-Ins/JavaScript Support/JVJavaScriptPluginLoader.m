@@ -1,9 +1,9 @@
 #import "JVJavaScriptPluginLoader.h"
 #import "JVJavaScriptChatPlugin.h"
 #import "JVChatWindowController.h"
+#import "JVChatController.h"
 
 #import <ChatCore/MVChatConnection.h>
-#import "JVChatController.h"
 
 @interface JVJavaScriptPluginLoader () <MVChatPluginCommandSupport>
 

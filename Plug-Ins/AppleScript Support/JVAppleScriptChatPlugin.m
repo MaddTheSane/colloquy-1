@@ -6,8 +6,8 @@
 #import "JVChatMessage.h"
 #import "JVChatRoomPanel.h"
 #import "JVChatRoomMember.h"
-#import "NSColorAdditions.h"
 #import "JVChatController.h"
+#import <ChatCore/NSColorAdditions.h>
 
 @interface JVAppleScriptChatPlugin () <MVChatPluginCommandSupport>
 
