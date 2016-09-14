@@ -7,6 +7,11 @@
 #import "JVChatRoomPanel.h"
 #import "JVChatRoomMember.h"
 #import "NSColorAdditions.h"
+#import "JVChatController.h"
+
+@interface JVAppleScriptChatPlugin () <MVChatPluginCommandSupport>
+
+@end
 
 @interface NSTerminologyRegistry : NSObject // Private Foundation Class
 - (instancetype) initWithSuiteName:(NSString *) name bundle:(NSBundle *) bundle;

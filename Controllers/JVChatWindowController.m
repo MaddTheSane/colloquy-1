@@ -281,7 +281,7 @@ NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 	BOOL done = NO;
 
 	do {
-		if( [_views[index] respondsToSelector:@selector( newMessagesWaiting )] && [_views[index] newMessagesWaiting] > 0 )
+		if( [_views[index] respondsToSelector:@selector( newMessagesWaiting )] && [(JVDirectChatPanel*)(_views[index]) newMessagesWaiting] > 0 )
 			done = YES;
 
 		if( ! done ) {
@@ -309,7 +309,7 @@ NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 	BOOL done = NO;
 
 	do {
-		if( [_views[index] respondsToSelector:@selector( newMessagesWaiting )] && [_views[index] newMessagesWaiting] > 0 )
+		if( [_views[index] respondsToSelector:@selector( newMessagesWaiting )] && [(JVDirectChatPanel*)(_views[index]) newMessagesWaiting] > 0 )
 			done = YES;
 
 		if( ! done ) {

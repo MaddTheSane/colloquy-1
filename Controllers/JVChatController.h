@@ -63,8 +63,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (JVIgnoreMatchResult) shouldIgnoreUser:(MVChatUser *) user withMessage:(nullable NSAttributedString *) message inView:(nullable id <JVChatViewController>) view;
 @end
 
-@interface NSObject (MVChatPluginCommandSupport)
+@protocol MVChatPluginCommandSupport <MVChatPlugin>
+
+@required
+
 - (BOOL) processUserCommand:(NSString *) command withArguments:(NSAttributedString *) arguments toConnection:(nullable MVChatConnection *) connection inView:(nullable id <JVChatViewController>) view;
+
 @end
 
 NS_ASSUME_NONNULL_END

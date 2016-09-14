@@ -3,6 +3,11 @@
 #import "JVChatWindowController.h"
 
 #import <ChatCore/MVChatConnection.h>
+#import "JVChatController.h"
+
+@interface JVJavaScriptPluginLoader () <MVChatPluginCommandSupport>
+
+@end
 
 @interface WebCoreStatistics
 + (void) setShouldPrintExceptions:(BOOL) print;

@@ -10,12 +10,12 @@ import Foundation
 import ChatCore
 import WebKit
 
-public class StandardCommands : NSObject, MVChatPlugin {
+public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlugin {
 	public required init(manager: MVChatPluginManager) {
 		super.init()
 	}
 	
-	public func handleFileSendWithArguments(_ arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
+	private func handleFileSend(arguments: String!, for connection: MVChatConnection!) -> Bool {
 		var to: NSString?
 		var path: NSString?
 		let passive = UserDefaults.standard.bool(forKey: "JVSendFilesPassively")
@@ -25,29 +25,29 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &to)
 		scanner.scanCharacters(from: CharacterSet.whitespacesAndNewlines, into: nil)
 		scanner.scanUpToCharacters(from: CharacterSet(charactersIn: "\n\r"), into: &path)
-		guard let to2 = to, to2.length > 0 else {
+		guard let to2 = to as String?, to2.characters.count > 0 else {
 			return false
 		}
 		var directory: ObjCBool = false
 		path = path?.standardizingPath as NSString?
-		if let path = path, path.length > 0 && !FileManager.default.fileExists(atPath: path as String, isDirectory: &directory) {
+		if let path = path as String?, path.characters.count > 0 && !FileManager.default.fileExists(atPath: path, isDirectory: &directory) {
 			return true
 		}
 		if directory.boolValue {
 			return true
 		}
 		
-		let user = connection.chatUsers(withNickname: to2 as String).first
+		let user = connection.chatUsers(withNickname: to2).first
 		
-		if let path = path, path.length > 0 {
-			NotificationCenter.chat.post(name: NSNotification.Name.MVFileTransferStarted, object: user?.sendFile(path as String, passively: passive))
+		if let path = path as String?, path.characters.count > 0 {
+			NotificationCenter.chat.post(name: NSNotification.Name.MVFileTransferStarted, object: user?.sendFile(path, passively: passive))
 		} else {
 			user?.sendFile(nil)
 		}
 		return true
 	}
 	
-	public func handleCTCPWithArguments(_ arguments: String, forConnection connection: MVChatConnection!) -> Bool {
+	private func handleCTCP(arguments: String, for connection: MVChatConnection!) -> Bool {
 		var to: NSString?, ctcpRequest: NSString?, ctcpArgs: NSString?
 		let scanner = Scanner(string: arguments)
 		
@@ -68,7 +68,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public func handleServerConnectWithArguments(_ arguments: String!) -> Bool {
+	private func handleServerConnect(arguments: String!) -> Bool {
 		if let _ = arguments?.range(of: "://"), let url = URL(string: arguments) {
 			MVConnectionsController.default.handle(url, andConnectIfPossible: true)
 		} else if let arguments = arguments, arguments.characters.count > 0 {
@@ -79,7 +79,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 			scanner.scanInt32(&port)
 			var url: URL?
 			
-			if let address = address {
+			if let address = address as String? {
 				if port != 0 {
 					url = URL(string: "irc://\(address.encodingIllegalURLCharacters ?? ""):\(port)")
 				} else {
@@ -98,7 +98,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return true
 	}
 	
-	public func handleJoinWithArguments(_ arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
+	private func handleJoin(arguments: String!, for connection: MVChatConnection!) -> Bool {
 		let channels = arguments.trimmingCharacters(in: CharacterSet.whitespaces).components(separatedBy: ",")
 		if channels.count == 1 {
 			connection.joinChatRoomNamed(arguments.trimmingCharacters(in: CharacterSet.whitespaces))
@@ -116,7 +116,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		}
 	}
 	
-	public func handlePartWithArguments(_ arguments: String!, forConnection connection: MVChatConnection!) -> Bool {
+	private func handlePart(arguments: String!, for connection: MVChatConnection!) -> Bool {
 		let args = arguments.components(separatedBy: " ")
 		let channels = args[0].components(separatedBy: ",")
 		
@@ -140,7 +140,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return false;
 	}
 	
-	public func handleMessageCommand(_ command: String!, withMessage message: NSAttributedString!, forConnection connection: MVChatConnection!, alwaysShow always: Bool) -> Bool {
+	private func handleMessage(command: String!, with message: NSAttributedString!, for connection: MVChatConnection!, alwaysShow always: Bool = true) -> Bool {
 		var to1: NSString?
 		var msg: NSAttributedString?
 		let scanner = Scanner(string: message.string)
@@ -219,7 +219,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return false
 	}
 	
-	public func handleMassMessageCommand(_ command: String, withMessage message: NSAttributedString!, forConnection connection: MVChatConnection!) -> Bool {
+	private func handleMassMessage(command: String, with message: NSAttributedString!, for connection: MVChatConnection!) -> Bool {
 		guard message.length > 0 else {
 			return false
 		}
@@ -240,21 +240,21 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return true
 	}
 	
-	public func handleMassNickChangeWithName(_ nickname: String!) -> Bool {
+	private func handleMassNickChange(nickname: String!) -> Bool {
 		for item in MVConnectionsController.default.connectedConnections {
 			item.nickname = nickname;
 		}
 		return true;
 	}
 	
-	public func handleMassAwayWithMessage(_ message: NSAttributedString?) -> Bool {
+	private func handleMassAway(message: NSAttributedString?) -> Bool {
 		for item in MVConnectionsController.default.connectedConnections {
 			item.awayStatusMessage = message;
 		}
 		return true;
 	}
 	
-	public func handleIgnoreWithArguments(_ args1: String, inView view: JVChatViewController!) -> Bool {
+	private func handleIgnore(arguments args1: String, in view: JVChatViewController!) -> Bool {
 		var args = args1
 		// USAGE: /ignore -[p|m|n] [nickname|/regex/] ["message"|/regex/|word] [#rooms ...]
 		// p makes the ignore permanent (i.e. the ignore is saved to disk)
@@ -343,7 +343,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public func handleUnignoreWithArguments(_ args1: String, inView view: JVChatViewController!) -> Bool {
+	private func handleUnignore(arguments args1: String, in view: JVChatViewController!) -> Bool {
 		var args = args1
 		// USAGE: /unignore -[m|n] [nickname|/regex/] ["message"|/regex/|word] [#rooms ...]
 		// m is to specify a message
@@ -432,7 +432,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		return true;
 	}
 	
-	public override func processUserCommand(_ command1: String, withArguments arguments: NSAttributedString, to connection: MVChatConnection?, inView view: JVChatViewController?) -> Bool {
+	public func processUserCommand(_ command1: String, withArguments arguments: NSAttributedString, to connection: MVChatConnection?, inView view: JVChatViewController?) -> Bool {
 		let command = command1.lowercased()
 		let isChatRoom = view is JVChatRoomPanel
 		let isDirectChat = view is JVDirectChatPanel
@@ -473,7 +473,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				
 			case "console":
 				let controller = JVChatController.default.chatConsole(for: chat!.connection()!, ifExists: false)
-				controller?.windowController()?.show(controller!)
+				controller?.windowController?.show(controller!)
 				return true
 				
 			case "reload":
@@ -502,9 +502,9 @@ public class StandardCommands : NSObject, MVChatPlugin {
 			switch command {
 			case "leave", "part":
 				if arguments.length == 0 {
-					return handlePartWithArguments((room?.target as? MVChatRoom)?.name, forConnection: room?.connection())
+					return handlePart(arguments: (room?.target as? MVChatRoom)?.name, for: room?.connection())
 				} else {
-					return handlePartWithArguments(arguments.string, forConnection: room?.connection())
+					return handlePart(arguments: arguments.string, for: room?.connection())
 				}
 				
 			case "topic", "t":
@@ -520,11 +520,11 @@ public class StandardCommands : NSObject, MVChatPlugin {
 				
 			case "names":
 				if arguments.string.characters.count == 0 {
-					room?.windowController()?.openViewsDrawer(nil)
-					if let wc = room?.windowController(), let room = room, wc.isListItemExpanded(room) {
+					room?.windowController?.openViewsDrawer(nil)
+					if let wc = room?.windowController, let room = room, wc.isListItemExpanded(room) {
 						wc.collapse(room)
 					} else {
-						room?.windowController()?.expand(room!)
+						room?.windowController?.expand(room!)
 					}
 					return true;
 				}
@@ -750,29 +750,29 @@ public class StandardCommands : NSObject, MVChatPlugin {
 		
 		switch command {
 		case "msg", "query":
-			return handleMessageCommand(command1, withMessage: arguments, forConnection: connection, alwaysShow: isChatRoom || isDirectChat)
+			return handleMessage(command: command1, with: arguments, for: connection, alwaysShow: isChatRoom || isDirectChat)
 			
 		case "amsg", "ame", "broadcast", "bract":
-			return handleMassMessageCommand(command1, withMessage: arguments, forConnection: connection)
+			return handleMassMessage(command: command1, with: arguments, for: connection)
 			
 		case "away":
 			connection?.awayStatusMessage = arguments
 			return true
 			
 		case "aaway":
-			return handleMassAwayWithMessage(arguments)
+			return handleMassAway(message: arguments)
 			
 		case "anick":
-			return handleMassNickChangeWithName(arguments.string)
+			return handleMassNickChange(nickname: arguments.string)
 			
 		case "j", "join":
-			return handleJoinWithArguments(arguments.string, forConnection: connection)
+			return handleJoin(arguments: arguments.string, for: connection)
 			
 		case "leave", "part":
-			return handlePartWithArguments(arguments.string, forConnection: connection)
+			return handlePart(arguments: arguments.string, for: connection)
 			
 		case "server":
-			return handleServerConnectWithArguments(arguments.string)
+			return handleServerConnect(arguments: arguments.string)
 			
 		case "dcc":
 			var subcmd: NSString? = nil;
@@ -780,7 +780,7 @@ public class StandardCommands : NSObject, MVChatPlugin {
 			scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &subcmd)
 			
 			if (subcmd?.caseInsensitiveCompare("send") == .orderedSame) {
-				return handleFileSendWithArguments(arguments.string, forConnection: connection)
+				return handleFileSend(arguments: arguments.string, for: connection)
 			} else if subcmd?.caseInsensitiveCompare("chat") == .orderedSame {
 				var nick: NSString?
 				scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &nick)
@@ -806,6 +806,11 @@ public class StandardCommands : NSObject, MVChatPlugin {
 			connection?.sendRawMessage("MODE \(connection!.nickname) \(arguments.string)")
 			return true
 			
+		case "ctcp":
+			if connection?.type == .ircType {
+				return handleCTCP(arguments: arguments.string, for: connection)
+			}
+
 		case "wi":
 			connection?.sendRawMessage("WHOIS \(arguments.string)")
 			return true
@@ -833,10 +838,10 @@ public class StandardCommands : NSObject, MVChatPlugin {
 			return true
 			
 		case "ignore":
-			return handleIgnoreWithArguments(arguments.string, inView: room)
+			return handleIgnore(arguments: arguments.string, in: room)
 			
 		case "unignore":
-			return handleUnignoreWithArguments(arguments.string, inView: room)
+			return handleUnignore(arguments: arguments.string, in: room)
 			
 		case "invite":
 			guard connection?.type == .ircType else {

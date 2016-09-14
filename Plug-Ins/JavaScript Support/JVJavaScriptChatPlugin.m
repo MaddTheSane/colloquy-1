@@ -23,7 +23,7 @@
 #import <WebKit/WebKit.h>
 #import <objc/objc-runtime.h>
 
-@interface JVJavaScriptChatPlugin ()
+@interface JVJavaScriptChatPlugin () <MVChatPluginCommandSupport>
 - (id) allocInstance:(NSString *) class NS_RETURNS_NOT_RETAINED;
 @end
 
