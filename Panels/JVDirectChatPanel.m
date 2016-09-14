@@ -1,6 +1,7 @@
 #import <ChatCore/ChatCore.h>
 #import "JVDirectChatPanel.h"
 
+#import <ChatCore/ChatCore.h>
 #import "JVBuddy.h"
 #import "JVChatController.h"
 #import "JVChatEvent.h"
@@ -27,8 +28,8 @@
 #import "MVApplicationController.h"
 #import "NSAttributedStringMoreAdditions.h"
 #import "NSBundleAdditions.h"
-#import "NSDateAdditions.h"
-#import "NSRegularExpressionAdditions.h"
+#import <ChatCore/NSDateAdditions.h>
+#import <ChatCore/NSRegularExpressionAdditions.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -1,23 +1,26 @@
 #import <Foundation/Foundation.h>
 
-#import "MVAvailability.h"
-#import "MVUtilities.h"
-#import "MVChatString.h"
+#import <ChatCore/MVAvailability.h>
+#import <ChatCore/MVUtilities.h>
+#import <ChatCore/MVChatString.h>
 
-#import "MVChatConnection.h"
-#import "MVChatRoom.h"
-#import "MVChatUser.h"
-#import "MVChatUserWatchRule.h"
-#import "MVFileTransfer.h"
-#import "MVDirectChatConnection.h"
-#import "MVChatPluginManager.h"
+#import <ChatCore/MVChatConnection.h>
+#import <ChatCore/MVChatRoom.h>
+#import <ChatCore/MVChatUser.h>
+#import <ChatCore/MVChatUserWatchRule.h>
+#import <ChatCore/MVFileTransfer.h>
+#import <ChatCore/MVDirectChatConnection.h>
+#import <ChatCore/MVChatPluginManager.h>
 
-#import "NSAttributedStringAdditions.h"
-#import "NSStringAdditions.h"
-#import "NSNumberAdditions.h"
-#import "NSColorAdditions.h"
-#import "NSDataAdditions.h"
-#import "NSScannerAdditions.h"
-#import "NSMethodSignatureAdditions.h"
-#import "NSNotificationAdditions.h"
-#import "NSScriptCommandAdditions.h"
+// Additions
+#import <ChatCore/NSAttributedStringAdditions.h>
+#import <ChatCore/NSStringAdditions.h>
+#import <ChatCore/NSNumberAdditions.h>
+#import <ChatCore/NSColorAdditions.h>
+#import <ChatCore/NSDataAdditions.h>
+#import <ChatCore/NSScannerAdditions.h>
+#import <ChatCore/NSMethodSignatureAdditions.h>
+#import <ChatCore/NSNotificationAdditions.h>
+#import <ChatCore/NSScriptCommandAdditions.h>
+#import <ChatCore/NSDateAdditions.h>
+#import <ChatCore/NSRegularExpressionAdditions.h>

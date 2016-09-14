@@ -194,12 +194,11 @@
 		891EF3D1106426CB00CCEA35 /* PFMoveApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 891EF3D0106426CB00CCEA35 /* PFMoveApplicationController.m */; };
 		89EB91AA0F269BEF0028B3E3 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89EB91A90F269BEF0028B3E3 /* Sparkle.framework */; };
 		9200338D13D92515005B69BA /* MVFileTransfer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9200338B13D92515005B69BA /* MVFileTransfer.xib */; };
-		9220565E11018298005CD72D /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9220565D11018298005CD72D /* NSDateAdditions.m */; };
 		92823CF2168FFA0A000EC36E /* KAIgnoreRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 92823CF1168FFA0A000EC36E /* KAIgnoreRule.m */; };
 		9295C85D1675E227009F9014 /* ChatCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEEAB16095BD23100166A54 /* ChatCore.framework */; };
 		92A711951A4A5166009E80F0 /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A711941A4A5166009E80F0 /* SecurityInterface.framework */; };
 		C22A35561BC00BB7001757D7 /* MASPreferences.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22A35541BC009FA001757D7 /* MASPreferences.framework */; };
-		C22A35571BC00BB7001757D7 /* MASPreferences.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C22A35541BC009FA001757D7 /* MASPreferences.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C22A35571BC00BB7001757D7 /* MASPreferences.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C22A35541BC009FA001757D7 /* MASPreferences.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23298991C3D98230085CBF7 /* NSWindow+CQMCoordinateSpaceConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = C23298981C3D98230085CBF7 /* NSWindow+CQMCoordinateSpaceConversion.m */; };
 		C29654101BDB9FE900F28873 /* JVGeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29654121BDB9FE900F28873 /* JVGeneralPreferencesViewController.xib */; };
 		C29654131BDB9FF500F28873 /* JVInterfacePreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29654151BDB9FF500F28873 /* JVInterfacePreferencesViewController.xib */; };
@@ -647,7 +646,6 @@
 		558E11071C5845A300F9C85B /* JVChatTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JVChatTabItem.swift; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
 		55910A7B1C5AF83900FCE02D /* CQKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CQKeychain.swift; path = Shared/Controllers/CQKeychain.swift; sourceTree = SOURCE_ROOT; };
-		559110461CA9B28400258B5F /* NSRegularExpressionAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRegularExpressionAdditions.h; sourceTree = "<group>"; };
 		55AD12391C597212009F258C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Languages/Base.lproj/TSCustomBan.xib; sourceTree = "<group>"; };
 		55AD123B1C597223009F258C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Languages/en.lproj/TSCustomBan.strings; sourceTree = "<group>"; };
 		55AD123C1C59722F009F258C /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Languages/nl.lproj/TSCustomBan.strings; sourceTree = "<group>"; };
@@ -685,12 +683,8 @@
 		9200339A13D92578005B69BA /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_PT; path = "Languages/pt-PT.lproj/MVFileTransfer.xib"; sourceTree = "<group>"; };
 		9200339C13D92581005B69BA /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Spanish; path = Languages/en.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
 		9200339E13D9258A005B69BA /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_TW; path = "Languages/zh-Hant.lproj/MVFileTransfer.xib"; sourceTree = "<group>"; };
-		9220565C11018298005CD72D /* NSDateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateAdditions.h; sourceTree = "<group>"; };
-		9220565D11018298005CD72D /* NSDateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
 		92823CF0168FFA0A000EC36E /* KAIgnoreRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KAIgnoreRule.h; path = Shared/Models/KAIgnoreRule.h; sourceTree = SOURCE_ROOT; };
 		92823CF1168FFA0A000EC36E /* KAIgnoreRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KAIgnoreRule.m; path = Shared/Models/KAIgnoreRule.m; sourceTree = SOURCE_ROOT; };
-		928FB02F13EE643E00A0DF4B /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
-		928FB03013EE643E00A0DF4B /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
 		9295C84E1675E10A009F9014 /* Colloquy.exp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.exports; name = Colloquy.exp; path = ../Colloquy.exp; sourceTree = "<group>"; };
 		92A711941A4A5166009E80F0 /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		A1429C720901F57A00A7BEEE /* Italian */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Italian; path = Languages/it.lproj/Colloquy.xib; sourceTree = "<group>"; };
@@ -1421,13 +1415,8 @@
 				1CABF8750656414100801C15 /* NSBundleAdditions.h */,
 				891E8466123F0AEF00EC3C0F /* NSCharacterSetAdditions.m */,
 				891E8465123F0AEF00EC3C0F /* NSCharacterSetAdditions.h */,
-				9220565D11018298005CD72D /* NSDateAdditions.m */,
-				9220565C11018298005CD72D /* NSDateAdditions.h */,
 				1C0730E30677A63B008D8AD9 /* NSImageAdditions.m */,
 				1C0730E20677A63B008D8AD9 /* NSImageAdditions.h */,
-				559110461CA9B28400258B5F /* NSRegularExpressionAdditions.h */,
-				928FB03013EE643E00A0DF4B /* NSStringAdditions.m */,
-				928FB02F13EE643E00A0DF4B /* NSStringAdditions.h */,
 				1C4671E406D7759100071DC6 /* NSTextStorageAdditions.m */,
 				1C4671E306D7759100071DC6 /* NSTextStorageAdditions.h */,
 				55B748191AD2E957001459F7 /* RunOnMainThread.h */,
@@ -2029,7 +2018,6 @@
 				DDF034100BD529AE0096B109 /* JVDetailCell.m in Sources */,
 				1C6266D4103CC9A900A6B346 /* JVAnalyticsController.m in Sources */,
 				891EF3D1106426CB00CCEA35 /* PFMoveApplicationController.m in Sources */,
-				9220565E11018298005CD72D /* NSDateAdditions.m in Sources */,
 				891E8467123F0AEF00EC3C0F /* NSCharacterSetAdditions.m in Sources */,
 				92823CF2168FFA0A000EC36E /* KAIgnoreRule.m in Sources */,
 			);
@@ -2593,6 +2581,7 @@
 				PRODUCT_NAME = "Standard Commands";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Ins/Standard Commands/Standard Commands (Plug-In)-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -2626,6 +2615,7 @@
 				PRODUCT_NAME = Colloquy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2653,7 +2643,9 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2686,6 +2678,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.standard-commands";
 				PRODUCT_NAME = "Standard Commands";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Ins/Standard Commands/Standard Commands (Plug-In)-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;
@@ -2724,6 +2717,7 @@
 					Colloquy.order,
 				);
 				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2751,7 +2745,9 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
