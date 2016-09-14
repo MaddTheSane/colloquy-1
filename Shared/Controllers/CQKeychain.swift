@@ -21,20 +21,20 @@ private func createBaseDictionary(_ server: String, account: String?) -> [String
 	return query;
 }
 
-final class CQKeychain : NSObject {
+final public class CQKeychain : NSObject {
 	private override init() {
 		super.init()
 	}
 	@objc(standardKeychain)
-	static let standard = CQKeychain()
+	public static let standard = CQKeychain()
 	
 	@objc(setPassword:forServer:area:)
-	func set(password: String, for server: String, area: String?) {
+	public func set(password: String, for server: String, area: String? = nil) {
 		set(password: password, for: server, area: area, displayValue: nil)
 	}
 	
 	@objc(setPassword:forServer:area:displayValue:)
-	func set(password: String, for server: String, area: String?, displayValue: String?) {
+	public func set(password: String, for server: String, area: String? = nil, displayValue: String?) {
 		guard password.characters.count != 0 else {
 			removePassword(for: server, area: area)
 			return;
@@ -46,7 +46,7 @@ final class CQKeychain : NSObject {
 	}
 	
 	@objc(passwordForServer:area:)
-	func password(for server: String, area: String?) -> String? {
+	public func password(for server: String, area: String? = nil) -> String? {
 		if let data = data(for: server, area: area) {
 			return String(data: data, encoding: String.Encoding.utf8)
 		}
@@ -54,19 +54,19 @@ final class CQKeychain : NSObject {
 	}
 	
 	@objc(removePasswordForServer:area:)
-	func removePassword(for server: String, area: String?) {
+	public func removePassword(for server: String, area: String? = nil) {
 		removeData(for: server, area: area)
 	}
 	
 	//MARK: -
 	
 	@objc(setData:forServer:area:)
-	func set(_ passwordData: Data, for server: String, area: String? = nil) {
+	public func set(_ passwordData: Data, for server: String, area: String? = nil) {
 		set(passwordData, for: server, area: area, displayValue: nil)
 	}
 	
 	@objc(setData:forServer:area:displayValue:)
-	func set(_ passwordData: Data, for server: String, area: String?, displayValue: String?) {
+	public func set(_ passwordData: Data, for server: String, area: String? = nil, displayValue: String?) {
 		guard passwordData.count != 0 else {
 			removeData(for: server, area: area)
 			return
@@ -90,7 +90,7 @@ final class CQKeychain : NSObject {
 	}
 	
 	@objc(dataForServer:area:)
-	func data(for server: String, area: String?) -> Data? {
+	public func data(for server: String, area: String? = nil) -> Data? {
 		var passwordQuery = createBaseDictionary(server, account: area);
 		
 		passwordQuery[kSecReturnData as String] = true as NSNumber;
@@ -106,7 +106,7 @@ final class CQKeychain : NSObject {
 	}
 	
 	@objc(removeDataForServer:area:)
-	func removeData(for server: String, area: String?) {
+	public func removeData(for server: String, area: String? = nil) {
 		let passwordQuery = createBaseDictionary(server, account: area)
 		SecItemDelete(passwordQuery as NSDictionary)
 	}
