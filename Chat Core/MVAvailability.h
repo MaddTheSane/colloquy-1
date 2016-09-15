@@ -29,3 +29,9 @@
 #ifndef ENABLE_XMPP
 #define ENABLE_XMPP 1
 #endif
+
+#define _MVEnumVal(name, start, type, val) \
+start##type##name = val, \
+start##name##type NS_SWIFT_UNAVAILABLE("Use ." #name " instead") \
+/*DEPRECATED_MSG_ATTRIBUTE("Use " #start #type #name " instead")*/ = start##type##name
+

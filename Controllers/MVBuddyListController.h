@@ -9,10 +9,14 @@
 @class MVChatConnection;
 
 typedef NS_ENUM(OSType, MVBuddyListSortOrder) {
-	MVAvailabilitySortOrder = 'avlY',
-	MVFirstNameSortOrder = 'fSnM',
-	MVLastNameSortOrder = 'lSnM',
-	MVServerSortOrder = 'serV'
+#define MVEnumVal(_name, _val) MVBuddyListSortOrder##_name = _val, \
+MV##_name##SortOrder NS_SWIFT_UNAVAILABLE("Use ." #_name " instead") \
+ = MVBuddyListSortOrder##_name
+	MVEnumVal(Availability, 'avlY'),
+	MVEnumVal(FirstName, 'fSnM'),
+	MVEnumVal(LastName, 'lSnM'),
+	MVEnumVal(Server, 'serV'),
+#undef MVEnumVal
 };
 
 @interface MVBuddyListController : NSWindowController <JVInspectionDelegator, NSTableViewDataSource> {

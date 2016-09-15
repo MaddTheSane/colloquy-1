@@ -8,22 +8,31 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(OSType, MVChatUserType) {
-	MVChatRemoteUserType = 'remT',
-	MVChatLocalUserType = 'locL',
-	MVChatWildcardUserType = 'wilD'
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVChat, UserType, _val)
+	MVEnumVal(Remote, 'remT'),
+	MVEnumVal(Local, 'locL'),
+	MVEnumVal(Wildcard, 'wilD'),
+#undef MVEnumVal
 };
 
 typedef NS_ENUM(OSType, MVChatUserStatus) {
-	MVChatUserUnknownStatus = 'uKnw',
-	MVChatUserOfflineStatus = 'oflN',
-	MVChatUserDetachedStatus = 'detA',
-	MVChatUserAvailableStatus = 'avaL',
-	MVChatUserAwayStatus = 'awaY'
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVChatUser, Status, _val)
+	MVEnumVal(Unknown, 'uKnw'),
+	MVEnumVal(Offline, 'oflN'),
+	MVEnumVal(Detached, 'detA'),
+	MVEnumVal(Available, 'avaL'),
+	MVEnumVal(Away, 'awaY')
+#undef MVEnumVal
 };
 
 typedef NS_OPTIONS(NSUInteger, MVChatUserMode) {
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVChatUser, Mode, _val)
 	MVChatUserNoModes = 0,
-	MVChatUserInvisibleMode = 1 << 0
+	MVEnumVal(Invisible, 1 << 0),
+#undef MVEnumVal
 };
 
 extern NSString *MVChatUserKnownRoomsAttribute;

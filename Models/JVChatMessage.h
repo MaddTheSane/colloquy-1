@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <ChatCore/MVAvailability.h>
 
 #import "JVChatTranscript.h"
 #import "KAIgnoreRule.h"
@@ -6,8 +7,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(OSType, JVChatMessageType) {
-	JVChatMessageNormalType = 'noMt',
-	JVChatMessageNoticeType = 'nTMt'
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+JVChatMessage, Type, _val)
+	MVEnumVal(Normal, 'noMt'),
+	MVEnumVal(Notice, 'nTMt'),
+#undef MVEnumVal
 };
 
 @interface JVChatMessage : NSObject <NSMutableCopying, JVChatTranscriptElement> {

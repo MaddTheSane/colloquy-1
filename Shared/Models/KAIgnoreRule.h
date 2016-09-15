@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <ChatCore/MVAvailability.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,9 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 typedef NS_ENUM(OSType, JVIgnoreMatchResult) {
-	JVUserIgnored = 'usIg',
-	JVMessageIgnored = 'msIg',
-	JVNotIgnored = 'noIg'
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+JV, Ignored, _val)
+	MVEnumVal(User, 'usIg'),
+	MVEnumVal(Message, 'msIg'),
+	MVEnumVal(Not, 'noIg'),
+#undef MVEnumVal
 };
 
 @interface KAIgnoreRule : NSObject

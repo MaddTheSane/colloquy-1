@@ -34,10 +34,11 @@ extern NSString *JVChatTranscriptUpdatedNotification;
 - (instancetype) init NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithChatTranscript:(JVChatTranscript *) transcript;
 - (instancetype) initWithElements:(NSArray<id<JVChatTranscriptElement>> *) elements;
-- (nullable instancetype) initWithContentsOfFile:(NSString *) path;
+- (nullable instancetype) initWithContentsOfFile:(NSString *) path NS_SWIFT_NAME(init(contentsOf:));
 - (nullable instancetype) initWithContentsOfURL:(NSURL *) url;
 
 - (struct _xmlDoc *) document;
+@property (readonly, assign, nullable) struct _xmlDoc *document;
 
 @property (readonly, getter=isEmpty) BOOL empty;
 @property (readonly) NSUInteger elementCount;
@@ -52,7 +53,7 @@ extern NSString *JVChatTranscriptUpdatedNotification;
 - (nullable id<JVChatTranscriptElement>) elementAtIndex:(NSUInteger) index;
 @property (readonly, strong, nullable) id<JVChatTranscriptElement> lastElement;
 
-- (NSArray<id<JVChatTranscriptElement>> *) appendElements:(NSArray<id<JVChatTranscriptElement>> *) elements;
+- (NSArray<id<JVChatTranscriptElement>> *) appendElements:(NSArray<id<JVChatTranscriptElement>> *) elements NS_SWIFT_NAME(append(elements:));
 - (void) appendChatTranscript:(JVChatTranscript *) transcript;
 
 @property (readonly, copy, nullable) NSArray<JVChatMessage*> *messages;

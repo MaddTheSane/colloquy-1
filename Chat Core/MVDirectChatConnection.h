@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+#import "MVAvailability.h"
 #import "MVChatConnection.h"
 #import "MVMessaging.h"
 
@@ -17,10 +18,13 @@ extern NSString *MVDirectChatConnectionGotMessageNotification;
 extern NSString *MVDirectChatConnectionErrorDomain;
 
 typedef NS_ENUM(OSType, MVDirectChatConnectionStatus) {
-	MVDirectChatConnectionConnectedStatus = 'dcCo',
-	MVDirectChatConnectionWaitingStatus = 'dcWa',
-	MVDirectChatConnectionDisconnectedStatus = 'dcDs',
-	MVDirectChatConnectionErrorStatus = 'dcEr'
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVDirectChatConnection, Status, _val)
+	MVEnumVal(Connected, 'dcCo'),
+	MVEnumVal(Waiting, 'dcWa'),
+	MVEnumVal(Disconnected, 'dcDs'),
+	MVEnumVal(Error, 'dcEr'),
+#undef MVEnumVal
 };
 
 @class MVChatUser;

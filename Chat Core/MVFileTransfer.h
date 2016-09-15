@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "MVAvailability.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,20 +15,26 @@ extern NSString *MVFileTransferErrorOccurredNotification;
 extern NSString *MVFileTransferErrorDomain;
 
 typedef NS_ENUM(OSType, MVFileTransferStatus) {
-	MVFileTransferDoneStatus = 'trDn',
-	MVFileTransferNormalStatus = 'trNo',
-	MVFileTransferHoldingStatus = 'trHo',
-	MVFileTransferStoppedStatus = 'trSt',
-	MVFileTransferErrorStatus = 'trEr'
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVFileTransfer, Status, _val)
+	MVEnumVal(Done, 'trDn'),
+	MVEnumVal(Normal, 'trNo'),
+	MVEnumVal(Holding, 'trHo'),
+	MVEnumVal(Stopped, 'trSt'),
+	MVEnumVal(Error, 'trEr'),
+#undef MVEnumVal
 };
 
 typedef NS_ENUM(NSInteger, MVFileTransferError) {
-	MVFileTransferConnectionError = -1,
-	MVFileTransferFileCreationError = -2,
-	MVFileTransferFileOpenError = -3,
-	MVFileTransferAlreadyExistsError = -4,
-	MVFileTransferUnexpectedlyEndedError = -5,
-	MVFileTransferKeyAgreementError = -6
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVFileTransfer, Error, _val)
+	MVEnumVal(Connection, -1),
+	MVEnumVal(FileCreation, -2),
+	MVEnumVal(FileOpen, -3),
+	MVEnumVal(AlreadyExists, -4),
+	MVEnumVal(UnexpectedlyEnded, -5),
+	MVEnumVal(KeyAgreement, -6)
+#undef MVEnumVal
 };
 
 static inline NSString *NSStringFromMVFileTransferStatus(MVFileTransferStatus status);

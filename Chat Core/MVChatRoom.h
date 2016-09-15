@@ -8,30 +8,39 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_OPTIONS(NSUInteger, MVChatRoomMode) {
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVChatRoom, Mode, _val)
 	MVChatRoomNoModes = 0,
-	MVChatRoomPrivateMode = 1 << 0,
-	MVChatRoomSecretMode = 1 << 1,
-	MVChatRoomInviteOnlyMode = 1 << 2,
-	MVChatRoomNormalUsersSilencedMode = 1 << 3,
-	MVChatRoomOperatorsSilencedMode = 1 << 4,
-	MVChatRoomOperatorsOnlySetTopicMode = 1 << 5,
-	MVChatRoomNoOutsideMessagesMode = 1 << 6,
-	MVChatRoomPassphraseToJoinMode = 1 << 7,
-	MVChatRoomLimitNumberOfMembersMode = 1 << 8
+	MVEnumVal(Private, 1 << 0),
+	MVEnumVal(Secret, 1 << 1),
+	MVEnumVal(InviteOnly, 1 << 2),
+	MVEnumVal(NormalUsersSilenced, 1 << 3),
+	MVEnumVal(OperatorsSilenced, 1 << 4),
+	MVEnumVal(OperatorsOnlySetTopic, 1 << 5),
+	MVEnumVal(NoOutsideMessages, 1 << 6),
+	MVEnumVal(PassphraseToJoin, 1 << 7),
+	MVEnumVal(LimitNumberOfMembers, 1 << 8)
+#undef MVEnumVal
 };
 
 typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberMode) {
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVChatRoomMember, Mode, _val)
 	MVChatRoomMemberNoModes = 0,
-	MVChatRoomMemberVoicedMode = 1 << 0,
-	MVChatRoomMemberHalfOperatorMode = 1 << 1,
-	MVChatRoomMemberOperatorMode = 1 << 2,
-	MVChatRoomMemberAdministratorMode = 1 << 3,
-	MVChatRoomMemberFounderMode = 1 << 4
+	MVEnumVal(Voiced, 1 << 0),
+	MVEnumVal(HalfOperator, 1 << 1),
+	MVEnumVal(Operator, 1 << 2),
+	MVEnumVal(Administrator, 1 << 3),
+	MVEnumVal(Founder, 1 << 4)
+#undef MVEnumVal
 };
 
 typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberDisciplineMode) {
+#define MVEnumVal(_name, _val) _MVEnumVal(_name, \
+MVChatRoomMemberDiscipline, Mode, _val)
 	MVChatRoomMemberNoDisciplineModes = 0,
-	MVChatRoomMemberDisciplineQuietedMode = 1 << 0
+	MVEnumVal(Quieted, 1 << 0)
+#undef MVEnumVal
 };
 
 extern NSString *MVChatRoomMemberQuietedFeature;
