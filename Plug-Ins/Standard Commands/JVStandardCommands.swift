@@ -231,7 +231,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		}()
 		
 		for room in (JVChatController.default.chatViewControllers(of: JVChatRoomPanel.self) as! Set<JVChatRoomPanel>) {
-			let cMessage = JVMutableChatMessage(text: message, sender: room.connection()?.localUser)
+			let cMessage = JVMutableChatMessage(text: message, sender: room.connection?.localUser)
 			cMessage.isAction = action
 			room.send(cMessage)
 			room.echoSentMessageToDisplay(cMessage)
@@ -279,7 +279,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		var offset = 0;
 		
 		if args.characters.count == 0 {
-			let info = JVInspectorController.inspector(ofObject: view.connection()!)
+			let info = JVInspectorController.inspector(ofObject: view.connection!)
 			info.show(nil)
 			info.inspector.perform(#selector(JVConnectionInspector.selectTab(withIdentifier:)), with: "Ignores")
 			return true;
@@ -336,7 +336,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			rule = KAIgnoreRule(forUser: memberString, message: messageString, inRooms: rooms, isPermanent: permanent, friendlyName: nil)
 		}
 		
-		if let rules = MVConnectionsController.default.ignoreRules(for: view.connection()) {
+		if let rules = MVConnectionsController.default.ignoreRules(for: view.connection) {
 			rules.add(rule)
 		}
 		
@@ -366,7 +366,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		var offset = 0;
 		
 		if args.characters.count == 0 {
-			let info = JVInspectorController.inspector(ofObject: view.connection()!)
+			let info = JVInspectorController.inspector(ofObject: view.connection!)
 			info.show(nil)
 			info.inspector.perform(#selector(JVConnectionInspector.selectTab(withIdentifier:)), with: "Ignores")
 			return true;
@@ -415,7 +415,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			rooms = Array(argsArray[offset..<(argsArray.count - offset)])
 		}
 		
-		guard let rules = MVConnectionsController.default.ignoreRules(for: view.connection()) else {
+		guard let rules = MVConnectionsController.default.ignoreRules(for: view.connection) else {
 			return true
 		}
 		var i = 0
@@ -444,7 +444,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			switch command {
 			case "me", "action", "say":
 				if arguments.length != 0 {
-					let message = JVMutableChatMessage(text: arguments, sender: chat!.connection()!.localUser)
+					let message = JVMutableChatMessage(text: arguments, sender: chat!.connection!.localUser)
 					if command == "me" || command == "action" {
 						// This is so plugins can process /me actions as well
 						// We're avoiding /say for now, as that really should just output exactly what
@@ -472,7 +472,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				}
 				
 			case "console":
-				let controller = JVChatController.default.chatConsole(for: chat!.connection()!, ifExists: false)
+				let controller = JVChatController.default.chatConsole(for: chat!.connection!, ifExists: false)
 				controller?.windowController?.show(controller!)
 				return true
 				
@@ -502,9 +502,9 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			switch command {
 			case "leave", "part":
 				if arguments.length == 0 {
-					return handlePart(arguments: (room?.target as? MVChatRoom)?.name, for: room?.connection())
+					return handlePart(arguments: (room?.target as? MVChatRoom)?.name, for: room?.connection)
 				} else {
-					return handlePart(arguments: arguments.string, for: room?.connection())
+					return handlePart(arguments: arguments.string, for: room?.connection)
 				}
 				
 			case "topic", "t":
