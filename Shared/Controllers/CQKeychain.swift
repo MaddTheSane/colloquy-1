@@ -9,13 +9,13 @@
 import Foundation
 import Security
 
-private func createBaseDictionary(_ server: String, account: String?) -> [String: NSObject] {
-	var query = [String: NSObject]()
+private func createBaseDictionary(_ server: String, account: String?) -> [String: Any] {
+	var query = [String: Any]()
 	
-	query[kSecClass as String] = kSecClassInternetPassword;
-	query[kSecAttrServer as String] = server as NSString
+	query[kSecClass as String] = kSecClassInternetPassword
+	query[kSecAttrServer as String] = server
 	if let account = account {
-		query[kSecAttrAccount as String] = account as NSString
+		query[kSecAttrAccount as String] = account
 	}
 	
 	return query;
@@ -29,54 +29,54 @@ final public class CQKeychain : NSObject {
 	public static let standard = CQKeychain()
 	
 	@objc(setPassword:forServer:area:)
-	public func set(password: String, for server: String, area: String? = nil) {
-		set(password: password, for: server, area: area, displayValue: nil)
+	public func setPassword(_ password: String, forServer server: String, area: String? = nil) {
+		setPassword(password, forServer: server, area: area, displayValue: nil)
 	}
 	
 	@objc(setPassword:forServer:area:displayValue:)
-	public func set(password: String, for server: String, area: String? = nil, displayValue: String?) {
+	public func setPassword(_ password: String, forServer server: String, area: String? = nil, displayValue: String?) {
 		guard password.characters.count != 0 else {
-			removePassword(for: server, area: area)
-			return;
+			removePassword(forServer: server, area: area)
+			return
 		}
 		
-		let passwordData = password.data(using: String.Encoding.utf8)!
+		let passwordData = Data(bytes: Array(password.utf8))
 		
-		set(passwordData, for: server, area: area)
+		setData(passwordData, forServer: server, area: area, displayValue: displayValue)
 	}
 	
 	@objc(passwordForServer:area:)
-	public func password(for server: String, area: String? = nil) -> String? {
-		if let data = data(for: server, area: area) {
+	public func password(forServer server: String, area: String? = nil) -> String? {
+		if let data = data(forServer: server, area: area) {
 			return String(data: data, encoding: String.Encoding.utf8)
 		}
 		return nil
 	}
 	
 	@objc(removePasswordForServer:area:)
-	public func removePassword(for server: String, area: String? = nil) {
-		removeData(for: server, area: area)
+	public func removePassword(forServer server: String, area: String? = nil) {
+		removeData(forServer: server, area: area)
 	}
 	
 	//MARK: -
 	
 	@objc(setData:forServer:area:)
-	public func set(_ passwordData: Data, for server: String, area: String? = nil) {
-		set(passwordData, for: server, area: area, displayValue: nil)
+	public func setData(_ passwordData: Data, forServer server: String, area: String? = nil) {
+		setData(passwordData, forServer: server, area: area, displayValue: nil)
 	}
 	
 	@objc(setData:forServer:area:displayValue:)
-	public func set(_ passwordData: Data, for server: String, area: String? = nil, displayValue: String?) {
+	public func setData(_ passwordData: Data, forServer server: String, area: String? = nil, displayValue: String?) {
 		guard passwordData.count != 0 else {
-			removeData(for: server, area: area)
+			removeData(forServer: server, area: area)
 			return
 		}
 		
 		var passwordEntry = createBaseDictionary(server, account: area);
 		
-		passwordEntry[kSecValueData as String] = passwordData as NSData
+		passwordEntry[kSecValueData as String] = passwordData
 		if let displayValue = displayValue {
-			passwordEntry[kSecAttrLabel as String] = displayValue as NSString
+			passwordEntry[kSecAttrLabel as String] = displayValue
 		}
 		
 		let status = SecItemAdd(passwordEntry as NSDictionary, nil);
@@ -90,11 +90,11 @@ final public class CQKeychain : NSObject {
 	}
 	
 	@objc(dataForServer:area:)
-	public func data(for server: String, area: String? = nil) -> Data? {
+	public func data(forServer server: String, area: String? = nil) -> Data? {
 		var passwordQuery = createBaseDictionary(server, account: area);
 		
-		passwordQuery[kSecReturnData as String] = true as NSNumber;
-		passwordQuery[kSecMatchLimit as String] = kSecMatchLimitOne;
+		passwordQuery[kSecReturnData as String] = true
+		passwordQuery[kSecMatchLimit as String] = kSecMatchLimitOne
 		
 		var resultDataRef: AnyObject? = nil
 		let status = SecItemCopyMatching(passwordQuery as NSDictionary, &resultDataRef)
@@ -106,7 +106,7 @@ final public class CQKeychain : NSObject {
 	}
 	
 	@objc(removeDataForServer:area:)
-	public func removeData(for server: String, area: String? = nil) {
+	public func removeData(forServer server: String, area: String? = nil) {
 		let passwordQuery = createBaseDictionary(server, account: area)
 		SecItemDelete(passwordQuery as NSDictionary)
 	}
