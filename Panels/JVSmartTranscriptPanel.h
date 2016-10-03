@@ -20,11 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 	NSUInteger _origSheetHeight;
 }
 - (instancetype) init NS_DESIGNATED_INITIALIZER;
-- (nullable instancetype) initWithSettings:(nullable NSDictionary *) settings;
+- (nullable instancetype) initWithSettings:(nullable NSDictionary<NSString*,id> *) settings;
 
 - (NSComparisonResult) compare:(JVSmartTranscriptPanel *) panel;
 
-@property (readonly, copy) NSMutableArray *rules;
+@property (readonly, retain) NSMutableArray *rules;
 
 @property (readonly) NSUInteger newMessagesWaiting;
 - (void) matchMessage:(JVChatMessage *) message fromView:(id <JVChatViewController>) view;

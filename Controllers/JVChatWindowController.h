@@ -46,9 +46,9 @@ extern NSString *JVChatViewPboardType;
 - (void) replaceChatViewController:(id <JVChatViewController>) controller withController:(id <JVChatViewController>) newController;
 - (void) replaceChatViewControllerAtIndex:(NSUInteger) index withController:(id <JVChatViewController>) controller;
 
-- (NSArray *) chatViewControllersForConnection:(MVChatConnection *) connection;
-- (NSArray *) chatViewControllersWithControllerClass:(Class) class;
-@property (readonly, copy) NSArray *allChatViewControllers;
+- (NSArray<id<JVChatViewController>> *) chatViewControllersForConnection:(MVChatConnection *) connection;
+- (NSArray<id<JVChatViewController>> *) chatViewControllersWithControllerClass:(Class) class;
+@property (readonly, copy) NSArray<id<JVChatViewController>> *allChatViewControllers;
 
 @property (readonly, strong) id<JVChatViewController> activeChatViewController;
 @property (readonly, strong, nullable) id<JVChatListItem> selectedListItem;
@@ -103,15 +103,20 @@ extern NSString *JVChatViewPboardType;
 
 @required
 - (nullable MVChatConnection *) connection;
+@property (readonly, strong, nullable) MVChatConnection *connection;
 
 - (nullable JVChatWindowController *) windowController;
 - (void) setWindowController:(nullable JVChatWindowController *) controller;
+@property (nonatomic, readwrite, retain, nullable) JVChatWindowController *windowController;
 
 - (NSView *) view;
-- (NSResponder *) firstResponder;
+- (nullable NSResponder *) firstResponder;
 - (NSString *) toolbarIdentifier;
+@property (readonly, copy) NSString *toolbarIdentifier;
 - (NSString *) windowTitle;
-@property (readonly) NSString * identifier;
+@property (readonly, copy) NSString *windowTitle;
+- (NSString *)identifier;
+@property (readonly, copy) NSString *identifier;
 
 @optional
 - (void) willSelect;
@@ -125,10 +130,14 @@ extern NSString *JVChatViewPboardType;
 
 @protocol JVChatListItemScripting <NSObject>
 - (NSNumber *) uniqueIdentifier;
+@property (readonly, copy) NSNumber *uniqueIdentifier;
 - (nullable NSArray *) children;
 - (nullable NSString *) information;
+@property (readonly, copy, nullable) NSString *information;
 - (NSString *) toolTip;
+@property (readonly, copy) NSString *toolTip;
 - (BOOL) isEnabled;
+@property (readonly, getter=isEnabled) BOOL enabled;
 @end
 
 @protocol JVChatViewControllerScripting <JVChatListItemScripting>
@@ -138,26 +147,33 @@ extern NSString *JVChatViewPboardType;
 
 @protocol JVChatListItem <NSObject>
 - (nullable id <JVChatListItem>) parent;
+@property (readonly, nullable, weak) id<JVChatListItem> parent;
 - (NSImage *) icon;
+@property (readonly, retain) NSImage *icon;
 - (NSString *) title;
+@property (readonly, copy) NSString *title;
 
 @optional
 - (BOOL) acceptsDraggedFileOfType:(NSString *) type;
 - (void) handleDraggedFile:(NSString *) path;
 - (IBAction) doubleClicked:(nullable id) sender;
-@property (readonly, getter=isEnabled) BOOL enabled;
 - (BOOL) isEnabled;
+@property (readonly, getter=isEnabled) BOOL enabled;
 
 - (NSMenu *) menu;
 - (nullable NSString *) information;
+@property (readonly, copy, nullable) NSString *information;
 - (NSString *) toolTip;
+@property (readonly, copy) NSString *toolTip;
 - (nullable NSImage *) statusImage;
+@property (readonly, retain, nullable) NSImage *statusImage;
 
 - (NSUInteger) numberOfChildren;
-- (id) childAtIndex:(NSUInteger) index;
+@property (readonly) NSUInteger numberOfChildren;
+- (id<JVChatListItem>) childAtIndex:(NSUInteger) index;
 @end
 
-@interface NSObject (MVChatPluginToolbarSupport)
+@protocol MVChatPluginToolbarSupport <MVChatPlugin>
 - (nullable NSArray<NSString*> *) toolbarItemIdentifiersForView:(id <JVChatViewController>) view;
 - (nullable NSToolbarItem *) toolbarItemForIdentifier:(NSString *) identifier inView:(id <JVChatViewController>) view willBeInsertedIntoToolbar:(BOOL) willBeInserted;
 @end

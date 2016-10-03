@@ -28,8 +28,6 @@
 #import <CFNetwork/CFNetwork.h>
 #endif
 
-#import "RunOnMainThread.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 #define JVQueueWaitBeforeConnected 120.
@@ -124,6 +122,10 @@ static const NSStringEncoding supportedEncodings[] = {
 	(NSStringEncoding) 0x80000506,		// Windows
 	0
 };
+
+@interface MVIRCChatConnection () <GCDAsyncSocketDelegate>
+
+@end
 
 // znc/self-message could have been better named; while it implies self-message semantics, the situations in which messages are echoed back differ:
 // - with self-message, all messages we send are echoed back to us.
@@ -702,7 +704,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	return [self joinedChatRoomWithUniqueIdentifier:[self properNameForChatRoomNamed:name]];
 }
 
-- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
+- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
 	NSParameterAssert( [identifier isKindOfClass:[NSString class]] );
 	MVChatRoom *room = [super chatRoomWithUniqueIdentifier:[identifier lowercaseString]];
 	if( ! room ) room = [[MVIRCChatRoom alloc] initWithName:identifier andConnection:self];
@@ -948,7 +950,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	});
 }
 
-- (void) socketDidDisconnect:(GCDAsyncSocket *) sock withError:(NSError *) error {
+- (void) socketDidDisconnect:(GCDAsyncSocket *) sock withError:(nullable NSError *) error {
 	if( sock != _chatConnection ) return;
 
 	__strong id me = self;

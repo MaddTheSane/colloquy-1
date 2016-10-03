@@ -50,6 +50,11 @@
 #import "NSNotificationAdditions.h"
 #import "RunOnMainThread.h"
 
+@interface MVICBChatConnection () <GCDAsyncSocketDelegate>
+
+@end
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Prototypes for auxiliary functions
@@ -135,11 +140,6 @@ static BOOL hasSubstring( NSString *str, NSString *substr, NSRange *r ) {
 	[_server release];
 	[_password release];
 	[super dealloc];
-}
-
-- (void) finalize {
-	[self disconnect];
-	[super finalize];
 }
 
 #pragma mark Accessors

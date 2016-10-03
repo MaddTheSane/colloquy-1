@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSCharacterSet (Additions)
 + (NSCharacterSet *) illegalXMLCharacterSet {
-	static NSMutableCharacterSet *illegalSet = nil;
+	static NSCharacterSet *illegalSet = nil;
 	if (!illegalSet) {
 		NSMutableCharacterSet *illegalSet2 = [[NSCharacterSet characterSetWithRange:NSMakeRange( 0, 0x1f )] mutableCopy];
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSCharacterSet *) cq_encodedXMLCharacterSet {
 	static NSCharacterSet *specialSet = nil;
 	if (!specialSet) {
-		specialSet = [NSCharacterSet characterSetWithCharactersInString:@"&<>\"'"];;
+		specialSet = [NSCharacterSet characterSetWithCharactersInString:@"&<>\"'"];
 	}
 	return specialSet;
 }

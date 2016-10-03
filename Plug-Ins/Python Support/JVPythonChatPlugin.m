@@ -4,8 +4,16 @@
 #import "JVChatRoomPanel.h"
 #import "JVChatRoomMember.h"
 #import "JVToolbarItem.h"
-#import "NSStringAdditions.h"
+#import "JVChatController.h"
+#import "JVNotificationController.h"
+#import "MVApplicationController.h"
+#import <ChatCore/NSStringAdditions.h>
+#import <ChatCore/MVChatConnection.h>
 #import "pyobjc-api.h"
+
+@interface JVPythonChatPlugin () <MVChatPluginCommandSupport, MVChatPluginContextualMenuSupport, MVChatPluginToolbarSupport, MVChatPluginNotificationSupport, MVChatPluginConnectionSupport, MVChatPluginRoomSupport, MVChatPluginDirectChatSupport, MVChatPluginLinkClickSupport>
+
+@end
 
 static PyObject *LoadArbitraryPythonModule( const char *name, const char *directory, const char *newname ) {
 	if( ! name || ! directory ) return NULL;

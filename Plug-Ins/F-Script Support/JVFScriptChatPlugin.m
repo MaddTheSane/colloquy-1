@@ -3,6 +3,10 @@
 #import "JVChatMessage.h"
 #import "JVChatRoomPanel.h"
 #import "JVChatRoomMember.h"
+#import "JVChatController.h"
+#import "JVNotificationController.h"
+#import "MVApplicationController.h"
+#import <ChatCore/MVChatConnection.h>
 
 #import <FScript/FScript.h>
 
@@ -13,6 +17,10 @@ NSString *JVFScriptErrorDomain = @"JVFScriptErrorDomain";
 @property (readonly, copy) NSString *errorStr;
 @property (readonly) int firstCharIndex;
 @property (readonly) int lastCharIndex;
+@end
+
+@interface JVFScriptChatPlugin () <MVChatPluginCommandSupport, MVChatPluginContextualMenuSupport, MVChatPluginToolbarSupport, MVChatPluginNotificationSupport, MVChatPluginConnectionSupport, MVChatPluginRoomSupport, MVChatPluginDirectChatSupport, MVChatPluginLinkClickSupport>
+
 @end
 
 #pragma mark -

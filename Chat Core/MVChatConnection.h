@@ -3,6 +3,7 @@
 
 #import <ChatCore/MVAvailability.h>
 #import <ChatCore/MVChatString.h>
+#import <ChatCore/MVChatPluginManager.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -367,7 +368,7 @@ extern NSString *MVChatConnectionErrorDomain;
 
 #pragma mark -
 
-- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
+- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
 - (nullable MVChatRoom *) chatRoomWithName:(NSString *) room;
 
 #pragma mark -
@@ -412,7 +413,8 @@ extern NSString *MVChatConnectionErrorDomain;
 
 #pragma mark -
 
-@interface NSObject (MVChatPluginConnectionSupport)
+@protocol MVChatPluginConnectionSupport <MVChatPlugin>
+@optional
 - (void) processIncomingMessageAsData:(NSMutableData *) message from:(MVChatUser *) sender to:(id) receiver attributes:(NSMutableDictionary *)msgAttributes;
 - (void) processOutgoingMessageAsData:(NSMutableData *) message to:(id) receiver attributes:(NSDictionary *)msgAttributes;
 

@@ -1,5 +1,6 @@
 #import <Cocoa/Cocoa.h>
 #import "JVDirectChatPanel.h"
+#import <ChatCore/MVMessaging.h>
 
 @class JVChatRoomMember;
 @class MVChatUser;
@@ -21,8 +22,8 @@ extern NSString *const MVFavoritesListDidUpdateNotification;
 - (void) joined;
 - (void) parting;
 
-- (void) joinChat:(nullable id) sender;
-- (void) partChat:(nullable id) sender;
+- (IBAction) joinChat:(nullable id) sender;
+- (IBAction) partChat:(nullable id) sender;
 
 - (IBAction) toggleFavorites:(nullable id) sender;
 
@@ -35,7 +36,8 @@ extern NSString *const MVFavoritesListDidUpdateNotification;
 - (void) handleRoomMessageNotification:(NSNotification *) notification;
 @end
 
-@interface NSObject (MVChatPluginRoomSupport)
+@protocol MVChatPluginRoomSupport <MVChatPlugin>
+@optional
 - (void) memberJoined:(JVChatRoomMember *) member inRoom:(JVChatRoomPanel *) room;
 - (void) memberParted:(JVChatRoomMember *) member fromRoom:(JVChatRoomPanel *) room forReason:(NSAttributedString *) reason;
 - (void) memberKicked:(JVChatRoomMember *) member fromRoom:(JVChatRoomPanel *) room by:(JVChatRoomMember *) by forReason:(NSAttributedString *) reason;

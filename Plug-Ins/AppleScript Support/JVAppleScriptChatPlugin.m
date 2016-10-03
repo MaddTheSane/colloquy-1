@@ -1,4 +1,5 @@
 #import <ChatCore/MVChatPluginManager.h>
+#import <ChatCore/MVChatConnection.h>
 #import "JVAppleScriptChatPlugin.h"
 #import <ChatCore/MVChatUser.h>
 #import <ChatCore/MVChatRoom.h>
@@ -6,7 +7,14 @@
 #import "JVChatMessage.h"
 #import "JVChatRoomPanel.h"
 #import "JVChatRoomMember.h"
-#import "NSColorAdditions.h"
+#import "JVChatController.h"
+#import "MVApplicationController.h"
+#import "JVNotificationController.h"
+#import <ChatCore/NSColorAdditions.h>
+
+@interface JVAppleScriptChatPlugin () <MVChatPluginCommandSupport, MVChatPluginContextualMenuSupport, MVChatPluginNotificationSupport, MVChatPluginConnectionSupport, MVChatPluginRoomSupport, MVChatPluginDirectChatSupport, MVChatPluginLinkClickSupport>
+
+@end
 
 @interface NSTerminologyRegistry : NSObject // Private Foundation Class
 - (instancetype) initWithSuiteName:(NSString *) name bundle:(NSBundle *) bundle;
@@ -162,7 +170,7 @@
 		if( [value isKindOfClass:[NSScriptObjectSpecifier class]] ) specifier = value;
 		else specifier = [value objectSpecifier];
 
-		if( specifier ) descriptor = [[value objectSpecifier] _asDescriptor]; // custom object, use it's object specitier
+		if( specifier ) descriptor = [[value objectSpecifier] _asDescriptor]; // custom object, use its object specifier
 		else descriptor = [[NSAEDescriptorTranslator sharedAEDescriptorTranslator] descriptorByTranslatingObject:value ofType:nil inSuite:nil];
 
 		if( ! descriptor ) descriptor = [NSAppleEventDescriptor nullDescriptor];
@@ -299,7 +307,7 @@
 	[self callScriptHandler:'pcMX' withArguments:args forSelector:_cmd];
 }
 
-- (void) buildMenuInto:(NSMutableArray *) itemList fromReturnContainer:(id) container withRepresentedObject:(id) object {
+- (void) buildMenuInto:(NSMutableArray<NSMenuItem*> *) itemList fromReturnContainer:(id) container withRepresentedObject:(id) object {
 	if( [container respondsToSelector:@selector( objectEnumerator )] ) {
 		NSEnumerator *enumerator = [container objectEnumerator];
 		id item = nil;
