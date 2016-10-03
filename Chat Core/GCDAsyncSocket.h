@@ -991,6 +991,35 @@ typedef NS_ENUM(NSInteger, GCDAsyncSocketError) {
 **/
 - (BOOL)enableBackgroundingOnSocket;
 
+/**
+ * This method is only available from within the context of a performBlock: invocation.
+ * See the documentation for the performBlock: method above.
+ *
+ * Enabling this method asks the system to keep the socket open in the background
+ * and to delay reclaiming the socket for re-use.
+ *
+ * https://developer.apple.com/library/ios/technotes/tn2277/_index.html
+ *
+ * CFReadStreamSetProperty(readStream, kCFStreamPropertySocketExtendedBackgroundIdleMode, kCFBooleanTrue);
+ * CFWriteStreamSetProperty(writeStream, kCFStreamPropertySocketExtendedBackgroundIdleMode, kCFBooleanTrue);
+ *
+ * Returns YES if successful, NO otherwise.
+ *
+ * Possible failure reasons include attempting to set this property after a socket has been opened.
+ *
+ * This method is only useful on iOS 9 and up.
+ *
+ * Example usage:
+ *
+ * - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port
+ * {
+ *     [asyncSocket performBlock:^{
+ *         [asyncSocket enableExtendBackgroundIdleMode:YES];
+ *     }];
+ * }
+ **/
+- (BOOL)enableExtendBackgroundIdleMode;
+
 #endif
 
 /**
@@ -1033,10 +1062,17 @@ typedef NS_ENUM(NSInteger, GCDAsyncSocketError) {
 /**
  * A few common line separators, for use with the readDataToData:... methods.
 **/
-+ (NSData *)CRLFData;   // 0x0D0A
-+ (NSData *)CRData;     // 0x0D
-+ (NSData *)LFData;     // 0x0A
-+ (NSData *)ZeroData;   // 0x00
+#if __has_feature(objc_class_property)
+@property (class, readonly, copy) NSData* CRLFData;	///< 0x0D0A
+@property (class, readonly, copy) NSData* CRData;	///< 0x0D
+@property (class, readonly, copy) NSData* LFData;	///< 0x0A
+@property (class, readonly, copy) NSData* ZeroData;	///< 0x00
+#else
++ (NSData *)CRLFData;   ///< 0x0D0A
++ (NSData *)CRData;     ///< 0x0D
++ (NSData *)LFData;     ///< 0x0A
++ (NSData *)ZeroData;   ///< 0x00
+#endif
 
 @end
 
