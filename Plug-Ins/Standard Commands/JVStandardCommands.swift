@@ -120,7 +120,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		let args = arguments.components(separatedBy: " ")
 		let channels = args[0].components(separatedBy: ",")
 		
-		let message = args[1..<(args.count - 1 - 1)].joined(separator: " ")
+		let message = args[1..<args.endIndex].joined(separator: " ")
 		let reason = NSAttributedString(string: message)
 		
 		if channels.count == 1 {
