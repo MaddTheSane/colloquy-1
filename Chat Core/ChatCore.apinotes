@@ -1,0 +1,198 @@
+---
+Name: ChatCore
+SwiftInferImportAsMember: true
+
+Enumerators:
+# The below are attempts at providing better names than inference
+# MVChatConnectionError
+- Name: MVChatConnectionUnknownError
+  SwiftName: MVChatConnectionError.unknown
+- Name: MVChatConnectionNoSuchUserError
+  SwiftName: MVChatConnectionError.noSuchUser
+- Name: MVChatConnectionNoSuchRoomError
+  SwiftName: MVChatConnectionError.noSuchRoom
+- Name: MVChatConnectionNoSuchServerError
+  SwiftName: MVChatConnectionError.noSuchServer
+- Name: MVChatConnectionCantSendToRoomError
+  SwiftName: MVChatConnectionError.cantSendToRoom
+- Name: MVChatConnectionCantChangeNickError
+  SwiftName: MVChatConnectionError.cantChangeNick
+- Name: MVChatConnectionNotInRoomError
+  SwiftName: MVChatConnectionError.notInRoom
+- Name: MVChatConnectionUserNotInRoomError
+  SwiftName: MVChatConnectionError.userNotInRoom
+- Name: MVChatConnectionRoomIsFullError
+  SwiftName: MVChatConnectionError.roomIsFull
+- Name: MVChatConnectionInviteOnlyRoomError
+  SwiftName: MVChatConnectionError.inviteOnlyRoom
+- Name: MVChatConnectionRoomPasswordIncorrectError
+  SwiftName: MVChatConnectionError.roomPasswordIncorrect
+- Name: MVChatConnectionBannedFromRoomError
+  SwiftName: MVChatConnectionError.bannedFromRoom
+- Name: MVChatConnectionUnknownCommandError
+  SwiftName: MVChatConnectionError.unknownCommand
+- Name: MVChatConnectionErroneusNicknameError
+  SwiftName: MVChatConnectionError.erroneusNickname
+- Name: MVChatConnectionBannedFromServerError
+  SwiftName: MVChatConnectionError.bannedFromServer
+- Name: MVChatConnectionServerPasswordIncorrectError
+  SwiftName: MVChatConnectionError.serverPasswordIncorrect
+- Name: MVChatConnectionProtocolError
+  SwiftName: MVChatConnectionError.protocol
+- Name: MVChatConnectionOutOfBricksError
+  SwiftName: MVChatConnectionError.outOfBricks
+- Name: MVChatConnectionCantChangeUsedNickError
+  SwiftName: MVChatConnectionError.cantChangeUsedNick
+- Name: MVChatConnectionIdentifyToJoinRoomError
+  SwiftName: MVChatConnectionError.identifyToJoinRoom
+- Name: MVChatConnectionRoomDoesNotSupportModesError
+  SwiftName: MVChatConnectionError.roomDoesNotSupportModes
+- Name: MVChatConnectionNickChangedByServicesError
+  SwiftName: MVChatConnectionError.nickChangedByServices
+- Name: MVChatConnectionServicesDownError
+  SwiftName: MVChatConnectionError.servicesDown
+- Name: MVChatConnectionTLSError
+  SwiftName: MVChatConnectionError.TLS
+
+- Name: MVChatConnectionUnsupportedType
+  SwiftName: MVChatConnectionType.unsupported
+- Name: MVChatConnectionICBType
+  SwiftName: MVChatConnectionType.ICB
+- Name: MVChatConnectionIRCType
+  SwiftName: MVChatConnectionType.IRC
+- Name: MVChatConnectionSILCType
+  SwiftName: MVChatConnectionType.SILC
+- Name: MVChatConnectionXMPPType
+  SwiftName: MVChatConnectionType.XMPP
+
+
+- Name: MVChatConnectionDisconnectedStatus
+  SwiftName: MVChatConnectionStatus.disconnected
+- Name: MVChatConnectionServerDisconnectedStatus
+  SwiftName: MVChatConnectionStatus.serverDisconnected
+- Name: MVChatConnectionConnectingStatus
+  SwiftName: MVChatConnectionStatus.connecting
+- Name: MVChatConnectionConnectedStatus
+  SwiftName: MVChatConnectionStatus.connected
+- Name: MVChatConnectionSuspendedStatus
+  SwiftName: MVChatConnectionStatus.suspended
+
+- Name: MVChatConnectionNoProxy
+  SwiftName: MVChatConnectionProxy.none
+- Name: MVChatConnectionHTTPProxy
+  SwiftName: MVChatConnectionProxy.HTTP
+- Name: MVChatConnectionHTTPSProxy
+  SwiftName: MVChatConnectionProxy.HTTPS
+- Name: MVChatConnectionSOCKS4Proxy
+  SwiftName: MVChatConnectionProxy.SOCKS4
+- Name: MVChatConnectionSOCKS5Proxy
+  SwiftName: MVChatConnectionProxy.SOCKS5
+
+- Name: MVChatConnectionNoBouncer
+  SwiftName: MVChatConnectionBouncer.none
+- Name: MVChatConnectionGenericBouncer
+  SwiftName: MVChatConnectionBouncer.generic
+- Name: MVChatConnectionColloquyBouncer
+  SwiftName: MVChatConnectionBouncer.colloquy
+
+- Name: MVChatConnectionServerPublicKeyType
+  SwiftName: MVChatConnectionPublicKeyType.server
+- Name: MVChatConnectionClientPublicKeyType
+  SwiftName: MVChatConnectionPublicKeyType.client
+
+- Name: MVChatConnectionDefaultMessageFormat
+  SwiftName: MVChatMessageFormat.default
+- Name: MVChatNoMessageFormat
+  SwiftName: MVChatMessageFormat.none
+- Name: MVChatWindowsIRCMessageFormat
+  SwiftName: MVChatMessageFormat.windowsIRC
+- Name: MVChatCTCPTwoMessageFormat
+  SwiftName: MVChatMessageFormat.ctcpTwo
+- Name: MVChatJSONMessageFormat
+  SwiftName: MVChatMessageFormat.json
+
+
+- Name: MVChatRoomPrivateMode
+  SwiftName: MVChatRoomMode.private
+- Name: MVChatRoomSecretMode
+  SwiftName: MVChatRoomMode.secret
+- Name: MVChatRoomInviteOnlyMode
+  SwiftName: MVChatRoomMode.inviteOnly
+- Name: MVChatRoomNormalUsersSilencedMode
+  SwiftName: MVChatRoomMode.normalUsersSilenced
+- Name: MVChatRoomOperatorsSilencedMode
+  SwiftName: MVChatRoomMode.operatorsSilenced
+- Name: MVChatRoomOperatorsOnlySetTopicMode
+  SwiftName: MVChatRoomMode.operatorsOnlySetTopic
+- Name: MVChatRoomNoOutsideMessagesMode
+  SwiftName: MVChatRoomMode.noOutsideMessages
+- Name: MVChatRoomPassphraseToJoinMode
+  SwiftName: MVChatRoomMode.passphraseToJoin
+- Name: MVChatRoomLimitNumberOfMembersMode
+  SwiftName: MVChatRoomMode.limitNumberOfMembers
+
+
+- Name: MVChatRoomMemberVoicedMode
+  SwiftName: MVChatRoomMemberMode.voiced
+- Name: MVChatRoomMemberHalfOperatorMode
+  SwiftName: MVChatRoomMemberMode.halfOperator
+- Name: MVChatRoomMemberOperatorMode
+  SwiftName: MVChatRoomMemberMode.operator
+- Name: MVChatRoomMemberAdministratorMode
+  SwiftName: MVChatRoomMemberMode.administrator
+- Name: MVChatRoomMemberFounderMode
+  SwiftName: MVChatRoomMemberMode.founder
+
+- Name: MVChatRoomMemberDisciplineQuietedMode
+  SwiftName: MVChatRoomMemberDisciplineMode.quieted
+
+
+- Name: MVChatRemoteUserType
+  SwiftName: MVChatUserType.remote
+- Name: MVChatLocalUserType
+  SwiftName: MVChatUserType.local
+- Name: MVChatWildcardUserType
+  SwiftName: MVChatUserType.wildcard
+
+- Name: MVChatUserUnknownStatus
+  SwiftName: MVChatUserStatus.unknown
+- Name: MVChatUserOfflineStatus
+  SwiftName: MVChatUserStatus.offline
+- Name: MVChatUserDetachedStatus
+  SwiftName: MVChatUserStatus.detached
+- Name: MVChatUserAvailableStatus
+  SwiftName: MVChatUserStatus.available
+- Name: MVChatUserAwayStatus
+  SwiftName: MVChatUserStatus.away
+
+- Name: MVChatUserInvisibleMode
+  SwiftName: MVChatUserMode.invisible
+
+
+- Name: MVFileTransferDoneStatus
+  SwiftName: MVFileTransferStatus.done
+- Name: MVFileTransferNormalStatus
+  SwiftName: MVFileTransferStatus.normal
+- Name: MVFileTransferHoldingStatus
+  SwiftName: MVFileTransferStatus.holding
+- Name: MVFileTransferStoppedStatus
+  SwiftName: MVFileTransferStatus.stopped
+- Name: MVFileTransferErrorStatus
+  SwiftName: MVFileTransferStatus.error
+
+- Name: MVFileTransferConnectionError
+  SwiftName: MVFileTransferError.connection
+- Name: MVFileTransferFileCreationError
+  SwiftName: MVFileTransferError.fileCreation
+- Name: MVFileTransferFileOpenError
+  SwiftName: MVFileTransferError.fileOpen
+- Name: MVFileTransferAlreadyExistsError
+  SwiftName: MVFileTransferError.alreadyExists
+- Name: MVFileTransferUnexpectedlyEndedError
+  SwiftName: MVFileTransferError.unexpectedlyEnded
+- Name: MVFileTransferKeyAgreementError
+  SwiftName: MVFileTransferError.keyAgreement
+
+
+
+...

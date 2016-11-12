@@ -313,6 +313,7 @@
 		555906561C555D8100FA6B72 /* NSStringAdditions_Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */; };
 		5577DD0F1C599B48001A76E1 /* MVMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 5577DD0E1C599B48001A76E1 /* MVMessaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		559110451CA9B1F300258B5F /* NSDateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 559110441CA9B1F300258B5F /* NSDateAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55A0A5DE1DD7A5E5001FA99D /* ChatCore.apinotes in Sources */ = {isa = PBXBuildFile; fileRef = 55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */; };
 		55A3A0541D0B8B29001F92CA /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A3A0531D0B8B29001F92CA /* libicucore.tbd */; };
 		55A3A0551D0B8B47001F92CA /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19A7AE541B28EB200022172F /* libresolv.tbd */; };
 		55B748171AD2E6FD001459F7 /* RunOnMainThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B748161AD2E6FD001459F7 /* RunOnMainThread.h */; };
@@ -406,6 +407,21 @@
 		DDF64CE60BD29E41009E8FF6 /* MVXMPPChatConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF64CE40BD29E41009E8FF6 /* MVXMPPChatConnection.m */; settings = {COMPILER_FLAGS = "-Wno-implicit-retain-self -Wno-pointer-arith"; }; };
 		DDF64E1A0BD2CABE009E8FF6 /* MVXMPPChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF64E180BD2CABE009E8FF6 /* MVXMPPChatUser.m */; settings = {COMPILER_FLAGS = "-Wno-implicit-retain-self -Wno-pointer-arith"; }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		55A0A5DF1DD7A7C2001FA99D /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.apinotes";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			name = "Swift API notes";
+			outputFiles = (
+				"$(CONFIGURATION_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Modules/$(PRODUCT_MODULE_NAME).swiftmodule/$(INPUT_FILE_BASE).apinotesc",
+			);
+			script = "if [ ! -d \"$CONFIGURATION_BUILD_DIR/$CONTENTS_FOLDER_PATH/Modules/$PRODUCT_MODULE_NAME.swiftmodule\" ]; then\n  mkdir -p \"$CONFIGURATION_BUILD_DIR/$CONTENTS_FOLDER_PATH/Modules/$PRODUCT_MODULE_NAME.swiftmodule\"\nfi\n\nxcrun swift -apinotes -yaml-to-binary -target x86_64-apple-macosx10.10 -o \"$CONFIGURATION_BUILD_DIR/$CONTENTS_FOLDER_PATH/Modules/$PRODUCT_MODULE_NAME.swiftmodule/$INPUT_FILE_BASE.apinotesc\" \"$INPUT_FILE_PATH\"\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		1C386E801032464A00660864 /* PBXContainerItemProxy */ = {
@@ -751,6 +767,7 @@
 		5577DD0E1C599B48001A76E1 /* MVMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVMessaging.h; path = "Chat Core/MVMessaging.h"; sourceTree = "<group>"; };
 		559110441CA9B1F300258B5F /* NSDateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSDateAdditions.h; path = Additions/NSDateAdditions.h; sourceTree = "<group>"; };
 		5596BE781B37206C0078571A /* build-libidn-OSX.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-libidn-OSX.sh"; sourceTree = "<group>"; };
+		55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChatCore.apinotes; path = "Chat Core/ChatCore.apinotes"; sourceTree = "<group>"; };
 		55A3A0531D0B8B29001F92CA /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		55A3A05A1D0BB993001F92CA /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libicucore.tbd; sourceTree = DEVELOPER_DIR; };
 		55AA73C81C554FD000BD820C /* ChatCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = ChatCore.modulemap; sourceTree = "<group>"; };
@@ -1810,6 +1827,7 @@
 				1CCA517F0598AFBA00F0A4CD /* ChatCore.scriptTerminology */,
 				1C8AA4B609D60B1100CF29EB /* Chat Core.exp */,
 				55AA73C81C554FD000BD820C /* ChatCore.modulemap */,
+				55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */,
 			);
 			fileEncoding = 4;
 			indentWidth = 4;
@@ -2057,6 +2075,7 @@
 				1C51B47A052DE0CB00BB459B /* Resources */,
 			);
 			buildRules = (
+				55A0A5DF1DD7A7C2001FA99D /* PBXBuildRule */,
 			);
 			dependencies = (
 				1C386E871032466B00660864 /* PBXTargetDependency */,
@@ -2197,6 +2216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55A0A5DE1DD7A5E5001FA99D /* ChatCore.apinotes in Sources */,
 				19A7A9C31B28E7A90022172F /* XMPPSystemInputActivityMonitor.m in Sources */,
 				19A7A9CF1B28E7A90022172F /* XMPPPrivacy.m in Sources */,
 				19A7AA541B28E7A90022172F /* XMPPAttentionModule.m in Sources */,
