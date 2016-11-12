@@ -336,7 +336,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			rule = KAIgnoreRule(forUser: memberString, message: messageString, inRooms: rooms, isPermanent: permanent, friendlyName: nil)
 		}
 		
-		if let rules = MVConnectionsController.default.ignoreRules(for: view.connection) {
+		if let rules = MVConnectionsController.default.ignoreRules(for: view.connection!) {
 			rules.add(rule)
 		}
 		
@@ -415,7 +415,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			rooms = Array(argsArray[offset..<(argsArray.count - offset)])
 		}
 		
-		guard let rules = MVConnectionsController.default.ignoreRules(for: view.connection) else {
+		guard let rules = MVConnectionsController.default.ignoreRules(for: view.connection!) else {
 			return true
 		}
 		var i = 0
