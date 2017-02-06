@@ -40,14 +40,15 @@ extension String {
 		return NSMakeRange(Int(fromDistance), Int(toDistance))
 	}
 	
+	/// - parameter regex: The regular expression to search for.
 	/// - parameter options: The regular expression options.<br>
-	/// Default is none.
+	/// Default is `[.useUnicodeWordBoundaries]`.
 	/// - parameter range1: The range to search for the regex. If `nil`, 
 	/// searches the whole string.<br>
 	/// Default is `nil`
 	/// - parameter capture: Which capture to use.<br>
 	/// Default is `0`.
-	public func range(ofRegex regex: String, options: NSRegularExpression.Options = [], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> {
+	public func range(ofRegex regex: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> {
 		let range = range1 ?? startIndex ..< endIndex
 		let regRange = try (self as NSString).range(ofRegex: regex, options: options, in: self.NSRange(from: range), capture: capture)
 		if regRange.location == NSNotFound {
