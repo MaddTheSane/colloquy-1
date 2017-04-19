@@ -178,6 +178,7 @@
 		1CF80311070C894100C9B54C /* libsilcclient.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030D070C893500C9B54C /* libsilcclient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		555A6C141D25B1F800E69E04 /* OS X Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 555A6C131D25B1F800E69E04 /* OS X Images.xcassets */; };
 		5577DD0D1C599207001A76E1 /* JVStandardCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5577DD0C1C599207001A76E1 /* JVStandardCommands.swift */; };
+		557D715F1E4915270041D61B /* MaddsPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 557D715E1E4915270041D61B /* MaddsPathExtensions.m */; };
 		558E11081C5845A300F9C85B /* JVChatTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558E11071C5845A300F9C85B /* JVChatTabItem.swift */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
 		55910A7C1C5AF83900FCE02D /* CQKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55910A7B1C5AF83900FCE02D /* CQKeychain.swift */; };
@@ -642,6 +643,8 @@
 		555A6C131D25B1F800E69E04 /* OS X Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "OS X Images.xcassets"; sourceTree = "<group>"; };
 		5577DD0B1C599206001A76E1 /* Standard Commands (Plug-In)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Standard Commands (Plug-In)-Bridging-Header.h"; sourceTree = "<group>"; };
 		5577DD0C1C599207001A76E1 /* JVStandardCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JVStandardCommands.swift; sourceTree = "<group>"; };
+		557D715D1E4915270041D61B /* MaddsPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaddsPathExtensions.h; sourceTree = "<group>"; };
+		557D715E1E4915270041D61B /* MaddsPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaddsPathExtensions.m; sourceTree = "<group>"; };
 		558E11011C5834DB00F9C85B /* Colloquy (Application)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Colloquy (Application)-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		558E11071C5845A300F9C85B /* JVChatTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JVChatTabItem.swift; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
@@ -1422,6 +1425,8 @@
 				55B748191AD2E957001459F7 /* RunOnMainThread.h */,
 				C23298971C3D98230085CBF7 /* NSWindow+CQMCoordinateSpaceConversion.h */,
 				C23298981C3D98230085CBF7 /* NSWindow+CQMCoordinateSpaceConversion.m */,
+				557D715D1E4915270041D61B /* MaddsPathExtensions.h */,
+				557D715E1E4915270041D61B /* MaddsPathExtensions.m */,
 			);
 			indentWidth = 4;
 			name = "Other Sources & Additions";
@@ -1566,7 +1571,6 @@
 				1C7C770C07DBA1F700FB5F83 /* Rez */,
 				1CB2CD0F052DDC560094AAA4 /* Resources */,
 				1CB2CD82052DDC560094AAA4 /* Copy Frameworks */,
-				1C91DEAC06972EC0007C1638 /* Remove Headers */,
 				1C7F300D085545E600D41FB0 /* Copy Spotlight Importer */,
 				1C51B53B104E160600791856 /* Copy Bouncer Plugin */,
 				1CB2CD88052DDC560094AAA4 /* Copy Plugins */,
@@ -1885,21 +1889,6 @@
 			shellScript = "if [ -d \"$TARGET_BUILD_DIR/Bouncer.plugin\" ]; then\n\tditto \"$TARGET_BUILD_DIR/Bouncer.plugin\" \"$TARGET_BUILD_DIR/$PLUGINS_FOLDER_PATH/Bouncer.plugin\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		1C91DEAC06972EC0007C1638 /* Remove Headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Remove Headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "find \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\" -name \"Headers\" -print0 | xargs -0 rm -rf\n";
-			showEnvVarsInLog = 0;
-		};
 		1CAF6496099EA9350036A727 /* Unarchive Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2006,6 +1995,7 @@
 				1C0A4CAC0799BDD00093B702 /* JVTranscriptCriterionController.m in Sources */,
 				1C0A4CBA0799BE000093B702 /* JVTabbedChatWindowController.m in Sources */,
 				1C0A4CE50799BE660093B702 /* JVTranscriptFindWindowController.m in Sources */,
+				557D715F1E4915270041D61B /* MaddsPathExtensions.m in Sources */,
 				1C0A4CF70799BEA70093B702 /* JVViewCell.m in Sources */,
 				1C9014C107A2D798002942A7 /* MVChatUserAdditions.m in Sources */,
 				1CF79CBF07AC77E600696918 /* JVChatTranscript.m in Sources */,
