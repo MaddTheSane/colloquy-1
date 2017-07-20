@@ -153,7 +153,7 @@ extern NSString *MVChatConnectionDidIdentifyWithServicesNotification;
 extern NSString *MVChatConnectionSubcodeRequestNotification;
 extern NSString *MVChatConnectionSubcodeReplyNotification;
 
-extern NSString *MVChatConnectionErrorDomain;
+extern NSErrorDomain MVChatConnectionErrorDomain;
 
 @class MVChatUserWatchRule;
 

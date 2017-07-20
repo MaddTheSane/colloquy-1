@@ -11,7 +11,7 @@ extern NSString *MVFileTransferStartedNotification;
 extern NSString *MVFileTransferFinishedNotification;
 extern NSString *MVFileTransferErrorOccurredNotification;
 
-extern NSString *MVFileTransferErrorDomain;
+extern NSErrorDomain MVFileTransferErrorDomain;
 
 typedef NS_ENUM(OSType, MVFileTransferStatus) {
 	MVFileTransferDoneStatus = 'trDn',
