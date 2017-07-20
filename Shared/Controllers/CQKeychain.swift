@@ -21,6 +21,7 @@ private func createBaseDictionary(_ server: String, account: String?) -> [String
 	return query;
 }
 
+@objc(CQKeychain)
 final public class CQKeychain : NSObject {
 	private override init() {
 		super.init()
