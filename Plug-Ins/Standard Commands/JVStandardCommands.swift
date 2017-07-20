@@ -55,7 +55,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &ctcpRequest)
 		scanner.scanUpToCharacters(from: CharacterSet(charactersIn: "\n\r"), into: &ctcpArgs)
 		
-		guard let to2 = to as? String, let ctcpRequest2 = ctcpRequest as? String, to2.characters.count != 0 && ctcpRequest2.characters.count != 0 else {
+		guard let to2 = to as String?, let ctcpRequest2 = ctcpRequest as String?, to2.characters.count != 0 && ctcpRequest2.characters.count != 0 else {
 			return false
 		}
 		if to == nil || to!.length == 0 || ctcpRequest == nil || ctcpRequest!.length == 0 {
@@ -551,7 +551,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 						scanner.scanUpToCharacters(from: whitespace, into: &roomName)
 					}
 					
-					connection?.sendRawMessage("INVITE \(nick1) \(roomName ?? room?.target!)")
+					connection?.sendRawMessage("INVITE \(nick1) \(roomName ?? room!.target!)")
 					return true
 				}
 				
@@ -583,7 +583,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				let scanner = Scanner(string: arguments.string)
 				
 				scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &member1)
-				guard var member = member1 as? String, member.characters.count > 0 else {
+				guard var member = member1 as String?, member.characters.count > 0 else {
 					return false
 				}
 				
@@ -856,7 +856,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			if !scanner.isAtEnd {
 				scanner.scanUpToCharacters(from: whitespace, into: &roomName1)
 			}
-			guard let nick = nick1 as? String, let roomName = roomName1 as? String, nick.characters.count != 0 && roomName.characters.count != 0 else {
+			guard let nick = nick1 as String?, let roomName = roomName1 as String?, nick.characters.count != 0 && roomName.characters.count != 0 else {
 				return false
 			}
 			
@@ -910,8 +910,8 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			if scanner.scanCharacters(from: prefixes as CharacterSet, into: &targetPrefix) || !isChatRoom {
 				scanner.scanUpToCharacters(from: whitespace, into: &target)
 				
-				if let targetPrefix = targetPrefix as? String {
-					target = (targetPrefix + (target as! String)) as NSString
+				if let targetPrefix = targetPrefix as String? {
+					target = (targetPrefix + (target! as String)) as NSString
 				}
 			} else if isChatRoom {
 				if command.caseInsensitiveCompare("onotice") == .orderedSame {
@@ -924,7 +924,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			scanner.scanUpToCharacters(from: whitespace, into: nil)
 			scanner.scanUpToCharacters(from: CharacterSet(charactersIn: "\n"), into: &message)
 			
-			guard let target2 = target as? String, let message1 = message as? String, target2.characters.count != 0 && message1.characters.count != 0 else {
+			guard let target2 = target as String?, let message1 = message as String?, target2.characters.count != 0 && message1.characters.count != 0 else {
 				return true
 			}
 			var target1 = target2
