@@ -2480,7 +2480,6 @@
 				PRODUCT_NAME = "Standard Commands";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Ins/Standard Commands/Standard Commands (Plug-In)-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -2516,7 +2515,6 @@
 				PRODUCT_NAME = Colloquy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2557,6 +2555,8 @@
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 				SYMROOT = build;
 			};
 			name = Debug;
@@ -2578,7 +2578,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.standard-commands";
 				PRODUCT_NAME = "Standard Commands";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Ins/Standard Commands/Standard Commands (Plug-In)-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;
@@ -2618,7 +2617,6 @@
 					Colloquy.order,
 				);
 				SWIFT_OBJC_BRIDGING_HEADER = "Colloquy (Application)-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2654,6 +2652,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
 				SYMROOT = build;
 			};
 			name = Release;

@@ -315,9 +315,9 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		
 		if message {
 			if let range1 = args.range(of: "\""), let range2 = args.range(of: "\"", options: .backwards) {
-				messageString = args.substring(with: range1.upperBound ..< range2.lowerBound)
+				messageString = String(args[range1.upperBound ..< range2.lowerBound])
 			} else if let range1 = args.range(of: "/"), let range2 = args.range(of: "/", options: .backwards) {
-				messageString = args.substring(with: range1.upperBound ..< range2.lowerBound)
+				messageString = String(args[range1.upperBound ..< range2.lowerBound])
 			} else {
 				messageString = argsArray[offset]
 			}
@@ -400,10 +400,10 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		if message {
 			if let range1 = args.range(of: "\"") {
 				let range2 = args.range(of: "\"", options: .backwards)!
-				messageString = args.substring(with: range1.upperBound ..< range2.lowerBound)
+				messageString = String(args[range1.upperBound ..< range2.lowerBound])
 			} else if let range1 = args.range(of: "/") {
 				let range2 = args.range(of: "/", options: .backwards)!
-				messageString = args.substring(with: range1.upperBound ..< range2.lowerBound)
+				messageString = String(args[range1.upperBound ..< range2.lowerBound])
 			} else {
 				messageString = argsArray[offset]
 			}
@@ -556,7 +556,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				}
 				
 			case "help":
-				NSWorkspace.shared().open(URL(string: "http://project.colloquy.info/wiki/Documentation/CommandReference")!)
+				NSWorkspace.shared.open(URL(string: "http://project.colloquy.info/wiki/Documentation/CommandReference")!)
 				return true
 
 			case "kick":
@@ -803,7 +803,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				return false
 			}
 			
-			connection?.sendRawMessage("MODE \(connection!.nickname) \(arguments.string)")
+			connection?.sendRawMessage("MODE \(connection!.nickname ?? "") \(arguments.string)")
 			return true
 			
 		case "ctcp":
@@ -834,7 +834,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			return true
 			
 		case "exit":
-			NSApplication.shared().terminate(nil)
+			NSApplication.shared.terminate(nil)
 			return true
 			
 		case "ignore":
@@ -940,7 +940,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			
 			// this is an IRC specific command for sending to room operators only.
 			if target1.hasPrefix("@") && target1.characters.count > 1 {
-				target1 = target1.substring(from: target1.characters.index(after: target1.characters.startIndex))
+				target1 = String(target1[target1.index(after: target1.startIndex) ..< target1.endIndex])
 			}
 			
 			if chanSet?.contains(UnicodeScalar((target1 as NSString).character(at: 0))!) ?? true {
@@ -975,9 +975,9 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				return true
 			}
 			let url = URL(string: "http://www.google.com/search?q=\(saveStr)")!
-			let options = UserDefaults.standard.bool(forKey: "JVURLOpensInBackground") ? NSWorkspaceLaunchOptions.default : NSWorkspaceLaunchOptions.withoutActivation
+			let options = UserDefaults.standard.bool(forKey: "JVURLOpensInBackground") ? NSWorkspace.LaunchOptions.default : NSWorkspace.LaunchOptions.withoutActivation
 			
-			NSWorkspace.shared().open([url], withAppBundleIdentifier: nil, options: options, additionalEventParamDescriptor: nil, launchIdentifiers: nil)
+			NSWorkspace.shared.open([url], withAppBundleIdentifier: nil, options: options, additionalEventParamDescriptor: nil, launchIdentifiers: nil)
 			
 			return true
 			
