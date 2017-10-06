@@ -379,7 +379,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSDictionary *) persistentState {
 	if (!_target)
-		return nil;
+		return @{};
 
 	NSMutableDictionary *state = [[NSMutableDictionary alloc] init];
 
@@ -550,9 +550,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) loadView {
 	[super loadView];
 
-//	if ([NSProcessInfo processInfo].operatingSystemVersion.majorVersion == 8)
-//		return;
-//
 //	// while CQWKChatView exists and is ready to be used (for the most part), WKWebView does not support being loaded from a xib yet
 ////	CQUITextChatTranscriptView *webkitChatTranscriptView = [[CQUITextChatTranscriptView alloc] initWithFrame:transcriptView.frame];
 //	CQWKChatTranscriptView *webkitChatTranscriptView = [[CQWKChatTranscriptView alloc] initWithFrame:transcriptView.frame];
@@ -801,7 +798,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if ENABLE(FILE_TRANSFERS)
 		@"/dcc",
 #endif
-		@"/aaway", @"/anick", @"/aquit", @"/amsg", @"/ame", @"/google", @"/wikipedia", @"/amazon", @"/safari", @"/browser", @"/url", @"/clear", @"/nickserv", @"/chanserv", @"/help", @"/faq", @"/search", @"/ipod", @"/music", @"/squit", @"/welcome", @"/sysinfo", @"/ignore", @"/unignore", @"/giphy", @"/gif" ];
+		@"/aaway", @"/anick", @"/aquit", @"/amsg", @"/ame", @"/google", @"/wikipedia", @"/amazon", @"/safari", @"/browser", @"/url", @"/clear", @"/nickserv", @"/chanserv", @"/help", @"/faq", @"/search", @"/ipod", @"/music", @"/squit", @"/welcome", @"/sysinfo", @"/ignore", @"/unignore", @"/giphy", @"/gif", @"/shrug" ];
 
 		for (NSString *command in commands) {
 			if ([command hasCaseInsensitivePrefix:word] && ![command isCaseInsensitiveEqualToString:word])
@@ -840,6 +837,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL) chatInputBar:(CQChatInputBar *) theChatInputBar shouldChangeHeightBy:(CGFloat) difference {
+	if (difference == 0)
+		return NO;
+
 	CGRect frame = transcriptView.frame;
 	frame.size.height += difference;
 	transcriptView.frame = frame;
@@ -1360,6 +1360,29 @@ NS_ASSUME_NONNULL_BEGIN
 	return [self handleGifCommandWithArguments:arguments];
 }
 
+- (BOOL) handleShrugCommandWithArguments:(MVChatString *) arguments {
+	static NSString *const shrug = @"¯\\_(ツ)_/¯";
+	NSString *trimmed = [MVChatStringAsString(arguments) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if (![trimmed hasSuffix:shrug]) {
+#if( defined(USE_ATTRIBUTED_CHAT_STRING) && USE_ATTRIBUTED_CHAT_STRING )
+		NSMutableAttributedString *stringWithShrug = [arguments mutableCopy];
+		NSDictionary *attributes = [stringWithShrug attributesAtIndex:arguments.length - 1 effectiveRange:NULL];
+		[stringWithShrug appendAttributedString:[[NSAttributedString alloc] initWithString:shrug attributes:attributes]];
+		[stringWithShrug deleteCharactersInRange:NSMakeRange(0, @"/shrug".length)];
+
+		[self sendMessage:stringWithShrug asAction:NO];
+#else
+		NSMutableString *stringWithShrug = [arguments mutableCopy];
+		[stringWithShrug appendString:shrug];
+		[stringWithShrug deleteCharactersInRange:NSMakeRange(0, @"/shrug".length)];
+
+		[self sendMessage:stringWithShrug asAction:NO];
+#endif
+	}
+
+	return YES;
+}
+
 - (BOOL) handleHelpCommandWithArguments:(MVChatString *) arguments {
 	[self _forceResignKeyboard];
 
@@ -1418,36 +1441,11 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 	NSString *model = [UIDevice currentDevice].localizedModel;
 	NSString *systemVersion = [NSProcessInfo processInfo].operatingSystemVersionString;
-	NSString *systemUptime = humanReadableTimeInterval([NSProcessInfo processInfo].systemUptime, YES);
+	NSString *systemUptime = humanReadableTimeInterval([NSProcessInfo processInfo].systemUptime);
 	NSUInteger processorsInTotal = [NSProcessInfo processInfo].processorCount;
 
 	long long physicalMemory = [NSProcessInfo processInfo].physicalMemory;
-	NSUInteger loopCount = 0;
-	for ( ; physicalMemory > 1024; loopCount++)
-		physicalMemory /= 1024;
-
-	NSString *memoryUnit = nil;
-	switch (loopCount) {
-	case 0:
-		memoryUnit = @"B";
-		break;
-	case 1:
-		memoryUnit = @"KiB";
-		break;
-	case 2:
-		memoryUnit = @"MiB";
-		break;
-	case 3:
-		memoryUnit = @"GiB";
-		break;
-	case 4:
-		memoryUnit = @"TiB";
-		break;
-	default:
-		memoryUnit = @"Units";
-		break;
-	}
-	NSString *systemMemory = [NSString stringWithFormat:@"%zd %@", physicalMemory, memoryUnit];
+	NSString *systemMemory = [NSByteCountFormatter stringFromByteCount:physicalMemory countStyle:NSByteCountFormatterCountStyleBinary];
 
 	NSString *message = nil;
 #if !SYSTEM(TV)
@@ -1722,6 +1720,9 @@ NS_ASSUME_NONNULL_BEGIN
 	if (![self isViewLoaded] || !self.view.window)
 		return;
 
+	if (![notification.userInfo[UIKeyboardIsLocalUserInfoKey] boolValue])
+		return;
+
 	CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	keyboardRect = [self.view.window convertRect:keyboardRect toView:self.view];
 
@@ -1743,6 +1744,9 @@ NS_ASSUME_NONNULL_BEGIN
 	_showingKeyboard = NO;
 
 	if (![self isViewLoaded])
+		return;
+
+	if (![notification.userInfo[UIKeyboardIsLocalUserInfoKey] boolValue])
 		return;
 
 	NSTimeInterval animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -1893,9 +1897,17 @@ NS_ASSUME_NONNULL_BEGIN
 		NSString *plainMessage = [messageString stringByStrippingXMLTags];
 		plainMessage = [plainMessage stringByDecodingXMLSpecialCharacterEntities];
 
-		if ([self isMemberOfClass:[CQDirectChatController class]])
+		__weak static id weakAccessibilityTarget = nil;
+		id accessibilityTarget = weakAccessibilityTarget;
+		if (!accessibilityTarget || accessibilityTarget == self.target) {
 			voiceOverAnnouncement = plainMessage;
-		else voiceOverAnnouncement = [NSString stringWithFormat:NSLocalizedString(@"In %@, %@", @"VoiceOver event announcement"), self.title, plainMessage];
+		} else {
+			weakAccessibilityTarget = self.target;
+
+			if ([self isMemberOfClass:[CQDirectChatController class]])
+				voiceOverAnnouncement = [NSString stringWithFormat:NSLocalizedString(@"%@ said %@", @"Voiceover event announcement (private message)"), self.title, plainMessage];
+			else voiceOverAnnouncement = [NSString stringWithFormat:NSLocalizedString(@"In %@, %@", @"VoiceOver event announcement (chat room)"), self.title, plainMessage];
+		}
 
 		UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, voiceOverAnnouncement);
 	}
@@ -1975,7 +1987,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 
-- (void) _showActivityViewControllerWithItems:(NSArray <UIActivity *> *) items activities:(NSArray <UIActivity *> *) activities {
+- (void) _showActivityViewControllerWithItems:(NSArray *) items activities:(NSArray <UIActivity *> *) activities {
 #if !SYSTEM(TV)
 	_showingActivityViewController = YES;
 

@@ -6,6 +6,10 @@
 #import "NSNotificationAdditions.h"
 
 #define CompletionsCaptureKeyboardDelay 0.5
+#define CQLineHeight 22.
+#define CQInactiveLineHeight 44.
+#define CQMaxLineHeight 84.
+#define CQInputBarVerticalPadding 17.
 
 static BOOL hardwareKeyboard;
 static BOOL boldText;
@@ -43,8 +47,6 @@ NS_ASSUME_NONNULL_BEGIN
 	BOOL _autocapitalizeNextLetter;
 	BOOL _textNeedsClearing;
 	UITextAutocapitalizationType _defaultAutocapitalizationType;
-	UIViewAnimationCurve _animationCurve;
-	NSTimeInterval _animationDuration;
 	UIImageView *_overlayBackgroundView;
 	UIImageView *_overlayBackgroundViewPiece;
 	UIView *_topLineView;
@@ -243,34 +245,50 @@ NS_ASSUME_NONNULL_BEGIN
 	return _inputView.selectedRange;
 }
 
-- (void) setHeight:(CGFloat) height numberOfLines:(NSUInteger) numberOfLines {
-	height += self._lineHeight;
+- (void) updateTextViewContentSize {
+	CGFloat contentWidth = CGRectGetWidth(_inputView.bounds) - (_inputView.contentInset.left + _inputView.contentInset.right) - 8.0;
+	CGSize calculatableSize = CGSizeMake(contentWidth, CGFLOAT_MAX);
+	const NSStringDrawingOptions options = (NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesDeviceMetrics);
+	NSDictionary *attributes = self._textAttributes;
 
-	if (height == CGRectGetHeight(self.frame))
-		return;
+	CGSize textSize = [_inputView.text boundingRectWithSize:calculatableSize options:options attributes:attributes context:nil].size;
+	CGFloat lineHeight = ceilf([attributes[NSFontAttributeName] lineHeight]);
+
+	if (lineHeight == 0) {
+		lineHeight = CQLineHeight;
+	}
+
+	UIEdgeInsets insets = _inputView.contentInset;
+	insets.top = 4.0;
+	insets.bottom = 0.0;
+	_inputView.contentInset = insets;
+
+	CGSize newFrameSize = textSize;
+	if (newFrameSize.height > lineHeight * 4) {
+		newFrameSize.height = lineHeight * 4;
+	} else if (newFrameSize.height < lineHeight * 2) {
+		newFrameSize.height = lineHeight * 2;
+	} else {
+		newFrameSize.height = ceilf(newFrameSize.height);
+	}
+
+	newFrameSize.height += CQInputBarVerticalPadding;
 
 	__strong __typeof__((_delegate)) strongDelegate = _delegate;
 	BOOL shouldSetHeight = YES;
 	if (strongDelegate && [strongDelegate respondsToSelector:@selector(chatInputBar:shouldChangeHeightBy:)])
-		shouldSetHeight = [strongDelegate chatInputBar:self shouldChangeHeightBy:(self.frame.size.height - height)];
+		shouldSetHeight = [strongDelegate chatInputBar:self shouldChangeHeightBy:(self.bounds.size.height - newFrameSize.height)];
 
 	if (shouldSetHeight) {
-		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, height);
+		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, newFrameSize.height);
 
-		[self setNeedsLayout];
-		[self layoutIfNeeded];
+		textSize.height += (insets.top + insets.bottom);
+		_inputView.contentSize = textSize;
 
-		// Work around iOS 7 bug where the input view frame doesn't update right away after being set, causing text to be clipped.
-		_inputView.frame = _inputView.frame;
-
-		CGFloat contentWidth = floorf((_inputView.frame.size.width - (_inputView.frame.origin.x * 2)));
-		CGFloat contentHeight = ceilf((numberOfLines * self._lineHeight));
-		contentHeight += (fabs(_inputView.contentInset.top) * numberOfLines + 1);
-		_inputView.contentSize = CGSizeMake(contentWidth, height);
-		_inputView.scrollEnabled = (contentHeight >= CGRectGetHeight(_inputView.frame));
+		_inputView.scrollEnabled = (textSize.height >= CGRectGetHeight(_inputView.frame));
 
 		if (_inputView.scrollEnabled)
-			_inputView.contentOffset = CGPointMake(_inputView.contentOffset.x, _inputView.contentOffset.y + fabs(_inputView.contentInset.top));
+			[_inputView scrollRangeToVisible:_inputView.selectedRange];
 	}
 }
 
@@ -301,13 +319,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void) setFont:(UIFont *) font {
+	if (font.pointSize == _inputView.font.pointSize)
+		return;
+
 	if (font.pointSize > .0) {
 		UIFontDescriptorSymbolicTraits symbolicTraits = font.fontDescriptor.symbolicTraits;
 		if (italicText) symbolicTraits |= UIFontDescriptorTraitItalic;
-		else if (symbolicTraits & UIFontDescriptorTraitItalic) symbolicTraits ^= UIFontDescriptorTraitItalic;
+		else if ((symbolicTraits & UIFontDescriptorTraitItalic) == UIFontDescriptorTraitItalic) symbolicTraits ^= UIFontDescriptorTraitItalic;
 
 		if (boldText) symbolicTraits |= UIFontDescriptorTraitBold;
-		else if (symbolicTraits & UIFontDescriptorTraitBold) symbolicTraits ^= UIFontDescriptorTraitBold;
+		else if ((symbolicTraits & UIFontDescriptorTraitBold) == UIFontDescriptorTraitBold) symbolicTraits ^= UIFontDescriptorTraitBold;
 
 		UIFontDescriptor *fontDescriptor = [font.fontDescriptor fontDescriptorWithSymbolicTraits:symbolicTraits];
 		_inputView.font = [UIFont fontWithDescriptor:fontDescriptor size:font.pointSize];
@@ -460,29 +481,6 @@ retry:
 
 #pragma mark -
 
-- (NSInteger)_numberOfLines {
-	// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/TextLayout/Tasks/CountLines.html
-	NSUInteger numberOfLines = 0;
-	for (NSUInteger i = 0; i < _inputView.layoutManager.numberOfGlyphs; numberOfLines++) {
-		NSRange lineRange;
-		[_inputView.layoutManager lineFragmentRectForGlyphAtIndex:i effectiveRange:&lineRange];
-		i = NSMaxRange(lineRange);
-	}
-	return numberOfLines;
-}
-
-- (void) updateTextViewContentSize {
-	if (_inputView.hasText || self._hasMarkedText) {
-		NSUInteger numberOfLines = self._numberOfLines;
-		CGFloat contentHeight = fminf(numberOfLines * self._lineHeight, self._maxLineHeight);
-		[self setHeight:contentHeight numberOfLines:numberOfLines];
-	} else {
-		[self _resetTextViewHeight];
-	}
-}
-
-#pragma mark -
-
 - (void) accessoryButtonPressed:(__nullable id) sender {
 	__strong __typeof__((_delegate)) strongDelegate = _delegate;
 	if (strongDelegate && [strongDelegate respondsToSelector:@selector(chatInputBarAccessoryButtonPressed:)])
@@ -492,10 +490,10 @@ retry:
 #pragma mark -
 
 - (void) keyboardWillShow:(NSNotification *) notification {
-	_responderState = CQChatInputBarResponder;
+	if (![notification.userInfo[UIKeyboardIsLocalUserInfoKey] boolValue])
+		return;
 
-	_animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-	_animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
+	_responderState = CQChatInputBarResponder;
 
 	[self _updateImagesForResponderState];
 
@@ -504,9 +502,6 @@ retry:
 
 - (void) keyboardWillHide:(NSNotification *) notification {
 	_responderState = CQChatInputBarNotResponder;
-
-	_animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-	_animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
 
 	[self _updateImagesForResponderState];
 
@@ -518,8 +513,6 @@ retry:
 }
 
 - (BOOL) textViewShouldBeginEditing:(UITextView *) textView {
-	textView.contentInset = UIEdgeInsetsMake(-4., 2., 0., 0.);
-
 	__strong __typeof__((_delegate)) strongDelegate = _delegate;
 	if ([strongDelegate respondsToSelector:@selector(chatInputBarShouldBeginEditing:)])
 		return [strongDelegate chatInputBarShouldBeginEditing:self];
@@ -540,8 +533,6 @@ retry:
 }
 
 - (void) textViewDidEndEditing:(UITextView *) textView {
-	textView.contentInset = UIEdgeInsetsMake(-4., 2., 0., 0.);
-
 	__strong __typeof__((_delegate)) strongDelegate = _delegate;
 	if ([strongDelegate respondsToSelector:@selector(chatInputBarDidEndEditing:)])
 		[strongDelegate chatInputBarDidEndEditing:self];
@@ -593,7 +584,7 @@ retry:
 			[self _updateTextTraits];
 		}
 
-		if (![strongDelegate respondsToSelector:@selector(chatInputBar:shouldAutocorrectWordWithPrefix:)] && ![strongDelegate respondsToSelector:@selector(chatInputBar:completionsForWordWithPrefix:)])
+		if (![strongDelegate respondsToSelector:@selector(chatInputBar:shouldAutocorrectWordWithPrefix:)] && ![strongDelegate respondsToSelector:@selector(chatInputBar:completionsForWordWithPrefix:inRange:)])
 			return YES;
 
 		if (_spaceCyclesCompletions && _completionCapturedKeyboard && self.showingCompletions && [string isEqualToString:@" "] && !_completionView.closeSelected) {
@@ -751,43 +742,33 @@ retry:
 	frame.size.width = CGRectGetWidth(self.frame) - CGRectGetMinX(frame);
 	_overlayBackgroundViewPiece.frame = frame;
 
-	[UIView animateWithDuration:_animationDuration delay:.0 options:(_animationCurve << 16) animations:^{
-		frame = self.bounds;
-		if ([UIDevice currentDevice].isRetina)
-			frame = CGRectMake(6.5, 6.5, frame.size.width - 12., frame.size.height - 12.);
-		else frame = CGRectMake(6., 7., frame.size.width - 12., frame.size.height - 12.);
+	frame = self.bounds;
+	if ([UIDevice currentDevice].isRetina)
+		frame = CGRectMake(6.5, 6.5, frame.size.width - 12., frame.size.height - 12.);
+	else frame = CGRectMake(6., 7., frame.size.width - 12., frame.size.height - 12.);
 
-		frame.size.width = _backgroundView.frame.size.width - (frame.origin.x * 2);
-		if ([UIDevice currentDevice].isRetina)
-			frame.size.width -= (ButtonWidth + ButtonMargin);
-		else frame.size.width -= (ButtonWidth + floorf(ButtonMargin));
+	frame.size.width = _backgroundView.frame.size.width - (frame.origin.x * 2);
+	if ([UIDevice currentDevice].isRetina)
+		frame.size.width -= (ButtonWidth + ButtonMargin);
+	else frame.size.width -= (ButtonWidth + floorf(ButtonMargin));
 
-		frame.size.height = (self.frame.size.height - (17));
-		frame.origin.y = (self.frame.size.height - frame.size.height) / 2.;
-		_inputView.frame = frame;
-		_inputView.textContainer.size = CGSizeMake(frame.size.width, 0); // 0 = unlimited space
+	frame.size.height = (self.frame.size.height - CQInputBarVerticalPadding);
+	frame.origin.y = (self.frame.size.height - frame.size.height) / 2.;
+	_inputView.frame = frame;
+	_inputView.textContainer.size = CGSizeMake(frame.size.width, 0); // 0 = unlimited space
 
-		[UIView performWithoutAnimation:^{
-			frame = _accessoryButton.frame;
-			if ([UIDevice currentDevice].isRetina)
-				frame.origin.x = CGRectGetMaxX(_inputView.frame) + ButtonMargin;
-			else frame.origin.x = CGRectGetMaxX(_inputView.frame) + floorf(ButtonMargin);
-			frame.origin.y = (ButtonMargin * 2);
-			frame.size.width = ButtonWidth;
-			frame.size.height = ButtonWidth;
+	frame = _accessoryButton.frame;
+	if ([UIDevice currentDevice].isRetina)
+		frame.origin.x = CGRectGetMaxX(_inputView.frame) + ButtonMargin;
+	else frame.origin.x = CGRectGetMaxX(_inputView.frame) + floorf(ButtonMargin);
+	frame.origin.y = (ButtonMargin * 2);
+	frame.size.width = ButtonWidth;
+	frame.size.height = ButtonWidth;
 
-			_accessoryButton.frame = frame;
-		}];
-	} completion:NULL];
+	_accessoryButton.frame = frame;
 
 #undef ButtonWidth
 #undef ButtonMargin
-
-#if !SYSTEM(TV)
-	_animationDuration = [UIApplication sharedApplication].statusBarOrientationAnimationDuration;
-#else
-	_animationDuration = 0.25;
-#endif
 }
 
 #pragma mark -
@@ -861,17 +842,10 @@ retry:
 }
 
 - (void) _resetTextViewHeight {
-	[self setHeight:self._lineHeight numberOfLines:1];
+	[self updateTextViewContentSize];
 }
 
-- (void) _resetTextAttributes {
-	if (_textNeedsClearing) {
-		_textNeedsClearing = NO;
-		return;
-	}
-
-	self.font = self.font; // recalculate bold/italic settings
-
+- (NSDictionary *) _textAttributes {
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
 	attributes[NSFontAttributeName] = self.font;
 	attributes[NSUnderlineStyleAttributeName] = (underlineText ? @(NSUnderlineStyleSingle) : @(NSUnderlineStyleNone));
@@ -888,6 +862,19 @@ retry:
 
 	if (foregroundColor) attributes[NSForegroundColorAttributeName] = foregroundColor;
 	if (backgroundColor) attributes[NSBackgroundColorAttributeName] = backgroundColor;
+
+	return [attributes copy];
+}
+
+- (void) _resetTextAttributes {
+	if (_textNeedsClearing) {
+		_textNeedsClearing = NO;
+		return;
+	}
+
+	self.font = self.font; // recalculate bold/italic settings
+
+	NSDictionary *attributes = self._textAttributes;
 
 	NSMutableAttributedString *attributedString = [_inputView.attributedText mutableCopy];
 	_textNeedsClearing = NO;
@@ -919,26 +906,6 @@ retry:
 	[_accessoryButton setImage:pressedImage forState:UIControlStateHighlighted];
 
 	_accessoryButton.accessibilityLabel = _accessibilityLabels[@(activeResponderState)];
-}
-
-#pragma mark -
-
-#define CQLineHeight 22.
-#define CQInactiveLineHeight 44.
-#define CQMaxLineHeight 84.
-
-- (CGFloat) _lineHeight {
-	if (!_inputView.font)
-		return CQLineHeight;
-	return ceilf(fmaxf(CQLineHeight, _inputView.font.lineHeight));
-}
-
-- (CGFloat) _inactiveLineHeight {
-	return fmax(self._lineHeight * 2, CQInactiveLineHeight);
-}
-
-- (CGFloat) _maxLineHeight {
-	return fmax(self._lineHeight * 4, CQMaxLineHeight);
 }
 @end
 

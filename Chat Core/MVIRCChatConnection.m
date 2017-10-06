@@ -15,6 +15,8 @@
 #import "NSDateAdditions.h"
 #import "MVUtilities.h"
 
+#import "MVChatRoomPrivate.h"
+
 #if USE(ATTRIBUTED_CHAT_STRING)
 #import "NSAttributedStringAdditions.h"
 #endif
@@ -124,7 +126,6 @@ static const NSStringEncoding supportedEncodings[] = {
 };
 
 @interface MVIRCChatConnection () <GCDAsyncSocketDelegate>
-
 @end
 
 // znc/self-message could have been better named; while it implies self-message semantics, the situations in which messages are echoed back differ:
@@ -166,7 +167,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 
 #pragma mark Incoming Message Replies
 
-- (MVChatRoom*) _chatRoomFromMessageTarget:(NSString*)messageTarget;
+- (MVChatRoom*__nullable) _chatRoomFromMessageTarget:(NSString*)messageTarget;
 
 - (void) _handlePrivmsg:(NSMutableDictionary *) privmsgInfo;
 - (void) _handlePrivmsgWithParameters:(NSArray *) parameters fromSender:(MVChatUser *) sender;
@@ -439,20 +440,20 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 
 #pragma mark -
 
-- (void) setRealName:(NSString *) name {
+- (void) setRealName:(NSString *__nullable) name {
 	NSParameterAssert( name != nil );
 	MVSafeCopyAssign( _realName, name );
 }
 
-- (NSString *) realName {
+- (NSString *__nullable) realName {
 	return _realName;
 }
 
 #pragma mark -
 
-- (void) setNickname:(NSString *) newNickname {
-	NSParameterAssert( newNickname != nil );
+- (void) setNickname:(NSString *__nullable) newNickname {
 	NSParameterAssert( newNickname.length > 0 );
+	NSParameterAssert( newNickname != nil );
 
 	BOOL connectiongOrConnected = ( _status == MVChatConnectionConnectedStatus || _status == MVChatConnectionConnectingStatus );
 
@@ -469,7 +470,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 		[self sendRawMessageImmediatelyWithFormat:@"NICK %@", newNickname];
 }
 
-- (NSString *) nickname {
+- (NSString *__nullable) nickname {
 	return _currentNickname;
 }
 
@@ -501,13 +502,12 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 
 #pragma mark -
 
-- (void) setUsername:(NSString *) newUsername {
-	NSParameterAssert( newUsername != nil );
+- (void) setUsername:(NSString *__nullable) newUsername {
 	NSParameterAssert( newUsername.length > 0 );
 	MVSafeCopyAssign( _username, newUsername );
 }
 
-- (NSString *) username {
+- (NSString *__nullable) username {
 	return _username;
 }
 
@@ -704,14 +704,14 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	return [self joinedChatRoomWithUniqueIdentifier:[self properNameForChatRoomNamed:name]];
 }
 
-- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
+- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
 	NSParameterAssert( [identifier isKindOfClass:[NSString class]] );
 	MVChatRoom *room = [super chatRoomWithUniqueIdentifier:[identifier lowercaseString]];
 	if( ! room ) room = [[MVIRCChatRoom alloc] initWithName:identifier andConnection:self];
 	return room;
 }
 
-- (nullable MVChatRoom *) chatRoomWithName:(NSString *) name {
+- (MVChatRoom *__nullable) chatRoomWithName:(NSString *) name {
 	return [self chatRoomWithUniqueIdentifier:[self properNameForChatRoomNamed:name]];
 }
 
@@ -1052,7 +1052,9 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 		self.connectedSecurely = YES;
 
 		[self _startTLS];
-	} else self.connectedSecurely = NO;
+    } else {
+        self.connectedSecurely = NO;
+    }
 
 	NSString *password = _password;
 	NSString *username = ( _username.length ? _username : @"anonymous" );
@@ -1289,11 +1291,12 @@ parsingFinished: { // make a scope for this
 
 	id chatSender = ( chatUser ? (id) chatUser : (id) senderString );
 
-	[self _processedCommand:commandString fromSender:chatSender withIntentOrTags:intentOrTagsDictionary parameters:parameters];
+	if (commandString)
+		[self _processedCommand:commandString fromSender:chatSender withIntentOrTags:intentOrTagsDictionary parameters:parameters];
 	}
 }
 
-- (void)_processedCommand:(NSString *) commandString fromSender:(id) chatSender withIntentOrTags:(NSMutableDictionary *) intentOrTagsDictionary parameters:(NSMutableArray *) parameters {
+- (void)_processedCommand:(NSString *) commandString fromSender:(id __nullable) chatSender withIntentOrTags:(NSMutableDictionary *) intentOrTagsDictionary parameters:(NSMutableArray *) parameters {
 	BOOL hasTagsToSend = !!intentOrTagsDictionary.allKeys.count;
 	NSString *selectorString = nil;
 	SEL selector = NULL;
@@ -2288,7 +2291,7 @@ parsingFinished: { // make a scope for this
 
 #pragma mark -
 
-- (nullable NSString *) _newStringWithBytes:(const char *) bytes length:(NSUInteger) length NS_RETURNS_RETAINED {
+- (NSString * __nullable) _newStringWithBytes:(const char *) bytes length:(NSUInteger) length NS_RETURNS_RETAINED {
 	if( bytes && length ) {
 		NSStringEncoding encoding = [self encoding];
 		if( encoding != NSUTF8StringEncoding && isValidUTF8( bytes, length ) )
@@ -2426,7 +2429,7 @@ parsingFinished: { // make a scope for this
 				capabilitiesString = [self _stringFromPossibleData:parameters[3]];
 
 			NSArray <NSString *> *capabilities = [capabilitiesString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-			for( __strong NSString *capability in capabilities ) {
+			for( NSString *capability in capabilities ) {
 				BOOL sendCapReqForFeature = YES;
 
 				// IRCv3.1 Required
@@ -2758,8 +2761,6 @@ parsingFinished: { // make a scope for this
 		if( [feature isKindOfClass:[NSString class]] && [feature hasPrefix:@"STARTTLS"] ) {
 			// STARTTLS ISUPPORT is kind of useless, since we always send it at the beginning of a session anyway.
 			[_supportedFeatures addObject:MVChatConnectionTLSFeature];
-		} else if ( [feature isKindOfClass:[NSString class]] && [feature hasPrefix:@"METADATA"] ) {
-			[_supportedFeatures addObject:MVChatConnectionMetadataFeature];
 		} else if( [feature isKindOfClass:[NSString class]] && [feature hasPrefix:@"WATCH"] ) {
 			@synchronized(_supportedFeatures) {
 				[_supportedFeatures addObject:MVChatConnectionWatchFeature];
@@ -2863,12 +2864,6 @@ parsingFinished: { // make a scope for this
 	if( [_supportedFeatures containsObject:MVChatConnectionWatchFeature] )
 		[self _requestServerNotificationsOfUserConnectedState];
 
-	if( [_supportedFeatures containsObject:MVChatConnectionMetadataFeature] ) {
-		NSBundle *bundle = [NSBundle mainBundle];
-		[self sendRawMessageImmediatelyWithFormat:@"METADATA SET client.name :%@", bundle.infoDictionary[(__bridge id)kCFBundleIdentifierKey]];
-		[self sendRawMessageImmediatelyWithFormat:@"METADATA SET client.version :%@ (%@)", bundle.infoDictionary[@"CFBundleShortVersionString"], bundle.infoDictionary[@"CFBundleVersion"]];
-	}
-
 	if( foundNAMESXCommand && [_supportedFeatures containsObject:MVChatConnectionNamesxFeature] ) {
 		[self sendRawMessageImmediatelyWithFormat:@"PROTOCTL NAMESX"];
 	}
@@ -2918,7 +2913,7 @@ parsingFinished: { // make a scope for this
 #pragma mark -
 #pragma mark Incoming Message Replies
 
-- (MVChatRoom*) _chatRoomFromMessageTarget:(NSString*)messageTarget
+- (MVChatRoom*__nullable) _chatRoomFromMessageTarget:(NSString*)messageTarget
 {
 	// a room identifier consists of a chatroom prefix (for example #&+!) and the room name: #room
 	// additionally it can be pre-prefixed in PRIVMSG or NOTICE with a nickname prefix (for example @+), indicating a room message, that is only visible to room members with that user status: @#room
@@ -4560,69 +4555,6 @@ parsingFinished: { // make a scope for this
 
 		self.connectedSecurely = YES;
 	}
-}
-
-#pragma mark -
-#pragma mark Metadata Replies
-
-- (void) _handle760WithParameters:(NSArray *) parameters fromSender:(id) sender {
-	if (parameters.count == 3) { // IRCv3.2 RPL_WHOISKEYVALUE, <target> <key> :<value
-		NSString *nickname = parameters[0];
-		if( [nickname hasSuffix:@"*"] ) nickname = [nickname substringToIndex:(nickname.length - 1)];
-		if( !nickname.length ) return;
-
-		MVChatUser *user = [self chatUserWithUniqueIdentifier:nickname];
-		[user setAttribute:parameters[2] forKey:parameters[1]];
-	}
-}
-
-- (void) _handle761WithParameters:(NSArray *) parameters fromSender:(id) sender { // RPL_KEYVALUE, <target> <key> [:<value>]
-	if (2 > parameters.count) return;
-
-	NSString *nickname = parameters[0];
-	if( [nickname hasSuffix:@"*"] ) nickname = [nickname substringToIndex:(nickname.length - 1)];
-	if( !nickname.length ) return;
-
-	MVChatUser *user = [self chatUserWithUniqueIdentifier:nickname];
-	id attribute = ((parameters.count >= 3) ? parameters[2] : nil);
-	[user setAttribute:attribute forKey:parameters[1]];
-}
-
-- (void) _handle762WithParameters:(NSArray *) parameters fromSender:(id) sender { // RPL_METADATAEND, :end of metadata
-	// nothing to do
-}
-
-- (void) _handle764WithParameters:(NSArray *) parameters fromSender:(id) sender { // ERR_METADATALIMIT, <target> :metadata limit reached
-	// nothing to do
-}
-
-- (void) _handle765WithParameters:(NSArray *) parameters fromSender:(id) sender { // ERR_TARGETINVALID, <target> :invalid metadata target
-	// nothing to do
-}
-
-- (void) _handle766WithParameters:(NSArray *) parameters fromSender:(id) sender { // ERR_NOMATCHINGKEYS, <string> :no matching keys
-	// nothing to do
-}
-
-- (void) _handle677WithParameters:(NSArray *) parameters fromSender:(id) sender { // ERR_KEYINVALID, <key> :invalid metadata key
-	if (1 > parameters.count) return;
-
-	[self.localUser setAttribute:nil forKey:parameters[0]];
-}
-
-- (void) _handle768WithParameters:(NSArray *) parameters fromSender:(id) sender { // ERR_KEYNOTSET, <target> <key> :key not set
-	if (parameters.count != 2) return;
-
-	NSString *nickname = parameters[0];
-	if( [nickname hasSuffix:@"*"] ) nickname = [nickname substringToIndex:(nickname.length - 1)];
-	if( !nickname.length ) return;
-
-	MVChatUser *user = [self chatUserWithUniqueIdentifier:nickname];
-	[user setAttribute:nil forKey:parameters[1]];
-}
-
-- (void) _handle769WithParameters:(NSArray *) parameters fromSender:(id) sender { // ERR_KEYNOPERMISSION
-	// <Target> <key> :permission denied
 }
 
 #pragma mark -

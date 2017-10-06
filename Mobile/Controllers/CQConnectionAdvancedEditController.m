@@ -405,7 +405,10 @@ static NSString *localizedNameOfStringEncoding(NSStringEncoding encoding) {
  			cell.accessibilityHint = NSLocalizedString(@"Optional", @"Voiceover optional label");
 		}
 
-		return cell;
+		if (cell)
+			return cell;
+
+		__builtin_unreachable();
 	} else if (indexPath.section == IdentitiesTableSection && indexPath.row == 0) {
 		UITableViewCell *cell = [UITableViewCell reusableTableViewCellWithStyle:UITableViewCellStyleValue1 inTableView:tableView];
 
@@ -452,7 +455,7 @@ static NSString *localizedNameOfStringEncoding(NSStringEncoding encoding) {
 	}
 
 	NSAssert(NO, @"Should not reach this point.");
-	return nil;
+	__builtin_unreachable();
 }
 
 #pragma mark -

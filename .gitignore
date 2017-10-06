@@ -1,5 +1,6 @@
 # Xcode
 #
+
 build/
 *.pbxuser
 !default.pbxuser
@@ -16,21 +17,11 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+*.xcscmblueprint
+*.xcscheme
+
 .DS_Store
-xcuserdata/
-project.xcworkspace/
-
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
-#
-# Pods/
-
 
 # Colloquy specific
-# We're going to have our own ignore file in there.
-# Frameworks/
-Frameworks/XMPPFramework/Vendor/libidn/dependencies/
+/old-mac-binary-frameworks/
 *.xcscmblueprint

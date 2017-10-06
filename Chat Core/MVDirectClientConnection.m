@@ -24,20 +24,20 @@ NS_ASSUME_NONNULL_BEGIN
 void MVFindDCCFriendlyAddress( NSString *address, MVStringParameterBlock completion ) {
 	NSURL *url = [NSURL URLWithString:@"http://colloquy.info/ip.php"];
 	NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:3.];
-	[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *result, NSURLResponse *response, NSError *error) {
+	[[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *result, NSURLResponse *response, NSError *error) {
 		NSString *addr = address;
-
+		
 		if( result.length >= 6 && result.length <= 40 ) // should be a valid IPv4 or IPv6 address
 			addr = [[NSString alloc] initWithData:result encoding:NSASCIIStringEncoding];
 		if( addr && [addr rangeOfString:@"."].location != NSNotFound )
 			addr = [NSString stringWithFormat:@"%u", ntohl( inet_addr( [addr UTF8String] ) )];
 		completion(addr);
-	}];
+	}] resume];
 }
 
 #pragma mark -
 
-@interface MVDirectClientConnection (MVDirectClientConnectionPrivate)
+@interface MVDirectClientConnection (MVDirectClientConnectionPrivate) <GCDAsyncSocketDelegate>
 - (void) _setupThread;
 - (void) _connect:(NSDictionary *) info;
 - (void) _acceptConnectionOnFirstPortInRange:(NSValue *) portsObject;

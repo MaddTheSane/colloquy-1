@@ -119,7 +119,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 
 #pragma mark -
 
-- (nullable NSURL *) url {
+- (NSURL *__nullable) url {
 	MVChatConnection *connection = [self connection];
 	NSString *urlString = [NSString stringWithFormat:@"%@://%@/%@", [connection urlScheme], [[connection server] stringByEncodingIllegalURLCharacters], [[self name] stringByEncodingIllegalURLCharacters]];
 	if( urlString ) return [NSURL URLWithString:urlString];
@@ -237,7 +237,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 
 - (NSSet *) supportedAttributes {
 // subclass this method, if needed
-	return nil;
+	return [NSSet set];
 }
 
 #pragma mark -
@@ -366,7 +366,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 	return users;
 }
 
-- (MVChatUser *) memberUserWithUniqueIdentifier:(id) identifier {
+- (MVChatUser *__nullable) memberUserWithUniqueIdentifier:(id) identifier {
 	@synchronized( _memberUsers ) {
 		for( MVChatUser *user in _memberUsers )
 			if( [[user uniqueIdentifier] isEqual:identifier] )
@@ -650,7 +650,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 		return [self uniqueIdentifier];
 
 	if( [[self uniqueIdentifier] isKindOfClass:[NSData class]] )
-		return [[self uniqueIdentifier] base64EncodedStringWithOptions:0];
+		return [[self uniqueIdentifier] mv_base64Encoding];
 
 	return [[self uniqueIdentifier] description];
 }

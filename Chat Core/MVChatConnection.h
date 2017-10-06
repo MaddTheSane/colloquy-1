@@ -99,7 +99,6 @@ extern NSString *MVChatConnectionTLSFeature;
 // IRC3v2 Required
 extern NSString *MVChatConnectionMessageTagsFeature;
 extern NSString *MVChatConnectionMessageIntentsFeature;
-extern NSString *MVChatConnectionMetadataFeature;
 extern NSString *MVChatConnectionMonitorFeature;
 
 // IRC3v2 Optional
@@ -241,22 +240,22 @@ extern NSErrorDomain MVChatConnectionErrorDomain;
 
 @property(nonatomic) NSStringEncoding encoding;
 
-@property(copy) NSString *realName;
+@property(copy, nullable) NSString *realName;
 
-@property(copy) NSString *nickname;
+@property(copy, nullable) NSString *nickname;
 @property(copy) NSString *preferredNickname;
 
-@property(copy) NSArray <NSString *> *alternateNicknames;
+@property(copy, nullable) NSArray <NSString *> *alternateNicknames;
 @property(strong, readonly, nullable) NSString *nextAlternateNickname;
 
 @property(copy, nullable) NSString *nicknamePassword;
 
-@property(strong, readonly) NSString *certificateServiceName;
-@property(strong, readonly) NSString *certificatePassword;
+@property(strong, readonly, nullable) NSString *certificateServiceName;
+@property(strong, readonly, nullable) NSString *certificatePassword;
 
-@property(copy) NSString *password;
+@property(copy, nullable) NSString *password;
 
-@property(copy) NSString *username;
+@property(copy, nullable) NSString *username;
 
 @property(copy) NSString *server;
 - (void)setServer:(NSString * _Nonnull)server NS_REQUIRES_SUPER;
@@ -370,8 +369,8 @@ extern NSErrorDomain MVChatConnectionErrorDomain;
 
 #pragma mark -
 
-- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
-- (nullable MVChatRoom *) chatRoomWithName:(NSString *) room;
+- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
+- (MVChatRoom *__nullable) chatRoomWithName:(NSString *) room;
 
 #pragma mark -
 
