@@ -13,6 +13,38 @@ struct EmojiEmoticonPair {
 	CFStringRef emoticon;
 };
 
+/*
+ Initial mapping work:
+ first number: Private Use emoji, used pre-iOS 5
+ second and third: UTF-16 code points in the emoji section
+ fourth: full unicode code point in the emoji section
+ 
+ e345 -> 55356, 57166; 1F34E
+ e057 -> 55357, 56835; 1F603
+ e415 -> 55357, 56836; 1F604
+ e404 -> 55357, 56833; 1F601
+ e412 -> 55357, 56834; 1F602
+ e414 -> 0x263A, 0xfe0f
+ e056 -> 0xD83D, 0xDE0A
+ e405 -> 0xD83D, 0xDE09
+ e40a -> 0xD83D, 0xDE0C
+ e106 -> 0xD83D, 0xDE0D
+ e418 -> 0xD83D, 0xDE18; 1F618
+ e417 -> 0xD83D, 0xDE1A; 1F61A
+ e105 -> 0xD83D, 0xDE1C; 1f61c
+ e409 -> 0xD83D, 0xDE1D; 1f61d
+ e402 -> 0xD83D, 0xDE0F; 1f60f
+ e40e -> 0xD83D, 0xDE12; 1f612
+ e058 -> 0xD83D, 0xDE1E; 1f61e
+ e403 -> 0xD83D, 0xDE14; 1f614
+ e406 -> 0xD83D, 0xDE23; 1f623
+ e407 -> 0xD83D, 0xDE16; 1f616
+ e059 -> 0xD83D, 0xDE20; 1f620
+ e416 -> 0xD83D, 0xDE21; 1f621
+ e410 -> 0xD83D, 0xDE32; 1f632
+ e40d -> 0xD83D, 0xDE33; 1f633
+ e107 -> 0xD83D, 0xDE31; 1f631
+ */
 struct EmojiNewOldPair {
 	const unichar privateArea;
 	const unichar emoji[2];
@@ -61,7 +93,6 @@ struct EmojiNewOldPair {
 	{ 0xe445, {0x0000, 0x0000} },
 	{ 0xe50c, {0x0000, 0x0000} },
 	{ 0, {0, 0}  }
-
 };
 
 static const struct EmojiEmoticonPair emojiToEmoticonList[] = {
@@ -1420,7 +1451,8 @@ static NSCharacterSet *typicalEmoticonCharacters;
 		[emoticon escapeCharactersInSet:escapedCharacters];
 
 		NSString *emojiString = [[NSString alloc] initWithCharacters:&entry->emoji length:2];
-		NSString *searchRegex = [[NSString alloc] initWithFormat:@"(?<=\\s|^|[\ue001-\ue53e])%@(?=\\s|$|[\ue001-\ue53e])", emoticon]; //TODO: update regex for unicode standard!
+		//TODO: update regex for unicode standard!
+		NSString *searchRegex = [[NSString alloc] initWithFormat:@"(?<=\\s|^|[\ue001-\ue53e])%@(?=\\s|$|[\ue001-\ue53e])", emoticon]; // ([\x{de00}-\x{de10}]|\x{d83d}[\x{de00}-\x{de4f}]|\x{d83d}\x{dca9}|\x{d83e}[\x{dd22}-\x{dd25}]|\x{d83c}[\x{dffb}-\x{dfff}])
 
 		NSRange matchedRange = [self rangeOfRegex:searchRegex inRange:*range];
 		while (matchedRange.location != NSNotFound) {
