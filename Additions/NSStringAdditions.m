@@ -9,55 +9,106 @@
 NS_ASSUME_NONNULL_BEGIN
 
 struct EmojiEmoticonPair {
-	const unichar emoji;
+	const unichar emoji[2];
 	CFStringRef emoticon;
 };
 
+struct EmojiNewOldPair {
+	const unichar privateArea;
+	const unichar emoji[2];
+} static const oldToNewEmojiList[] = {
+	{ 0xe00e, {0x0000, 0x0000} },
+	{ 0xe022, {0x0000, 0x0000} },
+	{ 0xe023, {55357, 56468} },
+	{ 0xe032, {0x0000, 0x0000} },
+	{ 0xe048, {0x0000, 0x0000} },
+	{ 0xe04e, {0x0000, 0x0000} },
+	{ 0xe056, {0xD83D, 0xDE0A} },
+	{ 0xe057, {0x0000, 0x0000} },
+	{ 0xe058, {0x0000, 0x0000} },
+	{ 0xe059, {0x0000, 0x0000} },
+	{ 0xe05a, {0x0000, 0x0000} },
+	{ 0xe105, {0x0000, 0x0000} },
+	{ 0xe106, {0x0000, 0x0000} },
+	{ 0xe107, {0x0000, 0x0000} },
+	{ 0xe108, {0x0000, 0x0000} },
+	{ 0xe11a, {0x0000, 0x0000} },
+	{ 0xe401, {0x0000, 0x0000} },
+	{ 0xe402, {0x0000, 0x0000} },
+	{ 0xe403, {0x0000, 0x0000} },
+	{ 0xe404, {0x0000, 0x0000} },
+	{ 0xe405, {0xD83D, 0xDE09} },
+	{ 0xe406, {0x0000, 0x0000} },
+	{ 0xe407, {0x0000, 0x0000} },
+	{ 0xe408, {0x0000, 0x0000} },
+	{ 0xe409, {0x0000, 0x0000} },
+	{ 0xe40a, {0x0000, 0x0000} },
+	{ 0xe40b, {0x0000, 0x0000} },
+	{ 0xe40c, {0x0000, 0x0000} },
+	{ 0xe40d, {0x0000, 0x0000} },
+	{ 0xe40e, {0x0000, 0x0000} },
+	{ 0xe40f, {0x0000, 0x0000} },
+	{ 0xe410, {0x0000, 0x0000} },
+	{ 0xe411, {0x0000, 0x0000} },
+	{ 0xe412, {0x0000, 0x0000} },
+	{ 0xe413, {0x0000, 0x0000} },
+	{ 0xe414, {0x263A, 0xfe0f} },
+	{ 0xe415, {0x0000, 0x0000} },
+	{ 0xe416, {0x0000, 0x0000} },
+	{ 0xe417, {0x0000, 0x0000} },
+	{ 0xe418, {0x0000, 0x0000} },
+	{ 0xe421, {0x0000, 0x0000} },
+	{ 0xe445, {0x0000, 0x0000} },
+	{ 0xe50c, {0x0000, 0x0000} },
+	{ 0, {0, 0}  }
+
+};
+
 static const struct EmojiEmoticonPair emojiToEmoticonList[] = {
-	{ 0xe00e, CFSTR("(Y)") },
-	{ 0xe022, CFSTR("<3") },
-	{ 0xe023, CFSTR("</3") },
-	{ 0xe032, CFSTR("@};-") },
-	{ 0xe048, CFSTR(":^)") },
-	{ 0xe04e, CFSTR("O:)") },
-	{ 0xe056, CFSTR(":)") },
-	{ 0xe057, CFSTR(":D") },
-	{ 0xe058, CFSTR(":(") },
-	{ 0xe059, CFSTR(">:(") },
-	{ 0xe05a, CFSTR("~<:)") },
-	{ 0xe105, CFSTR(";P") },
-	{ 0xe106, CFSTR("(<3") },
-	{ 0xe107, CFSTR(":O") },
-	{ 0xe108, CFSTR("-_-'") },
-	{ 0xe11a, CFSTR(">:)") },
-	{ 0xe401, CFSTR(":'(") },
-	{ 0xe402, CFSTR(":j") },
-	{ 0xe403, CFSTR(":|") },
-	{ 0xe404, CFSTR(":-!") },
-	{ 0xe405, CFSTR(";)") },
-	{ 0xe406, CFSTR("><") },
-	{ 0xe407, CFSTR(":X") },
-	{ 0xe408, CFSTR(";'(") },
-	{ 0xe409, CFSTR(":P") },
-	{ 0xe40a, CFSTR(":->") },
-	{ 0xe40b, CFSTR(":o") },
-	{ 0xe40c, CFSTR(":-&") },
-	{ 0xe40d, CFSTR("O.O") },
-	{ 0xe40e, CFSTR(":/") },
-	{ 0xe40f, CFSTR(":'o") },
-	{ 0xe410, CFSTR("x_x") },
-	{ 0xe411, CFSTR(":\"o") },
-	{ 0xe412, CFSTR(":'D") },
-	{ 0xe413, CFSTR(";(") },
-	{ 0xe414, CFSTR(":[") },
-	{ 0xe415, CFSTR("^-^") },
-	{ 0xe416, CFSTR("}:(") },
-	{ 0xe417, CFSTR(":-*") },
-	{ 0xe418, CFSTR(";-*") },
-	{ 0xe421, CFSTR("(N)") },
-	{ 0xe445, CFSTR("(~~)") },
-	{ 0xe50c, CFSTR("**==") },
-	{ 0, nil }
+	{ {0xe00e, 0x0000}, CFSTR("(Y)") },
+	{ {0xe022, 0x0000}, CFSTR("<3") },
+	{ {55357, 56468}, CFSTR("</3") },
+	{ {0xe032, 0x0000}, CFSTR("@};-") },
+	{ {0xe048, 0x0000}, CFSTR(":^)") },
+	{ {0xe04e, 0x0000}, CFSTR("O:)") },
+	{ {0xD83D, 0xDE0A}, CFSTR(":)") },
+	{ {0xe057, 0x0000}, CFSTR(":D") },
+	{ {0xe058, 0x0000}, CFSTR(":(") },
+	{ {0xe059, 0x0000}, CFSTR(">:(") },
+	{ {0xe05a, 0x0000}, CFSTR("~<:)") },
+	{ {0xe105, 0x0000}, CFSTR(";P") },
+	{ {0xe106, 0x0000}, CFSTR("(<3") },
+	{ {0xe107, 0x0000}, CFSTR(":O") },
+	{ {0xe108, 0x0000}, CFSTR("-_-'") },
+	{ {0xe11a, 0x0000}, CFSTR(">:)") },
+	{ {0xe401, 0x0000}, CFSTR(":'(") },
+	{ {0xe402, 0x0000}, CFSTR(":j") },
+	{ {0xe403, 0x0000}, CFSTR(":|") },
+	{ {0xe404, 0x0000}, CFSTR(":-!") },
+	{ {0xD83D, 0xDE09}, CFSTR(";)") },
+	{ {0xe406, 0x0000}, CFSTR("><") },
+	{ {0xe407, 0x0000}, CFSTR(":X") },
+	{ {0xe408, 0x0000}, CFSTR(";'(") },
+	{ {0xe409, 0x0000}, CFSTR(":P") },
+	{ {0xe40a, 0x0000}, CFSTR(":->") },
+	{ {0xe40b, 0x0000}, CFSTR(":o") },
+	{ {0xe40c, 0x0000}, CFSTR(":-&") },
+	{ {0xe40d, 0x0000}, CFSTR("O.O") },
+	{ {0xe40e, 0x0000}, CFSTR(":/") },
+	{ {0xe40f, 0x0000}, CFSTR(":'o") },
+	{ {0xe410, 0x0000}, CFSTR("x_x") },
+	{ {0xe411, 0x0000}, CFSTR(":\"o") },
+	{ {0xe412, 0x0000}, CFSTR(":'D") },
+	{ {0xe413, 0x0000}, CFSTR(";(") },
+	{ {0xe414, 0x0000}, CFSTR(":[") },
+	{ {0xe415, 0x0000}, CFSTR("^-^") },
+	{ {0xe416, 0x0000}, CFSTR("}:(") },
+	{ {0xe417, 0x0000}, CFSTR(":-*") },
+	{ {0xe418, 0x0000}, CFSTR(";-*") },
+	{ {0xe421, 0x0000}, CFSTR("(N)") },
+	{ {0xe445, 0x0000}, CFSTR("(~~)") },
+	{ {0xe50c, 0x0000}, CFSTR("**==") },
+	{ {0, 0}, nil }
 };
 
 static const struct EmojiEmoticonPair emoticonToEmojiList[] = {
@@ -66,7 +117,7 @@ static const struct EmojiEmoticonPair emoticonToEmojiList[] = {
 	{ 0xe056, CFSTR("=)") },
 	{ 0xe058, CFSTR(":(") },
 	{ 0xe058, CFSTR("=(") },
-	{ 0xe405, CFSTR(";)") },
+	{ {0xD83D, 0xDE09}, CFSTR(";)") },
 	{ 0xe409, CFSTR(":P") },
 	{ 0xe409, CFSTR(":p") },
 	{ 0xe409, CFSTR("=P") },
@@ -135,7 +186,7 @@ static const struct EmojiEmoticonPair emoticonToEmojiList[] = {
 	{ 0xe409, CFSTR("=-p") },
 	{ 0xe105, CFSTR(";-p") },
 	{ 0xe105, CFSTR(";-P") },
-	{ 0xe405, CFSTR(";-)") },
+	{ {0xD83D, 0xDE09}, CFSTR(";-)") },
 	{ 0xe057, CFSTR(":-D") },
 	{ 0xe057, CFSTR("=-D") },
 	{ 0xe058, CFSTR("=-(") },
@@ -552,7 +603,7 @@ static NSString *colorForHTML( unsigned char red, unsigned char green, unsigned 
 	if( ! knownEmoji ) {
 		knownEmoji = [[NSMutableSet alloc] initWithCapacity:50];
 		for (const struct EmojiEmoticonPair *entry = emojiToEmoticonList; entry && entry->emoticon; ++entry) {
-			NSString *emojiString = [[NSString alloc] initWithCharacters:&entry->emoji length:1];
+			NSString *emojiString = [[NSString alloc] initWithCharacters:&entry->emoji length:2];
 			[knownEmoji addObject:emojiString];
 		}
 	}
@@ -1368,8 +1419,8 @@ static NSCharacterSet *typicalEmoticonCharacters;
 		NSMutableString *emoticon = [searchEmoticon mutableCopy];
 		[emoticon escapeCharactersInSet:escapedCharacters];
 
-		NSString *emojiString = [[NSString alloc] initWithCharacters:&entry->emoji length:1];
-		NSString *searchRegex = [[NSString alloc] initWithFormat:@"(?<=\\s|^|[\ue001-\ue53e])%@(?=\\s|$|[\ue001-\ue53e])", emoticon];
+		NSString *emojiString = [[NSString alloc] initWithCharacters:&entry->emoji length:2];
+		NSString *searchRegex = [[NSString alloc] initWithFormat:@"(?<=\\s|^|[\ue001-\ue53e])%@(?=\\s|$|[\ue001-\ue53e])", emoticon]; //TODO: update regex for unicode standard!
 
 		NSRange matchedRange = [self rangeOfRegex:searchRegex inRange:*range];
 		while (matchedRange.location != NSNotFound) {
