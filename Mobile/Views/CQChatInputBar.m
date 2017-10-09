@@ -1,3 +1,4 @@
+#include <tgmath.h>
 #import "CQChatInputBar.h"
 
 #import "CQTextView.h"
@@ -252,7 +253,7 @@ NS_ASSUME_NONNULL_BEGIN
 	NSDictionary *attributes = self._textAttributes;
 
 	CGSize textSize = [_inputView.text boundingRectWithSize:calculatableSize options:options attributes:attributes context:nil].size;
-	CGFloat lineHeight = ceilf([attributes[NSFontAttributeName] lineHeight]);
+	CGFloat lineHeight = ceil([attributes[NSFontAttributeName] lineHeight]);
 
 	if (lineHeight == 0) {
 		lineHeight = CQLineHeight;
@@ -269,7 +270,7 @@ NS_ASSUME_NONNULL_BEGIN
 	} else if (newFrameSize.height < lineHeight * 2) {
 		newFrameSize.height = lineHeight * 2;
 	} else {
-		newFrameSize.height = ceilf(newFrameSize.height);
+		newFrameSize.height = ceil(newFrameSize.height);
 	}
 
 	newFrameSize.height += CQInputBarVerticalPadding;
@@ -735,7 +736,7 @@ retry:
 	__block CGRect frame = _backgroundView.frame;
 	if ([UIDevice currentDevice].isRetina)
 		frame.size.width -= (ButtonWidth + ButtonMargin);
-	else frame.size.width -= (ButtonWidth + floorf(ButtonMargin));
+	else frame.size.width -= (ButtonWidth + floor(ButtonMargin));
 	_overlayBackgroundView.frame = frame;
 
 	frame.origin.x = CGRectGetMaxX(frame);
@@ -750,7 +751,7 @@ retry:
 	frame.size.width = _backgroundView.frame.size.width - (frame.origin.x * 2);
 	if ([UIDevice currentDevice].isRetina)
 		frame.size.width -= (ButtonWidth + ButtonMargin);
-	else frame.size.width -= (ButtonWidth + floorf(ButtonMargin));
+	else frame.size.width -= (ButtonWidth + floor(ButtonMargin));
 
 	frame.size.height = (self.frame.size.height - CQInputBarVerticalPadding);
 	frame.origin.y = (self.frame.size.height - frame.size.height) / 2.;
@@ -760,7 +761,7 @@ retry:
 	frame = _accessoryButton.frame;
 	if ([UIDevice currentDevice].isRetina)
 		frame.origin.x = CGRectGetMaxX(_inputView.frame) + ButtonMargin;
-	else frame.origin.x = CGRectGetMaxX(_inputView.frame) + floorf(ButtonMargin);
+	else frame.origin.x = CGRectGetMaxX(_inputView.frame) + floor(ButtonMargin);
 	frame.origin.y = (ButtonMargin * 2);
 	frame.size.width = ButtonWidth;
 	frame.size.height = ButtonWidth;

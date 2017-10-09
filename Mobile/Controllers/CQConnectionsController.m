@@ -16,8 +16,8 @@
 #import "CQIgnoreRulesController.h"
 #import "CQKeychain.h"
 
-#import "dlfcn.h"
-#import "tgmath.h"
+#include <dlfcn.h>
+#include <tgmath.h>
 
 #import <ChatCore/MVChatConnection.h>
 #import <ChatCore/MVChatConnectionPrivate.h>
