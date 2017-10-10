@@ -238,6 +238,7 @@
 		32C46E190B3AB37E00B96B27 /* MVICBChatUser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MVICBChatUser.m; path = "Chat Core/MVICBChatUser.m"; sourceTree = "<group>"; };
 		431261C0072EE37A00720AD1 /* MVSILCFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = MVSILCFileTransfer.h; path = "Chat Core/MVSILCFileTransfer.h"; sourceTree = "<group>"; };
 		431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = MVSILCFileTransfer.m; path = "Chat Core/MVSILCFileTransfer.m"; sourceTree = "<group>"; };
+		55AA73C81C554FD000BD820C /* ChatCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = ChatCore.modulemap; sourceTree = "<group>"; };
 		899F4EFC12617870003B9D9A /* NSFileManagerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSFileManagerAdditions.h; path = Additions/NSFileManagerAdditions.h; sourceTree = "<group>"; };
 		899F4EFD12617870003B9D9A /* NSFileManagerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSFileManagerAdditions.m; path = Additions/NSFileManagerAdditions.m; sourceTree = "<group>"; };
 		89FB4F2512FAAC6800668905 /* old-mac-target.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "old-mac-target.xcconfig"; sourceTree = "<group>"; };
@@ -524,6 +525,7 @@
 				1CCA517E0598AFBA00F0A4CD /* ChatCore.scriptSuite */,
 				1CCA517F0598AFBA00F0A4CD /* ChatCore.scriptTerminology */,
 				1C8AA4B609D60B1100CF29EB /* Chat Core.exp */,
+				55AA73C81C554FD000BD820C /* ChatCore.modulemap */,
 			);
 			fileEncoding = 4;
 			indentWidth = 4;
@@ -843,6 +845,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 2;
 				DYLIB_CURRENT_VERSION = 2;
 				EXPORTED_SYMBOLS_FILE = "Chat Core.exp";
@@ -863,6 +866,7 @@
 				);
 				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				MODULEMAP_FILE = ChatCore.modulemap;
 				OTHER_LDFLAGS = (
 					"-seg1addr",
 					0xa10000,
@@ -906,6 +910,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 2;
 				DYLIB_CURRENT_VERSION = 2;
 				EXPORTED_SYMBOLS_FILE = "Chat Core.exp";
@@ -925,6 +930,7 @@
 					"RKL_BLOCKS=0",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				MODULEMAP_FILE = ChatCore.modulemap;
 				OTHER_LDFLAGS = (
 					"-seg1addr",
 					0xa10000,
