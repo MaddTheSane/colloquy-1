@@ -49,7 +49,7 @@ final public class CQKeychain : NSObject {
 	@objc(passwordForServer:area:)
 	public func password(forServer server: String, area: String? = nil) -> String? {
 		if let data = data(forServer: server, area: area) {
-			return String(data: data, encoding: String.Encoding.utf8)
+			return String(data: data, encoding: .utf8)
 		}
 		return nil
 	}
@@ -99,8 +99,8 @@ final public class CQKeychain : NSObject {
 		
 		var resultDataRef: AnyObject? = nil
 		let status = SecItemCopyMatching(passwordQuery as NSDictionary, &resultDataRef)
-		if status == noErr && resultDataRef != nil {
-			return resultDataRef as? Data
+		if status == noErr, let resultDataRef = resultDataRef as? Data {
+			return resultDataRef
 		}
 		
 		return nil
