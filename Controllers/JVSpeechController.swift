@@ -8,9 +8,10 @@
 
 import Cocoa
 
-class JVSpeechController2: NSObject, NSSpeechSynthesizerDelegate {
+@objc(JVSpeechController)
+public class JVSpeechController: NSObject, NSSpeechSynthesizerDelegate {
 	@objc(sharedSpeechController)
-	static let shared = JVSpeechController2()
+	public static let shared = JVSpeechController()
 	private var speechQueue = [(text: String, voice: NSSpeechSynthesizer.VoiceName)]()
 	private let synthesizers: [NSSpeechSynthesizer]
 
@@ -21,10 +22,11 @@ class JVSpeechController2: NSObject, NSSpeechSynthesizerDelegate {
 		for synthesizer in synthesizers {
 			synthesizer.delegate = self
 		}
+		speechQueue.reserveCapacity(15)
 	}
 	
 	@objc(startSpeakingString:usingVoice:)
-	func startSpeaking(_ string: String, usingVoice voice: NSSpeechSynthesizer.VoiceName) {
+	public func startSpeaking(_ string: String, usingVoice voice: NSSpeechSynthesizer.VoiceName) {
 		for synth in synthesizers {
 			if !synth.isSpeaking {
 				synth.setVoice(voice)
@@ -43,7 +45,7 @@ class JVSpeechController2: NSObject, NSSpeechSynthesizerDelegate {
 		speechQueue.append((text: string, voice: voice))
 	}
 	
-	func speechSynthesizer(_ sender: NSSpeechSynthesizer, didFinishSpeaking finishedSpeaking: Bool) {
+	public func speechSynthesizer(_ sender: NSSpeechSynthesizer, didFinishSpeaking finishedSpeaking: Bool) {
 		if speechQueue.count != 0  {
 			let nextSpeech = speechQueue.removeFirst()
 			sender.setVoice(nextSpeech.voice)

@@ -13,7 +13,6 @@
 #import "JVEmoticonSet.h"
 #import "JVMarkedScroller.h"
 #import "JVNotificationController.h"
-#import "JVSpeechController.h"
 #import "JVSplitView.h"
 #import "JVStyle.h"
 #import "JVStyleView.h"
@@ -30,6 +29,7 @@
 #import "NSBundleAdditions.h"
 #import <ChatCore/NSDateAdditions.h>
 #import <ChatCore/NSRegularExpressionAdditions.h>
+#import "Colloquy-Swift.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

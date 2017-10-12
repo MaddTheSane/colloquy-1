@@ -4,10 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JVSpeechController : NSObject <NSSpeechSynthesizerDelegate> {
-	NSMutableArray<NSDictionary<NSString*, NSString*>*> *_speechQueue;
-	NSArray<NSSpeechSynthesizer*> *_synthesizers;
-}
+@interface JVSpeechController : NSObject <NSSpeechSynthesizerDelegate>
 #if __has_feature(objc_class_property)
 @property (readonly, strong, class) JVSpeechController *sharedSpeechController;
 #else
