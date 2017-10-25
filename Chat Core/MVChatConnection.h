@@ -151,7 +151,7 @@ COLLOQUY_EXPORT extern NSString *MVChatConnectionDidIdentifyWithServicesNotifica
 COLLOQUY_EXPORT extern NSString *MVChatConnectionSubcodeRequestNotification;
 COLLOQUY_EXPORT extern NSString *MVChatConnectionSubcodeReplyNotification;
 
-extern NSErrorDomain MVChatConnectionErrorDomain;
+COLLOQUY_EXPORT extern NSErrorDomain MVChatConnectionErrorDomain;
 
 @class MVChatUserWatchRule;
 
