@@ -29,3 +29,10 @@
 #ifndef ENABLE_XMPP
 #define ENABLE_XMPP 1
 #endif
+
+#define COLLOQUY_EXPORT __attribute__((__visibility__("default")))
+#ifndef SYSTEM
+#include <Availability.h>
+#define SYSTEM(NAME) (defined(SYSTEM_##NAME) && SYSTEM_##NAME)
+#define SYSTEM_MAC 1
+#endif

@@ -1,3 +1,6 @@
+#ifndef __CHATCORE_MVCHATCONNECTION__
+#define __CHATCORE_MVCHATCONNECTION__
+
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SCNetworkReachability.h>
 
@@ -421,3 +424,5 @@ COLLOQUY_EXPORT
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif
