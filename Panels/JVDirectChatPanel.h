@@ -18,6 +18,7 @@ extern NSString *JVToolbarMarkItemIdentifier;
 extern NSString *JVChatMessageWasProcessedNotification;
 extern NSString *JVChatEventMessageWasProcessedNotification;
 
+COLLOQUY_EXPORT
 @interface JVDirectChatPanel : JVChatTranscriptPanel <WebUIDelegate, WebPolicyDelegate> {
 	@protected
 	IBOutlet MVTextView *send;
@@ -26,8 +27,7 @@ extern NSString *JVChatEventMessageWasProcessedNotification;
 	NSStringEncoding _encoding;
 	NSMenu *_encodingMenu;
 	NSMutableArray *_sendHistory;
-	NSMutableArray *_waitingAlerts;
-	NSMutableDictionary *_waitingAlertNames;
+	NSMutableArray<NSDictionary <NSString *, id>*> *_waitingAlerts;
 	NSMutableDictionary *_settings;
 	NSMenu *_spillEncodingMenu;
 	JVMutableChatMessage *_currentMessage;
@@ -53,7 +53,7 @@ extern NSString *JVChatEventMessageWasProcessedNotification;
 - (MVChatUser *) user;
 - (NSURL *) url;
 
-- (void) showAlert:(NSPanel *) alert withName:(NSString *) name;
+- (void) showAlert:(NSAlert *) alert withCompletionHandler:(void (^)(NSModalResponse returnCode))handler;
 
 - (void) setPreference:(id) value forKey:(NSString *) key;
 - (id) preferenceForKey:(NSString *) key;
@@ -99,7 +99,6 @@ extern NSString *JVChatEventMessageWasProcessedNotification;
 - (void) _hyperlinkRoomNames:(NSMutableAttributedString *) message;
 - (NSMutableAttributedString *) _convertRawMessage:(NSData *) message;
 - (NSMutableAttributedString *) _convertRawMessage:(NSData *) message withBaseFont:(NSFont *) baseFont;
-- (void) _alertSheetDidEnd:(NSWindow *) sheet returnCode:(NSModalResponse) returnCode;
 - (void) _didConnect:(NSNotification *) notification;
 - (void) _didDisconnect:(NSNotification *) notification;
 - (void) _errorOccurred:(NSNotification *) notification;
