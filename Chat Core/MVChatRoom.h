@@ -105,7 +105,7 @@ COLLOQUY_EXPORT
 @property(strong, readonly) MVChatUser *topicAuthor;
 @property(strong, readonly) NSDate *dateTopicChanged;
 
-@property(strong, readonly) NSSet *supportedAttributes;
+@property(strong, readonly) NSSet<NSString*> *supportedAttributes;
 @property(strong, readonly) NSDictionary *attributes;
 
 @property(readonly) NSUInteger supportedModes;
@@ -114,10 +114,10 @@ COLLOQUY_EXPORT
 @property(readonly) NSUInteger modes;
 
 @property(strong, readonly) MVChatUser *localMemberUser;
-@property(strong, readonly) NSSet *memberUsers;
-@property(strong, readonly) NSSet *bannedUsers;
+@property(strong, readonly) NSSet<MVChatUser*> *memberUsers;
+@property(strong, readonly) NSSet<MVChatUser*> *bannedUsers;
 
-- (BOOL) isEqual:(id) object;
+- (BOOL) isEqual:(nullable id) object;
 - (BOOL) isEqualToChatRoom:(MVChatRoom *) anotherUser;
 
 - (NSComparisonResult) compare:(MVChatRoom *) otherRoom;
@@ -132,7 +132,7 @@ COLLOQUY_EXPORT
 
 - (void) sendMessage:(MVChatString *) message asAction:(BOOL) action;
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding asAction:(BOOL) action;
-- (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary *) attributes;
+- (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary<NSString*,id> *) attributes;
 
 - (void) sendCommand:(NSString *) command withArguments:(MVChatString *) arguments;
 - (void) sendCommand:(NSString *) command withArguments:(MVChatString *) arguments withEncoding:(NSStringEncoding) encoding;
@@ -144,8 +144,8 @@ COLLOQUY_EXPORT
 - (void) refreshAttributeForKey:(NSString *) key;
 
 - (BOOL) hasAttributeForKey:(NSString *) key;
-- (id) attributeForKey:(NSString *) key;
-- (void) setAttribute:(id) attribute forKey:(id) key;
+- (id __nullable) attributeForKey:(NSString *) key;
+- (void) setAttribute:(id __nullable) attribute forKey:(id) key;
 
 - (id) attributeForMode:(MVChatRoomMode) mode;
 
@@ -154,9 +154,9 @@ COLLOQUY_EXPORT
 - (void) setMode:(MVChatRoomMode) mode withAttribute:(id __nullable) attribute;
 - (void) removeMode:(MVChatRoomMode) mode;
 
-- (NSSet *) memberUsersWithModes:(NSUInteger) modes;
-- (NSSet *) memberUsersWithNickname:(NSString *) nickname;
-- (NSSet *) memberUsersWithFingerprint:(NSString *) fingerprint;
+- (NSSet<MVChatUser*> *) memberUsersWithModes:(NSUInteger) modes;
+- (NSSet<MVChatUser*> *) memberUsersWithNickname:(NSString *) nickname;
+- (NSSet<MVChatUser*> *) memberUsersWithFingerprint:(NSString *) fingerprint;
 - (MVChatUser *__nullable) memberUserWithUniqueIdentifier:(id) identifier;
 - (BOOL) hasUser:(MVChatUser *) user;
 

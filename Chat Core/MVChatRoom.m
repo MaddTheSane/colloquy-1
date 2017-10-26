@@ -84,7 +84,7 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 
 #pragma mark -
 
-- (BOOL) isEqual:(id) object {
+- (BOOL) isEqual:(id _Nullable) object {
 	if( object == self ) return YES;
 	if( ! object || ! [object isKindOfClass:[self class]] ) return NO;
 	return [self isEqualToChatRoom:object];
@@ -254,13 +254,13 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 	}
 }
 
-- (id) attributeForKey:(NSString *) key {
+- (id _Nullable) attributeForKey:(NSString *) key {
 	@synchronized( _attributes ) {
 		return _attributes[key];
 	}
 }
 
-- (void) setAttribute:(id) attribute forKey:(id) key {
+- (void) setAttribute:(id _Nullable) attribute forKey:(id) key {
 	NSParameterAssert( key != nil );
 	@synchronized( _attributes ) {
 		if( attribute ) _attributes[key] = attribute;

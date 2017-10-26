@@ -3,9 +3,20 @@
 #import "NSDateAdditions.h"
 #import "JVChatRoomMember.h"
 
-#import <libxml/tree.h>
+#include <libxml/tree.h>
+
+@interface JVChatEvent ()
+@property (nullable, readwrite, setter=_setNode:) void *node;
+@end
 
 @implementation JVChatEvent
+
+@synthesize node = _node;
+
+- (instancetype)init {
+	return self = [super init];
+}
+
 - (void) dealloc {
 
 	_eventIdentifier = nil;
@@ -107,7 +118,7 @@
 
 #pragma mark -
 
-- (void *) node {
+- (nullable void *) node {
 	if( ! _node ) {
 		if( _doc ) xmlFreeDoc( _doc );
 		_doc = xmlNewDoc( (xmlChar *) "1.0" );
@@ -182,16 +193,6 @@
 
 #pragma mark -
 
-- (JVChatTranscript *) transcript {
-	return _transcript;
-}
-
-- (NSString *) eventIdentifier {
-	return _eventIdentifier;
-}
-
-#pragma mark -
-
 - (NSDate *) date {
 	[self loadSmall];
 	return _date;
@@ -229,13 +230,20 @@
 #pragma mark -
 
 @implementation JVMutableChatEvent
-+ (id) chatEventWithName:(NSString *) name andMessage:(id) message {
+@dynamic attributes;
+@dynamic eventIdentifier;
+@dynamic date;
+@dynamic name;
+@dynamic messageAsHTML;
+@dynamic messageAsPlainText;
+
++ (instancetype) chatEventWithName:(NSString *) name andMessage:(id) message {
 	return [[self alloc] initWithName:name andMessage:message];
 }
 
 #pragma mark -
 
-- (id) init {
+- (instancetype) init {
 	if( ( self = [super init] ) ) {
 		_loadedMessage = YES;
 		_loadedAttributes = YES;
@@ -247,7 +255,7 @@
 	return self;
 }
 
-- (id) initWithName:(NSString *) name andMessage:(id) message {
+- (instancetype) initWithName:(NSString *) name andMessage:(id) message {
 	if( ( self = [self init] ) ) {
 		[self setName:name];
 		[self setMessage:message];

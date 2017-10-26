@@ -24,7 +24,7 @@ COLLOQUY_EXPORT BOOL isValidUTF8( const char *string, NSUInteger length );
 #endif
 
 + (NSArray <NSString *> *) knownEmoticons;
-+ (NSSet *) knownEmojiWithEmoticons;
++ (NSSet <NSString *> *) knownEmojiWithEmoticons;
 
 - (instancetype) initWithChatData:(NSData *) data encoding:(NSStringEncoding) encoding;
 

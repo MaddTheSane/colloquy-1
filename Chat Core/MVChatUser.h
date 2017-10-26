@@ -142,7 +142,7 @@ COLLOQUY_EXPORT
 @property(strong, readonly) NSSet *supportedAttributes;
 @property(strong, readonly) NSDictionary *attributes;
 
-- (BOOL) isEqual:(id) object;
+- (BOOL) isEqual:(nullable id) object;
 - (BOOL) isEqualToChatUser:(MVChatUser *) anotherUser;
 
 - (NSComparisonResult) compare:(MVChatUser *) otherUser;
@@ -158,11 +158,11 @@ COLLOQUY_EXPORT
 - (void) refreshAttributeForKey:(NSString *) key;
 
 - (BOOL) hasAttributeForKey:(NSString *) key;
-- (id) attributeForKey:(NSString *) key;
+- (id __nullable) attributeForKey:(NSString *) key;
 - (void) setAttribute:(id __nullable) attribute forKey:(id) key;
 
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding asAction:(BOOL) action;
-- (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary *) attributes;
+- (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary<NSString*,id> *) attributes;
 
 - (void) sendCommand:(NSString *) command withArguments:(MVChatString *) arguments withEncoding:(NSStringEncoding) encoding;
 

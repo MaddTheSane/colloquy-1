@@ -1,4 +1,4 @@
-#import <libxml/tree.h>
+#include <libxml/tree.h>
 
 #import "JVChatMessage.h"
 #import "JVBuddy.h"
@@ -11,6 +11,11 @@
 
 
 @implementation JVChatMessage
+@synthesize node = _node;
+@synthesize objectSpecifier = _objectSpecifier;
+@synthesize transcript = _transcript;
+@synthesize messageIdentifier = _messageIdentifier;
+
 + (void) initialize {
 	[super initialize];
 	static BOOL tooLate = NO;
@@ -121,7 +126,7 @@
 
 #pragma mark -
 
-- (void *) node {
+- (nullable void *) node {
 	if( ! _node ) {
 		NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"IgnoreFonts", [NSNumber numberWithBool:YES], @"IgnoreFontSizes", nil];
 		NSString *htmlMessage = ( [self body] ? [[self body] HTMLFormatWithOptions:options] : @"" );
@@ -297,24 +302,6 @@
 	return _source;
 }
 
-- (JVChatTranscript *) transcript {
-	return _transcript;
-}
-
-- (NSString *) messageIdentifier {
-	return _messageIdentifier;
-}
-
-#pragma mark -
-
-- (NSScriptObjectSpecifier *) objectSpecifier {
-	return _objectSpecifier;
-}
-
-- (void) setObjectSpecifier:(NSScriptObjectSpecifier *) objectSpecifier {
-	_objectSpecifier = objectSpecifier;
-}
-
 #pragma mark -
 
 - (NSDictionary *) attributes {
@@ -367,6 +354,16 @@
 #pragma mark -
 
 @implementation JVMutableChatMessage
+@dynamic action;
+@dynamic highlighted;
+@dynamic ignoreStatus;
+@dynamic type;
+@dynamic date;
+@dynamic bodyAsPlainText;
+@dynamic bodyAsHTML;
+@dynamic source;
+@dynamic messageIdentifier;
+
 + (void) initialize {
 	[super initialize];
 	static BOOL tooLate = NO;

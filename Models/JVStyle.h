@@ -3,6 +3,8 @@
 @class JVChatMessage;
 @class JVEmoticonSet;
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString *JVStylesScannedNotification;
 extern NSString *JVDefaultStyleChangedNotification;
 extern NSString *JVDefaultStyleVariantChangedNotification;
@@ -19,55 +21,58 @@ COLLOQUY_EXPORT
 	void *_XSLStyle; /* xsltStylesheet */
 }
 + (void) scanForStyles;
-+ (NSSet *) styles;
-+ (id) styleWithIdentifier:(NSString *) identifier;
-+ (id) newWithBundle:(NSBundle *) bundle;
++ (NSSet<JVStyle*> *) styles;
++ (nullable JVStyle*) styleWithIdentifier:(NSString *) identifier;
++ (nullable JVStyle*) newWithBundle:(NSBundle *) bundle NS_SWIFT_NAME(with(bundle:));
 
-+ (id) defaultStyle;
-+ (void) setDefaultStyle:(JVStyle *) style;
+#if __has_feature(objc_class_property)
+@property (class, strong, null_resettable) JVStyle *defaultStyle;
+#else
++ (JVStyle*) defaultStyle;
++ (void) setDefaultStyle:(nullable JVStyle *) style;
+#endif
 
-- (id) initWithBundle:(NSBundle *) bundle;
+- (nullable instancetype) initWithBundle:(NSBundle *) bundle;
 
 - (void) unlink;
 - (void) reload;
-- (BOOL) isCompliant;
+@property (getter=isCompliant, readonly) BOOL compliant;
 
-- (NSBundle *) bundle;
-- (NSString *) identifier;
+@property (readonly, strong) NSBundle *bundle;
+@property (readonly, copy) NSString *identifier;
 
-- (NSString *) transformChatTranscript:(JVChatTranscript *) transcript withParameters:(NSDictionary *) parameters;
-- (NSString *) transformChatTranscriptElement:(id <JVChatTranscriptElement>) element withParameters:(NSDictionary *) parameters;
-- (NSString *) transformChatMessage:(JVChatMessage *) message withParameters:(NSDictionary *) parameters;
-- (NSString *) transformChatTranscriptElements:(NSArray *) elements withParameters:(NSDictionary *) parameters;
-- (NSString *) transformXML:(NSString *) xml withParameters:(NSDictionary *) parameters;
-- (NSString *) transformXMLDocument:(/* xmlDoc */ void *) document withParameters:(NSDictionary *) parameters;
+- (nullable NSString *) transformChatTranscript:(JVChatTranscript *) transcript withParameters:(NSDictionary<NSString*,id> *) parameters;
+- (nullable NSString *) transformChatTranscriptElement:(id <JVChatTranscriptElement>) element withParameters:(NSDictionary<NSString*,id> *) parameters;
+- (nullable NSString *) transformChatMessage:(JVChatMessage *) message withParameters:(NSDictionary<NSString*,id> *) parameters;
+- (nullable NSString *) transformChatTranscriptElements:(NSArray<id<JVChatTranscriptElement>> *) elements withParameters:(NSDictionary<NSString*,id> *) parameters;
+- (nullable NSString *) transformXML:(NSString *) xml withParameters:(NSDictionary<NSString*,id> *) parameters;
+- (nullable NSString *) transformXMLDocument:(/* xmlDoc */ void *) document withParameters:(NSDictionary<NSString*,id> *) parameters;
 
 - (NSComparisonResult) compare:(JVStyle *) style;
-- (NSString *) displayName;
+@property (readonly, copy) NSString *displayName;
 
-- (NSString *) mainVariantDisplayName;
-- (NSArray *) variantStyleSheetNames;
-- (NSArray *) userVariantStyleSheetNames;
+@property (readonly, copy) NSString *mainVariantDisplayName;
+@property (readonly, copy) NSArray<NSString*> *variantStyleSheetNames;
+@property (readonly, copy) NSArray<NSString*> *userVariantStyleSheetNames;
 - (BOOL) isUserVariantName:(NSString *) name;
-- (NSString *) defaultVariantName;
-- (void) setDefaultVariantName:(NSString *) name;
+@property (copy, nonatomic) NSString *defaultVariantName;
 
-- (JVEmoticonSet *) defaultEmoticonSet;
-- (void) setDefaultEmoticonSet:(JVEmoticonSet *) emoticons;
+@property (strong) JVEmoticonSet *defaultEmoticonSet;
 
-- (NSArray *) styleSheetOptions;
+@property (readonly, copy) NSArray<NSDictionary<NSString*,id>*> *styleSheetOptions;
 
-- (void) setMainParameters:(NSDictionary *) parameters;
-- (NSDictionary *) mainParameters;
+@property (copy) NSDictionary *mainParameters;
 
-- (NSURL *) baseLocation;
-- (NSURL *) mainStyleSheetLocation;
-- (NSURL *) variantStyleSheetLocationWithName:(NSString *) name;
-- (NSURL *) bodyTemplateLocationWithName:(NSString *) name;
-- (NSURL *) XMLStyleSheetLocation;
-- (NSURL *) previewTranscriptLocation;
+@property (readonly, copy) NSURL *baseLocation;
+@property (readonly, copy) NSURL *mainStyleSheetLocation;
+- (nullable NSURL *) variantStyleSheetLocationWithName:(NSString *) name;
+- (nullable NSURL *) bodyTemplateLocationWithName:(NSString *) name;
+@property (readonly, copy, nullable) NSURL *XMLStyleSheetLocation;
+@property (readonly, copy, nullable) NSURL *previewTranscriptLocation;
 
-- (NSString *) contentsOfMainStyleSheet;
+@property (readonly, copy) NSString *contentsOfMainStyleSheet;
 - (NSString *) contentsOfVariantStyleSheetWithName:(NSString *) name;
 - (NSString *) contentsOfBodyTemplateWithName:(NSString *) name;
 @end
+
+NS_ASSUME_NONNULL_END

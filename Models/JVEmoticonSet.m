@@ -13,6 +13,7 @@ static NSMutableSet *allEmoticonSets = nil;
 NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotification";
 
 @implementation JVEmoticonSet
+@synthesize bundle = _bundle;
 + (void) scanForEmoticonSets {
 	NSMutableSet *styles = [NSMutableSet set];
 	if( ! allEmoticonSets ) allEmoticonSets = styles;
@@ -46,7 +47,7 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 }
 
 + (NSSet *) emoticonSets {
-	return allEmoticonSets;
+	return [allEmoticonSets copy];
 }
 
 + (id) emoticonSetWithIdentifier:(NSString *) identifier {
@@ -163,10 +164,6 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 
 #pragma mark -
 
-- (NSBundle *) bundle {
-	return _bundle;
-}
-
 - (NSString *) identifier {
 	if( [[self bundle] isEqual:[NSBundle mainBundle]] )
 		return @"cc.javelin.colloquy.emoticons.text-only";
@@ -188,10 +185,6 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 }
 
 #pragma mark -
-
-- (NSDictionary *) emoticonMappings {
-	return _emoticonMappings;
-}
 
 - (NSArray *) emoticonMenuItems {
 	NSMutableArray *ret = [NSMutableArray array];

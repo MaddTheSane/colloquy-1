@@ -64,7 +64,7 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 }
 
 + (NSSet *) styles {
-	return allStyles;
+	return [allStyles copy];
 }
 
 + (id) styleWithIdentifier:(NSString *) identifier {
@@ -178,9 +178,7 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 
 #pragma mark -
 
-- (NSBundle *) bundle {
-	return _bundle;
-}
+@synthesize bundle = _bundle;
 
 - (NSString *) identifier {
 	return [_bundle bundleIdentifier];
@@ -405,22 +403,16 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 
 #pragma mark -
 
-- (void) setMainParameters:(NSDictionary *) parameters {
-	_parameters = parameters;
-}
-
-- (NSDictionary *) mainParameters {
-	return _parameters;
-}
+@synthesize mainParameters = _parameters;
 
 #pragma mark -
 
 - (NSURL *) baseLocation {
-	return [NSURL fileURLWithPath:[_bundle resourcePath]];
+    return [NSURL fileURLWithPath:[_bundle resourcePath]];
 }
 
 - (NSURL *) mainStyleSheetLocation {
-	return [NSURL fileURLWithPath:[_bundle pathForResource:@"main" ofType:@"css"]];
+    return [NSURL fileURLWithPath:[_bundle pathForResource:@"main" ofType:@"css"]];
 }
 
 - (NSURL *) variantStyleSheetLocationWithName:(NSString *) name {
