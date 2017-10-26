@@ -13,6 +13,8 @@
 
 @protocol JVChatViewController;
 
+NS_ASSUME_NONNULL_BEGIN
+
 COLLOQUY_EXPORT
 @interface JVChatController : NSObject {
 	@private
@@ -26,37 +28,39 @@ COLLOQUY_EXPORT
 
 - (void) addViewControllerToPreferedWindowController:(id <JVChatViewController>) controller userInitiated:(BOOL) initiated;
 
-- (NSSet *) allChatWindowControllers;
-- (JVChatWindowController *) createChatWindowController;
+@property (readonly, copy) NSSet<JVChatWindowController*> *allChatWindowControllers;
+- (JVChatWindowController * _Nullable) createChatWindowController;
 - (JVChatWindowController *) chatWindowControllerWithIdentifier:(NSString *) identifier;
 - (void) disposeChatWindowController:(JVChatWindowController *) controller;
 
-- (NSSet *) allChatViewControllers;
-- (NSSet *) chatViewControllersWithConnection:(MVChatConnection *) connection;
-- (NSSet *) chatViewControllersOfClass:(Class) class;
-- (NSSet *) chatViewControllersKindOfClass:(Class) class;
+@property (readonly, copy) NSSet<id <JVChatViewController>> *allChatViewControllers;
+- (NSSet<id <JVChatViewController>> *) chatViewControllersWithConnection:(MVChatConnection *) connection;
+- (NSSet<id <JVChatViewController>> *) chatViewControllersOfClass:(Class) class;
+- (NSSet<id <JVChatViewController>> *) chatViewControllersKindOfClass:(Class) class;
 
-- (JVChatRoomPanel *) chatViewControllerForRoom:(MVChatRoom *) room ifExists:(BOOL) exists;
-- (JVDirectChatPanel *) chatViewControllerForUser:(MVChatUser *) user ifExists:(BOOL) exists;
-- (JVDirectChatPanel *) chatViewControllerForUser:(MVChatUser *) user ifExists:(BOOL) exists userInitiated:(BOOL) requested;
-- (JVDirectChatPanel *) chatViewControllerForDirectChatConnection:(MVDirectChatConnection *) connection ifExists:(BOOL) exists;
-- (JVDirectChatPanel *) chatViewControllerForDirectChatConnection:(MVDirectChatConnection *) connection ifExists:(BOOL) exists userInitiated:(BOOL) initiated;
-- (JVChatTranscriptPanel *) chatViewControllerForTranscript:(NSString *) filename;
-- (JVChatConsolePanel *) chatConsoleForConnection:(MVChatConnection *) connection ifExists:(BOOL) exists;
+- (JVChatRoomPanel * _Nullable) chatViewControllerForRoom:(MVChatRoom *) room ifExists:(BOOL) exists;
+- (JVDirectChatPanel * _Nullable) chatViewControllerForUser:(MVChatUser *) user ifExists:(BOOL) exists;
+- (JVDirectChatPanel * _Nullable) chatViewControllerForUser:(MVChatUser *) user ifExists:(BOOL) exists userInitiated:(BOOL) requested;
+- (JVDirectChatPanel * _Nullable) chatViewControllerForDirectChatConnection:(MVDirectChatConnection *) connection ifExists:(BOOL) exists;
+- (JVDirectChatPanel *_Nullable ) chatViewControllerForDirectChatConnection:(MVDirectChatConnection *) connection ifExists:(BOOL) exists userInitiated:(BOOL) initiated;
+- (JVChatTranscriptPanel * _Nullable) chatViewControllerForTranscript:(NSString *) filename;
+- (JVChatConsolePanel * _Nullable) chatConsoleForConnection:(MVChatConnection *) connection ifExists:(BOOL) exists;
 
 - (JVSmartTranscriptPanel *) createSmartTranscript;
-- (NSSet *) smartTranscripts;
+@property (readonly, copy) NSSet<JVSmartTranscriptPanel*> *smartTranscripts;
 - (void) saveSmartTranscripts;
 - (void) disposeSmartTranscript:(JVSmartTranscriptPanel *) panel;
 
 - (void) disposeViewController:(id <JVChatViewController>) controller;
 - (void) detachViewController:(id <JVChatViewController>) controller;
 
-- (IBAction) detachView:(id) sender;
+- (IBAction) detachView:(nullable id) sender;
 
-- (JVIgnoreMatchResult) shouldIgnoreUser:(MVChatUser *) user withMessage:(NSAttributedString *) message inView:(id <JVChatViewController>) view;
+- (JVIgnoreMatchResult) shouldIgnoreUser:(MVChatUser *) user withMessage:(nullable NSAttributedString *) message inView:(nullable id <JVChatViewController>) view;
 @end
 
 @interface NSObject (MVChatPluginCommandSupport)
-- (BOOL) processUserCommand:(NSString *) command withArguments:(NSAttributedString *) arguments toConnection:(MVChatConnection *) connection inView:(id <JVChatViewController>) view;
+- (BOOL) processUserCommand:(NSString *) command withArguments:(NSAttributedString *) arguments toConnection:(nullable MVChatConnection *) connection inView:(nullable id <JVChatViewController>) view;
 @end
+
+NS_ASSUME_NONNULL_END

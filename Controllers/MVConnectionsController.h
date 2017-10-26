@@ -1,6 +1,7 @@
 #import "JVInspectorController.h"
 
 @class MVChatConnection;
+@class KAIgnoreRule;
 
 COLLOQUY_EXPORT
 @interface MVConnectionsController : NSWindowController <JVInspectionDelegator, NSToolbarDelegate> {
@@ -57,7 +58,7 @@ COLLOQUY_EXPORT
 	NSArray *_userSelectionPossibleUsers;
 
 	NSMapTable *_connectionToErrorToAlertMap;
-	NSMutableArray *_bookmarks;
+	NSMutableArray<NSMutableDictionary<NSString*,id>*> *_bookmarks;
 	NSMutableArray *_joinRooms;
 	MVChatConnection *_passConnection;
 	MVChatConnection *_certificateConnection;
@@ -92,10 +93,10 @@ COLLOQUY_EXPORT
 
 - (IBAction) userSelectionSelected:(id) sender;
 
-- (NSArray *) connections;
-- (NSArray *) connectedConnections;
+- (NSArray<MVChatConnection*> *) connections;
+- (NSArray<MVChatConnection*> *) connectedConnections;
 - (MVChatConnection *) connectionForServerAddress:(NSString *) address;
-- (NSArray *) connectionsForServerAddress:(NSString *) address;
+- (NSArray<MVChatConnection*> *) connectionsForServerAddress:(NSString *) address;
 - (BOOL) managesConnection:(MVChatConnection *) connection;
 
 - (void) setAutoConnect:(BOOL) autoConnect forConnection:(MVChatConnection *) connection;
@@ -104,14 +105,14 @@ COLLOQUY_EXPORT
 - (void) setShowConsoleOnConnect:(BOOL) autoConsole forConnection:(MVChatConnection *) connection;
 - (BOOL) showConsoleOnConnectForConnection:(MVChatConnection *) connection;
 
-- (void) setJoinRooms:(NSArray *) rooms forConnection:(MVChatConnection *) connection;
-- (NSMutableArray *) joinRoomsForConnection:(MVChatConnection *) connection;
+- (void) setJoinRooms:(NSArray<NSString*> *) rooms forConnection:(MVChatConnection *) connection;
+- (NSMutableArray<NSString*> *) joinRoomsForConnection:(MVChatConnection *) connection;
 
 - (void) setConnectCommands:(NSString *) commands forConnection:(MVChatConnection *) connection;
 - (NSString *) connectCommandsForConnection:(MVChatConnection *) connection;
 
-- (void) setIgnoreRules:(NSArray *) ignores forConnection:(MVChatConnection *) connection;
-- (NSMutableArray *) ignoreRulesForConnection:(MVChatConnection *) connection;
+- (void) setIgnoreRules:(NSArray<KAIgnoreRule*> *) ignores forConnection:(MVChatConnection *) connection;
+- (NSMutableArray<KAIgnoreRule*> *) ignoreRulesForConnection:(MVChatConnection *) connection;
 
 - (void) addConnection:(MVChatConnection *) connection;
 - (void) addConnection:(MVChatConnection *) connection keepBookmark:(BOOL) keep;

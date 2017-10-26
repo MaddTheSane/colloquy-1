@@ -26,8 +26,8 @@
 
 #pragma mark -
 
-- (id) initWithRoom:(JVChatRoomPanel *) room andUser:(MVChatUser *) user {
-	if( ( self = [self init] ) ) {
+- (instancetype) initWithRoom:(JVChatRoomPanel *) room andUser:(MVChatUser *) user {
+	if( ( self = [super init] ) ) {
 		_room = room; // prevent circular retain (__weak in .h)
 		_user = user; // intentionally strong referencex (no extra qualifier in .h)
 
@@ -40,7 +40,7 @@
 	return self;
 }
 
-- (id) initLocalMemberWithRoom:(JVChatRoomPanel *) room {
+- (instancetype) initLocalMemberWithRoom:(JVChatRoomPanel *) room {
 	return [self initWithRoom:room andUser:[[room connection] localUser]];
 }
 
@@ -98,19 +98,14 @@
 #pragma mark -
 #pragma mark Associations
 
-- (JVChatRoomPanel *) room {
-	return _room;
-}
+@synthesize room = _room;
+@synthesize user = _user;
 
 - (MVChatConnection *) connection {
 	return [_user connection];
 }
 
-- (MVChatUser *) user {
-	return _user;
-}
-
-- (JVBuddy *) buddy {
+- (nullable JVBuddy *) buddy {
 	return [[MVBuddyListController sharedBuddyList] buddyForUser:_user];
 }
 

@@ -15,7 +15,7 @@ COLLOQUY_EXPORT extern NSString *JVMachineStoppedIdlingNotification;
 	BOOL _isIdle;
 	BOOL _terminateWithoutConfirm;
 	NSDate *_launchDate;
-	NSMutableArray *_previouslyConnectedConnections;
+	NSMutableArray<NSDictionary<NSString*,id>*> *_previouslyConnectedConnections;
 }
 
 @property(nonatomic, strong, readonly) CQMPreferencesWindowController *preferencesWindowController;
@@ -37,7 +37,7 @@ COLLOQUY_EXPORT extern NSString *JVMachineStoppedIdlingNotification;
 
 + (BOOL) isTerminating;
 
-- (NSTimeInterval) idleTime;
+@property (readonly) NSTimeInterval idleTime;
 
 - (IBAction) terminateWithoutConfirm:(id) sender;
 

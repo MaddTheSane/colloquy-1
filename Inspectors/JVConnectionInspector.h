@@ -58,7 +58,7 @@
 	BOOL _ignoreRuleIsNew;
 	NSMutableArray *_ignoreRules;
 }
-- (id) initWithConnection:(MVChatConnection *) connection;
+- (instancetype) initWithConnection:(MVChatConnection *) connection;
 
 - (void) selectTabWithIdentifier:(NSString *) identifier;
 

@@ -36,7 +36,7 @@
 	BOOL _nibLoaded;
 	BOOL _identifierIsNew;
 }
-- (id) initWithBuddy:(JVBuddy *) buddy;
+- (instancetype) initWithBuddy:(JVBuddy *) buddy;
 
 - (IBAction) changeBuddyIcon:(id) sender;
 - (IBAction) changeFirstName:(id) sender;
