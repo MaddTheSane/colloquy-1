@@ -89,10 +89,6 @@ static void silc_client_file_monitor( SilcClient client, SilcClientConnection co
 #pragma mark -
 
 @implementation MVSILCUploadFileTransfer
-+ (void) initialize {
-	[super initialize];
-}
-
 + (nullable id) transferWithSourceFile:(NSString *) path toUser:(MVChatUser *) user passively:(BOOL) passive {
 	NSURL *url = [NSURL URLWithString:@"http://colloquy.info/ip.php"];
 	NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:3.];
@@ -163,12 +159,6 @@ static void silc_client_file_monitor( SilcClient client, SilcClientConnection co
 #pragma mark -
 
 @implementation MVSILCDownloadFileTransfer
-+ (void) initialize {
-	[super initialize];
-}
-
-#pragma mark -
-
 - (id) initWithSessionID:(SilcUInt32) sessionID toUser:(MVChatUser *) chatUser {
 	if( ( self = [self initWithUser:chatUser] ) )
 		[self _setSessionID:sessionID];

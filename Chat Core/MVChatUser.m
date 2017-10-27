@@ -52,12 +52,10 @@ NSString *MVChatUserAttributeUpdatedNotification = @"MVChatUserAttributeUpdatedN
 @implementation MVChatUser
 #if ENABLE(SCRIPTING)
 + (void) initialize {
-	[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceChatUser:toString: ) toConvertFromClass:[MVChatUser class] toClass:[NSString class]];
-		tooLate = YES;
-	}
+	});
 }
 
 + (id) coerceChatUser:(id) value toString:(Class) class {

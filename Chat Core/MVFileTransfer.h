@@ -44,16 +44,9 @@ static inline NSString *NSStringFromMVFileTransferStatus(MVFileTransferStatus st
 COLLOQUY_EXPORT
 @interface MVFileTransfer : NSObject
 
-#if __has_feature(objc_class_property)
 @property (class) NSRange fileTransferPortRange;
-@property (class, getter=isAutoPortMappingEnabled) BOOL autoPortMappingEnabled;
-#else
-+ (void) setFileTransferPortRange:(NSRange) range;
-+ (NSRange) fileTransferPortRange;
 
-+ (void) setAutoPortMappingEnabled:(BOOL) enable;
-+ (BOOL) isAutoPortMappingEnabled;
-#endif
+@property (class, getter=isAutoPortMappingEnabled) BOOL autoPortMappingEnabled;
 
 - (instancetype) init NS_UNAVAILABLE;
 - (instancetype) initWithUser:(MVChatUser *) user NS_DESIGNATED_INITIALIZER;

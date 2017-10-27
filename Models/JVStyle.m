@@ -106,12 +106,10 @@ NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotificatio
 }
 
 + (void) initialize {
-	//[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		[self scanForStyles];
-		tooLate = YES;
-	}
+	});
 }
 
 #pragma mark -

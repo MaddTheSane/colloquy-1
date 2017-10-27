@@ -39,11 +39,7 @@ COLLOQUY_EXPORT extern NSString *JVMachineStoppedIdlingNotification;
 
 - (IBAction) markAllDisplays:(nullable id) sender;
 
-#if __has_feature(objc_class_property)
 @property (class, readonly, getter=isTerminating) BOOL terminating;
-#else
-+ (BOOL) isTerminating;
-#endif
 
 @property (readonly) NSTimeInterval idleTime;
 

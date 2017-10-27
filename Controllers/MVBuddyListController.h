@@ -54,11 +54,7 @@ COLLOQUY_EXPORT
 	BOOL _needsToAnimate;
 	BOOL _animating;
 }
-#if __has_feature(objc_class_property)
 @property (readonly, strong, class) MVBuddyListController *sharedBuddyList;
-#else
-+ (MVBuddyListController *) sharedBuddyList;
-#endif
 
 - (void) save;
 

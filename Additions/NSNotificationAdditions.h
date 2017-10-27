@@ -3,11 +3,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSNotificationCenter (NSNotificationCenterAdditions)
-#if __has_feature(objc_class_property)
 @property (class, readonly, strong) NSNotificationCenter *chatCenter;
-#else
-+ (NSNotificationCenter *) chatCenter;
-#endif
 
 - (void) postNotificationOnMainThread:(NSNotification *) notification;
 - (void) postNotificationOnMainThread:(NSNotification *) notification waitUntilDone:(BOOL) wait;
