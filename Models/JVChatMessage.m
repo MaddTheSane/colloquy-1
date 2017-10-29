@@ -92,10 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
 		ret -> _attributedMessage = [[self body] mutableCopyWithZone:zone];
 		ret -> _source = [[self source] copyWithZone:zone];
 		ret -> _date = [[self date] copyWithZone:zone];
-		ret -> _action = [self isAction];
-		ret -> _highlighted = [self isHighlighted];
-		ret -> _ignoreStatus = [self ignoreStatus];
-		ret -> _type = [self type];
+		ret -> _action = self.action;
+		ret -> _highlighted = self.highlighted;
+		ret -> _ignoreStatus = self.ignoreStatus;
+		ret -> _type = self.type;
 		ret -> _attributes = [[self attributes] copyWithZone:zone];
 	}
 
