@@ -880,15 +880,13 @@ static SilcClientOperations silcClientOps = {
 
 @implementation MVSILCChatConnection
 + (void) initialize {
-	[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		silc_pkcs_register_default();
 		silc_hash_register_default();
 		silc_cipher_register_default();
 		silc_hmac_register_default();
-		tooLate = YES;
-	}
+	});
 }
 
 + (NSArray *) defaultServerPorts {

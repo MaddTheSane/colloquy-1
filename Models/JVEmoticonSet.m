@@ -2,8 +2,8 @@
 #import "NSBundleAdditions.h"
 #import <ChatCore/NSRegularExpressionAdditions.h>
 
-@interface JVEmoticonSet (JVEmoticonSetPrivate)
-- (void) _setBundle:(NSBundle *) bundle;
+@interface JVEmoticonSet ()
+@property (readwrite, strong, nonatomic, null_resettable, setter=_setBundle:) NSBundle *bundle;
 @end
 
 #pragma mark -
@@ -75,12 +75,10 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 }
 
 + (void) initialize {
-	[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		[self scanForEmoticonSets];
-		tooLate = YES;
-	}
+	});
 }
 
 #pragma mark -
@@ -225,20 +223,18 @@ NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotificatio
 	NSString *contents = [NSString stringWithContentsOfURL:[self styleSheetLocation] encoding:NSUTF8StringEncoding error:NULL];
 	return ( contents ? contents : @"" );
 }
-@end
 
-#pragma mark -
+#pragma mark - JVEmoticonSetPrivate
 
-@implementation JVEmoticonSet (JVEmoticonSetPrivate)
 - (void) _setBundle:(NSBundle *) bundle {
-	NSString *path = [_bundle pathForResource:@"emoticons" ofType:@"plist"];
-	if( ! path ) path = [[NSBundle mainBundle] pathForResource:@"emoticons" ofType:@"plist"];
+	NSURL *path = [_bundle URLForResource:@"emoticons" withExtension:@"plist"];
+	if( ! path ) path = [[NSBundle mainBundle] URLForResource:@"emoticons" withExtension:@"plist"];
 
 	_bundle = bundle;
-	_emoticonMappings = path ? [NSDictionary dictionaryWithContentsOfFile:path] : @{};
+	_emoticonMappings = path ? [NSDictionary dictionaryWithContentsOfURL:path] : @{};
 
-	NSString *file = [_bundle pathForResource:@"menu" ofType:@"plist"];
+	NSURL *file = [_bundle URLForResource:@"menu" withExtension:@"plist"];
 
-	_emoticonMenu = [NSArray arrayWithContentsOfFile:file];
+	_emoticonMenu = [NSArray arrayWithContentsOfURL:file];
 }
 @end

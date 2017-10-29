@@ -18,15 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize messageIdentifier = _messageIdentifier;
 
 + (void) initialize {
-	[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceMessage:toString: ) toConvertFromClass:[JVChatMessage class] toClass:[NSString class]];
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceString:toMessage: ) toConvertFromClass:[NSString class] toClass:[JVChatMessage class]];
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceMessage:toTextStorage: ) toConvertFromClass:[JVChatMessage class] toClass:[NSTextStorage class]];
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceTextStorage:toMessage: ) toConvertFromClass:[NSTextStorage class] toClass:[JVChatMessage class]];
-		tooLate = YES;
-	}
+	});
 }
 
 + (id) coerceString:(id) value toMessage:(Class) class {
@@ -94,10 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
 		ret -> _attributedMessage = [[self body] mutableCopyWithZone:zone];
 		ret -> _source = [[self source] copyWithZone:zone];
 		ret -> _date = [[self date] copyWithZone:zone];
-		ret -> _action = [self isAction];
-		ret -> _highlighted = [self isHighlighted];
-		ret -> _ignoreStatus = [self ignoreStatus];
-		ret -> _type = [self type];
+		ret -> _action = self.action;
+		ret -> _highlighted = self.highlighted;
+		ret -> _ignoreStatus = self.ignoreStatus;
+		ret -> _type = self.type;
 		ret -> _attributes = [[self attributes] copyWithZone:zone];
 	}
 
@@ -365,15 +363,13 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic messageIdentifier;
 
 + (void) initialize {
-	[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceMessage:toString: ) toConvertFromClass:[JVMutableChatMessage class] toClass:[NSString class]];
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceString:toMessage: ) toConvertFromClass:[NSString class] toClass:[JVMutableChatMessage class]];
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceMessage:toTextStorage: ) toConvertFromClass:[JVMutableChatMessage class] toClass:[NSTextStorage class]];
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceTextStorage:toMessage: ) toConvertFromClass:[NSTextStorage class] toClass:[JVMutableChatMessage class]];
-		tooLate = YES;
-	}
+	});
 }
 
 + (instancetype) messageWithText:(id) body sender:(nullable id) sender {

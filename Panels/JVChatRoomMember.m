@@ -13,12 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation JVChatRoomMember
 + (void) initialize {
-	[super initialize];
-	static BOOL tooLate = NO;
-	if( ! tooLate ) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		[[NSScriptCoercionHandler sharedCoercionHandler] registerCoercer:[self class] selector:@selector( coerceChatRoomMember:toString: ) toConvertFromClass:[JVChatRoomMember class] toClass:[NSString class]];
-		tooLate = YES;
-	}
+	});
 }
 
 + (id) coerceChatRoomMember:(id) value toString:(Class) class {

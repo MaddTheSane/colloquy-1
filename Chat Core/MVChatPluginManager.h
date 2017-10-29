@@ -15,13 +15,8 @@ COLLOQUY_EXPORT
 	NSMutableDictionary<NSString*,NSString*> *_invalidPlugins;
 	BOOL _reloadingPlugins;
 }
-#if __has_feature(objc_class_property)
 @property (readonly, strong, class) MVChatPluginManager *defaultManager;
 @property (readonly, copy, class) NSArray<NSString*> *pluginSearchPaths;
-#else
-+ (MVChatPluginManager *) defaultManager;
-+ (NSArray<NSString*> *) pluginSearchPaths;
-#endif
 
 @property(copy, readonly) NSArray<id<MVChatPlugin>> *plugins;
 
@@ -29,8 +24,8 @@ COLLOQUY_EXPORT
 - (void) addPlugin:(id <MVChatPlugin>) plugin;
 - (void) removePlugin:(id <MVChatPlugin>) plugin;
 
-- (nullable NSArray<id<MVChatPlugin>> *) pluginsThatRespondToSelector:(SEL) selector;
-- (nullable NSArray<id<MVChatPlugin>> *) pluginsOfClass:(Class __nullable) class thatRespondToSelector:(SEL) selector;
+- (NSArray<id<MVChatPlugin>> *) pluginsThatRespondToSelector:(SEL) selector;
+- (NSArray<id<MVChatPlugin>> *) pluginsOfClass:(Class __nullable) class thatRespondToSelector:(SEL) selector;
 
 - (nullable NSArray *) makePluginsPerformInvocation:(NSInvocation *) invocation;
 - (nullable NSArray *) makePluginsPerformInvocation:(NSInvocation *) invocation stoppingOnFirstSuccessfulReturn:(BOOL) stop;

@@ -17,15 +17,9 @@ COLLOQUY_EXPORT
 	NSSet *_safeFileExtentions;
 }
 
-#if __has_feature(objc_class_property)
 @property (copy, class) NSString *userPreferredDownloadFolder;
-@property (readonly, strong, class) MVFileTransferController *defaultController;
-#else
-+ (NSString *) userPreferredDownloadFolder;
-+ (void) setUserPreferredDownloadFolder:(NSString *) path;
 
-+ (MVFileTransferController *) defaultController;
-#endif
+@property (readonly, strong, class) MVFileTransferController *defaultController;
 
 - (IBAction) showTransferManager:(id) sender;
 - (IBAction) hideTransferManager:(id) sender;

@@ -34,12 +34,14 @@ typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberDisciplineMode) {
 	MVChatRoomMemberDisciplineQuietedMode = 1 << 0
 };
 
-COLLOQUY_EXPORT extern NSString *MVChatRoomMemberQuietedFeature;
-COLLOQUY_EXPORT extern NSString *MVChatRoomMemberVoicedFeature;
-COLLOQUY_EXPORT extern NSString *MVChatRoomMemberHalfOperatorFeature;
-COLLOQUY_EXPORT extern NSString *MVChatRoomMemberOperatorFeature;
-COLLOQUY_EXPORT extern NSString *MVChatRoomMemberAdministratorFeature;
-COLLOQUY_EXPORT extern NSString *MVChatRoomMemberFounderFeature;
+typedef NSString *MVChatRoomMemberFeatures NS_STRING_ENUM;
+
+COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberQuietedFeature;
+COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberVoicedFeature;
+COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberHalfOperatorFeature;
+COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberOperatorFeature;
+COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberAdministratorFeature;
+COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberFounderFeature;
 
 COLLOQUY_EXPORT extern NSString *MVChatRoomJoinedNotification;
 COLLOQUY_EXPORT extern NSString *MVChatRoomPartedNotification;
@@ -106,7 +108,7 @@ COLLOQUY_EXPORT
 @property(strong, readonly) MVChatUser *topicAuthor;
 @property(copy, readonly) NSDate *dateTopicChanged;
 
-@property(strong, readonly) NSSet<NSString*> *supportedAttributes;
+@property(strong, readonly) NSSet<MVChatRoomMemberFeatures> *supportedAttributes;
 @property(strong, readonly) NSDictionary *attributes;
 
 @property(readonly) NSUInteger supportedModes;

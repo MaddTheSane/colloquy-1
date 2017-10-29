@@ -98,7 +98,7 @@ NSString *const MVChatPluginManagerDidFindInvalidPluginsNotification = @"MVChatP
 				}
 
 				if( [bundle load] && [[bundle principalClass] conformsToProtocol:@protocol( MVChatPlugin )] ) {
-					id plugin = [[[bundle principalClass] alloc] initWithManager:self];
+					id<MVChatPlugin> plugin = [[[bundle principalClass] alloc] initWithManager:self];
 					if( plugin ) [self addPlugin:plugin];
 				}
 			}
@@ -141,11 +141,11 @@ NSString *const MVChatPluginManagerDidFindInvalidPluginsNotification = @"MVChatP
 	return [_plugins copy];
 }
 
-- (nullable NSArray *) pluginsThatRespondToSelector:(SEL) selector {
+- (NSArray *) pluginsThatRespondToSelector:(SEL) selector {
 	return [self pluginsOfClass:NULL thatRespondToSelector:selector];
 }
 
-- (nullable NSArray *) pluginsOfClass:(Class __nullable) class thatRespondToSelector:(SEL) selector {
+- (NSArray *) pluginsOfClass:(Class __nullable) class thatRespondToSelector:(SEL) selector {
 	NSParameterAssert( selector != NULL );
 
 	NSMutableArray *qualified = [[NSMutableArray alloc] init];
