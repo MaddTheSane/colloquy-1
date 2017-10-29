@@ -102,7 +102,7 @@ COLLOQUY_EXPORT
 @property(strong, readonly) NSDate *dateParted;
 @property(nonatomic, copy) NSDate *mostRecentUserActivity;
 
-@property NSStringEncoding encoding;
+@property NSStringEncoding encoding NS_REFINED_FOR_SWIFT;
 
 @property(copy, readonly) NSData *topic;
 @property(strong, readonly) MVChatUser *topicAuthor;

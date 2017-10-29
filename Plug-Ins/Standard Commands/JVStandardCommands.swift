@@ -212,7 +212,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			return true
 		} else if let msg = msg, (user != nil || room != nil) && msg.length > 0 {
 			let target: MVMessaging? = room ?? user
-			target!.sendMessage(msg, withEncoding: room?.encoding ?? connection.encoding, asAction: false)
+			target!.sendMessage(msg, encoding: room?.encoding ?? connection.encoding, asAction: false)
 			return true
 		}
 		

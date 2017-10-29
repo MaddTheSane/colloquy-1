@@ -238,7 +238,7 @@ COLLOQUY_EXPORT
 @property(strong, readonly) NSString *urlScheme;
 @property(strong, readonly, nullable) NSURL *url;
 
-@property(nonatomic) NSStringEncoding encoding;
+@property(nonatomic) NSStringEncoding encoding NS_REFINED_FOR_SWIFT;
 
 @property(copy, nullable) NSString *realName;
 

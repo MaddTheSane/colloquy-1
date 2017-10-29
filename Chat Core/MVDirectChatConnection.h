@@ -40,7 +40,7 @@ COLLOQUY_EXPORT
 - (void) initiate;
 - (void) disconnect;
 
-@property NSStringEncoding encoding;
+@property NSStringEncoding encoding NS_REFINED_FOR_SWIFT;
 
 @property MVChatMessageFormat outgoingChatFormat;
 
