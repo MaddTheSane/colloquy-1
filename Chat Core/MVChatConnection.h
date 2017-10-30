@@ -84,38 +84,40 @@ typedef BOOL (^MVPeerTrustHandler)(SecTrustRef);
 @class MVChatUser;
 @class MVChatUserWatchRule;
 
-COLLOQUY_EXPORT extern NSString *MVChatConnectionWatchFeature;
+typedef NSString *MVChatConnectionFeatures NS_EXTENSIBLE_STRING_ENUM;
+
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionWatchFeature;
 
 // IRC3v1 Required
-COLLOQUY_EXPORT extern NSString *MVChatConnectionSASLFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionMultipleNicknamePrefixFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionSASLFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionMultipleNicknamePrefixFeature;
 
 // IRC3v1 Optional
-COLLOQUY_EXPORT extern NSString *MVChatConnectionAccountNotifyFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionAwayNotifyFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionExtendedJoinFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionTLSFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionAccountNotifyFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionAwayNotifyFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionExtendedJoinFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionTLSFeature;
 
 // IRC3v2 Required
-COLLOQUY_EXPORT extern NSString *MVChatConnectionMessageTagsFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionMonitorFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionMessageTagsFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionMonitorFeature;
 
 // IRC3v2 Optional
-COLLOQUY_EXPORT extern NSString *MVChatConnectionServerTimeFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionBatchFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionUserhostInNamesFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionChghostFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionServerTimeFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionBatchFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionUserhostInNamesFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionChghostFeature;
 
-COLLOQUY_EXPORT extern NSString *MVChatConnectionAccountTagFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionCapNotifyFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionInviteFeature;
-COLLOQUY_EXPORT extern NSString *MVChatConnectionEchoMessageFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionAccountTagFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionCapNotifyFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionInviteFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionEchoMessageFeature;
 
 // IRC3v3 Prototypes
-COLLOQUY_EXPORT extern NSString *MVChatConnectionSTSFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionSTSFeature;
 
 // InspIRCd Enhancements
-COLLOQUY_EXPORT extern NSString *MVChatConnectionNamesxFeature;
+COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionNamesxFeature;
 
 // Notifications
 COLLOQUY_EXPORT extern NSString *MVChatConnectionWillConnectNotification;
@@ -229,7 +231,7 @@ COLLOQUY_EXPORT
 
 @property(nonatomic, copy) NSString *uniqueIdentifier;
 
-@property(strong, readonly) NSSet<NSString*> *supportedFeatures;
+@property(strong, readonly) NSSet<MVChatConnectionFeatures> *supportedFeatures;
 @property(readonly) const NSStringEncoding *supportedStringEncodings;
 
 @property(strong, readonly) NSError *lastError;
