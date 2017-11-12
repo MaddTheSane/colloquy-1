@@ -2506,6 +2506,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy;
 				PRODUCT_NAME = Colloquy;
+				STRIP_PNG_TEXT = YES;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2564,6 +2565,7 @@
 					__text,
 					Colloquy.order,
 				);
+				STRIP_PNG_TEXT = YES;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2601,7 +2603,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Colloquy.pch;
-				INFOPLIST_FILE = "Tests/Colloquy Tests-Info.plist";
+				INFOPLIST_FILE = "Mac-Old/Tests/Colloquy Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Colloquy.app/Contents/MacOS/Colloquy";
@@ -2620,7 +2622,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Colloquy.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INFOPLIST_FILE = "Tests/Colloquy Tests-Info.plist";
+				INFOPLIST_FILE = "Mac-Old/Tests/Colloquy Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Colloquy.app/Contents/MacOS/Colloquy";
