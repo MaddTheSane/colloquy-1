@@ -1,0 +1,380 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C4FD36807C6BC25000EA451 /* JVJavaScriptPluginLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4FD36607C6BC25000EA451 /* JVJavaScriptPluginLoader.m */; };
+		1C8748F40B2A801800286F24 /* plugin.html in Resources */ = {isa = PBXBuildFile; fileRef = 1C8748F30B2A801800286F24 /* plugin.html */; };
+		1CEF8F1C0A3AB66F0054298A /* JVJavaScriptChatPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF8E6B0A3AAF530054298A /* JVJavaScriptChatPlugin.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		9295C8511675E158009F9014 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9295C8501675E158009F9014 /* WebKit.framework */; };
+		9295C95D16782FF1009F9014 /* ChatCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9295C95C16782FF1009F9014 /* ChatCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		92823D0B16900FA8000EC36E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CB2CD8C052DDC570094AAA4;
+			remoteInfo = "Colloquy (Application)";
+		};
+		92823D0D16900FA8000EC36E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1C51B4CD052DE14B00BB459B;
+			remoteInfo = "Standard Commands (Plug-In)";
+		};
+		92823D0F16900FA8000EC36E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CBF685150820186F00F498FB;
+			remoteInfo = "Colloquy (Metadata Importer)";
+		};
+		92823D1116900FB2000EC36E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1CB2CCF5052DDC560094AAA4;
+			remoteInfo = "Colloquy (Application)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1C0A13F308B0374800324E25 /* JVJavaScriptChatPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVJavaScriptChatPlugin.h; sourceTree = "<group>"; };
+		1C415F6A0B35126500239EB3 /* Template.js */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.javascript; name = Template.js; path = ../SDK/JavaScript/Template.js; sourceTree = SOURCE_ROOT; tabWidth = 4; usesTabs = 1; };
+		1C4FD36507C6BC25000EA451 /* JVJavaScriptPluginLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVJavaScriptPluginLoader.h; sourceTree = "<group>"; };
+		1C4FD36607C6BC25000EA451 /* JVJavaScriptPluginLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVJavaScriptPluginLoader.m; sourceTree = "<group>"; };
+		1C8748F30B2A801800286F24 /* plugin.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = plugin.html; sourceTree = "<group>"; };
+		1CEF8E6B0A3AAF530054298A /* JVJavaScriptChatPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVJavaScriptChatPlugin.m; sourceTree = "<group>"; };
+		8D5B49B6048680CD000E48DA /* JavaScript Support.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "JavaScript Support.plugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Colloquy (Old).xcodeproj"; path = "../../../../Colloquy (Old).xcodeproj"; sourceTree = "<group>"; };
+		9295C8501675E158009F9014 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9295C95C16782FF1009F9014 /* ChatCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ChatCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C29E3BED1F64A31200C18D21 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		C29E3BEE1F64A31200C18D21 /* old-mac-target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "old-mac-target.xcconfig"; sourceTree = "<group>"; };
+		C29E3BEF1F64A31200C18D21 /* target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = target.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5B49B3048680CD000E48DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9295C95D16782FF1009F9014 /* ChatCore.framework in Frameworks */,
+				9295C8511675E158009F9014 /* WebKit.framework in Frameworks */,
+				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* FScript Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */,
+				9295C95C16782FF1009F9014 /* ChatCore.framework */,
+				1C415F6A0B35126500239EB3 /* Template.js */,
+				08FB77AFFE84173DC02AAC07 /* Classes */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				1C9AE940086A59CF008ED7AD /* Settings */,
+				089C1671FE841209C02AAC07 /* Frameworks */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = "FScript Plugin";
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9295C8501675E158009F9014 /* WebKit.framework */,
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				1C8748F30B2A801800286F24 /* plugin.html */,
+			);
+			indentWidth = 4;
+			name = Resources;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
+		};
+		08FB77AFFE84173DC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				1CEF8E6B0A3AAF530054298A /* JVJavaScriptChatPlugin.m */,
+				1C0A13F308B0374800324E25 /* JVJavaScriptChatPlugin.h */,
+				1C4FD36607C6BC25000EA451 /* JVJavaScriptPluginLoader.m */,
+				1C4FD36507C6BC25000EA451 /* JVJavaScriptPluginLoader.h */,
+			);
+			indentWidth = 4;
+			name = Classes;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D5B49B6048680CD000E48DA /* JavaScript Support.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C9AE940086A59CF008ED7AD /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				C29E3BED1F64A31200C18D21 /* Base.xcconfig */,
+				C29E3BEE1F64A31200C18D21 /* old-mac-target.xcconfig */,
+				C29E3BEF1F64A31200C18D21 /* target.xcconfig */,
+			);
+			indentWidth = 4;
+			name = Settings;
+			path = ../../../../Settings;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
+		};
+		92823D0516900FA8000EC36E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92823D0C16900FA8000EC36E /* Colloquy.app */,
+				92823D0E16900FA8000EC36E /* Standard Commands.plugin */,
+				92823D1016900FA8000EC36E /* Colloquy.mdimporter */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D5B49AC048680CD000E48DA /* JavaScript Support Plugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C7F306B0855489300D41FB0 /* Build configuration list for PBXNativeTarget "JavaScript Support Plugin" */;
+			buildPhases = (
+				8D5B49B1048680CD000E48DA /* Sources */,
+				8D5B49B3048680CD000E48DA /* Frameworks */,
+				8D5B49AF048680CD000E48DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				92823D1216900FB2000EC36E /* PBXTargetDependency */,
+			);
+			name = "JavaScript Support Plugin";
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = "FScript Plugin";
+			productReference = 8D5B49B6048680CD000E48DA /* JavaScript Support.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "Colloquy Project";
+			};
+			buildConfigurationList = 1C7F306F0855489300D41FB0 /* Build configuration list for PBXProject "JavaScript Support" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				zh_TW,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* FScript Plugin */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 92823D0516900FA8000EC36E /* Products */;
+					ProjectRef = 92823D0416900FA8000EC36E /* Colloquy (Old).xcodeproj */;
+				},
+			);
+			projectRoot = ../..;
+			targets = (
+				8D5B49AC048680CD000E48DA /* JavaScript Support Plugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		92823D0C16900FA8000EC36E /* Colloquy.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Colloquy.app;
+			remoteRef = 92823D0B16900FA8000EC36E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92823D0E16900FA8000EC36E /* Standard Commands.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Standard Commands.plugin";
+			remoteRef = 92823D0D16900FA8000EC36E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92823D1016900FA8000EC36E /* Colloquy.mdimporter */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Colloquy.mdimporter;
+			remoteRef = 92823D0F16900FA8000EC36E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5B49AF048680CD000E48DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C8748F40B2A801800286F24 /* plugin.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5B49B1048680CD000E48DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C4FD36807C6BC25000EA451 /* JVJavaScriptPluginLoader.m in Sources */,
+				1CEF8F1C0A3AB66F0054298A /* JVJavaScriptChatPlugin.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		92823D1216900FB2000EC36E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Colloquy (Application)";
+			targetProxy = 92823D1116900FB2000EC36E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1C7F306C0855489300D41FB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C29E3BEF1F64A31200C18D21 /* target.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "${COLLOQUY_WORKSPACE_ROOT}/Basic.pch";
+				HEADER_SEARCH_PATHS = (
+					../../Controllers,
+					../../Models,
+					../../Panels,
+					../../Views,
+					"${COLLOQUY_WORKSPACE_ROOT}/Additions",
+					"\"${COLLOQUY_WORKSPACE_ROOT}/Chat Core\"",
+					"${COLLOQUY_WORKSPACE_ROOT}/Shared/Models",
+				);
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.javascript-support";
+				PRODUCT_NAME = "JavaScript Support";
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		1C7F306E0855489300D41FB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C29E3BEF1F64A31200C18D21 /* target.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "${COLLOQUY_WORKSPACE_ROOT}/Basic.pch";
+				HEADER_SEARCH_PATHS = (
+					../../Controllers,
+					../../Models,
+					../../Panels,
+					../../Views,
+					"${COLLOQUY_WORKSPACE_ROOT}/Additions",
+					"\"${COLLOQUY_WORKSPACE_ROOT}/Chat Core\"",
+					"${COLLOQUY_WORKSPACE_ROOT}/Shared/Models",
+				);
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.javascript-support";
+				PRODUCT_NAME = "JavaScript Support";
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+		1C7F30700855489300D41FB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C29E3BED1F64A31200C18D21 /* Base.xcconfig */;
+			buildSettings = {
+				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)/../../../..";
+				SYMROOT = ../../build;
+			};
+			name = Debug;
+		};
+		1C7F30720855489300D41FB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C29E3BED1F64A31200C18D21 /* Base.xcconfig */;
+			buildSettings = {
+				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)/../../../..";
+				SYMROOT = ../../build;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C7F306B0855489300D41FB0 /* Build configuration list for PBXNativeTarget "JavaScript Support Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C7F306C0855489300D41FB0 /* Debug */,
+				1C7F306E0855489300D41FB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1C7F306F0855489300D41FB0 /* Build configuration list for PBXProject "JavaScript Support" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C7F30700855489300D41FB0 /* Debug */,
+				1C7F30720855489300D41FB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}
