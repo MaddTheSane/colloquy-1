@@ -36,7 +36,7 @@ final public class CQKeychain : NSObject {
 	
 	@objc(setPassword:forServer:area:displayValue:)
 	public func setPassword(_ password: String, forServer server: String, area: String? = nil, displayValue: String?) {
-		guard password.characters.count != 0 else {
+		guard password.count != 0 else {
 			removePassword(forServer: server, area: area)
 			return
 		}
