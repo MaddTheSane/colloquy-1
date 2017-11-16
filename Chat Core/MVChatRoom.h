@@ -34,7 +34,7 @@ typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberDisciplineMode) {
 	MVChatRoomMemberDisciplineQuietedMode = 1 << 0
 };
 
-typedef NSString *MVChatRoomMemberFeatures NS_STRING_ENUM;
+typedef NSString *MVChatRoomMemberFeatures NS_TYPED_ENUM;
 
 COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberQuietedFeature;
 COLLOQUY_EXPORT extern MVChatRoomMemberFeatures MVChatRoomMemberVoicedFeature;

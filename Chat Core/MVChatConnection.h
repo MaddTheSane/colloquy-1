@@ -84,7 +84,7 @@ typedef BOOL (^MVPeerTrustHandler)(SecTrustRef);
 @class MVChatUser;
 @class MVChatUserWatchRule;
 
-typedef NSString *MVChatConnectionFeatures NS_EXTENSIBLE_STRING_ENUM;
+typedef NSString *MVChatConnectionFeatures NS_TYPED_EXTENSIBLE_ENUM;
 
 COLLOQUY_EXPORT extern MVChatConnectionFeatures MVChatConnectionWatchFeature;
 
