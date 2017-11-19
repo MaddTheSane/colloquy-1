@@ -234,8 +234,12 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 			[strMsg replaceOccurrencesOfString:@" :" withString:@" " options:NSLiteralSearch range:NSMakeRange( 0, [strMsg length] )];
 		}
 
-		[strMsg replaceOccurrencesOfString:@"\n" withString:@"" options:NSAnchoredSearch | NSBackwardsSearch range:NSMakeRange( [strMsg length] - 2, 2 )];
-		[strMsg replaceOccurrencesOfString:@"\r" withString:@"" options:NSAnchoredSearch | NSBackwardsSearch range:NSMakeRange( [strMsg length] - 1, 1 )];
+		if ([strMsg length]) {
+			[strMsg replaceOccurrencesOfString:@"\n" withString:@"" options:NSAnchoredSearch | NSBackwardsSearch range:NSMakeRange( [strMsg length] - 1, 1 )];
+		}
+		if ([strMsg length]) {
+			[strMsg replaceOccurrencesOfString:@"\r" withString:@"" options:NSAnchoredSearch | NSBackwardsSearch range:NSMakeRange( [strMsg length] - 1, 1 )];
+		}
 
 		if( ! outbound && ! _verbose ) {
 			NSMutableArray *parts = [[strMsg componentsSeparatedByString:@" "] mutableCopy];
@@ -298,17 +302,11 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	[[display textStorage] endEditing];
 }
 
-- (void) performScrollToBottom {
-	NSScrollView *scrollView = [display enclosingScrollView];
-	NSClipView *clipView = [scrollView contentView];
-	[scrollView scrollClipView:clipView toPoint:[clipView constrainScrollPoint:NSMakePoint( 0, [[scrollView documentView] bounds].size.height )]];
-	[scrollView reflectScrolledClipView:clipView];
-}
-
 - (void) layoutManager:(NSLayoutManager *) layoutManager didCompleteLayoutForTextContainer:(nullable NSTextContainer *) textContainer atEnd:(BOOL) atEnd {
 	NSUInteger length = [[display string] length];
-	if( _scrollerIsAtBottom && atEnd && length != _lastDisplayTextLength )
-		[self performScrollToBottom];
+	if( _scrollerIsAtBottom && atEnd && length != _lastDisplayTextLength ) {
+		[display scrollToEndOfDocument:self];
+	}
 	_lastDisplayTextLength = length;
 }
 
@@ -372,7 +370,7 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 
 	[send reset:nil];
 	[self textDidChange:nil];
-	[self performScrollToBottom];
+	[display scrollToEndOfDocument:self];
 }
 
 - (BOOL) textView:(NSTextView *) textView enterKeyPressed:(NSEvent *) event {
@@ -490,8 +488,9 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 
 	[splitView adjustSubviews];
 
-	if( _scrollerIsAtBottom )
-		[self performScrollToBottom];
+	if( _scrollerIsAtBottom ) {
+		[display scrollToEndOfDocument:self];
+	}
 }
 
 #pragma mark -
@@ -599,8 +598,9 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	NSRect sendFrame = [[send enclosingScrollView] frame];
 	_sendHeight = sendFrame.size.height;
 
-	if( _scrollerIsAtBottom )
-		[self performScrollToBottom];
+	if( _scrollerIsAtBottom ) {
+		[display scrollToEndOfDocument:self];
+	}
 
 	if( ! _forceSplitViewPosition && ! [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] )
 		[(JVSplitView *)[notification object] savePositionUsingName:@"JVChatSplitViewPosition"];

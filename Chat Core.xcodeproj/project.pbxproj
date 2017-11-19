@@ -11,7 +11,6 @@
 		1C11B7A109C27AC800789814 /* BSD License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1C11B7A009C27AC800789814 /* BSD License.txt */; };
 		1C18955A0E29CC19003CFED0 /* MVAvailability.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C1895590E29CC19003CFED0 /* MVAvailability.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1C3560060B4CCE95008A93FA /* MVUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C3560050B4CCE95008A93FA /* MVUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1C386E8E103246B500660864 /* TCMPortMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C386E8D103246B500660864 /* TCMPortMapper.framework */; };
 		1C3D55BC05A4CBBE00F25F5E /* NSNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3D55BA05A4CBBE00F25F5E /* NSNumberAdditions.m */; };
 		1C3D55C205A4DC1E00F25F5E /* NSMethodSignatureAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3D55C005A4DC1E00F25F5E /* NSMethodSignatureAdditions.m */; };
 		1C51B483052DE0CB00BB459B /* NSAttributedStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E98622018B412B01EE70DE /* NSAttributedStringAdditions.m */; };
@@ -82,8 +81,10 @@
 		92FC6D3C16C7C04E00EF6568 /* NSRegularExpressionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FC6D3A16C7C04E00EF6568 /* NSRegularExpressionAdditions.m */; };
 		C22181D11F649FE300F2E814 /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C22181D01F649FCE00F2E814 /* NSDateAdditions.m */; };
 		C22181D21F649FE600F2E814 /* NSDateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C22181CF1F649FCE00F2E814 /* NSDateAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2417A091F915D8C0073F676 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24179FE1F915C8C0073F676 /* CocoaAsyncSocket.framework */; };
-		C2B1A2031F652442003442D5 /* XMPPFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2B1A2021F652442003442D5 /* XMPPFramework.framework */; };
+		C2A2CAB51FC101B400A68495 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A2CAB31FC1014000A68495 /* CocoaLumberjack.framework */; };
+		C2A2CACE1FC111E100A68495 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A2CACA1FC110D800A68495 /* CocoaAsyncSocket.framework */; };
+		C2A2CACF1FC111E700A68495 /* TCMPortMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A2CACB1FC110D800A68495 /* TCMPortMapper.framework */; };
+		C2A2CAD01FC111E700A68495 /* XMPPFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A2CACC1FC110D800A68495 /* XMPPFramework.framework */; };
 		DD0A301B0BD8812D0054443A /* MVDirectClientConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C0FE8A80B4F647D00855B9C /* MVDirectClientConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD0A301E0BD881560054443A /* MVDirectChatConnectionPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C9C14170B50B3AB005F9F28 /* MVDirectChatConnectionPrivate.h */; };
 		DD0A30200BD881590054443A /* InterThreadMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CD6290C096118B900BD1DD2 /* InterThreadMessaging.h */; };
@@ -112,7 +113,6 @@
 		1C2EF7EB0427A40B00000102 /* MVChatPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVChatPluginManager.h; sourceTree = "<group>"; };
 		1C2EF7EC0427A40B00000102 /* MVChatPluginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MVChatPluginManager.m; sourceTree = "<group>"; };
 		1C3560050B4CCE95008A93FA /* MVUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVUtilities.h; sourceTree = "<group>"; };
-		1C386E8D103246B500660864 /* TCMPortMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TCMPortMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C3D55B905A4CBBE00F25F5E /* NSNumberAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberAdditions.h; sourceTree = "<group>"; };
 		1C3D55BA05A4CBBE00F25F5E /* NSNumberAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberAdditions.m; sourceTree = "<group>"; };
 		1C3D55BF05A4DC1E00F25F5E /* NSMethodSignatureAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMethodSignatureAdditions.h; sourceTree = "<group>"; };
@@ -182,7 +182,6 @@
 		431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MVSILCFileTransfer.m; sourceTree = "<group>"; };
 		5577DD0E1C599B48001A76E1 /* MVMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVMessaging.h; sourceTree = "<group>"; };
 		55A3A0531D0B8B29001F92CA /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		55A3A05A1D0BB993001F92CA /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/usr/lib/libicucore.tbd; sourceTree = DEVELOPER_DIR; };
 		55AA73C81C554FD000BD820C /* ChatCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = ChatCore.modulemap; sourceTree = SOURCE_ROOT; };
 		55B260891F8CC2350084EEA9 /* MaddsPathExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaddsPathExtensions.h; sourceTree = "<group>"; };
 		55B2608A1F8CC2350084EEA9 /* MaddsPathExtensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MaddsPathExtensions.m; sourceTree = "<group>"; };
@@ -197,9 +196,11 @@
 		C21296FD1F6463A000555EE3 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		C22181CF1F649FCE00F2E814 /* NSDateAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSDateAdditions.h; sourceTree = "<group>"; };
 		C22181D01F649FCE00F2E814 /* NSDateAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
-		C24179FE1F915C8C0073F676 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29E3BFD1F64A3F400C18D21 /* target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = target.xcconfig; sourceTree = "<group>"; };
-		C2B1A2021F652442003442D5 /* XMPPFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XMPPFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2A2CAB31FC1014000A68495 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
+		C2A2CACA1FC110D800A68495 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		C2A2CACB1FC110D800A68495 /* TCMPortMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TCMPortMapper.framework; sourceTree = "<group>"; };
+		C2A2CACC1FC110D800A68495 /* XMPPFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XMPPFramework.framework; sourceTree = "<group>"; };
 		DD47412E0BD35A2E00D93AB9 /* MVXMPPChatRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVXMPPChatRoom.h; sourceTree = "<group>"; };
 		DD47412F0BD35A2E00D93AB9 /* MVXMPPChatRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MVXMPPChatRoom.m; sourceTree = "<group>"; };
 		DDF64CE30BD29E41009E8FF6 /* MVXMPPChatConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVXMPPChatConnection.h; sourceTree = "<group>"; };
@@ -220,9 +221,10 @@
 				1C5A234006FA4FEE00A51F10 /* libsilcclient.framework in Frameworks */,
 				1C5A233F06FA4FEE00A51F10 /* libsilc.framework in Frameworks */,
 				55A3A0541D0B8B29001F92CA /* libicucore.tbd in Frameworks */,
-				C2417A091F915D8C0073F676 /* CocoaAsyncSocket.framework in Frameworks */,
-				1C386E8E103246B500660864 /* TCMPortMapper.framework in Frameworks */,
-				C2B1A2031F652442003442D5 /* XMPPFramework.framework in Frameworks */,
+				C2A2CACE1FC111E100A68495 /* CocoaAsyncSocket.framework in Frameworks */,
+				C2A2CAB51FC101B400A68495 /* CocoaLumberjack.framework in Frameworks */,
+				C2A2CACF1FC111E700A68495 /* TCMPortMapper.framework in Frameworks */,
+				C2A2CAD01FC111E700A68495 /* XMPPFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +239,7 @@
 				F50B0AA10170C89301A84BDE /* Resources */,
 				1C9AE8DF086A5218008ED7AD /* Settings */,
 				C26D0E131F5B0B3C00B58261 /* old-mac-binary-frameworks */,
+				C2A2CAB21FC1012C00A68495 /* Source Dependencies */,
 				089C1671FE841209C02AAC07 /* Frameworks */,
 				1CB2C8CC052DDA360094AAA4 /* Products */,
 			);
@@ -246,7 +249,6 @@
 		089C1671FE841209C02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				55A3A05C1D0BB99D001F92CA /* iOS */,
 				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
 			);
 			name = Frameworks;
@@ -257,9 +259,6 @@
 			children = (
 				55A3A0531D0B8B29001F92CA /* libicucore.tbd */,
 				1C9FFB130FA1958300748177 /* libicucore.dylib */,
-				C24179FE1F915C8C0073F676 /* CocoaAsyncSocket.framework */,
-				1C386E8D103246B500660864 /* TCMPortMapper.framework */,
-				C2B1A2021F652442003442D5 /* XMPPFramework.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -336,14 +335,6 @@
 			tabWidth = 4;
 			usesTabs = 1;
 		};
-		55A3A05C1D0BB99D001F92CA /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				55A3A05A1D0BB993001F92CA /* libicucore.tbd */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
 		922B1FF21692C41F002ECDFD /* Logging */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +352,17 @@
 			);
 			path = "old-mac-binary-frameworks";
 			sourceTree = "<group>";
+		};
+		C2A2CAB21FC1012C00A68495 /* Source Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				C2A2CACA1FC110D800A68495 /* CocoaAsyncSocket.framework */,
+				C2A2CAB31FC1014000A68495 /* CocoaLumberjack.framework */,
+				C2A2CACB1FC110D800A68495 /* TCMPortMapper.framework */,
+				C2A2CACC1FC110D800A68495 /* XMPPFramework.framework */,
+			);
+			name = "Source Dependencies";
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		DDF64CE20BD29DA4009E8FF6 /* XMPP Support */ = {
 			isa = PBXGroup;
