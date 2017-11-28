@@ -159,6 +159,23 @@ NS_ASSUME_NONNULL_BEGIN
 	return [renderer PDFRender];
 }
 
+- (NSString *) selectedText {
+	if (self.isLoading)
+		return nil;
+
+	static NSString *const selectedTextJSCommand = @"window.getSelection().toString()";
+
+	__block NSString *selectedText = nil;
+	dispatch_group_t group = dispatch_group_create();
+	dispatch_group_enter(group);
+	[self stringByEvaluatingJavaScriptFromString:selectedTextJSCommand completionHandler:^(NSString *result) {
+		selectedText = result ?: @"";
+		dispatch_group_leave(group);
+	}];
+	dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+	return selectedText;
+}
+
 - (void) setTimestampPosition:(CQTimestampPosition) timestampPosition {
 	_timestampPosition = timestampPosition;
 
@@ -299,7 +316,7 @@ NS_ASSUME_NONNULL_BEGIN
 		if ([transcriptDelegate transcriptView:self handleOpenURL:request.URL])
 			return NO;
 
-	[[UIApplication sharedApplication] openURL:request.URL];
+	[[UIApplication sharedApplication] openURL:request.URL options:@{} completionHandler:nil];
 
 	return NO;
 }
@@ -543,8 +560,7 @@ NS_ASSUME_NONNULL_BEGIN
 	_showRoomTopic = (CQShowRoomTopic)[[CQSettingsController settingsController] integerForKey:@"CQShowRoomTopic"];
 
 	self.dataDetectorTypes = UIDataDetectorTypeNone;
-	if ([self respondsToSelector:@selector(setAllowsLinkPreview:)])
-		self.allowsLinkPreview = YES;
+	self.allowsLinkPreview = YES;
 	self.allowsInlineMediaPlayback = YES;
 
 	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(_userDefaultsChanged:) name:CQSettingsDidChangeNotification object:nil];

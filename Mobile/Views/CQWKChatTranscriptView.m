@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 	WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
 	configuration.allowsInlineMediaPlayback = YES;
 	configuration.processPool = [[WKProcessPool alloc] init];
+	configuration.dataDetectorTypes = WKDataDetectorTypeAll;
 
 	if (!(self = [super initWithFrame:frame configuration:configuration]))
 		return nil;
@@ -150,6 +151,24 @@ NS_ASSUME_NONNULL_BEGIN
 	return [renderer PDFRender];
 }
 
+- (NSString *) selectedText {
+	if (self.isLoading)
+		return nil;
+
+	static NSString *const selectedTextJSCommand = @"window.getSelection().toString()";
+
+	__block NSString *selectedText = nil;
+	dispatch_group_t group = dispatch_group_create();
+	dispatch_group_enter(group);
+	[self stringByEvaluatingJavaScriptFromString:selectedTextJSCommand completionHandler:^(NSString *result) {
+		selectedText = result ?: @"";
+		dispatch_group_leave(group);
+	}];
+
+	dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+	return selectedText;
+}
+
 - (void) setTimestampPosition:(CQTimestampPosition) timestampPosition {
 	_timestampPosition = timestampPosition;
 
@@ -230,7 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	__block NSString *tappedURL = nil;
 #define TappedPointOffset 20
-	for (int x = point.x - TappedPointOffset, i = 0; i < 3 && !tappedURL.length; x += TappedPointOffset, i++)
+	for (int x = point.x - TappedPointOffset, i = 0; i < 3 && !tappedURL.length; x += TappedPointOffset, i++) {
 		for (int y = point.y - TappedPointOffset, j = 0; j < 3 && !tappedURL.length; y += TappedPointOffset, j++) {
 			[self stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"urlUnderTapAtPoint(%d, %d)", x, y] completionHandler:^(NSString *result) {
 				if (tappedURL.length) // if a different execution found a URL already, don't call the delegate again
@@ -246,6 +265,7 @@ NS_ASSUME_NONNULL_BEGIN
 					[transcriptDelegate transcriptView:self handleLongPressURL:[NSURL URLWithString:tappedURL] atLocation:_lastTouchLocation];
 			}];
 		}
+	}
 }
 
 - (void) swipeGestureRecognized:(UISwipeGestureRecognizer *) swipeGestureRecognizer {
@@ -299,7 +319,7 @@ NS_ASSUME_NONNULL_BEGIN
 		}
 	}
 
-	[[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+	[[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
 
 	decisionHandler(WKNavigationActionPolicyCancel);
 }
@@ -520,8 +540,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void) _commonInitialization {
-	if ([self respondsToSelector:@selector(setAllowsLinkPreview:)])
-		self.allowsLinkPreview = YES;
+	self.allowsLinkPreview = YES;
+
 	self.scrollView.delegate = self;
 	self.navigationDelegate = self;
 
