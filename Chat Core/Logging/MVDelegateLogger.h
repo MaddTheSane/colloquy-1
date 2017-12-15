@@ -1,4 +1,4 @@
-#import <CocoaLumberjack/DDLogMacros.h>
+@import CocoaLumberjack;
 
 @class MVDelegateLogger;
 

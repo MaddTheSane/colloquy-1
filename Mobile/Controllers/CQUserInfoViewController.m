@@ -40,8 +40,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 
+- (void) viewDidLoad {
+	[super viewDidLoad];
+
+	[self.tableView hideEmptyCells];
+}
+
 - (void) viewDidAppear:(BOOL) animated {
 	[super viewDidAppear:animated];
+
+	[self _updateTimes];
 
 	_updateTimesTimer = [NSTimer scheduledTimerWithTimeInterval:1. target:self selector:@selector(_updateTimes) userInfo:nil repeats:YES];
 	_updateInfoTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(_updateInfo) userInfo:nil repeats:YES];
@@ -181,7 +189,7 @@ NS_ASSUME_NONNULL_BEGIN
 			cell.textLabel.text = NSLocalizedString(@"connected", "Connected user info label");
 
 			if (_user.status != MVChatUserOfflineStatus && _user.dateConnected) {
-				cell.detailTextLabel.text = humanReadableTimeInterval([_user.dateConnected timeIntervalSinceNow]);
+				cell.detailTextLabel.text = humanReadableTimeInterval(-[_user.dateConnected timeIntervalSinceNow]);
 				cell.accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Connected: %@", @"Voiceover Connected label"), cell.detailTextLabel.text];
 			} else {
 				cell.detailTextLabel.text = NSLocalizedString(@"Offline", "Offline label");
@@ -276,7 +284,7 @@ NS_ASSUME_NONNULL_BEGIN
 	// Connected time
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	if (cell) cell.detailTextLabel.text = (online ? humanReadableTimeInterval([_user.dateConnected timeIntervalSinceNow]) : NSLocalizedString(@"Offline", "Offline label"));
+	if (cell) cell.detailTextLabel.text = (online ? humanReadableTimeInterval(-[_user.dateConnected timeIntervalSinceNow]) : NSLocalizedString(@"Offline", "Offline label"));
 	[cell layoutSubviews];
 
 	// Idle time

@@ -114,6 +114,12 @@ static NSString *const CQPSListTypeFont = @"Font";
 
 #pragma mark -
 
+- (void) viewDidLoad {
+	[super viewDidLoad];
+
+	[self.tableView hideEmptyCells];
+}
+
 - (void) viewWillAppear:(BOOL) animated {
 	[super viewWillAppear:animated];
 
@@ -379,7 +385,7 @@ static NSString *const CQPSListTypeFont = @"Font";
 	} else if ([rowDictionary[CQPSType] isEqualToString:CQPSTitleValueSpecifier]) {
 		NSString *address = rowDictionary[CQPSAddress];
 		if ([rowDictionary[CQPSAction] isEqualToString:CQPSLink])
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:address]];
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:address] options:@{} completionHandler:nil];
 		else if ([rowDictionary[CQPSAction] isEqualToString:CQPSEmail]) {
 #if !SYSTEM(TV)
 			MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];

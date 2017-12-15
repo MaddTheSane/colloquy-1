@@ -1,4 +1,4 @@
-#import <tgmath.h>
+#include <tgmath.h>
 #import "JVMarkedScroller.h"
 
 @interface JVMark : NSObject

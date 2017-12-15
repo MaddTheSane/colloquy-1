@@ -327,6 +327,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C29E3BF41F64A33A00C18D21 /* old-mac-target.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
+				);
 				GCC_PREFIX_HEADER = "${COLLOQUY_WORKSPACE_ROOT}/Basic.pch";
 				HEADER_SEARCH_PATHS = (
 					../../Controllers,
@@ -347,6 +351,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C29E3BF41F64A33A00C18D21 /* old-mac-target.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
+				);
 				GCC_PREFIX_HEADER = "${COLLOQUY_WORKSPACE_ROOT}/Basic.pch";
 				HEADER_SEARCH_PATHS = (
 					../../Controllers,

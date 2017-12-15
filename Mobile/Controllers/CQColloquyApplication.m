@@ -14,6 +14,9 @@
 #import "UIApplicationAdditions.h"
 #import "UIFontAdditions.h"
 
+#import <SafariServices/SafariServices.h>
+#import <UserNotifications/UserNotifications.h>
+
 #import <HockeySDK/HockeySDK.h>
 
 static NSMutableArray <NSString *> *highlightWords;
@@ -24,7 +27,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 #define BrowserAlertTag 1
 
-@interface CQColloquyApplication () <UIApplicationDelegate, CQAlertViewDelegate, BITHockeyManagerDelegate>
+@interface CQColloquyApplication () <UIApplicationDelegate, CQAlertViewDelegate, BITHockeyManagerDelegate, UNUserNotificationCenterDelegate>
 @end
 
 @implementation CQColloquyApplication {
@@ -335,6 +338,9 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	_mainWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	_rootContainerViewController = [[CQRootContainerViewController alloc] init];
 
+	// UNUserNotificationCenter required (requires?) this to be done before app…:didFinishLaunching…: return's
+	[UNUserNotificationCenter currentNotificationCenter].delegate = self;
+
 	return YES;
 }
 
@@ -364,7 +370,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 - (void) applicationWillEnterForeground:(UIApplication *) application {
 #if !SYSTEM(TV)
-	[self cancelAllLocalNotifications];
+	[[UNUserNotificationCenter currentNotificationCenter] removeAllPendingNotificationRequests];
 #endif
 }
 
@@ -372,23 +378,13 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	_oldSwipeOrientationValue = [[CQSettingsController settingsController] objectForKey:@"CQSplitSwipeOrientations"];
 }
 
+- (void) userNotificationCenter:(UNUserNotificationCenter *) center didReceiveNotificationResponse:(UNNotificationResponse *) response withCompletionHandler:(void(^)(void)) completionHandler {
+	[self handleNotificationWithUserInfo:response.notification.request.content.userInfo];
+
+	self.applicationIconBadgeNumber = response.notification.request.content.badge.integerValue;
+}
+
 #if !SYSTEM(TV)
-- (void) application:(UIApplication *) application didReceiveLocalNotification:(UILocalNotification *) notification {
-	[self handleNotificationWithUserInfo:notification.userInfo];
-}
-
-- (void) application:(UIApplication *) application didReceiveRemoteNotification:(NSDictionary *) userInfo {
-	NSDictionary *apsInfo = userInfo[@"aps"];
-	if (!apsInfo.count)
-		return;
-
-	self.applicationIconBadgeNumber = [apsInfo[@"badge"] integerValue];
-}
-
-- (void) application:(UIApplication *) application didRegisterUserNotificationSettings:(UIUserNotificationSettings *) notificationSettings {
-	[self registerForRemoteNotifications];
-}
-
 - (void) application:(UIApplication *) application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {
 	if (!deviceToken.length) {
 		[[CQAnalyticsController defaultController] setObject:nil forKey:@"device-push-token"];
@@ -570,20 +566,21 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	return @"";
 }
 
-- (BOOL) openURL:(NSURL *) url {
-	return [self openURL:url promptForExternal:YES];
+- (void) openURL:(NSURL*) url options:(NSDictionary<NSString *, id> *) options completionHandler:(void (^ __nullable)(BOOL success)) completionHandler {
+	[self openURL:url options:options completionHandler:completionHandler promptForExternal:YES];
 }
 
-- (BOOL) openURL:(NSURL *) url promptForExternal:(BOOL) prompt {
-	if ([[CQConnectionsController defaultController] handleOpenURL:url])
-		return YES;
-
-	if (url && ![self canOpenURL:url])
-		return NO;
+- (void) openURL:(NSURL *) url options:(NSDictionary<NSString *,id> *) options completionHandler:(void (^)(BOOL)) completionHandler promptForExternal:(BOOL) prompt {
+	if ([[CQConnectionsController defaultController] handleOpenURL:url]) {
+		completionHandler(YES);
+		return;
+	}
 
 	if ([self isSpecialApplicationURL:url]) {
-		if (!prompt)
-			return [super openURL:url];
+		if (!prompt) {
+			[super openURL:url options:options completionHandler:completionHandler];
+			return;
+		}
 
 		CQAlertView *alert = [[CQAlertView alloc] init];
 
@@ -603,9 +600,67 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 		[alert addButtonWithTitle:NSLocalizedString(@"Open", @"Open button title")];
 
 		[alert show];
-	} else [super openURL:url];
+	} else {
+		NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
 
-	return YES;
+		BOOL isWebLink = [components.scheme isCaseInsensitiveEqualToString:@"http"] || [components.scheme isCaseInsensitiveEqualToString:@"https"];
+		NSString *selectedBrowser = [[NSUserDefaults standardUserDefaults] stringForKey:@"CQSelectedBrowser"];
+		if (!isWebLink || [selectedBrowser isEqualToString:@"Safari"]) {
+			[super openURL:url options:options completionHandler:completionHandler];
+
+			return;
+		}
+
+		if ([selectedBrowser isEqualToString:@"Colloquy"]) {
+			SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+			[self.window.rootViewController presentViewController:safariViewController animated:YES completion:nil];
+
+			return;
+		}
+
+		NSURL *nextURL = nil;
+		if ([selectedBrowser isEqualToString:@"Chrome"]) {
+			components.scheme = [components.scheme stringByReplacingOccurrencesOfString:@"http" withString:@"googlechrome" options:NSCaseInsensitiveSearch | NSAnchoredSearch range:NSMakeRange(0, components.scheme.length)];
+
+			nextURL = components.URL;
+		} else if ([selectedBrowser isEqualToString:@"Firefox"]) {
+			NSURLComponents *nextComponents = [[NSURLComponents alloc] initWithString:@"firefox://open-url"];
+			nextComponents.queryItems = @[
+				[NSURLQueryItem queryItemWithName:@"url" value:url.absoluteString]
+			];
+
+			nextURL = nextComponents.URL;
+		} else if ([selectedBrowser isEqualToString:@"Brave"]) {
+			NSURLComponents *nextComponents = [[NSURLComponents alloc] initWithString:@"brave://open-url"];
+			nextComponents.queryItems = @[
+				[NSURLQueryItem queryItemWithName:@"url" value:url.absoluteString]
+			];
+
+			nextURL = nextComponents.URL;
+		}
+
+		[super openURL:nextURL options:options completionHandler:^(BOOL success) {
+			if (completionHandler)
+				completionHandler(success);
+
+			if (!success) {
+				[self redirectURLFromUnhandledAppNamed:selectedBrowser toSafari:url];
+			}
+		}];
+
+	}
+}
+
+- (void) redirectURLFromUnhandledAppNamed:(NSString *) appName toSafari:(NSURL *) url {
+	CQAlertView *alert = [[CQAlertView alloc] init];
+	alert.delegate = self;
+	alert.tag = BrowserAlertTag;
+	alert.title = NSLocalizedString(@"Browser Error", @"Browser Error Alert Title");
+	alert.message = [NSString stringWithFormat:NSLocalizedString(@"There was a problem opening '%@' in '%@'. Continue with Safari?", @"Browser Error message text containing URL and App Name"), url.absoluteString, appName];
+	alert.cancelButtonIndex = [alert addButtonWithTitle:NSLocalizedString(@"Dismiss", @"Dismiss alert button title")];
+	[alert associateObject:url forKey:@"userInfo"];
+	[alert addButtonWithTitle:NSLocalizedString(@"Continue", @"Continue button title")];
+	[alert show];
 }
 
 #pragma mark -
@@ -613,7 +668,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 - (void) alertView:(CQAlertView *) alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
 	if (alertView.tag != BrowserAlertTag || alertView.cancelButtonIndex == buttonIndex)
 		return;
-	[super openURL:[alertView associatedObjectForKey:@"userInfo"]];
+	[super openURL:[alertView associatedObjectForKey:@"userInfo"] options:@{} completionHandler:nil];
 }
 
 #pragma mark -
@@ -649,9 +704,6 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 }
 
 - (void) setAppIconOptions:(CQAppIconOptions) appIconOptions {
-	if (![self respondsToSelector:@selector(setShortcutItems:)])
-		return;
-
 	_appIconOptions = appIconOptions;
 
 	NSMutableArray <UIMutableApplicationShortcutItem *> *options = [NSMutableArray array];
@@ -689,41 +741,12 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 #pragma mark -
 
-- (UIUserNotificationType) enabledNotificationTypes {
-	return self.currentUserNotificationSettings.types;
-}
-
-- (void) registerForNotificationTypes:(UIUserNotificationType) types {
-	[self registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
-}
-
-- (BOOL) areNotificationBadgesAllowed {
-	return (_deviceToken || [self enabledNotificationTypes] & UIUserNotificationTypeBadge);
-}
-
-- (BOOL) areNotificationSoundsAllowed {
-	return (_deviceToken || [self enabledNotificationTypes] & UIUserNotificationTypeSound);
-}
-
-- (BOOL) areNotificationAlertsAllowed {
-	return (_deviceToken || [self enabledNotificationTypes] & UIUserNotificationTypeAlert);
-}
-
-- (void) setApplicationIconBadgeNumber:(NSInteger) applicationIconBadgeNumber {
-	if (self.areNotificationBadgesAllowed)
-		[super setApplicationIconBadgeNumber:applicationIconBadgeNumber];
-}
-
-- (void) presentLocalNotificationNow:(UILocalNotification *) notification {
-	if (![self areNotificationAlertsAllowed])
-		notification.alertBody = nil;
-	if (![self areNotificationSoundsAllowed])
-		notification.soundName = nil;
-	if (![self areNotificationBadgesAllowed])
-		notification.applicationIconBadgeNumber = 0;
-
-	if (notification.alertBody.length || notification.soundName.length || notification.applicationIconBadgeNumber > 0)
-		[super presentLocalNotificationNow:notification];
+- (void) registerForNotificationTypes:(UNAuthorizationOptions) types {
+	[[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:types completionHandler:^(BOOL granted, NSError * _Nullable error) {
+		if (granted) {
+			[self registerForRemoteNotifications];
+		}
+	}];
 }
 
 - (void) registerForPushNotifications {
@@ -731,7 +754,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	static BOOL registeredForPush;
 	if (!registeredForPush) {
 
-		[self registerForNotificationTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert];
+		[self registerForNotificationTypes:UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert];
 		registeredForPush = YES;
 	}
 #endif

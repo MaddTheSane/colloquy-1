@@ -29,8 +29,8 @@
 
 #if !SYSTEM(TV)
 #import <MediaPlayer/MPMusicPlayerController.h>
-
 #import <Social/Social.h>
+#import <UserNotifications/UserNotifications.h>
 #endif
 
 #import <objc/message.h>
@@ -551,15 +551,22 @@ NS_ASSUME_NONNULL_BEGIN
 	[super loadView];
 
 //	// while CQWKChatView exists and is ready to be used (for the most part), WKWebView does not support being loaded from a xib yet
-////	CQUITextChatTranscriptView *webkitChatTranscriptView = [[CQUITextChatTranscriptView alloc] initWithFrame:transcriptView.frame];
-//	CQWKChatTranscriptView *webkitChatTranscriptView = [[CQWKChatTranscriptView alloc] initWithFrame:transcriptView.frame];
-//	webkitChatTranscriptView.autoresizingMask = transcriptView.autoresizingMask;
-//	webkitChatTranscriptView.transcriptDelegate = self;
-//
-//	[transcriptView.superview insertSubview:webkitChatTranscriptView aboveSubview:transcriptView];
-//
-//	[transcriptView removeFromSuperview];
-//	transcriptView = webkitChatTranscriptView;
+#if SYSTEM(TV)
+	CQUITextChatTranscriptView *chatTranscriptView = [[CQUITextChatTranscriptView alloc] initWithFrame:transcriptView.frame];
+#elif 1
+	CQWKChatTranscriptView *chatTranscriptView = [[CQWKChatTranscriptView alloc] initWithFrame:transcriptView.frame];
+#else
+	CQUIChatTranscriptView *chatTranscriptView = nil;
+#endif
+	chatTranscriptView.autoresizingMask = transcriptView.autoresizingMask;
+	chatTranscriptView.transcriptDelegate = self;
+
+	if (chatTranscriptView) {
+		[transcriptView.superview insertSubview:chatTranscriptView aboveSubview:transcriptView];
+
+		[transcriptView removeFromSuperview];
+		transcriptView = chatTranscriptView;
+	}
 }
 
 - (void) viewDidLoad {
@@ -599,8 +606,7 @@ NS_ASSUME_NONNULL_BEGIN
 	[[NSNotificationCenter chatCenter] addObserver:self selector:@selector(didNotBookmarkLink:) name:CQBookmarkingDidNotSaveLinkNotification object:nil];
 
 	if ([transcriptView.styleIdentifier hasCaseInsensitiveSuffix:@"-dark"])
-		if ([self.navigationController.navigationBar respondsToSelector:@selector(setBarTintColor:)])
-			self.navigationController.navigationBar.barTintColor = [[UIColor darkGrayColor] colorWithAlphaComponent:.9];
+		self.navigationController.navigationBar.barTintColor = [[UIColor darkGrayColor] colorWithAlphaComponent:.9];
 }
 
 - (void) viewDidAppear:(BOOL) animated {
@@ -1003,7 +1009,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) _openURL:(NSURL *) url {
 	[self _forceResignKeyboard];
 
-	return [[CQColloquyApplication sharedApplication] openURL:url];
+	[[CQColloquyApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+
+	return YES;
 }
 
 - (BOOL) _handleURLCommandWithArguments:(MVChatString *) arguments {
@@ -1363,6 +1371,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) handleShrugCommandWithArguments:(MVChatString *) arguments {
 	static NSString *const shrug = @"¯\\_(ツ)_/¯";
 	NSString *trimmed = [MVChatStringAsString(arguments) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if (!trimmed.length) {
+		[self sendMessage:[[NSAttributedString alloc] initWithString:shrug] asAction:NO];
+		return YES;
+	}
+
 	if (![trimmed hasSuffix:shrug]) {
 #if( defined(USE_ATTRIBUTED_CHAT_STRING) && USE_ATTRIBUTED_CHAT_STRING )
 		NSMutableAttributedString *stringWithShrug = [arguments mutableCopy];
@@ -1416,14 +1429,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) handleTweetCommandWithArguments:(MVChatString *) arguments {
 #if !SYSTEM(TV)
 	SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-	if ([UIPasteboard generalPasteboard].string.length)
-		[composeViewController setInitialText:[UIPasteboard generalPasteboard].string];
+	NSString *selectedText = transcriptView.selectedText;
 
-	if ([UIPasteboard generalPasteboard].URL)
-		[composeViewController addURL:[UIPasteboard generalPasteboard].URL];
+	if (selectedText.length) {
+		NSURL *url = [NSURL URLWithString:selectedText];
+		if (url) {
+			[composeViewController addURL:url];
+		} else {
+			[composeViewController setInitialText:selectedText];
+		}
+	} else {
+		if ([UIPasteboard generalPasteboard].string.length)
+			[composeViewController setInitialText:[UIPasteboard generalPasteboard].string];
 
-	if ([UIPasteboard generalPasteboard].image)
-		[composeViewController addImage:[UIPasteboard generalPasteboard].image];
+		if ([UIPasteboard generalPasteboard].URL)
+			[composeViewController addURL:[UIPasteboard generalPasteboard].URL];
+
+		if ([UIPasteboard generalPasteboard].image)
+			[composeViewController addImage:[UIPasteboard generalPasteboard].image];
+	}
 
 	composeViewController.completionHandler = ^(SLComposeViewControllerResult result) { /* do nothing */ };
 	[self.navigationController presentViewController:composeViewController animated:YES completion:NULL];
@@ -1643,7 +1667,7 @@ NS_ASSUME_NONNULL_BEGIN
 		url = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@", url.scheme, self.connection.server, target]];
 	}
 
-	[[UIApplication sharedApplication] openURL:url];
+	[[CQColloquyApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 
 	return YES;
 }
@@ -1974,14 +1998,14 @@ NS_ASSUME_NONNULL_BEGIN
 			[self showUserInformation];
 	} else if (actionSheet.tag == URLActionSheet) {
 		Class <CQBookmarking> bookmarkingService = [CQBookmarkingController activeService];
-		NSURL *URL = [actionSheet associatedObjectForKey:@"URL"];
+		NSURL *url = [actionSheet associatedObjectForKey:@"URL"];
 
 		if (buttonIndex == 0)
-			[[UIApplication sharedApplication] openURL:URL];
+			[[CQColloquyApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 		else if (bookmarkingService && buttonIndex == 1)
-			[bookmarkingService bookmarkLink:URL.absoluteString];
+			[bookmarkingService bookmarkLink:url.absoluteString];
 		else if ((!bookmarkingService && buttonIndex == 1) || (bookmarkingService && buttonIndex == 2))
-			[[UIPasteboard generalPasteboard] setURL:URL];
+			[[UIPasteboard generalPasteboard] setURL:url];
 	}
 }
 
@@ -2117,7 +2141,7 @@ NS_ASSUME_NONNULL_BEGIN
 	NSString *chatTranscriptFontSizeString = [[CQSettingsController settingsController] stringForKey:@"CQChatTranscriptFontSize"];
 	NSUInteger chatTranscriptFontSize = [UIFont preferredFontForTextStyle:UIFontTextStyleBody].pointSize;
 
-	const float CQDefaultDynamicTypeFontSize = 17.;
+	const CGFloat CQDefaultDynamicTypeFontSize = 17.;
 
 	if (chatTranscriptFontSize == CQDefaultDynamicTypeFontSize || [[NSUserDefaults standardUserDefaults] boolForKey:@"CQOverrideDynamicTypeSize"]) {
 		if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
@@ -2279,6 +2303,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 }
 
+- (NSString *) _localNotificationTitleForMessage:(NSDictionary *) message {
+	MVChatUser *user = message[@"user"];
+	return user.connection.displayName;
+}
+
 - (NSString *) _localNotificationBodyForMessage:(NSDictionary *) message {
 	MVChatUser *user = message[@"user"];
 	NSString *messageText = message[@"messagePlain"];
@@ -2297,13 +2326,15 @@ NS_ASSUME_NONNULL_BEGIN
 		return;
 
 #if !SYSTEM(TV)
-	UILocalNotification *notification = [[UILocalNotification alloc] init];
+	UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+	content.threadIdentifier = @"Global";
+	content.userInfo = [self _localNotificationUserInfoForMessage:message];
+	content.body = [self _localNotificationBodyForMessage:message];
+	content.title = [self _localNotificationTitleForMessage:message];
+	content.sound = [UNNotificationSound soundNamed:soundName];
 
-	notification.alertBody = [self _localNotificationBodyForMessage:message];
-	notification.userInfo = [self _localNotificationUserInfoForMessage:message];
-	notification.soundName = [soundName stringByAppendingPathExtension:@"aiff"];
-
-	[[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+	UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@"multitasking" content:content trigger:nil];
+	[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
 #endif
 }
 

@@ -1332,7 +1332,6 @@ parsingFinished: { // make a scope for this
 	}
 
 	if( [self respondsToSelector:selector] ) {
-
 		@try {
 			if( hasTagsToSend ) {
 				NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
@@ -1477,11 +1476,9 @@ parsingFinished: { // make a scope for this
 	[self _stripModePrefixesFromNickname:&accountName];
 	if( [attributes[@"action"] boolValue] ) {
 		NSString *messageTags = @"";
-		NSUInteger messageTagLength = 0;
 		NSString *prefix = nil;
 		if ([self.supportedFeatures containsObject:MVChatConnectionAccountTagFeature] && self.localUser.account && self.localUser.isIdentified) {
 			messageTags = [NSString stringWithFormat:@"@account=%@ :", accountName];
-			messageTagLength = messageTags.length; // space is in the tag substring since we don't have to worry about \001 for regular PRIVMSGs
 			prefix = [[NSString alloc] initWithFormat:@"%@PRIVMSG %@%@ :\001ACTION", messageTags, targetPrefix, targetName];
 		} else {
 			prefix = [[NSString alloc] initWithFormat:@"PRIVMSG %@%@ :\001ACTION ", targetPrefix, targetName];
@@ -1559,7 +1556,7 @@ parsingFinished: { // make a scope for this
 	BOOL isUser = ([target isKindOfClass:[MVChatUser class]] || [target isKindOfClass:[MVDirectChatConnection class]]);
 
 	NSCharacterSet *whitespaceCharacters = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	NSScanner *argumentsScanner = [NSScanner scannerWithString:MVChatStringAsString(arguments)];
+	NSScanner *argumentsScanner = [NSScanner scannerWithString:(MVChatStringAsString(arguments) ?: @"")];
 	[argumentsScanner setCharactersToBeSkipped:nil];
 
 	if( isUser || isRoom ) {

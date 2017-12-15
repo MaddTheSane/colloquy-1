@@ -690,13 +690,15 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 	self.tableView.allowsSelectionDuringEditing = self.view.window.isFullscreen;
 	self.clearsSelectionOnViewWillAppear = !self.view.window.isFullscreen;
 
-	if ([self respondsToSelector:@selector(registerForPreviewingWithDelegate:sourceView:)])
-		_previewingContext = [self registerForPreviewingWithDelegate:self sourceView:self.view.window];
+	_previewingContext = [self registerForPreviewingWithDelegate:self sourceView:self.view.window];
+
+	[self.tableView hideEmptyCells];
 }
 
 - (void) viewWillAppear:(BOOL) animated {
 	_active = YES;
 
+	[self _updateConnectTimes];
 	[self _startUpdatingConnectTimes];
 
 	[self _refreshIndexPathForChatControllersCache];

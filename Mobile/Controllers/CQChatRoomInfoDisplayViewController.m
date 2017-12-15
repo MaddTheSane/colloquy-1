@@ -84,6 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 
+	[self.tableView hideEmptyCells];
+
 	[self _updateRoomInfo];
 	[self _refreshBanList];
 
@@ -317,7 +319,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return YES;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)range {
+- (BOOL)textView:(UITextView *) textView shouldInteractWithURL:(NSURL *) URL inRange:(NSRange) characterRange interaction:(UITextItemInteraction) interaction {
 	return YES;
 }
 

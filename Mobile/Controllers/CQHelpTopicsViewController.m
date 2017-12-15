@@ -29,6 +29,15 @@ static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?l
 
 #pragma mark -
 
+- (void) viewDidLoad {
+	[super viewDidLoad];
+
+	[self.tableView hideEmptyCells];
+}
+
+#pragma mark -
+
+
 - (void) loadHelpContent {
 	if (_loading)
 		return;
@@ -147,7 +156,7 @@ static NSString *CQHelpTopicsURLFormatString = @"http://colloquy.mobi/help.php?l
 		NSURL *url = [NSURL URLWithString:info[@"Link"]];
 
 		if (url) {
-			[[UIApplication sharedApplication] openURL:url];
+			[[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 		} else {
 			[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 		}
