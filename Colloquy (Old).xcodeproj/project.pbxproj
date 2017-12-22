@@ -203,7 +203,7 @@
 		C29FF9701F6544EB0044954E /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C29FF96E1F6544D90044954E /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C29FF9711F6544EB0044954E /* libidn.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C29FF96F1F6544D90044954E /* libidn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C29FF9721F6544EB0044954E /* XMPPFramework.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C29FF96D1F6544BA0044954E /* XMPPFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C2B6BF501F6F00FC0044C20E /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2A889561F6EFD5300F2C6D4 /* Mac.xcassets */; };
+		C2B6BF501F6F00FC0044C20E /* Mac-Old.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2A889561F6EFD5300F2C6D4 /* Mac-Old.xcassets */; };
 		C2B9D0ED1C258BA200C2B4C4 /* CQMPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B9D0EC1C258BA200C2B4C4 /* CQMPreferencesWindowController.m */; };
 		CBF6855F08201B7300F498FB /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = CBF685340820190D00F498FB /* schema.xml */; };
 		CBF6856208201B7A00F498FB /* GetMetadataForFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF685310820190D00F498FB /* GetMetadataForFile.m */; };
@@ -804,7 +804,7 @@
 		C29FF96D1F6544BA0044954E /* XMPPFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XMPPFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29FF96E1F6544D90044954E /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29FF96F1F6544D90044954E /* libidn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libidn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2A889561F6EFD5300F2C6D4 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
+		C2A889561F6EFD5300F2C6D4 /* Mac-Old.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Mac-Old.xcassets"; sourceTree = "<group>"; };
 		C2B9D0EB1C258BA200C2B4C4 /* CQMPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQMPreferencesWindowController.h; sourceTree = "<group>"; };
 		C2B9D0EC1C258BA200C2B4C4 /* CQMPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CQMPreferencesWindowController.m; sourceTree = "<group>"; };
 		C2EB205F1C1EA95F00CB88B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/JVAppearancePreferencesViewController.strings; sourceTree = "<group>"; };
@@ -908,6 +908,7 @@
 				1C59A92909FDEBC6000682B8 /* Unit Tests */,
 				F5185C82018626F701EE70DE /* Interfaces */,
 				F50B0AA10170C89301A84BDE /* Resources */,
+				C2B92F211FE9432100F3F23D /* Resources */,
 				1C6A13E608666DDC009EE6D2 /* Settings */,
 				C26D0E121F5B0A7700B58261 /* old-mac-binary-frameworks */,
 				089C1671FE841209C02AAC07 /* Frameworks */,
@@ -1314,6 +1315,64 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		C2B92F211FE9432100F3F23D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1CC6FD38054AF1940075807C /* preview.colloquyTranscript */,
+				F52BA284037C13C201A35792 /* GPL.txt */,
+				C2A889561F6EFD5300F2C6D4 /* Mac-Old.xcassets */,
+				C2B92F231FE9432200F3F23D /* Misc Images */,
+				C2F459071FEA868B00FE478F /* Scripting Support */,
+				C2F459081FEA8AAD00FE478F /* Style Support */,
+			);
+			name = Resources;
+			path = "Mac-Old/Mac-Old/Resources";
+			sourceTree = "<group>";
+		};
+		C2B92F231FE9432200F3F23D /* Misc Images */ = {
+			isa = PBXGroup;
+			children = (
+				1C6075E005138ED600A8FE6E /* colloquy-alpha.png */,
+				1C77822808FA4101006AD8E5 /* topicBackground.png */,
+				1C77831008FA4EA2006AD8E5 /* topicToggleDown.png */,
+				1C77831108FA4EA2006AD8E5 /* topicToggleUp.png */,
+			);
+			path = "Misc Images";
+			sourceTree = "<group>";
+		};
+		C2F459071FEA868B00FE478F /* Scripting Support */ = {
+			isa = PBXGroup;
+			children = (
+				1C7C77DF07DBD49F00FB5F83 /* Colloquy.r */,
+				1C7C76ED07DBA1D000FB5F83 /* ColloquyScripting.r */,
+				1C59BD61059E2E02001487E2 /* ChatPlugIn.scriptSuite */,
+				1CCA510D0598108000F0A4CD /* Colloquy.scriptSuite */,
+				1C7C76E507DBA1C100FB5F83 /* NSCoreSuite.scriptSuite */,
+				1C7C76E707DBA1C100FB5F83 /* NSTextSuite.scriptSuite */,
+				1C59BD63059E2E16001487E2 /* ChatPlugIn.scriptTerminology */,
+				1CCA510E0598108000F0A4CD /* Colloquy.scriptTerminology */,
+				1C7C76E607DBA1C100FB5F83 /* NSCoreSuite.scriptTerminology */,
+				1C7C76E807DBA1C100FB5F83 /* NSTextSuite.scriptTerminology */,
+				1CD9DF6507D934F70006BB99 /* Colloquy.sdef */,
+			);
+			path = "Scripting Support";
+			sourceTree = "<group>";
+		};
+		C2F459081FEA8AAD00FE478F /* Style Support */ = {
+			isa = PBXGroup;
+			children = (
+				1C3C116205029E03000001C8 /* Styles */,
+				0A5B683E0810EC9700398D5A /* default.css */,
+				1C1AFB3C09C295D900BF3E2A /* base.html */,
+				1C1AFDAA09C3BC4F00BF3E2A /* roomTopicBanner.html */,
+				1C3C116005029DE1000001C8 /* template.html */,
+				0AA811220826DB8800A3BF2D /* default.js */,
+				1CA75A260652537A000141D5 /* styleOptions.plist */,
+				1CBECDCF0508C8AB000001C8 /* default.xsl */,
+			);
+			path = "Style Support";
+			sourceTree = "<group>";
+		};
 		CBF684F00820174000F498FB /* Metadata Importer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1393,15 +1452,7 @@
 				F5394C0B0378E44D01A35792 /* Localizable.strings */,
 				1C258E55050B9656000001C8 /* Emoticons */,
 				F520458E01B1D37701EBB4B5 /* Sounds */,
-				1C3C116205029E03000001C8 /* Styles */,
 				F51F91D7037967CB01A35792 /* Chat.clr */,
-				1CC6FD38054AF1940075807C /* preview.colloquyTranscript */,
-				0A5B683E0810EC9700398D5A /* default.css */,
-				1C1AFB3C09C295D900BF3E2A /* base.html */,
-				1C1AFDAA09C3BC4F00BF3E2A /* roomTopicBanner.html */,
-				1C3C116005029DE1000001C8 /* template.html */,
-				C2A889561F6EFD5300F2C6D4 /* Mac.xcassets */,
-				0AA811220826DB8800A3BF2D /* default.js */,
 				1C1AFE8109C3D8C900BF3E2A /* roomTopicBanner.js */,
 				1C6268E4103E6D3400A6B346 /* SparkleUpdatePublicDSAKey.pem */,
 				1C746A95050CF86B000001C8 /* emoticons.plist */,
@@ -1410,25 +1461,10 @@
 				F5BC17DD019655DC01A35792 /* info.colloquy.plist */,
 				1C51B89D052DF91E00BB459B /* Info.plist */,
 				1C9982AF0604BEAA006C6417 /* notifications.plist */,
-				1CA75A260652537A000141D5 /* styleOptions.plist */,
 				F5675B8601DB767601EE70DE /* verbs.plist */,
-				1C7C77DF07DBD49F00FB5F83 /* Colloquy.r */,
-				1C7C76ED07DBA1D000FB5F83 /* ColloquyScripting.r */,
 				1C1D19F105992D80000BB31A /* ChatCore.scriptSuite */,
-				1C59BD61059E2E02001487E2 /* ChatPlugIn.scriptSuite */,
-				1CCA510D0598108000F0A4CD /* Colloquy.scriptSuite */,
-				1C7C76E507DBA1C100FB5F83 /* NSCoreSuite.scriptSuite */,
-				1C7C76E707DBA1C100FB5F83 /* NSTextSuite.scriptSuite */,
 				1C1D19F205992D80000BB31A /* ChatCore.scriptTerminology */,
-				1C59BD63059E2E16001487E2 /* ChatPlugIn.scriptTerminology */,
-				1CCA510E0598108000F0A4CD /* Colloquy.scriptTerminology */,
-				1C7C76E607DBA1C100FB5F83 /* NSCoreSuite.scriptTerminology */,
-				1C7C76E807DBA1C100FB5F83 /* NSTextSuite.scriptTerminology */,
-				1CD9DF6507D934F70006BB99 /* Colloquy.sdef */,
 				1CEC004D0A20EF95004C2B86 /* transcriptSchema.sql */,
-				F52BA284037C13C201A35792 /* GPL.txt */,
-				1CBECDCF0508C8AB000001C8 /* default.xsl */,
-				F52955590181EB5901EE70DE /* Misc. Icons */,
 				558EF2361AEC356800619BDE /* Room Member Icons.xcassets */,
 				F5ED0F46017CD77701EE70DE /* Toolbar Icons */,
 			);
@@ -1468,17 +1504,6 @@
 			);
 			name = Interfaces;
 			path = "Mac-Old/Mac-Old/Interfaces";
-			sourceTree = "<group>";
-		};
-		F52955590181EB5901EE70DE /* Misc. Icons */ = {
-			isa = PBXGroup;
-			children = (
-				1C6075E005138ED600A8FE6E /* colloquy-alpha.png */,
-				1C77822808FA4101006AD8E5 /* topicBackground.png */,
-				1C77831008FA4EA2006AD8E5 /* topicToggleDown.png */,
-				1C77831108FA4EA2006AD8E5 /* topicToggleUp.png */,
-			);
-			name = "Misc. Icons";
 			sourceTree = "<group>";
 		};
 		F5ED0F46017CD77701EE70DE /* Toolbar Icons */ = {
@@ -1702,12 +1727,12 @@
 				1C9982B00604BEAA006C6417 /* notifications.plist in Resources */,
 				1CA75A270652537A000141D5 /* styleOptions.plist in Resources */,
 				1C238F050677B5E5000E89A7 /* JVTabbedChatWindow.xib in Resources */,
-				C2B6BF501F6F00FC0044C20E /* Mac.xcassets in Resources */,
+				C2B6BF501F6F00FC0044C20E /* Mac-Old.xcassets in Resources */,
 				0A3187FC067ECEB600271E42 /* TSCustomBan.xib in Resources */,
 				1C0A4C9C0799BDB00093B702 /* JVFind.xib in Resources */,
 				1C0A4C9D0799BDB00093B702 /* JVTranscriptCriterion.xib in Resources */,
 				1C703EF507E4B956005CEA40 /* JVSmartTranscriptFilterSheet.xib in Resources */,
-				C2B6BF501F6F00FC0044C20E /* Mac.xcassets in Resources */,
+				C2B6BF501F6F00FC0044C20E /* Mac-Old.xcassets in Resources */,
 				0A5B683F0810EC9700398D5A /* default.css in Resources */,
 				0AA8117B0826E08000A3BF2D /* default.js in Resources */,
 				1C39736A082D3ED000DCF3CF /* JVChatTranscriptBrowserPanel.xib in Resources */,
