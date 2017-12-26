@@ -3,8 +3,9 @@
 
 @class JVSideSplitView;
 
-@interface JVSidebarChatWindowController : JVChatWindowController <AICustomTabsViewDelegate> {
-	IBOutlet JVSideSplitView *splitView;
+@interface JVSidebarChatWindowController : JVChatWindowController {
+	IBOutlet JVSideSplitView *mainSplitView;
+	IBOutlet NSImageView *additionalDividerHandle;
 	IBOutlet NSView *bodyView;
 	IBOutlet NSView *sideView;
 	BOOL _forceSplitViewPosition;
