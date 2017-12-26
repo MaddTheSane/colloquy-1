@@ -67,12 +67,10 @@ static NSSize		rightCapSize;
 		tabFrontMiddle = [NSImage imageNamed:@"aquaTabMiddle"];
 		tabFrontRight = [NSImage imageNamed:@"aquaTabRight"];
 
-		NSImage *stopTemp = [NSImage imageNamed:NSImageNameStopProgressFreestandingTemplate];
-		//TODO: Darken/lighten based on what Cocoa/Apple's HIG expects, rather than manually...
-		tabCloseFront = [NSImage templateImage:stopTemp withColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1] andSize:NSZeroSize];
-		tabCloseBack = [NSImage templateImage:stopTemp withColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1] andSize:NSZeroSize];
-		tabCloseFrontPressed = [NSImage templateImage:stopTemp withColor:[NSColor colorWithCalibratedWhite:0.25 alpha:1] andSize:NSZeroSize];
-		tabCloseFrontRollover = [NSImage templateImage:stopTemp withColor:[NSColor colorWithCalibratedWhite:0.33 alpha:1] andSize:NSZeroSize];
+		tabCloseFront = [NSImage imageNamed:@"aquaTabClose"];
+		tabCloseBack = [NSImage imageNamed:@"aquaTabCloseBack"];
+		tabCloseFrontPressed = [NSImage imageNamed:@"aquaTabClosePressed"];
+		tabCloseFrontRollover = [NSImage imageNamed:@"aquaTabCloseRollover"];
 
 		leftCapSize = [tabFrontLeft size];
 		rightCapSize = [tabFrontRight size];
@@ -80,8 +78,6 @@ static NSSize		rightCapSize;
         haveLoadedImages = YES;
     }
 
-	//TODO: maybe we can use background styles somehow?
-	//self.backgroundStyle = NSBackgroundStyleRaised;
     tabViewItem = inTabViewItem;
 	view = inView;
     allowsInactiveTabClosing = NO;
