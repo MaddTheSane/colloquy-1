@@ -25,12 +25,12 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &to)
 		scanner.scanCharacters(from: CharacterSet.whitespacesAndNewlines, into: nil)
 		scanner.scanUpToCharacters(from: CharacterSet(charactersIn: "\n\r"), into: &path)
-		guard let to2 = to as String?, to2.characters.count > 0 else {
+		guard let to2 = to as String?, to2.count > 0 else {
 			return false
 		}
 		var directory: ObjCBool = false
 		path = path?.standardizingPath as NSString?
-		if let path = path as String?, path.characters.count > 0 && !FileManager.default.fileExists(atPath: path, isDirectory: &directory) {
+		if let path = path as String?, path.count > 0 && !FileManager.default.fileExists(atPath: path, isDirectory: &directory) {
 			return true
 		}
 		if directory.boolValue {
@@ -39,7 +39,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		
 		let user = connection.chatUsers(withNickname: to2).first
 		
-		if let path = path as String?, path.characters.count > 0 {
+		if let path = path as String?, path.count > 0 {
 			NotificationCenter.chat.post(name: NSNotification.Name.MVFileTransferStarted, object: user?.sendFile(path, passively: passive))
 		} else {
 			user?.sendFile(nil)
@@ -55,7 +55,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &ctcpRequest)
 		scanner.scanUpToCharacters(from: CharacterSet(charactersIn: "\n\r"), into: &ctcpArgs)
 		
-		guard let to2 = to as String?, let ctcpRequest2 = ctcpRequest as String?, to2.characters.count != 0 && ctcpRequest2.characters.count != 0 else {
+		guard let to2 = to as String?, let ctcpRequest2 = ctcpRequest as String?, to2.count != 0 && ctcpRequest2.count != 0 else {
 			return false
 		}
 		if to == nil || to!.length == 0 || ctcpRequest == nil || ctcpRequest!.length == 0 {
@@ -71,7 +71,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 	private func handleServerConnect(arguments: String!) -> Bool {
 		if let _ = arguments?.range(of: "://"), let url = URL(string: arguments) {
 			MVConnectionsController.default.handle(url, andConnectIfPossible: true)
-		} else if let arguments = arguments, arguments.characters.count > 0 {
+		} else if let arguments = arguments, arguments.count > 0 {
 			var address: NSString?
 			var port: Int32 = 0
 			let scanner = Scanner(string: arguments)
@@ -104,7 +104,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			connection.joinChatRoomNamed(arguments.trimmingCharacters(in: CharacterSet.whitespaces))
 			return true
 		} else if channels.count > 1 {
-			var channels1 = channels.map({ return $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)}).filter({ return $0.characters.count != 0})
+			var channels1 = channels.map({ return $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)}).filter({ return $0.count != 0})
 			channels1 += channels
 			connection.joinChatRoomsNamed(channels1)
 			return true
@@ -129,7 +129,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		} else if channels.count > 1 {
 			for channel in channels {
 				let channel1 = channel.trimmingCharacters(in: CharacterSet.whitespaces)
-				if channel1.characters.count != 0 {
+				if channel1.count != 0 {
 					connection.joinedChatRoom(withName: channel1)?.part(withReason: reason)
 				}
 			}
@@ -172,7 +172,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 
 			if scanner.scanLocation > 0 {
 				let roomTargetName = to.substring(from: scanner.scanLocation)
-				if roomTargetName.characters.count > 1 && connection.chatRoomNamePrefixes!.contains(UnicodeScalar((roomTargetName as NSString).character(at: 0))!) {
+				if roomTargetName.count > 1 && connection.chatRoomNamePrefixes!.contains(UnicodeScalar((roomTargetName as NSString).character(at: 0))!) {
 					connection.sendRawMessage(NSString(string: "PRIVMSG \(to) :\(msg?.string ?? "")"))
 					
 					if let room = connection.joinedChatRoom(withName: roomTargetName) as MVChatRoom? {
@@ -278,7 +278,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		var message = false;
 		var offset = 0;
 		
-		if args.characters.count == 0 {
+		if args.count == 0 {
 			let info = JVInspectorController.inspector(ofObject: view.connection!)
 			info.show(nil)
 			info.inspector.perform(#selector(JVConnectionInspector.selectTab(withIdentifier:)), with: "Ignores")
@@ -325,7 +325,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			offset += messageString.components(separatedBy: " ").count
 		}
 		
-		if offset < argsArray.count && argsArray[offset].characters.count != 0 {
+		if offset < argsArray.count && argsArray[offset].count != 0 {
 			rooms = Array(argsArray[offset..<argsArray.count - offset])
 		}
 		
@@ -365,7 +365,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		var message = false;
 		var offset = 0;
 		
-		if args.characters.count == 0 {
+		if args.count == 0 {
 			let info = JVInspectorController.inspector(ofObject: view.connection!)
 			info.show(nil)
 			info.inspector.perform(#selector(JVConnectionInspector.selectTab(withIdentifier:)), with: "Ignores")
@@ -411,7 +411,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			offset += messageString.components(separatedBy: " ").count
 		}
 		
-		if offset < argsArray.count && argsArray[offset].characters.count != 0 {
+		if offset < argsArray.count && argsArray[offset].count != 0 {
 			rooms = Array(argsArray[offset..<(argsArray.count - offset)])
 		}
 		
@@ -519,7 +519,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				}
 				
 			case "names":
-				if arguments.string.characters.count == 0 {
+				if arguments.string.count == 0 {
 					room?.windowController?.openViewsDrawer(nil)
 					if let wc = room?.windowController, let room = room, wc.isListItemExpanded(room) {
 						wc.collapse(room)
@@ -530,7 +530,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				}
 				
 			case "cycle", "hop":
-				if arguments.string.characters.count == 0 {
+				if arguments.string.count == 0 {
 					room?.partChat(nil)
 					room?.joinChat(nil)
 					return true
@@ -583,7 +583,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				let scanner = Scanner(string: arguments.string)
 				
 				scanner.scanUpToCharacters(from: CharacterSet.whitespacesAndNewlines, into: &member1)
-				guard var member = member1 as String?, member.characters.count > 0 else {
+				guard var member = member1 as String?, member.count > 0 else {
 					return false
 				}
 				
@@ -612,7 +612,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "op":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.setMode(.operatorMode, forMemberUser: user)
 						}
@@ -623,7 +623,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "deop":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.removeMode(.operatorMode, forMemberUser: user)
 						}
@@ -634,7 +634,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "halfop":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.setMode(.halfOperatorMode, forMemberUser: user)
 						}
@@ -645,7 +645,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "dehalfop":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.removeMode(.halfOperatorMode, forMemberUser: user)
 						}
@@ -656,7 +656,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "voice":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.setMode(.voicedMode, forMemberUser: user)
 						}
@@ -667,7 +667,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "devoice":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.removeMode(.voicedMode, forMemberUser: user)
 						}
@@ -678,7 +678,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "quiet":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.setDisciplineMode(.disciplineQuietedMode, forMemberUser: user)
 						}
@@ -689,7 +689,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			case "dequiet":
 				let args = arguments.string.components(separatedBy: " ")
 				for arg in args {
-					if arg.characters.count > 0 {
+					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
 							(room?.target as AnyObject?)?.remove(.disciplineQuietedMode, forMemberUser: user)
 						}
@@ -702,7 +702,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg1 in args {
 					var arg = arg1
 					var user: MVChatUser?
-					guard arg.characters.count != 0 else {
+					guard arg.count != 0 else {
 						continue
 					}
 					if arg.hasCaseInsensitiveSubstring("!") || arg.hasCaseInsensitiveSubstring("@") || (room?.target as AnyObject?)?.memberUsers(withNickname: arg) == nil {
@@ -725,7 +725,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg1 in args {
 					var arg = arg1
 					var user: MVChatUser?
-					guard arg.characters.count != 0 else {
+					guard arg.count != 0 else {
 						continue
 					}
 					if arg.hasCaseInsensitiveSubstring("!") || arg.hasCaseInsensitiveSubstring("@") || (room?.target as AnyObject?)?.memberUsers(withNickname: arg) == nil {
@@ -856,7 +856,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			if !scanner.isAtEnd {
 				scanner.scanUpToCharacters(from: whitespace, into: &roomName1)
 			}
-			guard let nick = nick1 as String?, let roomName = roomName1 as String?, nick.characters.count != 0 && roomName.characters.count != 0 else {
+			guard let nick = nick1 as String?, let roomName = roomName1 as String?, nick.count != 0 && roomName.count != 0 else {
 				return false
 			}
 			
@@ -924,7 +924,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			scanner.scanUpToCharacters(from: whitespace, into: nil)
 			scanner.scanUpToCharacters(from: CharacterSet(charactersIn: "\n"), into: &message)
 			
-			guard let target2 = target as String?, let message1 = message as String?, target2.characters.count != 0 && message1.characters.count != 0 else {
+			guard let target2 = target as String?, let message1 = message as String?, target2.count != 0 && message1.count != 0 else {
 				return true
 			}
 			var target1 = target2
@@ -939,7 +939,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			var chatView: JVDirectChatPanel? = nil;
 			
 			// this is an IRC specific command for sending to room operators only.
-			if target1.hasPrefix("@") && target1.characters.count > 1 {
+			if target1.hasPrefix("@") && target1.count > 1 {
 				target1 = String(target1[target1.index(after: target1.startIndex) ..< target1.endIndex])
 			}
 			
@@ -965,7 +965,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 
 		case "nick":
 			let newNickname = arguments.string
-			if newNickname.characters.count != 0 {
+			if newNickname.count != 0 {
 				connection?.nickname = newNickname
 			}
 			return true
