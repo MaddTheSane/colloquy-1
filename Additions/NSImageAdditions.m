@@ -8,47 +8,16 @@
 	NSColor *aColor = [NSColor colorWithPatternImage:self];
 	[aColor set];
 	[[NSBezierPath bezierPathWithRect:rect] fill];
-	
+
 	[[NSGraphicsContext currentContext] restoreGraphicsState];
 }
-
-+ (NSImage *)templateName:(NSString *)templateName
-				withColor:(NSColor *)tint
-				  andSize:(CGSize)targetSize
-{
-	return [self templateImage:[NSImage imageNamed:templateName] withColor:tint andSize:targetSize];
-}
-
-+ (NSImage *)templateImage:(NSImage *)template
-				 withColor:(NSColor *)tint
-				   andSize:(CGSize)targetSize
-{
-	NSSize size = (CGSizeEqualToSize(targetSize, CGSizeZero)
-				   ? [template size]
-				   : targetSize);
-	NSRect imageBounds = NSMakeRect(0, 0, size.width, size.height);
-	
-	NSImage *copiedImage = [template copy];
-	[copiedImage setTemplate:NO];
-	[copiedImage setSize:size];
-	
-	[copiedImage lockFocus];
-	
-	[tint set];
-	NSRectFillUsingOperation(imageBounds, NSCompositeSourceAtop);
-	
-	[copiedImage unlockFocus];
-	
-	return copiedImage;
-}
-
 
 // Everything below here was created for Colloquy by Zachary Drayer under the same license as Chat Core
 + (NSImage *) imageFromPDF:(NSString *) pdfName {
 	static NSMutableDictionary *images = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		images = [[NSMutableDictionary alloc] init];
+		images = [NSMutableDictionary dictionary];
 	});
 
 	NSImage *image = images[pdfName];

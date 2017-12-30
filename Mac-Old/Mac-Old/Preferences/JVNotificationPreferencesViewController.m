@@ -58,7 +58,7 @@
 }
 
 - (NSImage *) toolbarItemImage {
-	return [[NSWorkspace sharedWorkspace] iconForFileType: NSFileTypeForHFSTypeCode(kAlertNoteIcon)];
+	return [NSImage imageNamed:@"Preferences/Notification"];
 }
 
 - (NSString *) toolbarItemLabel {

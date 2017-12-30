@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13196" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13196"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,7 +20,7 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="9" userLabel="Window">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="54" y="315" width="480" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
@@ -73,40 +73,10 @@
             <rect key="frame" x="0.0" y="0.0" width="190" height="120"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <popUpButton id="faM-tN-i2x">
-                    <rect key="frame" x="32" y="0.0" width="28" height="21"/>
+                <button misplaced="YES" id="24">
+                    <rect key="frame" x="63" y="0.0" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <popUpButtonCell key="cell" type="square" title="Item 1" bezelStyle="shadowlessSquare" imagePosition="only" alignment="left" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" altersStateOfSelectedItem="NO" selectedItem="Ghg-R2-GV6" id="g1r-xa-s5w">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" id="UgU-yX-Ncm">
-                            <items>
-                                <menuItem title="Item 1" image="CQFavoritesTemplate" hidden="YES" id="Ghg-R2-GV6"/>
-                                <menuItem title="Item 2" id="hb6-FZ-nqE"/>
-                                <menuItem title="Item 3" id="lXq-9z-HWo"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                </popUpButton>
-                <popUpButton id="gB1-cD-e39">
-                    <rect key="frame" x="1" y="0.0" width="28" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <popUpButtonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" altersStateOfSelectedItem="NO" selectedItem="pah-dd-6yd" id="ZmX-ix-3Uu">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" id="4xo-aF-U31">
-                            <items>
-                                <menuItem state="on" image="NSActionTemplate" hidden="YES" id="pah-dd-6yd"/>
-                                <menuItem title="Item 2" id="dRw-W1-dSP"/>
-                                <menuItem title="Item 3" id="Hqa-0t-KeZ"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                </popUpButton>
-                <button id="24">
-                    <rect key="frame" x="63" y="0.0" width="22" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="OAInfoTemplate" imagePosition="only" alignment="left" borderStyle="border" imageScaling="proportionallyDown" id="45">
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="OAInfoTemplate" imagePosition="only" alignment="left" imageScaling="proportionallyDown" id="45">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="label"/>
                     </buttonCell>
@@ -114,15 +84,15 @@
                         <action selector="getInfo:" target="-2" id="40"/>
                     </connections>
                 </button>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="23">
-                    <rect key="frame" x="0.0" y="25" width="190" height="95"/>
+                <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="23">
+                    <rect key="frame" x="0.0" y="32" width="190" height="88"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <clipView key="contentView" id="nDc-hd-I1l">
-                        <rect key="frame" x="1" y="1" width="188" height="93"/>
+                    <clipView key="contentView" id="j7F-YI-f5Y">
+                        <rect key="frame" x="1" y="1" width="188" height="86"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="20" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="26" id="28">
-                                <rect key="frame" x="0.0" y="0.0" width="188" height="93"/>
+                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="20" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="26" id="28" customClass="ASExtendedOutlineView">
+                                <rect key="frame" x="0.0" y="0.0" width="188" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -158,12 +128,42 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <popUpButton misplaced="YES" id="gB1-cD-e39">
+                    <rect key="frame" x="1" y="0.0" width="32" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <popUpButtonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="left" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" altersStateOfSelectedItem="NO" selectedItem="pah-dd-6yd" id="ZmX-ix-3Uu">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="4xo-aF-U31">
+                            <items>
+                                <menuItem state="on" image="NSActionTemplate" hidden="YES" id="pah-dd-6yd"/>
+                                <menuItem title="Item 2" id="dRw-W1-dSP"/>
+                                <menuItem title="Item 3" id="Hqa-0t-KeZ"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
+                <popUpButton misplaced="YES" id="faM-tN-i2x">
+                    <rect key="frame" x="32" y="0.0" width="32" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <popUpButtonCell key="cell" type="square" title="Item 1" bezelStyle="shadowlessSquare" imagePosition="only" alignment="left" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" pullsDown="YES" altersStateOfSelectedItem="NO" selectedItem="Ghg-R2-GV6" id="g1r-xa-s5w">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="UgU-yX-Ncm">
+                            <items>
+                                <menuItem title="Item 1" image="NSBookmarksTemplate" hidden="YES" id="Ghg-R2-GV6"/>
+                                <menuItem title="Item 2" id="hb6-FZ-nqE"/>
+                                <menuItem title="Item 3" id="lXq-9z-HWo"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
             </subviews>
         </customView>
     </objects>
     <resources>
-        <image name="CQFavoritesTemplate" width="11" height="9"/>
         <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSBookmarksTemplate" width="17" height="18"/>
         <image name="OAInfoTemplate" width="18" height="18"/>
     </resources>
 </document>

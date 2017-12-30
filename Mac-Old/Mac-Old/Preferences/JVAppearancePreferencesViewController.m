@@ -114,7 +114,7 @@
 }
 
 - (NSImage *) toolbarItemImage {
-	return [NSImage imageNamed:@"Preferences/Appearance"];
+	return [NSImage imageNamed:@"chooseStyle"];
 }
 
 - (NSString *) toolbarItemLabel {

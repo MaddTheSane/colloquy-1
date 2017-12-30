@@ -72,7 +72,7 @@ NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 	NSMenu *favorites = [[MVConnectionsController favoritesMenu] copy];
 	{
 		NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:@"" action:NULL keyEquivalent:@""];
-		menuItem.image = [NSImage imageNamed:@"CQFavoritesTemplate"];
+		menuItem.image = [NSImage imageNamed:NSImageNameBookmarksTemplate];
 		[favorites insertItem:menuItem atIndex:0];
 	}
 	[favoritesButton setMenu:favorites];
