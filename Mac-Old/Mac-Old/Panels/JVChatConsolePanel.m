@@ -565,7 +565,7 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 		[toolbarItem setPaletteLabel:NSLocalizedString( @"Toggle Messages", "toggle private messages toolbar customize palette name" )];
 
 		[toolbarItem setToolTip:NSLocalizedString( @"Toggle Private Messages Output", "toggle private messages output tooltip" )];
-		[toolbarItem setImage:[NSImage imageNamed:@"roomIcon"]];
+		[toolbarItem setImage:[NSImage imageNamed:@"room"]];
 
 		[toolbarItem setTarget:self];
 		[toolbarItem setAction:@selector( toggleMessages: )];

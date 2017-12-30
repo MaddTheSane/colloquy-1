@@ -105,7 +105,7 @@ static NSMenu *favoritesMenu = nil;
 		[favoritesMenu addItem:menuItem];
 	}
 
-	NSImage *icon = [[NSImage imageNamed:@"roomIcon"] copy];
+	NSImage *icon = [[NSImage imageNamed:@"room"] copy];
 	[icon setSize:NSMakeSize( 16., 16. )];
 
 	for( NSDictionary *item in favorites ) {
@@ -113,10 +113,10 @@ static NSMenu *favoritesMenu = nil;
 		NSString *server = item[@"server"];
 		NSString *target = item[@"target"];
 
-		menuItem = [[NSMenuItem alloc] initWithTitle:[[NSString alloc] initWithFormat:@"%@ (%@)", target, server] action:@selector( _connectToFavorite: ) keyEquivalent:@""];
+		menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ (%@)", target, server] action:@selector( _connectToFavorite: ) keyEquivalent:@""];
 		[menuItem setImage:icon];
 		[menuItem setTarget:self];
-		[menuItem setRepresentedObject:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@://%@/%@", scheme, server, target]]];
+		[menuItem setRepresentedObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@", scheme, server, target]]];
 
 		for (MVChatConnection *connection in [[MVConnectionsController defaultController] connections]) {
 			if (!(connection.isConnected || connection.status == MVChatConnectionConnectingStatus))
@@ -1498,7 +1498,7 @@ static NSMenu *favoritesMenu = nil;
 		[toolbarItem setPaletteLabel:NSLocalizedString( @"Message User", "toolbar message user button name" )];
 
 		[toolbarItem setToolTip:NSLocalizedString( @"Message a user", "message user button tooltip" )];
-		[toolbarItem setImage:[NSImage imageNamed:@"directChatIcon"]];
+		[toolbarItem setImage:[NSImage imageNamed:@"messageUser"]];
 
 		[toolbarItem setTarget:self];
 		[toolbarItem setAction:NULL];
