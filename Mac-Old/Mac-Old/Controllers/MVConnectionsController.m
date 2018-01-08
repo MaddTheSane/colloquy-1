@@ -259,10 +259,10 @@ static NSMenu *favoritesMenu = nil;
 	[connections setAccessibilityLabel:NSLocalizedString(@"Connections", "VoiceOver label for connections table")];
 
 	theColumn = [connections tableColumnWithIdentifier:@"auto"];
-	[[theColumn headerCell] setImage:[NSImage imageNamed:@"autoHeader"]];
+	[[theColumn headerCell] setImage:[NSImage imageNamed:@"autoHeaderTemplate"]];
 
 	theColumn = [connections tableColumnWithIdentifier:@"status"];
-	[[theColumn headerCell] setImage:[NSImage imageNamed:@"statusHeader"]];
+	[[theColumn headerCell] setImage:[NSImage imageNamed:@"statusHeaderTemplate"]];
 
 	[connections registerForDraggedTypes:@[MVConnectionPboardType,NSURLPboardType,@"CorePasteboardFlavorType 0x75726C20"]];
 	[connections setTarget:self];
@@ -1148,15 +1148,11 @@ static NSMenu *favoritesMenu = nil;
 		if( [[column identifier] isEqual:@"status"] ) {
 			NSString *imageName = nil;
 			NSString *title = nil;
-			if( [(MVChatConnection *)_bookmarks[row][@"connection"] isConnected] ) {
-				if( [view editedRow] != row && ( [view selectedRow] != row || ! [[view window] isKeyWindow] || ( [view selectedRow] == row && [[view window] firstResponder] != view ) ) ) imageName = @"connected";
-				else imageName = @"connectedSelected";
-
+			if( [(MVChatConnection *)[[_bookmarks objectAtIndex:row] objectForKey:@"connection"] isConnected] ) {
+				imageName = @"connectedTemplate";
 				title = NSLocalizedString(@"Connected", "VoiceOver title for connected image");
-			} else if( [(MVChatConnection *)_bookmarks[row][@"connection"] status] == MVChatConnectionConnectingStatus ) {
-				if( [view editedRow] != row && ( [view selectedRow] != row || ! [[view window] isKeyWindow] || ( [view selectedRow] == row && [[view window] firstResponder] != view ) ) ) imageName = @"connecting";
-				else imageName = @"connectingSelected";
-
+			} else if( [(MVChatConnection *)[[_bookmarks objectAtIndex:row] objectForKey:@"connection"] status] == MVChatConnectionConnectingStatus ) {
+				imageName = @"connectingTemplate";
 				title = NSLocalizedString(@"Connecting", "VoiceOver title for connecting image");
 			} else {
 				title = NSLocalizedString(@"Not connected", "VoiceOver title for not connected image");
