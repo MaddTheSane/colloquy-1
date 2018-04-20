@@ -3,7 +3,7 @@
 #import <ChatCore/NSDateAdditions.h>
 #import "JVChatRoomMember.h"
 
-#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

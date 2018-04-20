@@ -6,7 +6,7 @@
 #import "NSAttributedStringMoreAdditions.h"
 #import <ChatCore/NSDateAdditions.h>
 
-#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

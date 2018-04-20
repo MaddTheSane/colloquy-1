@@ -8,6 +8,7 @@
 #import <ChatCore/NSRegularExpressionAdditions.h>
 
 #import <ChatCore/NSStringAdditions.h>
+#import <libxml/parser.h>
 
 static void setItalicOrObliqueFont( NSMutableDictionary *attrs ) {
 	NSFontManager *fm = [NSFontManager sharedFontManager];

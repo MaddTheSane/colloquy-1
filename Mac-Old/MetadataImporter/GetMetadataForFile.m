@@ -1,6 +1,6 @@
 #include <CoreServices/CoreServices.h>
 #import <Foundation/Foundation.h>
-#include <libxml/tree.h>
+#include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 #include "GetMetadataForFile.h"
 
