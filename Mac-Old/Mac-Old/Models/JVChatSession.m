@@ -1,4 +1,4 @@
-#include <libxml/tree.h>
+#include <libxml/parser.h>
 #import "JVChatSession.h"
 
 @interface JVChatSession ()

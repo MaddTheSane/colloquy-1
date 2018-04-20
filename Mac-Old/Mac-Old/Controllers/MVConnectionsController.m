@@ -105,7 +105,7 @@ static NSMenu *favoritesMenu = nil;
 		[favoritesMenu addItem:menuItem];
 	}
 
-	NSImage *icon = [[NSImage imageNamed:@"roomIcon"] copy];
+	NSImage *icon = [[NSImage imageNamed:@"room"] copy];
 	[icon setSize:NSMakeSize( 16., 16. )];
 
 	for( NSDictionary *item in favorites ) {
@@ -113,10 +113,10 @@ static NSMenu *favoritesMenu = nil;
 		NSString *server = item[@"server"];
 		NSString *target = item[@"target"];
 
-		menuItem = [[NSMenuItem alloc] initWithTitle:[[NSString alloc] initWithFormat:@"%@ (%@)", target, server] action:@selector( _connectToFavorite: ) keyEquivalent:@""];
+		menuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"%@ (%@)", target, server] action:@selector( _connectToFavorite: ) keyEquivalent:@""];
 		[menuItem setImage:icon];
 		[menuItem setTarget:self];
-		[menuItem setRepresentedObject:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@://%@/%@", scheme, server, target]]];
+		[menuItem setRepresentedObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@", scheme, server, target]]];
 
 		for (MVChatConnection *connection in [[MVConnectionsController defaultController] connections]) {
 			if (!(connection.isConnected || connection.status == MVChatConnectionConnectingStatus))
@@ -259,10 +259,10 @@ static NSMenu *favoritesMenu = nil;
 	[connections setAccessibilityLabel:NSLocalizedString(@"Connections", "VoiceOver label for connections table")];
 
 	theColumn = [connections tableColumnWithIdentifier:@"auto"];
-	[[theColumn headerCell] setImage:[NSImage imageNamed:@"autoHeader"]];
+	[[theColumn headerCell] setImage:[NSImage imageNamed:@"autoHeaderTemplate"]];
 
 	theColumn = [connections tableColumnWithIdentifier:@"status"];
-	[[theColumn headerCell] setImage:[NSImage imageNamed:@"statusHeader"]];
+	[[theColumn headerCell] setImage:[NSImage imageNamed:@"statusHeaderTemplate"]];
 
 	[connections registerForDraggedTypes:@[MVConnectionPboardType,NSURLPboardType,@"CorePasteboardFlavorType 0x75726C20"]];
 	[connections setTarget:self];
@@ -1148,15 +1148,11 @@ static NSMenu *favoritesMenu = nil;
 		if( [[column identifier] isEqual:@"status"] ) {
 			NSString *imageName = nil;
 			NSString *title = nil;
-			if( [(MVChatConnection *)_bookmarks[row][@"connection"] isConnected] ) {
-				if( [view editedRow] != row && ( [view selectedRow] != row || ! [[view window] isKeyWindow] || ( [view selectedRow] == row && [[view window] firstResponder] != view ) ) ) imageName = @"connected";
-				else imageName = @"connectedSelected";
-
+			if( [(MVChatConnection *)[[_bookmarks objectAtIndex:row] objectForKey:@"connection"] isConnected] ) {
+				imageName = @"connectedTemplate";
 				title = NSLocalizedString(@"Connected", "VoiceOver title for connected image");
-			} else if( [(MVChatConnection *)_bookmarks[row][@"connection"] status] == MVChatConnectionConnectingStatus ) {
-				if( [view editedRow] != row && ( [view selectedRow] != row || ! [[view window] isKeyWindow] || ( [view selectedRow] == row && [[view window] firstResponder] != view ) ) ) imageName = @"connecting";
-				else imageName = @"connectingSelected";
-
+			} else if( [(MVChatConnection *)[[_bookmarks objectAtIndex:row] objectForKey:@"connection"] status] == MVChatConnectionConnectingStatus ) {
+				imageName = @"connectingTemplate";
 				title = NSLocalizedString(@"Connecting", "VoiceOver title for connecting image");
 			} else {
 				title = NSLocalizedString(@"Not connected", "VoiceOver title for not connected image");
@@ -1498,7 +1494,7 @@ static NSMenu *favoritesMenu = nil;
 		[toolbarItem setPaletteLabel:NSLocalizedString( @"Message User", "toolbar message user button name" )];
 
 		[toolbarItem setToolTip:NSLocalizedString( @"Message a user", "message user button tooltip" )];
-		[toolbarItem setImage:[NSImage imageNamed:@"directChatIcon"]];
+		[toolbarItem setImage:[NSImage imageNamed:@"messageUser"]];
 
 		[toolbarItem setTarget:self];
 		[toolbarItem setAction:NULL];

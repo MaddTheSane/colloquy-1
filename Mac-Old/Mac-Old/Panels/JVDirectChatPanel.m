@@ -396,7 +396,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 	BOOL smallIcons = [[[self windowController] preferenceForKey:@"small drawer icons"] boolValue];
 	if( smallIcons || [_windowController isMemberOfClass:[JVTabbedChatWindowController class]] )
 		return [NSImage imageNamed:@"privateChatTab"];
-	return [NSImage imageNamed:@"directChatIcon"];
+	return [NSImage imageNamed:@"messageUser"];
 }
 
 - (nullable NSImage *) statusImage {
@@ -1335,7 +1335,7 @@ NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasPr
 	NSRect sendFrame = [[[send superview] superview] frame];
 	CGFloat dividerThickness = [splitView dividerThickness];
 	CGFloat maxContentHeight = ( NSHeight( splitViewFrame ) - dividerThickness - 75. );
-	CGFloat newContentHeight =  MIN( maxContentHeight, MAX( 22., contentSize.height + 8. ) );
+	CGFloat newContentHeight =  MIN( maxContentHeight, MAX( 33. - dividerThickness, contentSize.height + 8. ) );
 
 	if( newContentHeight == NSHeight( sendFrame ) ) return;
 

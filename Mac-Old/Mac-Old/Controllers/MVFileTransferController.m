@@ -161,7 +161,7 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 	[theColumn setDataCell:prototypeCell];
 
 	theColumn = [currentFiles tableColumnWithIdentifier:@"status"];
-	[[theColumn headerCell] setImage:[NSImage imageNamed:@"statusHeader"]];
+	[[theColumn headerCell] setImage:[NSImage imageNamed:@"statusHeaderTemplate"]];
 
 	[toolbar setDelegate:self];
 	[toolbar setAllowsUserCustomization:YES];

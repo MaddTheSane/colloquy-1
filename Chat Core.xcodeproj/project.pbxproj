@@ -258,6 +258,7 @@
 				F50B0A9F0170C89301A84BDE /* Sources & Headers */,
 				F50B0AA00170C89301A84BDE /* Other Sources & Additions */,
 				F50B0AA10170C89301A84BDE /* Resources */,
+				C24705B920134D4700385F62 /* Resources */,
 				1C9AE8DF086A5218008ED7AD /* Settings */,
 				C26D0E131F5B0B3C00B58261 /* old-mac-binary-frameworks */,
 				C2A2CAB21FC1012C00A68495 /* Source Dependencies */,
@@ -363,6 +364,16 @@
 				922B1FF51692C42F002ECDFD /* MVDelegateLogger.h */,
 			);
 			path = Logging;
+			sourceTree = "<group>";
+		};
+		C24705B920134D4700385F62 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1C51B48A052DE0CB00BB459B /* Info-ChatCore.plist */,
+				1C11B7A009C27AC800789814 /* BSD License.txt */,
+			);
+			name = Resources;
+			path = "Chat Core/Resources";
 			sourceTree = "<group>";
 		};
 		C26D0E131F5B0B3C00B58261 /* old-mac-binary-frameworks */ = {
@@ -489,8 +500,6 @@
 		F50B0AA10170C89301A84BDE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1C11B7A009C27AC800789814 /* BSD License.txt */,
-				1C51B48A052DE0CB00BB459B /* Info-ChatCore.plist */,
 				1CCA517E0598AFBA00F0A4CD /* ChatCore.scriptSuite */,
 				1CCA517F0598AFBA00F0A4CD /* ChatCore.scriptTerminology */,
 				55AA73C81C554FD000BD820C /* ChatCore.modulemap */,
@@ -740,7 +749,7 @@
 					"RKL_CACHE_SIZE=47",
 					"RKL_BLOCKS=0",
 				);
-				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
+				INFOPLIST_FILE = "Chat Core/Resources/Info-ChatCore.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				MODULEMAP_FILE = ChatCore.modulemap;
 				OTHER_LDFLAGS = (
@@ -787,7 +796,7 @@
 					"RKL_CACHE_SIZE=47",
 					"RKL_BLOCKS=0",
 				);
-				INFOPLIST_FILE = "Resources/Info-ChatCore.plist";
+				INFOPLIST_FILE = "Chat Core/Resources/Info-ChatCore.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				MODULEMAP_FILE = ChatCore.modulemap;
 				OTHER_LDFLAGS = (

@@ -155,7 +155,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 #pragma mark -
 
 - (NSImage *) icon {
-	return [NSImage imageNamed:@"roomIcon"];
+	return [NSImage imageNamed:@"room"];
 }
 
 - (nullable NSImage *) statusImage {
@@ -350,7 +350,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 		if( [self newMessagesWaiting] == 1 ) context[@"title"] = [NSString stringWithFormat:NSLocalizedString( @"%@ has a message waiting\nfrom %@.", "new single room message bubble text" ), [self title], [member displayName]];
 		else context[@"title"] = [NSString stringWithFormat:NSLocalizedString( @"%@ has %d messages waiting.\nLast from %@", "new room messages bubble text" ), [self title], [self newMessagesWaiting], [member displayName]];
 		context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"%@", "room activity bubble message" ), [message bodyAsPlainText]];
-		context[@"image"] = [NSImage imageNamed:@"roomIcon"];
+		context[@"image"] = [NSImage imageNamed:@"room"];
 		context[@"coalesceKey"] = [[self windowTitle] stringByAppendingString:@"JVChatRoomActivity"];
 		context[@"target"] = self;
 		context[@"action"] = NSStringFromSelector( @selector( activate: ) );
