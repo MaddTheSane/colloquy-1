@@ -23,9 +23,13 @@
 
 #pragma mark -
 
+@interface JVStandardCommands() <MVChatPluginCommandSupport>
+
+@end
+
 @implementation JVStandardCommands
 - (instancetype) initWithManager:(MVChatPluginManager *) manager {
-	return [super init];
+	return self = [super init];
 }
 
 #pragma mark -
