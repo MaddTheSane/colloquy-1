@@ -10,7 +10,7 @@ COLLOQUY_EXPORT
 	NSArray<NSSpeechSynthesizer*> *_synthesizers;
 }
 @property (readonly, strong, class) JVSpeechController *sharedSpeechController;
-- (void) startSpeakingString:(NSString *) string usingVoice:(NSString *) voice;
+- (void) startSpeakingString:(NSString *) string usingVoice:(NSSpeechSynthesizerVoiceName) voice;
 @end
 
 NS_ASSUME_NONNULL_END

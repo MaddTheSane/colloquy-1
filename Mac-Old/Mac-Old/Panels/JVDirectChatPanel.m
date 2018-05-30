@@ -95,13 +95,13 @@ const NSStringEncoding JVAllowedTextEncodings[] = {
 	(NSStringEncoding) 0x80000505,		// Windows
 	/* End */ 0 };
 
-NSString *JVToolbarTextEncodingItemIdentifier = @"JVToolbarTextEncodingItem";
-NSString *JVToolbarClearScrollbackItemIdentifier = @"JVToolbarClearScrollbackItem";
-NSString *JVToolbarSendFileItemIdentifier = @"JVToolbarSendFileItem";
-NSString *JVToolbarMarkItemIdentifier = @"JVToolbarMarkItem";
+NSString *const JVToolbarTextEncodingItemIdentifier = @"JVToolbarTextEncodingItem";
+NSString *const JVToolbarClearScrollbackItemIdentifier = @"JVToolbarClearScrollbackItem";
+NSString *const JVToolbarSendFileItemIdentifier = @"JVToolbarSendFileItem";
+NSString *const JVToolbarMarkItemIdentifier = @"JVToolbarMarkItem";
 
-NSString *JVChatMessageWasProcessedNotification = @"JVChatMessageWasProcessedNotification";
-NSString *JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasProcessedNotification";
+NSString *const JVChatMessageWasProcessedNotification = @"JVChatMessageWasProcessedNotification";
+NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessageWasProcessedNotification";
 
 @interface JVDirectChatPanel () <ABImageClient, MVTextViewDelegate>
 @end
