@@ -111,8 +111,8 @@ extern NSString *JVChatViewPboardType;
 
 - (NSView *) view;
 - (nullable NSResponder *) firstResponder;
-- (NSString *) toolbarIdentifier;
-@property (readonly, copy) NSString *toolbarIdentifier;
+- (NSToolbarIdentifier) toolbarIdentifier;
+@property (readonly, copy) NSToolbarIdentifier toolbarIdentifier;
 - (NSString *) windowTitle;
 @property (readonly, copy) NSString *windowTitle;
 - (NSString *)identifier;

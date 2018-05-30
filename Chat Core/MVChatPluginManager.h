@@ -33,7 +33,7 @@ COLLOQUY_EXPORT
 @end
 
 @protocol MVChatPlugin <NSObject>
-- (null_unspecified instancetype) initWithManager:(MVChatPluginManager *) manager;
+- (nullable instancetype) initWithManager:(MVChatPluginManager *) manager;
 
 #pragma mark MVChatPluginReloadSupport
 @optional
