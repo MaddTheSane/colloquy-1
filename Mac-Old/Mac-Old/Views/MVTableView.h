@@ -1,4 +1,6 @@
 #import <Cocoa/Cocoa.h>
+@protocol MVTableViewDataSource;
+@protocol MVTableViewDelegate;
 
 @interface MVTableView : NSTableView {
 	NSUInteger autosaveTableColumnHighlight:1;
@@ -8,6 +10,9 @@
 	NSUInteger delegateRectOfRow:1;
 	NSUInteger delegateRowsInRect:1;
 }
+
+@property (nonatomic, weak) id <MVTableViewDataSource> dataSource;
+@property (nonatomic, weak) id <MVTableViewDelegate> delegate;
 
 @property BOOL autosaveTableColumnHighlight;
 
