@@ -398,7 +398,7 @@ static NSMenu *smartTranscriptMenu = nil;
 	NSParameterAssert( controller != nil );
 
 	if( [controller respondsToSelector:@selector( willDispose )] )
-		[(id<JVChatViewController>)controller willDispose];
+		[controller willDispose];
 
 	[[controller windowController] removeChatViewController:controller];
 

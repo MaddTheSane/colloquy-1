@@ -51,12 +51,12 @@
 }
 
 - (BOOL) underlineState {
-	return [[self attribute:NSUnderlineStyleAttributeName atIndex:0 effectiveRange:NULL] boolValue];
+	return [[self attribute:NSUnderlineStyleAttributeName atIndex:0 effectiveRange:NULL] integerValue] != 0;
 }
 
 - (void) setUnderlineState:(BOOL) underline {
 	if( ! underline ) [self removeAttribute:NSUnderlineStyleAttributeName range:NSMakeRange( 0, [self length] )];
-	else [self addAttribute:NSUnderlineStyleAttributeName value:@1 range:NSMakeRange( 0, [self length] )];
+	else [self addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange( 0, [self length] )];
 }
 
 - (NSArray *) styleClasses {

@@ -169,7 +169,8 @@ NS_ASSUME_NONNULL_BEGIN
 #if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 		[self setAttribute:date forKey:MVChatUserLocalTimeAttribute];
 #else
-		NSCalendarDate *localThere = [NSCalendarDate dateWithNaturalLanguageString:date];
+		NSDateFormatter *form = [NSDateFormatter new];
+		NSDate *localThere = [form dateFromString:date];
 		[self setAttribute:localThere forKey:MVChatUserLocalTimeAttribute];
 #endif
 	}

@@ -86,9 +86,9 @@
 	if( ( [item conformsToProtocol:@protocol( JVChatViewController )] && item != (id) _activeViewController ) || ( ! _activeViewController && [[item parent] conformsToProtocol:@protocol( JVChatViewController )] && ( item = [item parent] ) ) ) {
 		id<JVChatViewController> lastActive = _activeViewController;
 		if( [_activeViewController respondsToSelector:@selector( willUnselect )] )
-			[(id<JVChatViewController>)_activeViewController willUnselect];
+			[_activeViewController willUnselect];
 		if( [item respondsToSelector:@selector( willSelect )] )
-			[(id<JVChatViewController>)item willSelect];
+			[item willSelect];
 
 		_activeViewController = item;
 

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 COLLOQUY_EXPORT
 @interface JVSpeechController : NSObject <NSSpeechSynthesizerDelegate>
 @property (readonly, strong, class) JVSpeechController *sharedSpeechController;
-- (void) startSpeakingString:(NSString *) string usingVoice:(NSString *) voice;
+- (void) startSpeakingString:(NSString *) string usingVoice:(NSSpeechSynthesizerVoiceName) voice;
 @end
 
 NS_ASSUME_NONNULL_END

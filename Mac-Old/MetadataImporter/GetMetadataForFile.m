@@ -31,10 +31,12 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 	NSDate *dateStarted;
 	NSString *lastEventDate;
 	NSString *source;
+	NSDateFormatter *dateFormatter;
 }
 @property (strong) NSCharacterSet *lineBreaks;
 @property (strong) NSMutableString *content;
 @property (strong) NSMutableSet<NSString*> *participants;
+@property (strong) NSDateFormatter *dateFormatter;
 
 - (instancetype) initWithCapacity:(NSUInteger) capacity NS_DESIGNATED_INITIALIZER;
 @property (readonly, copy) NSDictionary *metadataAttributes;
@@ -44,6 +46,7 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 @synthesize lineBreaks;
 @synthesize content;
 @synthesize participants;
+@synthesize dateFormatter;
 
 - (instancetype)init
 {
@@ -55,6 +58,12 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 		self.content = [[NSMutableString alloc] initWithCapacity:capacity];
 		self.participants = [[NSMutableSet alloc] initWithCapacity:400];
 		self.lineBreaks = [NSCharacterSet characterSetWithCharactersInString:@"\n\r"];
+		NSDateFormatter *ourFormatter = [[NSDateFormatter alloc] init];
+		ourFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss ZZZ";
+		ourFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]; //Just in case other locales mess with the formatting
+		ourFormatter.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian]; //Just in case the default calendar is different.
+
+		self.dateFormatter = ourFormatter;
 	}
 
 	return self;
@@ -67,7 +76,7 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 	if (dateStarted)
 		ret[(NSString *) kMDItemContentCreationDate] = dateStarted;
 	if ([lastEventDate length]) {
-		NSDate *lastDate = [NSDate dateWithString:lastEventDate];
+		NSDate *lastDate = [dateFormatter dateFromString:lastEventDate];
 		if( lastDate ) {
 			ret[(NSString *) kMDItemContentModificationDate] = lastDate;
 			ret[(NSString *) kMDItemLastUsedDate] = lastDate;
@@ -111,19 +120,19 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 		if (date) {
 			lastEventDate = date;
 			if (!dateStarted)
-				dateStarted = [[NSDate alloc] initWithString:date];
+				dateStarted = [dateFormatter dateFromString:date];
 		}
 	} else if (!inEnvelope && [elementName isEqualToString:@"event"] ) {
 		NSString *date = attributes[@"occurred"];
 		if (date) {
 			lastEventDate = date ;
 			if (!dateStarted)
-				dateStarted = [[NSDate alloc] initWithString:date];
+				dateStarted = [dateFormatter dateFromString:date];
 		}
 	} else if (!inEnvelope && [elementName isEqualToString:@"log"]) {
 		NSString *date = attributes[@"began"];
 		if (date && !dateStarted)
-			dateStarted = [[NSDate alloc] initWithString:date];
+			dateStarted = [dateFormatter dateFromString:date];
 		if (!source)
 			source = attributes[@"source"];
 	}

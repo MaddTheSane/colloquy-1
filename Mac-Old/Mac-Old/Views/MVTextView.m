@@ -27,7 +27,7 @@
 
 #pragma mark -
 
-- (void) interpretKeyEvents:(NSArray *) eventArray {
+- (void) interpretKeyEvents:(NSArray<NSEvent *> *) eventArray {
 	NSMutableArray *newArray = [[NSMutableArray alloc] init];
 
 	if( ! [self isEditable] ) {
@@ -269,6 +269,10 @@
 - (IBAction) findPrevious:(id) sender {
 	[[JVTranscriptFindWindowController sharedController] findPrevious:sender];
 }
+
+#pragma mark -
+
+@synthesize usesSystemCompleteOnTab=_usesSystemCompleteOnTab;
 
 #pragma mark -
 

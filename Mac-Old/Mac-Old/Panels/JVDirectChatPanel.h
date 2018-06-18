@@ -13,13 +13,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVToolbarTextEncodingItemIdentifier;
-extern NSString *JVToolbarClearScrollbackItemIdentifier;
-extern NSString *JVToolbarSendFileItemIdentifier;
-extern NSString *JVToolbarMarkItemIdentifier;
+extern NSToolbarItemIdentifier const JVToolbarTextEncodingItemIdentifier NS_SWIFT_NAME(JVTextEncoding);
+extern NSToolbarItemIdentifier const JVToolbarClearScrollbackItemIdentifier NS_SWIFT_NAME(JVClearScrollback);
+extern NSToolbarItemIdentifier const JVToolbarSendFileItemIdentifier NS_SWIFT_NAME(JVSendFile);
+extern NSToolbarItemIdentifier const JVToolbarMarkItemIdentifier NS_SWIFT_NAME(JVMark);
 
-extern NSString *JVChatMessageWasProcessedNotification;
-extern NSString *JVChatEventMessageWasProcessedNotification;
+extern NSString *const JVChatMessageWasProcessedNotification;
+extern NSString *const JVChatEventMessageWasProcessedNotification;
 
 COLLOQUY_EXPORT
 @interface JVDirectChatPanel : JVChatTranscriptPanel <WebUIDelegate, WebPolicyDelegate> {
@@ -67,7 +67,7 @@ COLLOQUY_EXPORT
 
 - (void) addEventMessageToDisplay:(NSString *) message withName:(NSString *) name andAttributes:(nullable NSDictionary *) attributes;
 - (void) addMessageToDisplay:(NSData *) message fromUser:(MVChatUser *) user asAction:(BOOL) action withIdentifier:(NSString *) identifier andType:(JVChatMessageType) type;
-- (void) addMessageToDisplay:(NSData *) message fromUser:(MVChatUser *) user withAttributes:(NSDictionary *) msgAttributes withIdentifier:(NSString *) identifier andType:(JVChatMessageType) type;
+- (void) addMessageToDisplay:(NSData *) message fromUser:(MVChatUser *) user withAttributes:(NSDictionary<NSString*,id> *) msgAttributes withIdentifier:(NSString *) identifier andType:(JVChatMessageType) type;
 - (void) processIncomingMessage:(JVMutableChatMessage *) message;
 - (void) echoSentMessageToDisplay:(JVMutableChatMessage *) message NS_SWIFT_NAME(echoSentMessageToDisplay(_:));
 @property (readonly, strong) JVMutableChatMessage *currentMessage;

@@ -126,7 +126,7 @@ static NSString *parseCSSStyleAttribute( const char *style, NSMutableDictionary 
 			}
 		} else if( [prop isEqualToString:@"text-decoration"] ) {
 			if( [attr rangeOfString:@"underline"].location != NSNotFound ) {
-				currentAttributes[NSUnderlineStyleAttributeName] = @1UL;
+				currentAttributes[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
 				handled = YES;
 			} else {
 				[currentAttributes removeObjectForKey:NSUnderlineStyleAttributeName];
@@ -162,7 +162,7 @@ static NSMutableAttributedString *parseXHTMLTreeNode( xmlNode *node, NSDictionar
 		break;
 	case 'u':
 		if( ! strcmp( (char *) node -> name, "u" ) ) {
-			newAttributes[NSUnderlineStyleAttributeName] = @1UL;
+			newAttributes[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
 			skipTag = YES;
 		}
 		break;
@@ -244,7 +244,7 @@ static NSMutableAttributedString *parseXHTMLTreeNode( xmlNode *node, NSDictionar
 	} else if( ! skipTag && node -> type == XML_ELEMENT_NODE ) {
 		if( ! first ) {
 			NSMutableString *front = newAttributes[@"XHTMLStart"];
-			if( ! front ) front = [[NSMutableString alloc] init];
+			if( ! front ) front = [NSMutableString string];
 
 			xmlBufferPtr buf = xmlBufferCreate();
 			xmlNodeDump( buf, node -> doc, node, 0, 0 );
@@ -256,7 +256,7 @@ static NSMutableAttributedString *parseXHTMLTreeNode( xmlNode *node, NSDictionar
 			newAttributes[@"XHTMLStart"] = front;
 
 			unichar attachmentChar = NSAttachmentCharacter;
-			NSString *attachment = [[NSString alloc] initWithCharacters:&attachmentChar length:1];
+			NSString *attachment = [NSString stringWithCharacters:&attachmentChar length:1];
 
 			NSAttributedString *new = [[NSAttributedString alloc] initWithString:attachment attributes:newAttributes];
 			[ret appendAttributedString:new];
@@ -291,7 +291,7 @@ static NSMutableAttributedString *parseXHTMLTreeNode( xmlNode *node, NSDictionar
 }
 
 - (instancetype) initWithXHTMLFragment:(NSString *) fragment baseURL:(NSURL *) base defaultAttributes:(NSDictionary *) attributes {
-	const char *string = [[[NSString alloc] initWithFormat:@"<root>%@</root>", [fragment stringByStrippingIllegalXMLCharacters]] UTF8String];
+	const char *string = [[NSString stringWithFormat:@"<root>%@</root>", [fragment stringByStrippingIllegalXMLCharacters]] UTF8String];
 
 	if( string ) {
 		xmlDocPtr tempDoc = xmlParseMemory( string, (int)strlen( string ) );

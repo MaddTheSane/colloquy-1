@@ -13,7 +13,6 @@
 		1C0931030D80C6E900A2705D /* CQColloquyApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0931010D80C6E900A2705D /* CQColloquyApplication.m */; };
 		1C09313B0D80C8F600A2705D /* Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C09313A0D80C8F600A2705D /* Defaults.plist */; };
 		1C09327E0D80CA4800A2705D /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0932670D80CA4800A2705D /* NSDataAdditions.m */; };
-		1C0932810D80CA4800A2705D /* NSNotificationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09326D0D80CA4800A2705D /* NSNotificationAdditions.m */; };
 		1C0932830D80CA4800A2705D /* NSScannerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0932710D80CA4800A2705D /* NSScannerAdditions.m */; };
 		1C0932850D80CA4800A2705D /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0932750D80CA4800A2705D /* NSStringAdditions.m */; };
 		1C0937820D8116FC00A2705D /* CQChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0937800D8116FC00A2705D /* CQChatController.m */; };
@@ -141,7 +140,6 @@
 		922C767616D9C0E900AEFCB4 /* CQInstapaperController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922C767016D9C0E900AEFCB4 /* CQInstapaperController.m */; };
 		922C767716D9C0E900AEFCB4 /* CQPinboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922C767216D9C0E900AEFCB4 /* CQPinboardController.m */; };
 		922C767816D9C0E900AEFCB4 /* CQPocketController.m in Sources */ = {isa = PBXBuildFile; fileRef = 922C767416D9C0E900AEFCB4 /* CQPocketController.m */; };
-		922F1CAA1A4EBAF0000CBACE /* NSAttributedStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1CA91A4EBAF0000CBACE /* NSAttributedStringAdditions.m */; };
 		924108D615A5605A001F7681 /* NSFileManagerMoreAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 924108D515A5605A001F7681 /* NSFileManagerMoreAdditions.m */; };
 		9247414316119CCC009132B5 /* chromatic-redux.css in Resources */ = {isa = PBXBuildFile; fileRef = 9247414116119CCC009132B5 /* chromatic-redux.css */; };
 		924B823A116FEB2F0007F1F8 /* CQPreferencesTextEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B8239116FEB2F0007F1F8 /* CQPreferencesTextEditViewController.m */; };
@@ -324,13 +322,11 @@
 		B6831D9B1BE450E300D3AC1D /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F99FB719D14034004A7A22 /* UIViewAdditions.m */; };
 		B6831D9C1BE450E300D3AC1D /* UIViewControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D30F2B116D2B020060EE33 /* UIViewControllerAdditions.m */; };
 		B6831D9D1BE450E300D3AC1D /* UIWindowAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BFA5421BBDA3B6000C3BBC /* UIWindowAdditions.m */; };
-		B6831D9E1BE450E300D3AC1D /* NSAttributedStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 922F1CA91A4EBAF0000CBACE /* NSAttributedStringAdditions.m */; };
 		B6831D9F1BE450E300D3AC1D /* NSCharacterSetAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 891E84D3123F0C8C00EC3C0F /* NSCharacterSetAdditions.m */; };
 		B6831DA01BE450E300D3AC1D /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0932670D80CA4800A2705D /* NSDataAdditions.m */; };
 		B6831DA11BE450E300D3AC1D /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 922C162F163BDBCE00B01C3D /* NSDateAdditions.m */; };
 		B6831DA21BE450E300D3AC1D /* NSDictionaryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C20BE810EFEDF26005AD8A5 /* NSDictionaryAdditions.m */; };
 		B6831DA31BE450E300D3AC1D /* NSFileManagerMoreAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 924108D515A5605A001F7681 /* NSFileManagerMoreAdditions.m */; };
-		B6831DA41BE450E300D3AC1D /* NSNotificationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C09326D0D80CA4800A2705D /* NSNotificationAdditions.m */; };
 		B6831DA51BE450E300D3AC1D /* NSObjectAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CDDE9F5118CD2B800C83EBE /* NSObjectAdditions.m */; };
 		B6831DA61BE450E300D3AC1D /* NSRegularExpressionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92AFF85116B0D25D00940E5D /* NSRegularExpressionAdditions.m */; };
 		B6831DA71BE450E300D3AC1D /* NSScannerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0932710D80CA4800A2705D /* NSScannerAdditions.m */; };
@@ -394,8 +390,6 @@
 		1C09325D0D80CA4800A2705D /* MVUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MVUtilities.h; path = Additions/MVUtilities.h; sourceTree = "<group>"; };
 		1C0932660D80CA4800A2705D /* NSDataAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSDataAdditions.h; path = Additions/NSDataAdditions.h; sourceTree = "<group>"; };
 		1C0932670D80CA4800A2705D /* NSDataAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NSDataAdditions.m; path = Additions/NSDataAdditions.m; sourceTree = "<group>"; };
-		1C09326C0D80CA4800A2705D /* NSNotificationAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSNotificationAdditions.h; path = Additions/NSNotificationAdditions.h; sourceTree = "<group>"; };
-		1C09326D0D80CA4800A2705D /* NSNotificationAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NSNotificationAdditions.m; path = Additions/NSNotificationAdditions.m; sourceTree = "<group>"; };
 		1C0932700D80CA4800A2705D /* NSScannerAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSScannerAdditions.h; path = Additions/NSScannerAdditions.h; sourceTree = "<group>"; };
 		1C0932710D80CA4800A2705D /* NSScannerAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NSScannerAdditions.m; path = Additions/NSScannerAdditions.m; sourceTree = "<group>"; };
 		1C0932740D80CA4800A2705D /* NSStringAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSStringAdditions.h; path = Additions/NSStringAdditions.h; sourceTree = "<group>"; };
@@ -611,8 +605,6 @@
 		922C767216D9C0E900AEFCB4 /* CQPinboardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQPinboardController.m; path = Shared/Controllers/CQPinboardController.m; sourceTree = "<group>"; };
 		922C767316D9C0E900AEFCB4 /* CQPocketController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CQPocketController.h; path = Shared/Controllers/CQPocketController.h; sourceTree = "<group>"; };
 		922C767416D9C0E900AEFCB4 /* CQPocketController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQPocketController.m; path = Shared/Controllers/CQPocketController.m; sourceTree = "<group>"; };
-		922F1CA81A4EBAF0000CBACE /* NSAttributedStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSAttributedStringAdditions.h; path = Additions/NSAttributedStringAdditions.h; sourceTree = "<group>"; };
-		922F1CA91A4EBAF0000CBACE /* NSAttributedStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSAttributedStringAdditions.m; path = Additions/NSAttributedStringAdditions.m; sourceTree = "<group>"; };
 		924108D415A5605A001F7681 /* NSFileManagerMoreAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSFileManagerMoreAdditions.h; path = Additions/NSFileManagerMoreAdditions.h; sourceTree = "<group>"; };
 		924108D515A5605A001F7681 /* NSFileManagerMoreAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSFileManagerMoreAdditions.m; path = Additions/NSFileManagerMoreAdditions.m; sourceTree = "<group>"; };
 		9247414116119CCC009132B5 /* chromatic-redux.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "chromatic-redux.css"; sourceTree = "<group>"; };
@@ -1173,8 +1165,6 @@
 				92D30F2A116D2B020060EE33 /* UIViewControllerAdditions.h */,
 				B6BFA5421BBDA3B6000C3BBC /* UIWindowAdditions.m */,
 				B6BFA5411BBDA3B6000C3BBC /* UIWindowAdditions.h */,
-				922F1CA91A4EBAF0000CBACE /* NSAttributedStringAdditions.m */,
-				922F1CA81A4EBAF0000CBACE /* NSAttributedStringAdditions.h */,
 				891E84D3123F0C8C00EC3C0F /* NSCharacterSetAdditions.m */,
 				891E84D2123F0C8C00EC3C0F /* NSCharacterSetAdditions.h */,
 				1C0932670D80CA4800A2705D /* NSDataAdditions.m */,
@@ -1185,8 +1175,6 @@
 				1C20BE800EFEDF26005AD8A5 /* NSDictionaryAdditions.h */,
 				924108D515A5605A001F7681 /* NSFileManagerMoreAdditions.m */,
 				924108D415A5605A001F7681 /* NSFileManagerMoreAdditions.h */,
-				1C09326D0D80CA4800A2705D /* NSNotificationAdditions.m */,
-				1C09326C0D80CA4800A2705D /* NSNotificationAdditions.h */,
 				1CDDE9F5118CD2B800C83EBE /* NSObjectAdditions.m */,
 				1CDDE9F4118CD2B800C83EBE /* NSObjectAdditions.h */,
 				92AFF85116B0D25D00940E5D /* NSRegularExpressionAdditions.m */,
@@ -1363,7 +1351,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Colloquy Project";
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
@@ -1582,7 +1570,6 @@
 				B6BFA5431BBDA3B6000C3BBC /* UIWindowAdditions.m in Sources */,
 				B68725B11B8E3E320003D4F8 /* UIPrintPageRendererAdditions.m in Sources */,
 				1910F61C1FCBDEA6009B692D /* NSURLSessionAdditions.m in Sources */,
-				1C0932810D80CA4800A2705D /* NSNotificationAdditions.m in Sources */,
 				1C0932830D80CA4800A2705D /* NSScannerAdditions.m in Sources */,
 				1C0932850D80CA4800A2705D /* NSStringAdditions.m in Sources */,
 				1C0937820D8116FC00A2705D /* CQChatController.m in Sources */,
@@ -1657,7 +1644,6 @@
 				1C716EDC13100F220088C737 /* MVIRCChatRoom.m in Sources */,
 				1C716EDD13100F220088C737 /* MVIRCChatUser.m in Sources */,
 				1C716EDE13100F220088C737 /* MVIRCFileTransfer.m in Sources */,
-				922F1CAA1A4EBAF0000CBACE /* NSAttributedStringAdditions.m in Sources */,
 				1C716EE013100F220088C737 /* InterThreadMessaging.m in Sources */,
 				926678F919C03C8500CCE5BE /* CQWKChatTranscriptView.m in Sources */,
 				1C716EE213100F220088C737 /* MVChatConnection.m in Sources */,
@@ -1806,13 +1792,11 @@
 				B6831D9B1BE450E300D3AC1D /* UIViewAdditions.m in Sources */,
 				B6831D9C1BE450E300D3AC1D /* UIViewControllerAdditions.m in Sources */,
 				B6831D9D1BE450E300D3AC1D /* UIWindowAdditions.m in Sources */,
-				B6831D9E1BE450E300D3AC1D /* NSAttributedStringAdditions.m in Sources */,
 				B6831D9F1BE450E300D3AC1D /* NSCharacterSetAdditions.m in Sources */,
 				B6831DA01BE450E300D3AC1D /* NSDataAdditions.m in Sources */,
 				B6831DA11BE450E300D3AC1D /* NSDateAdditions.m in Sources */,
 				B6831DA21BE450E300D3AC1D /* NSDictionaryAdditions.m in Sources */,
 				B6831DA31BE450E300D3AC1D /* NSFileManagerMoreAdditions.m in Sources */,
-				B6831DA41BE450E300D3AC1D /* NSNotificationAdditions.m in Sources */,
 				B6831DA51BE450E300D3AC1D /* NSObjectAdditions.m in Sources */,
 				B6831DA61BE450E300D3AC1D /* NSRegularExpressionAdditions.m in Sources */,
 				B6831DA71BE450E300D3AC1D /* NSScannerAdditions.m in Sources */,

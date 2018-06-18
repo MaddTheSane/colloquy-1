@@ -189,8 +189,8 @@ NSString *NSChatCTCPTwoFormatType = @"NSChatCTCPTwoFormatType";
 			if( traits & NSItalicFontMask) italic = YES;
 			NSNumber *oblique = dict[NSObliquenessAttributeName];
 			if( oblique && [oblique floatValue] > 0. ) italic = YES;
-			if( [dict[NSUnderlineStyleAttributeName] boolValue] ) underline = YES;
-			if( [dict[NSStrikethroughStyleAttributeName] boolValue] ) strikethrough = YES;
+			if( [dict[NSUnderlineStyleAttributeName] integerValue] != 0 ) underline = YES;
+			if( [dict[NSStrikethroughStyleAttributeName] integerValue] != 0 ) strikethrough = YES;
 		}
 
 		if( styleString.length ) [spanString appendFormat:@" style=\"%@\"", styleString];
@@ -406,7 +406,7 @@ NSString *NSChatCTCPTwoFormatType = @"NSChatCTCPTwoFormatType";
 				break;
 			case '\037': // toggle underline
 				underlineStack = ! underlineStack;
-				if( underlineStack && ! [options[@"IgnoreFontTraits"] boolValue] ) attributes[NSUnderlineStyleAttributeName] = @1;
+				if( underlineStack && ! [options[@"IgnoreFontTraits"] boolValue] ) attributes[NSUnderlineStyleAttributeName] = @(NSUnderlineStyleSingle);
 				else [attributes removeObjectForKey:NSUnderlineStyleAttributeName];
 				break;
 			case '\003': // color
@@ -634,7 +634,7 @@ NSString *NSChatCTCPTwoFormatType = @"NSChatCTCPTwoFormatType";
 #endif
 			NSNumber *oblique = dict[NSObliquenessAttributeName];
 			if( oblique && [oblique floatValue] > 0. ) italic = YES;
-			if( [dict[NSUnderlineStyleAttributeName] intValue] ) underline = YES;
+			if( [dict[NSUnderlineStyleAttributeName] integerValue] != 0 ) underline = YES;
 		}
 
 #if SYSTEM(MAC)
