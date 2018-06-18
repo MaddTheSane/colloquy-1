@@ -11,8 +11,8 @@
 	NSUInteger delegateRowsInRect:1;
 }
 
-@property (nonatomic, weak) id <MVTableViewDataSource> dataSource;
-@property (nonatomic, weak) id <MVTableViewDelegate> delegate;
+@property (atomic, weak) id <MVTableViewDataSource> dataSource;
+@property (atomic, weak) id <MVTableViewDelegate> delegate;
 
 @property BOOL autosaveTableColumnHighlight;
 
