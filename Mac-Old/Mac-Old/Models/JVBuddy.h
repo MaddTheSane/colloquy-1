@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, JVBuddyName) {
 @property (copy, nullable) NSString *speechVoice;
 @property (readonly, copy) NSString *uniqueIdentifier;
 
-@property (strong) ABPerson *addressBookPersonRecord;
+@property (strong, nullable) ABPerson *addressBookPersonRecord;
 - (void) editInAddressBook;
 - (void) viewInAddressBook;
 

@@ -15,7 +15,7 @@ extern NSString *JVStyleVariantChangedNotification;
 COLLOQUY_EXPORT
 @interface JVStyle : NSObject {
 	NSBundle *_bundle;
-	NSDictionary *_parameters;
+	NSDictionary<NSString*,id> *_parameters;
 	NSArray *_styleOptions;
 	NSArray *_variants;
 	NSArray *_userVariants;
@@ -57,7 +57,7 @@ COLLOQUY_EXPORT
 
 @property (readonly, copy) NSArray<NSDictionary<NSString*,id>*> *styleSheetOptions;
 
-@property (copy) NSDictionary *mainParameters;
+@property (copy) NSDictionary<NSString*,id> *mainParameters;
 
 @property (readonly, copy) NSURL *baseLocation;
 @property (readonly, copy) NSURL *mainStyleSheetLocation;
