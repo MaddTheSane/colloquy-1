@@ -829,7 +829,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			browser.filter = arguments.string
 			return true
 
-		case "reconnect", "server":
+		case "reconnect":
 			connection?.connect()
 			return true
 			
