@@ -51,13 +51,7 @@
 
 #pragma mark -
 
-- (void) setMainSubviewIndex:(long) index {
-	_mainSubviewIndex = index;
-}
-
-- (BOOL) mainSubviewIndex {
-	return _mainSubviewIndex;
-}
+@synthesize mainSubviewIndex=_mainSubviewIndex;
 
 #pragma mark -
 

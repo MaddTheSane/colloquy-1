@@ -27,8 +27,7 @@
 
 - (BOOL) autocompleteWithSuffix:(BOOL) suffix;
 
-- (id <MVTextViewDelegate>)delegate;
-- (void)setDelegate:(id <MVTextViewDelegate>)anObject;
+@property (atomic, weak) id <MVTextViewDelegate>delegate;
 @end
 
 @protocol MVTextViewDelegate <NSTextViewDelegate>

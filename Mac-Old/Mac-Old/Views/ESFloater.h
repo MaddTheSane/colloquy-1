@@ -16,13 +16,13 @@
 }
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-+ (instancetype)floaterWithImage:(NSImage *)inImage styleMask:(NSUInteger)styleMask title:(NSString *) title;
-- (instancetype)initWithImage:(NSImage *)inImage styleMask:(NSUInteger)styleMask title:(NSString *) title NS_DESIGNATED_INITIALIZER;
++ (instancetype)floaterWithImage:(NSImage *)inImage styleMask:(NSWindowStyleMask)styleMask title:(NSString *) title;
+- (instancetype)initWithImage:(NSImage *)inImage styleMask:(NSWindowStyleMask)styleMask title:(NSString *) title NS_DESIGNATED_INITIALIZER;
 - (void)moveFloaterToPoint:(NSPoint)inPoint;
 - (IBAction)close:(id)sender;
 - (void)endFloater;
 @property (strong) NSImage *image;
 - (void)setVisible:(BOOL)inVisible animate:(BOOL)animate;
-- (void)setMaxOpacity:(CGFloat)inMaxOpacity;
+@property (nonatomic) CGFloat maxOpacity;
 
 @end
