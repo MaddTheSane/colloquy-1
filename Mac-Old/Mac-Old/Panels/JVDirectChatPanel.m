@@ -215,8 +215,13 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	[send setDelegate:self];
 	[send reset:nil];
 
-	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] )
-		[(JVSplitView *)[[[send superview] superview] superview] setDividerStyle:NSSplitViewDividerStylePaneSplitter];
+	NSSplitViewDividerStyle dividerStyle;
+	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] ) {
+		dividerStyle = NSSplitViewDividerStyleThin;
+	} else {
+		dividerStyle = NSSplitViewDividerStylePaneSplitter;
+	}
+	[(JVSplitView *)[[[send superview] superview] superview] setDividerStyle:dividerStyle];
 }
 
 - (void) dealloc {
