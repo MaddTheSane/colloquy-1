@@ -45,6 +45,7 @@ COLLOQUY_EXPORT
 
 	NSInteger _historyIndex;
 	CGFloat _sendHeight;
+	CGFloat _minimumSendHeight;
 	BOOL _scrollerIsAtBottom;
 	BOOL _forceSplitViewPosition;
 
