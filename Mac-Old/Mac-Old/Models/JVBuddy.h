@@ -2,15 +2,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVBuddyCameOnlineNotification;
-extern NSString *JVBuddyWentOfflineNotification;
+extern NSNotificationName const JVBuddyCameOnlineNotification;
+extern NSNotificationName const JVBuddyWentOfflineNotification;
 
-extern NSString *JVBuddyUserCameOnlineNotification;
-extern NSString *JVBuddyUserWentOfflineNotification;
-extern NSString *JVBuddyUserStatusChangedNotification;
-extern NSString *JVBuddyUserIdleTimeUpdatedNotification;
+extern NSNotificationName const JVBuddyUserCameOnlineNotification;
+extern NSNotificationName const JVBuddyUserWentOfflineNotification;
+extern NSNotificationName const JVBuddyUserStatusChangedNotification;
+extern NSNotificationName const JVBuddyUserIdleTimeUpdatedNotification;
 
-extern NSString *JVBuddyActiveUserChangedNotification;
+extern NSNotificationName const JVBuddyActiveUserChangedNotification;
 
 @class ABPerson;
 @class MVChatUser;

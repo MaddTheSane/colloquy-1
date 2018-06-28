@@ -2,10 +2,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVChatStyleInstalledNotification;
-extern NSString *JVChatEmoticonSetInstalledNotification;
-extern NSString *JVMachineBecameIdleNotification;
-COLLOQUY_EXPORT extern NSString *JVMachineStoppedIdlingNotification;
+extern NSNotificationName const JVChatStyleInstalledNotification;
+extern NSNotificationName const JVChatEmoticonSetInstalledNotification;
+extern NSNotificationName const JVMachineBecameIdleNotification;
+COLLOQUY_EXPORT extern NSNotificationName const JVMachineStoppedIdlingNotification;
 
 @class CQMPreferencesWindowController;
 @class SUUpdater;

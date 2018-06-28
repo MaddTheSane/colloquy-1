@@ -7,7 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *const MVFavoritesListDidUpdateNotification;
+extern NSNotificationName const MVFavoritesListDidUpdateNotification;
 
 COLLOQUY_EXPORT
 @interface JVChatRoomPanel : JVDirectChatPanel {

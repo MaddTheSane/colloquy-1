@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *JVChatTranscriptUpdatedNotification = @"JVChatTranscriptUpdatedNotification";
+NSString *const JVChatTranscriptUpdatedNotification = @"JVChatTranscriptUpdatedNotification";
 
 #pragma mark -
 

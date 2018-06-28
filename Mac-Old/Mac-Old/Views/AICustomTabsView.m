@@ -841,7 +841,7 @@ static NSRect AIConstrainRectWidth(NSRect rect, CGFloat left, CGFloat right)
 		int					hover;
 
 		//If dragging is disallowed, ask our delegate where this tab should go
-		unsigned desiredIndex = [delegate customTabView:self indexForInsertingTabViewItem:tabViewItem];
+		NSUInteger desiredIndex = [delegate customTabView:self indexForInsertingTabViewItem:tabViewItem];
 		if(outIndex) *outIndex = desiredIndex;
 
 		//Position the hover tab

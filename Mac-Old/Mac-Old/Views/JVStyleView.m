@@ -12,8 +12,8 @@
 #define JVMessageIntervalMinimum .001
 #define JVMessageIntervalMaximum 1.
 
-NSString *JVStyleViewDidClearNotification = @"JVStyleViewDidClearNotification";
-NSString *JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeStylesNotification";
+NSString *const JVStyleViewDidClearNotification = @"JVStyleViewDidClearNotification";
+NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeStylesNotification";
 
 @interface WebCoreCache
 + (void) setDisabled:(BOOL) disabled;

@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-extern NSString *JVColorWellCellColorDidChangeNotification;
+extern NSNotificationName const JVColorWellCellColorDidChangeNotification;
 
 @interface JVColorWellCell : NSButtonCell {
 	NSColor *_color;

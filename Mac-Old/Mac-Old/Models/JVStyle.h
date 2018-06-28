@@ -6,11 +6,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVStylesScannedNotification;
-extern NSString *JVDefaultStyleChangedNotification;
-extern NSString *JVDefaultStyleVariantChangedNotification;
-extern NSString *JVNewStyleVariantAddedNotification;
-extern NSString *JVStyleVariantChangedNotification;
+extern NSNotificationName const JVStylesScannedNotification;
+extern NSNotificationName const JVDefaultStyleChangedNotification;
+extern NSNotificationName const JVDefaultStyleVariantChangedNotification;
+extern NSNotificationName const JVNewStyleVariantAddedNotification;
+extern NSNotificationName const JVStyleVariantChangedNotification;
 
 COLLOQUY_EXPORT
 @interface JVStyle : NSObject {

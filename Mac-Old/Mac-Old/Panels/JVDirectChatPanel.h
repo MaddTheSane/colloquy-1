@@ -18,8 +18,8 @@ extern NSToolbarItemIdentifier const JVToolbarClearScrollbackItemIdentifier NS_S
 extern NSToolbarItemIdentifier const JVToolbarSendFileItemIdentifier NS_SWIFT_NAME(JVSendFile);
 extern NSToolbarItemIdentifier const JVToolbarMarkItemIdentifier NS_SWIFT_NAME(JVMark);
 
-extern NSString *const JVChatMessageWasProcessedNotification;
-extern NSString *const JVChatEventMessageWasProcessedNotification;
+extern NSNotificationName const JVChatMessageWasProcessedNotification;
+extern NSNotificationName const JVChatEventMessageWasProcessedNotification;
 
 COLLOQUY_EXPORT
 @interface JVDirectChatPanel : JVChatTranscriptPanel <WebUIDelegate, WebPolicyDelegate> {

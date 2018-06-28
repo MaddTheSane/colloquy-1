@@ -7,7 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVChatTranscriptUpdatedNotification;
+extern NSNotificationName const JVChatTranscriptUpdatedNotification;
 
 @protocol JVChatTranscriptElement <NSObject>
 @property (nullable, readonly) struct _xmlNode *node;

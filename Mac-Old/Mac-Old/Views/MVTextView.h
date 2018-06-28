@@ -1,5 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol MVTextViewDelegate;
 
 @interface MVTextView : NSTextView {
@@ -14,20 +16,20 @@
 }
 - (BOOL) checkKeyEvent:(NSEvent *) event;
 
-- (void) setBaseFont:(NSFont *) font;
+- (void) setBaseFont:(nullable NSFont *) font;
 
-- (IBAction) reset:(id) sender;
+- (IBAction) reset:(nullable id) sender;
 
 @property (readonly) NSSize minimumSizeForContent;
 
-- (IBAction) bold:(id) sender;
-- (IBAction) italic:(id) sender;
+- (IBAction) bold:(nullable id) sender;
+- (IBAction) italic:(nullable id) sender;
 
 @property BOOL usesSystemCompleteOnTab;
 
 - (BOOL) autocompleteWithSuffix:(BOOL) suffix;
 
-@property (atomic, weak) id <MVTextViewDelegate>delegate;
+@property (atomic, weak, nullable) id <MVTextViewDelegate>delegate;
 @end
 
 @protocol MVTextViewDelegate <NSTextViewDelegate>
@@ -39,3 +41,5 @@
 - (NSArray<NSString*> *) textView:(NSTextView *) textView stringCompletionsForPrefix:(NSString *) prefix;
 - (void) textView:(NSTextView *) textView selectedCompletion:(NSString *) completion fromPrefix:(NSString *) prefix;
 @end
+
+NS_ASSUME_NONNULL_END

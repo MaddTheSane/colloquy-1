@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * JVEmoticonSetsScannedNotification;
+extern NSNotificationName const JVEmoticonSetsScannedNotification;
 
 COLLOQUY_EXPORT
 @interface JVEmoticonSet : NSObject {
