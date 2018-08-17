@@ -18,8 +18,9 @@ typedef struct __MetadataImporterPluginType
 
 static MDImportPlug *AllocMetadataImporterPluginType(CFUUIDRef inFactoryID);
 static void          DeallocMetadataImporterPluginType(MDImportPlug *thisInstance);
-static HRESULT       MetadataImporterQueryInterface(void *thisInstance,REFIID iid,LPVOID *ppv);
-extern void         *MetadataImporterPluginFactory(CFAllocatorRef allocator,CFUUIDRef typeID);
+static HRESULT       MetadataImporterQueryInterface(void *thisInstance, REFIID iid, LPVOID *ppv);
+COLLOQUY_EXPORT
+extern void         *MetadataImporterPluginFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
 static ULONG         MetadataImporterPluginAddRef(void *thisInstance);
 static ULONG         MetadataImporterPluginRelease(void *thisInstance);
 
@@ -41,9 +42,7 @@ static MDImporterURLInterfaceStruct testURLInterfaceFtbl = {
 
 MDImportPlug *AllocMetadataImporterPluginType(CFUUIDRef inFactoryID)
 {
-	MDImportPlug *theNewInstance;
-	
-	theNewInstance = (MDImportPlug *)calloc(sizeof(MDImportPlug), 1);
+	MDImportPlug *theNewInstance = (MDImportPlug *)calloc(sizeof(MDImportPlug), 1);
 	
 	/* Point to the function table */
 	theNewInstance->interface = malloc(sizeof(MDImporterInterfaceStruct));
@@ -72,9 +71,7 @@ void DeallocMetadataImporterPluginType(MDImportPlug *thisInstance)
 
 HRESULT MetadataImporterQueryInterface(void *thisInstance,REFIID iid,LPVOID *ppv)
 {
-	CFUUIDRef interfaceID;
-	
-	interfaceID = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, iid);
+	CFUUIDRef interfaceID = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, iid);
 	
 	if (CFEqual(interfaceID, kMDImporterURLInterfaceID)) {
 		/* If the right interface was requested, bump the ref count,
@@ -120,10 +117,10 @@ ULONG MetadataImporterPluginRelease(void *thisInstance)
 {
 	((MDImportPlug*)thisInstance)->refCount--;
 	if (((MDImportPlug*)thisInstance)->refCount == 0) {
-		DeallocMetadataImporterPluginType((MDImportPlug*)thisInstance );
+		DeallocMetadataImporterPluginType((MDImportPlug*)thisInstance);
 		return 0;
 	} else {
-		return ((MDImportPlug*) thisInstance )->refCount;
+		return ((MDImportPlug*)thisInstance)->refCount;
 	}
 }
 
