@@ -5,15 +5,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *JVBuddyCameOnlineNotification = @"JVBuddyCameOnlineNotification";
-NSString *JVBuddyWentOfflineNotification = @"JVBuddyWentOfflineNotification";
+NSString *const JVBuddyCameOnlineNotification = @"JVBuddyCameOnlineNotification";
+NSString *const JVBuddyWentOfflineNotification = @"JVBuddyWentOfflineNotification";
 
-NSString *JVBuddyUserCameOnlineNotification = @"JVBuddyUserCameOnlineNotification";
-NSString *JVBuddyUserWentOfflineNotification = @"JVBuddyUserWentOfflineNotification";
-NSString *JVBuddyUserStatusChangedNotification = @"JVBuddyUserStatusChangedNotification";
-NSString *JVBuddyUserIdleTimeUpdatedNotification = @"JVBuddyUserIdleTimeUpdatedNotification";
+NSString *const JVBuddyUserCameOnlineNotification = @"JVBuddyUserCameOnlineNotification";
+NSString *const JVBuddyUserWentOfflineNotification = @"JVBuddyUserWentOfflineNotification";
+NSString *const JVBuddyUserStatusChangedNotification = @"JVBuddyUserStatusChangedNotification";
+NSString *const JVBuddyUserIdleTimeUpdatedNotification = @"JVBuddyUserIdleTimeUpdatedNotification";
 
-NSString *JVBuddyActiveUserChangedNotification = @"JVBuddyActiveUserChangedNotification";
+NSString *const JVBuddyActiveUserChangedNotification = @"JVBuddyActiveUserChangedNotification";
 
 static JVBuddyName _mainPreferredName = JVBuddyFullName;
 

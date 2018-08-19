@@ -8,8 +8,8 @@
 
 @protocol JVChatTranscriptElement;
 
-extern NSString *JVStyleViewDidClearNotification;
-extern NSString *JVStyleViewDidChangeStylesNotification;
+extern NSNotificationName const JVStyleViewDidClearNotification;
+extern NSNotificationName const JVStyleViewDidChangeStylesNotification;
 
 @interface JVStyleView : WebView <WebFrameLoadDelegate> {
 	IBOutlet NSTextView *nextTextView;

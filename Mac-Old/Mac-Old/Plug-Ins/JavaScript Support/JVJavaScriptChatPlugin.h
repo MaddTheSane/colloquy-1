@@ -2,7 +2,7 @@
 
 #import <WebKit/WebKit.h>
 
-extern NSString *JVJavaScriptErrorDomain;
+extern NSErrorDomain JVJavaScriptErrorDomain;
 
 @class WebScriptCallFrame;
 @class WebView;

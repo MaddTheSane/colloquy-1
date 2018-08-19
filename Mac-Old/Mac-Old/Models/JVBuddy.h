@@ -2,15 +2,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVBuddyCameOnlineNotification;
-extern NSString *JVBuddyWentOfflineNotification;
+extern NSNotificationName const JVBuddyCameOnlineNotification;
+extern NSNotificationName const JVBuddyWentOfflineNotification;
 
-extern NSString *JVBuddyUserCameOnlineNotification;
-extern NSString *JVBuddyUserWentOfflineNotification;
-extern NSString *JVBuddyUserStatusChangedNotification;
-extern NSString *JVBuddyUserIdleTimeUpdatedNotification;
+extern NSNotificationName const JVBuddyUserCameOnlineNotification;
+extern NSNotificationName const JVBuddyUserWentOfflineNotification;
+extern NSNotificationName const JVBuddyUserStatusChangedNotification;
+extern NSNotificationName const JVBuddyUserIdleTimeUpdatedNotification;
 
-extern NSString *JVBuddyActiveUserChangedNotification;
+extern NSNotificationName const JVBuddyActiveUserChangedNotification;
 
 @class ABPerson;
 @class MVChatUser;
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, JVBuddyName) {
 @property (copy, nullable) NSString *speechVoice;
 @property (readonly, copy) NSString *uniqueIdentifier;
 
-@property (strong) ABPerson *addressBookPersonRecord;
+@property (strong, nullable) ABPerson *addressBookPersonRecord;
 - (void) editInAddressBook;
 - (void) viewInAddressBook;
 

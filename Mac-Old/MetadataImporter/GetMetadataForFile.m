@@ -109,7 +109,7 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 	return [ret copy];
 }
 
-- (void) parser:(NSXMLParser *) parser didStartElement:(NSString *) elementName namespaceURI:(NSString *) namespaceURI qualifiedName:(NSString *) qName attributes:(NSDictionary *) attributes {
+- (void) parser:(NSXMLParser *) parser didStartElement:(NSString *) elementName namespaceURI:(NSString *) namespaceURI qualifiedName:(NSString *) qName attributes:(NSDictionary<NSString *, NSString *> *) attributes {
 	lastElement = elementName;
 
 	if ([elementName isEqualToString:@"envelope"]) {
@@ -118,14 +118,14 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 		inMessage = YES;
 		NSString *date = attributes[@"received"];
 		if (date) {
-			lastEventDate = date;
+			lastEventDate = [date copy];
 			if (!dateStarted)
 				dateStarted = [dateFormatter dateFromString:date];
 		}
 	} else if (!inEnvelope && [elementName isEqualToString:@"event"] ) {
 		NSString *date = attributes[@"occurred"];
 		if (date) {
-			lastEventDate = date ;
+			lastEventDate = [date copy];
 			if (!dateStarted)
 				dateStarted = [dateFormatter dateFromString:date];
 		}
@@ -134,7 +134,7 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 		if (date && !dateStarted)
 			dateStarted = [dateFormatter dateFromString:date];
 		if (!source)
-			source = attributes[@"source"];
+			source = [attributes[@"source"] copy];
 	}
 }
 

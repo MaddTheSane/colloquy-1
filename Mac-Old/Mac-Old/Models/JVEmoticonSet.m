@@ -10,7 +10,7 @@
 
 static NSMutableSet *allEmoticonSets = nil;
 
-NSString *JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotification";
+NSString *const JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotification";
 
 @implementation JVEmoticonSet
 @synthesize bundle = _bundle;

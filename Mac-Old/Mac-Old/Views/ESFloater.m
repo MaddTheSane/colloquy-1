@@ -21,13 +21,13 @@
 @implementation ESFloater
 
 //
-+ (instancetype)floaterWithImage:(NSImage *)inImage styleMask:(NSUInteger)styleMask title:(NSString *) title
++ (instancetype)floaterWithImage:(NSImage *)inImage styleMask:(NSWindowStyleMask)styleMask title:(NSString *) title
 {
     return([[self alloc] initWithImage:inImage styleMask:styleMask title:title]);
 }
 
 //
-- (instancetype)initWithImage:(NSImage *)inImage styleMask:(NSUInteger)styleMask title:(NSString *) title
+- (instancetype)initWithImage:(NSImage *)inImage styleMask:(NSWindowStyleMask)styleMask title:(NSString *) title
 {
     NSRect  frame;
 
@@ -94,6 +94,8 @@
      panel = nil;
 
 }
+
+@synthesize maxOpacity;
 
 //
 - (void)setMaxOpacity:(CGFloat)inMaxOpacity

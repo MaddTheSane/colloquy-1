@@ -26,7 +26,9 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 		_sendHistory = [NSMutableArray array];
 		[_sendHistory insertObject:[[NSAttributedString alloc] initWithString:@""] atIndex:0];
 
-		_sendHeight = 25.;
+		_minimumSendHeight = 0.;
+		_sendHeight = _minimumSendHeight;
+
 		_historyIndex = 0;
 		_paused = NO;
 		_forceSplitViewPosition = YES;
@@ -57,6 +59,10 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	[send setUsesFontPanel:NO];
 	[send reset:nil];
 
+	NSRect sendFrame = [[send enclosingScrollView] frame];
+	_minimumSendHeight = sendFrame.size.height;
+	_sendHeight = _minimumSendHeight;
+
 	[display setEditable:NO];
 	[display setContinuousSpellCheckingEnabled:NO];
 	[display setUsesFontPanel:NO];
@@ -65,8 +71,13 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 
 	[[display layoutManager] setDelegate:self];
 
-	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] )
-		[(JVSplitView *)[[send enclosingScrollView] superview] setDividerStyle:NSSplitViewDividerStylePaneSplitter];
+	NSSplitViewDividerStyle dividerStyle;
+	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] ) {
+		dividerStyle = NSSplitViewDividerStyleThin;
+	} else {
+		dividerStyle = NSSplitViewDividerStylePaneSplitter;
+	}
+	[(JVSplitView *)[[send enclosingScrollView] superview] setDividerStyle:dividerStyle];
 }
 
 - (void) dealloc {
@@ -281,6 +292,7 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 
 	NSFont *font = [NSFont fontWithName:(outbound ? @"Menlo-Bold" : @"Menlo") size:[NSFont smallSystemFontSize]];
 	attrs[NSFontAttributeName] = font;
+	[attrs setObject:[NSColor textColor] forKey:NSForegroundColorAttributeName];
 
 	NSScrollView *scrollView = [display enclosingScrollView];
 	NSScroller *scroller = [scrollView verticalScroller];
@@ -448,18 +460,29 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	if( ! [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] )
 		return;
 
+	NSScrollView *scrollView = [display enclosingScrollView];
+	NSScroller *scroller = [scrollView verticalScroller];
+	if( ! [scrollView hasVerticalScroller] || [scroller floatValue] >= 0.995 ) _scrollerIsAtBottom = YES;
+	else _scrollerIsAtBottom = NO;
+
+	[self resizeSendFieldToFitContent];
+
+	if( _scrollerIsAtBottom ) {
+		[display scrollToEndOfDocument:self];
+	}
+}
+
+- (void) resizeSendFieldToFitContent {
 	// We need to resize the textview to fit the content.
 	// The scroll views are two superviews up: NSTextView -> NSClipView -> NSScrollView
 	NSSplitView *splitView = (NSSplitView *)[[send enclosingScrollView] superview];
 	NSRect splitViewFrame = [splitView frame];
+
 	NSSize contentSize = [send minimumSizeForContent];
 	NSRect sendFrame = [[send enclosingScrollView] frame];
 	CGFloat dividerThickness = [splitView dividerThickness];
 	CGFloat maxContentHeight = ( NSHeight( splitViewFrame ) - dividerThickness - 75. );
-	CGFloat newContentHeight =  MIN( maxContentHeight, MAX( 33. - dividerThickness, contentSize.height + 8. ) );
-
-	if( newContentHeight == NSHeight( sendFrame ) ) return;
-
+	CGFloat newContentHeight =  MIN( maxContentHeight, MAX( _minimumSendHeight, contentSize.height));
 	NSRect displayFrame = [[display enclosingScrollView] frame];
 
 	// Set size of the web view to the maximum size possible
@@ -470,20 +493,11 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	sendFrame.size.height = newContentHeight;
 	sendFrame.origin.y = NSHeight( displayFrame ) + dividerThickness;
 
-	NSScrollView *scrollView = [display enclosingScrollView];
-	NSScroller *scroller = [scrollView verticalScroller];
-	if( ! [scrollView hasVerticalScroller] || [scroller floatValue] >= 0.995 ) _scrollerIsAtBottom = YES;
-	else _scrollerIsAtBottom = NO;
-
 	// Commit the changes
 	[[send enclosingScrollView] setFrame:sendFrame];
 	[[display enclosingScrollView] setFrame:displayFrame];
 
 	[splitView adjustSubviews];
-
-	if( _scrollerIsAtBottom ) {
-		[display scrollToEndOfDocument:self];
-	}
 }
 
 #pragma mark -
@@ -609,6 +623,11 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 }
 
 - (void) splitView:(NSSplitView *) sender resizeSubviewsWithOldSize:(NSSize) oldSize {
+	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"JVChatInputAutoResizes"] ) {
+		[self resizeSendFieldToFitContent];
+		return;
+	}
+
 	CGFloat dividerThickness = [sender dividerThickness];
 	NSRect newFrame = [sender frame];
 

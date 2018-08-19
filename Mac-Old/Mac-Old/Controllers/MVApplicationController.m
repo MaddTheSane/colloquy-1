@@ -36,10 +36,10 @@
 
 #pragma mark -
 
-NSString *JVChatStyleInstalledNotification = @"JVChatStyleInstalledNotification";
-NSString *JVChatEmoticonSetInstalledNotification = @"JVChatEmoticonSetInstalledNotification";
-NSString *JVMachineBecameIdleNotification = @"JVMachineBecameIdleNotification";
-NSString *JVMachineStoppedIdlingNotification = @"JVMachineStoppedIdlingNotification";
+NSString *const JVChatStyleInstalledNotification = @"JVChatStyleInstalledNotification";
+NSString *const JVChatEmoticonSetInstalledNotification = @"JVChatEmoticonSetInstalledNotification";
+NSString *const JVMachineBecameIdleNotification = @"JVMachineBecameIdleNotification";
+NSString *const JVMachineStoppedIdlingNotification = @"JVMachineStoppedIdlingNotification";
 
 static BOOL applicationIsTerminating = NO;
 

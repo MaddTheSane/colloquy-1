@@ -9,6 +9,5 @@
 - (void) savePositionUsingName:(NSString *) name;
 - (BOOL) setPositionUsingName:(NSString *) name;
 
-- (void) setMainSubviewIndex:(long) index;
-- (BOOL) mainSubviewIndex;
+@property long mainSubviewIndex;
 @end

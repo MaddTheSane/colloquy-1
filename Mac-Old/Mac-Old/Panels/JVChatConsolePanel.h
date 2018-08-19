@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 	BOOL _ignorePRIVMSG;
 	BOOL _paused;
 	CGFloat _sendHeight;
+	CGFloat _minimumSendHeight;
 	BOOL _scrollerIsAtBottom;
 	BOOL _forceSplitViewPosition;
 	NSInteger _historyIndex;

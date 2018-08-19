@@ -2,7 +2,7 @@
 
 static NSMutableSet *colorWellCells = nil;
 
-NSString *JVColorWellCellColorDidChangeNotification = @"JVColorWellCellColorDidChangeNotification";
+NSString *const JVColorWellCellColorDidChangeNotification = @"JVColorWellCellColorDidChangeNotification";
 
 @interface JVColorWellCell ()
 - (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;

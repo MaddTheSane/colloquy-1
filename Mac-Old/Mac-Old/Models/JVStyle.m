@@ -26,11 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 static NSMutableSet * __null_unspecified allStyles = nil;
 
-NSString *JVStylesScannedNotification = @"JVStylesScannedNotification";
-NSString *JVDefaultStyleChangedNotification = @"JVDefaultStyleChangedNotification";
-NSString *JVDefaultStyleVariantChangedNotification = @"JVDefaultStyleVariantChangedNotification";
-NSString *JVNewStyleVariantAddedNotification = @"JVNewStyleVariantAddedNotification";
-NSString *JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotification";
+NSString *const JVStylesScannedNotification = @"JVStylesScannedNotification";
+NSString *const JVDefaultStyleChangedNotification = @"JVDefaultStyleChangedNotification";
+NSString *const JVDefaultStyleVariantChangedNotification = @"JVDefaultStyleVariantChangedNotification";
+NSString *const JVNewStyleVariantAddedNotification = @"JVNewStyleVariantAddedNotification";
+NSString *const JVStyleVariantChangedNotification = @"JVStyleVariantChangedNotification";
 
 @implementation JVStyle
 + (void) scanForStyles {
