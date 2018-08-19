@@ -59,7 +59,7 @@ __private_extern @interface JVChatTranscriptMetadataExtractor : NSObject <NSXMLP
 		self.participants = [[NSMutableSet alloc] initWithCapacity:400];
 		self.lineBreaks = [NSCharacterSet characterSetWithCharactersInString:@"\n\r"];
 		NSDateFormatter *ourFormatter = [[NSDateFormatter alloc] init];
-		ourFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss ZZZ";
+		ourFormatter.dateFormat = @"yyyy-MM-DD HH:mm:ss ZZZZZ";
 		ourFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]; //Just in case other locales mess with the formatting
 		ourFormatter.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian]; //Just in case the default calendar is different.
 
