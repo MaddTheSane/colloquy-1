@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Colloquy uses this access to associate Buddy List entries with your contacts.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDocumentTypes</key>
@@ -132,12 +130,16 @@
 	</dict>
 	<key>NSAppleScriptEnabled</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Colloquy uses this access to associate Buddy List entries with your contacts.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2003-2017, Colloquy Project</string>
 	<key>NSMainNibFile</key>
 	<string>Colloquy</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
 	<key>SUAllowsAutomaticUpdates</key>
@@ -152,8 +154,6 @@
 	<string>Colloquy</string>
 	<key>SmartCrashReports_URL</key>
 	<string>http://colloquy.info/crash.php</string>
-	<key>NSSupportsAutomaticGraphicsSwitching</key>
-	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
