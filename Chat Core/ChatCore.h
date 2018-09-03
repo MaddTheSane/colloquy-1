@@ -14,6 +14,7 @@
 
 // Additions
 #import <ChatCore/NSAttributedStringAdditions.h>
+#import <ChatCore/NSCharacterSetAdditions.h>
 #import <ChatCore/NSStringAdditions.h>
 #import <ChatCore/NSNumberAdditions.h>
 #import <ChatCore/NSColorAdditions.h>

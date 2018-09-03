@@ -71,6 +71,8 @@
 		32C46E1B0B3AB37E00B96B27 /* MVICBChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C46E190B3AB37E00B96B27 /* MVICBChatUser.m */; };
 		431261C3072EE37A00720AD1 /* MVSILCFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */; };
 		550A7FED1D5A4518003EB429 /* SwiftAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550A7FEC1D5A4518003EB429 /* SwiftAdditions.swift */; };
+		55394954213CC4780041EA2F /* NSCharacterSetAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 55394952213CC4770041EA2F /* NSCharacterSetAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55394955213CC4780041EA2F /* NSCharacterSetAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55394953213CC4770041EA2F /* NSCharacterSetAdditions.m */; };
 		555906561C555D8100FA6B72 /* NSStringAdditions_Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */; };
 		5577DD0F1C599B48001A76E1 /* MVMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 5577DD0E1C599B48001A76E1 /* MVMessaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55A0A5DE1DD7A5E5001FA99D /* ChatCore.apinotes in Sources */ = {isa = PBXBuildFile; fileRef = 55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */; };
@@ -199,6 +201,8 @@
 		431261C0072EE37A00720AD1 /* MVSILCFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MVSILCFileTransfer.h; sourceTree = "<group>"; };
 		431261C1072EE37A00720AD1 /* MVSILCFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MVSILCFileTransfer.m; sourceTree = "<group>"; };
 		550A7FEC1D5A4518003EB429 /* SwiftAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftAdditions.swift; path = "../Chat Core/SwiftAdditions.swift"; sourceTree = "<group>"; };
+		55394952213CC4770041EA2F /* NSCharacterSetAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCharacterSetAdditions.h; sourceTree = "<group>"; };
+		55394953213CC4770041EA2F /* NSCharacterSetAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCharacterSetAdditions.m; sourceTree = "<group>"; };
 		555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStringAdditions_Swift.swift; sourceTree = "<group>"; };
 		5577DD0E1C599B48001A76E1 /* MVMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVMessaging.h; sourceTree = "<group>"; };
 		55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChatCore.apinotes; path = "Chat Core/ChatCore.apinotes"; sourceTree = SOURCE_ROOT; };
@@ -462,6 +466,8 @@
 				1C3560050B4CCE95008A93FA /* MVUtilities.h */,
 				F5E98623018B412B01EE70DE /* NSAttributedStringAdditions.h */,
 				F5E98622018B412B01EE70DE /* NSAttributedStringAdditions.m */,
+				55394952213CC4770041EA2F /* NSCharacterSetAdditions.h */,
+				55394953213CC4770041EA2F /* NSCharacterSetAdditions.m */,
 				1CD020B305759347000F93B4 /* NSStringAdditions.m */,
 				1CD020B205759347000F93B4 /* NSStringAdditions.h */,
 				555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */,
@@ -554,6 +560,7 @@
 				DD0A30220BD8815D0054443A /* MVXMPPChatUser.h in Headers */,
 				DD0A30230BD8815E0054443A /* MVXMPPChatRoom.h in Headers */,
 				DD0A30240BD8815F0054443A /* MVXMPPChatConnection.h in Headers */,
+				55394954213CC4780041EA2F /* NSCharacterSetAdditions.h in Headers */,
 				DD0A30250BD881610054443A /* MVSILCChatConnection.h in Headers */,
 				DD0A30260BD881620054443A /* MVSILCChatRoom.h in Headers */,
 				DD0A30270BD881620054443A /* MVSILCChatUser.h in Headers */,
@@ -690,6 +697,7 @@
 				1C9CF5010615091700330D8D /* MVChatConnection.m in Sources */,
 				1C943AAC063C260800618CD9 /* MVFileTransfer.m in Sources */,
 				C22181D11F649FE300F2E814 /* NSDateAdditions.m in Sources */,
+				55394955213CC4780041EA2F /* NSCharacterSetAdditions.m in Sources */,
 				1C7B83CC0668D765004F1EFE /* NSNotificationAdditions.m in Sources */,
 				1CF4E5120698E9E900986498 /* NSDataAdditions.m in Sources */,
 				1C5A1A2506F8F4A000A51F10 /* MVIRCChatConnection.m in Sources */,
