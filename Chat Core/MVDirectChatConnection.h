@@ -6,15 +6,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-COLLOQUY_EXPORT extern NSString *MVDirectChatConnectionOfferNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVDirectChatConnectionOfferNotification;
 
-COLLOQUY_EXPORT extern NSString *MVDirectChatConnectionDidConnectNotification;
-COLLOQUY_EXPORT extern NSString *MVDirectChatConnectionDidDisconnectNotification;
-COLLOQUY_EXPORT extern NSString *MVDirectChatConnectionErrorOccurredNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVDirectChatConnectionDidConnectNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVDirectChatConnectionDidDisconnectNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVDirectChatConnectionErrorOccurredNotification;
 
-COLLOQUY_EXPORT extern NSString *MVDirectChatConnectionGotMessageNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVDirectChatConnectionGotMessageNotification;
 
-COLLOQUY_EXPORT extern NSString *MVDirectChatConnectionErrorDomain;
+COLLOQUY_EXPORT extern NSErrorDomain MVDirectChatConnectionErrorDomain;
 
 typedef NS_ENUM(OSType, MVDirectChatConnectionStatus) {
 	MVDirectChatConnectionConnectedStatus = 'dcCo',

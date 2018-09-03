@@ -5,13 +5,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class MVChatUser;
 
-COLLOQUY_EXPORT extern NSString *MVDownloadFileTransferOfferNotification;
-COLLOQUY_EXPORT extern NSString *MVFileTransferDataTransferredNotification;
-COLLOQUY_EXPORT extern NSString *MVFileTransferStartedNotification;
-COLLOQUY_EXPORT extern NSString *MVFileTransferFinishedNotification;
-COLLOQUY_EXPORT extern NSString *MVFileTransferErrorOccurredNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVDownloadFileTransferOfferNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVFileTransferDataTransferredNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVFileTransferStartedNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVFileTransferFinishedNotification;
+COLLOQUY_EXPORT extern NSNotificationName MVFileTransferErrorOccurredNotification;
 
-COLLOQUY_EXPORT extern NSString *MVFileTransferErrorDomain;
+COLLOQUY_EXPORT extern NSErrorDomain MVFileTransferErrorDomain;
 
 typedef NS_ENUM(OSType, MVFileTransferStatus) {
 	MVFileTransferDoneStatus = 'trDn',
@@ -21,7 +21,7 @@ typedef NS_ENUM(OSType, MVFileTransferStatus) {
 	MVFileTransferErrorStatus = 'trEr'
 };
 
-typedef NS_ENUM(NSInteger, MVFileTransferError) {
+typedef NS_ERROR_ENUM(MVFileTransferErrorDomain, MVFileTransferError) {
 	MVFileTransferConnectionError = -1,
 	MVFileTransferFileCreationError = -2,
 	MVFileTransferFileOpenError = -3,
