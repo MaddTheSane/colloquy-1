@@ -28,9 +28,9 @@ extension String {
 	/// Default is `nil`
 	/// - parameter capture: Which capture to use.<br>
 	/// Default is `0`.
-	public func range(ofRegex regex: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> {
+	public func range<T>(ofRegex regex: T, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> where T : StringProtocol {
 		let range = range1 ?? startIndex ..< endIndex
-		let regRange = try (self as NSString).range(ofRegex: regex, options: options, in: NSRange(range, in: self), capture: capture)
+		let regRange = try (self as NSString).range(ofRegex: String(regex), options: options, in: NSRange(range, in: self), capture: capture)
 		
 		guard let convRange = Range(regRange, in: self) else {
 			throw CocoaError(.formatting)
@@ -46,7 +46,7 @@ extension String {
 	/// Default is `nil`
 	/// - parameter capture: Which capture to use.<br>
 	/// Default is `0`.
-	public func match(regex: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Substring {
+	public func match<T>(regex: T, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Substring where T : StringProtocol {
 		let newRange = try range(ofRegex: regex, options: options, in: range1, capture: capture)
 		let subStr = self[newRange]
 		return subStr
@@ -59,7 +59,7 @@ extension String {
 	/// searches the whole string.<br>
 	/// Default is `nil`
 	/// - parameter replacement: What to replace the matched regex with.
-	public mutating func replaceOccurrences(ofRegex regex: String, with replacement: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws {
+	public mutating func replaceOccurrences<T>(ofRegex regex: T, with replacement: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws where T : StringProtocol {
 		let newRange = try range(ofRegex: regex, options: options, in: range1)
 		self.replaceSubrange(newRange, with: replacement)
 	}
