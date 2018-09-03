@@ -9,75 +9,75 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(OSType, MVChatConnectionType) {
-	MVChatConnectionUnsupportedType = 0,
-	MVChatConnectionICBType = 'icbC',
-	MVChatConnectionIRCType = 'ircC',
-	MVChatConnectionSILCType = 'silC',
-	MVChatConnectionXMPPType = 'xmpC'
+	MVChatConnectionUnsupportedType NS_SWIFT_NAME(unsupported) = 0,
+	MVChatConnectionICBType NS_SWIFT_NAME(ICB) = 'icbC',
+	MVChatConnectionIRCType NS_SWIFT_NAME(IRC) = 'ircC',
+	MVChatConnectionSILCType NS_SWIFT_NAME(SILC) = 'silC',
+	MVChatConnectionXMPPType NS_SWIFT_NAME(XMPP) = 'xmpC'
 };
 
 typedef NS_ENUM(OSType, MVChatConnectionStatus) {
-	MVChatConnectionDisconnectedStatus = 'disC',
-	MVChatConnectionServerDisconnectedStatus = 'sdsC',
-	MVChatConnectionConnectingStatus = 'conG',
-	MVChatConnectionConnectedStatus = 'conD',
-	MVChatConnectionSuspendedStatus = 'susP'
+	MVChatConnectionDisconnectedStatus NS_SWIFT_NAME(disconnected) = 'disC',
+	MVChatConnectionServerDisconnectedStatus NS_SWIFT_NAME(serverDisconnected) = 'sdsC',
+	MVChatConnectionConnectingStatus NS_SWIFT_NAME(connecting) = 'conG',
+	MVChatConnectionConnectedStatus NS_SWIFT_NAME(connected) = 'conD',
+	MVChatConnectionSuspendedStatus NS_SWIFT_NAME(suspended) = 'susP'
 };
 
 typedef NS_ENUM(OSType, MVChatConnectionProxy) {
-	MVChatConnectionNoProxy = 'nonE',
-	MVChatConnectionHTTPProxy = 'httP',
-	MVChatConnectionHTTPSProxy = 'htpS',
-	MVChatConnectionSOCKS4Proxy = 'soK4',
-	MVChatConnectionSOCKS5Proxy = 'soK5'
+	MVChatConnectionNoProxy NS_SWIFT_NAME(none) = 'nonE',
+	MVChatConnectionHTTPProxy NS_SWIFT_NAME(HTTP) = 'httP',
+	MVChatConnectionHTTPSProxy NS_SWIFT_NAME(HTTPS) = 'htpS',
+	MVChatConnectionSOCKS4Proxy NS_SWIFT_NAME(SOCKS4) = 'soK4',
+	MVChatConnectionSOCKS5Proxy NS_SWIFT_NAME(SOCKS5) = 'soK5'
 };
 
 typedef NS_ENUM(OSType, MVChatConnectionBouncer) {
-	MVChatConnectionNoBouncer = 'nonB',
-	MVChatConnectionGenericBouncer = 'gbnC',
-	MVChatConnectionColloquyBouncer = 'cbnC'
+	MVChatConnectionNoBouncer NS_SWIFT_NAME(none) = 'nonB',
+	MVChatConnectionGenericBouncer NS_SWIFT_NAME(generic) = 'gbnC',
+	MVChatConnectionColloquyBouncer NS_SWIFT_NAME(colloquy) = 'cbnC'
 };
 
 typedef NS_ENUM(OSType, MVChatConnectionPublicKeyType) {
-	MVChatConnectionServerPublicKeyType = 'serV',
-	MVChatConnectionClientPublicKeyType = 'clnT'
+	MVChatConnectionServerPublicKeyType NS_SWIFT_NAME(server) = 'serV',
+	MVChatConnectionClientPublicKeyType NS_SWIFT_NAME(client) = 'clnT'
 };
 
 typedef NS_ENUM(OSType, MVChatMessageFormat) {
-	MVChatConnectionDefaultMessageFormat = 'cDtF',
-	MVChatNoMessageFormat = 'nOcF',
-	MVChatWindowsIRCMessageFormat = 'mIrF',
-	MVChatCTCPTwoMessageFormat = 'ct2F',
-	MVChatJSONMessageFormat = 'jsoN'
+	MVChatConnectionDefaultMessageFormat NS_SWIFT_NAME(connectionDefaunt) = 'cDtF',
+	MVChatNoMessageFormat NS_SWIFT_NAME(none) = 'nOcF',
+	MVChatWindowsIRCMessageFormat NS_SWIFT_NAME(windowsIRC) = 'mIrF',
+	MVChatCTCPTwoMessageFormat NS_SWIFT_NAME(CTCPTwo) = 'ct2F',
+	MVChatJSONMessageFormat NS_SWIFT_NAME(JSON) = 'jsoN'
 };
 
-extern NSErrorDomain MVChatConnectionErrorDomain;
+COLLOQUY_EXPORT extern NSErrorDomain MVChatConnectionErrorDomain;
 
 typedef NS_ERROR_ENUM(MVChatConnectionErrorDomain, MVChatConnectionError) {
-	MVChatConnectionUnknownError = -1,
-	MVChatConnectionNoSuchUserError = -2,
-	MVChatConnectionNoSuchRoomError = -3,
-	MVChatConnectionNoSuchServerError = -4,
-	MVChatConnectionCantSendToRoomError = -5,
-	MVChatConnectionCantChangeNickError = -6,
-	MVChatConnectionNotInRoomError = -7,
-	MVChatConnectionUserNotInRoomError = -8,
-	MVChatConnectionRoomIsFullError = -9,
-	MVChatConnectionInviteOnlyRoomError = -10,
-	MVChatConnectionRoomPasswordIncorrectError = -11,
-	MVChatConnectionBannedFromRoomError = -12,
-	MVChatConnectionUnknownCommandError = -13,
-	MVChatConnectionErroneusNicknameError = -14,
-	MVChatConnectionBannedFromServerError = -15,
-	MVChatConnectionServerPasswordIncorrectError = -16,
-	MVChatConnectionProtocolError = -17,
-	MVChatConnectionOutOfBricksError = -18,
-	MVChatConnectionCantChangeUsedNickError = -19,
-	MVChatConnectionIdentifyToJoinRoomError = -20,
-	MVChatConnectionRoomDoesNotSupportModesError = -21,
-	MVChatConnectionNickChangedByServicesError = -22,
-	MVChatConnectionServicesDownError = -23,
-	MVChatConnectionTLSError = -24
+	MVChatConnectionUnknownError NS_SWIFT_NAME(unknown) = -1,
+	MVChatConnectionNoSuchUserError NS_SWIFT_NAME(noSuchUser) = -2,
+	MVChatConnectionNoSuchRoomError NS_SWIFT_NAME(noSuchRoom) = -3,
+	MVChatConnectionNoSuchServerError NS_SWIFT_NAME(noSuchServer) = -4,
+	MVChatConnectionCantSendToRoomError NS_SWIFT_NAME(cantSendToRoom) = -5,
+	MVChatConnectionCantChangeNickError NS_SWIFT_NAME(cantChangeNick) = -6,
+	MVChatConnectionNotInRoomError NS_SWIFT_NAME(notInRoom) = -7,
+	MVChatConnectionUserNotInRoomError NS_SWIFT_NAME(userNotInRoom) = -8,
+	MVChatConnectionRoomIsFullError NS_SWIFT_NAME(roomIsFull) = -9,
+	MVChatConnectionInviteOnlyRoomError NS_SWIFT_NAME(inviteOnlyRoom) = -10,
+	MVChatConnectionRoomPasswordIncorrectError NS_SWIFT_NAME(roomPasswordIncorrect) = -11,
+	MVChatConnectionBannedFromRoomError NS_SWIFT_NAME(bannedFromRoom) = -12,
+	MVChatConnectionUnknownCommandError NS_SWIFT_NAME(unknownCommand) = -13,
+	MVChatConnectionErroneusNicknameError NS_SWIFT_NAME(erroneusNickname) = -14,
+	MVChatConnectionBannedFromServerError NS_SWIFT_NAME(bannedFromServer) = -15,
+	MVChatConnectionServerPasswordIncorrectError NS_SWIFT_NAME(serverPasswordIncorrect) = -16,
+	MVChatConnectionProtocolError NS_SWIFT_NAME(protocol) = -17,
+	MVChatConnectionOutOfBricksError NS_SWIFT_NAME(outOfBricks) = -18,
+	MVChatConnectionCantChangeUsedNickError NS_SWIFT_NAME(cantChangeUsedNick) = -19,
+	MVChatConnectionIdentifyToJoinRoomError NS_SWIFT_NAME(identifyToJoinRoom) = -20,
+	MVChatConnectionRoomDoesNotSupportModesError NS_SWIFT_NAME(roomDoesNotSupportModes) = -21,
+	MVChatConnectionNickChangedByServicesError NS_SWIFT_NAME(nickChangedByServices) = -22,
+	MVChatConnectionServicesDownError NS_SWIFT_NAME(servicesDown) = -23,
+	MVChatConnectionTLSError NS_SWIFT_NAME(TLS) = -24
 };
 
 typedef BOOL (^MVPeerTrustHandler)(SecTrustRef);

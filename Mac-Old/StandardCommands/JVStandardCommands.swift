@@ -165,7 +165,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 		var chatView: JVDirectChatPanel? = nil
 
 		// this is an IRC specific command for sending to room operators only.
-		if connection.type == .ircType {
+		if connection.type == .IRC {
 			let scanner = Scanner(string: to as String);
 			scanner.charactersToBeSkipped = nil;
 			scanner.scanCharacters(from: connection._nicknamePrefixes, into: nil)
@@ -508,7 +508,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				}
 				
 			case "topic", "t":
-				if arguments.length == 0 && connection?.type == .ircType {
+				if arguments.length == 0 && connection?.type == .IRC {
 					_ = room?.display.windowScriptObject.callWebScriptMethod("toggleTopic", withArguments: nil)
 					return true;
 				} else if arguments.length != 0 {
@@ -537,7 +537,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				}
 				
 			case "invite":
-				if connection?.type == .ircType {
+				if connection?.type == .IRC {
 					var nick: NSString? = nil;
 					var roomName: NSString? = nil;
 					let whitespace = CharacterSet.whitespacesAndNewlines
@@ -614,7 +614,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.setMode(.operatorMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.setMode(.operator, forMemberUser: user)
 						}
 					}
 				}
@@ -625,7 +625,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.removeMode(.operatorMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.removeMode(.operator, forMemberUser: user)
 						}
 					}
 				}
@@ -636,7 +636,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.setMode(.halfOperatorMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.setMode(.halfOperator, forMemberUser: user)
 						}
 					}
 				}
@@ -647,7 +647,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.removeMode(.halfOperatorMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.removeMode(.halfOperator, forMemberUser: user)
 						}
 					}
 				}
@@ -658,7 +658,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.setMode(.voicedMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.setMode(.voiced, forMemberUser: user)
 						}
 					}
 				}
@@ -669,7 +669,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.removeMode(.voicedMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.removeMode(.voiced, forMemberUser: user)
 						}
 					}
 				}
@@ -680,7 +680,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.setDisciplineMode(.disciplineQuietedMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.setDisciplineMode(.quieted, forMemberUser: user)
 						}
 					}
 				}
@@ -691,7 +691,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				for arg in args {
 					if arg.count > 0 {
 						if let user = (room?.target as AnyObject?)?.memberUsers(withNickname: arg)?.first {
-							(room?.target as AnyObject?)?.remove(.disciplineQuietedMode, forMemberUser: user)
+							(room?.target as AnyObject?)?.remove(.quieted, forMemberUser: user)
 						}
 					}
 				}
@@ -799,7 +799,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			return true
 
 		case "umode":
-			guard connection?.type == .ircType else {
+			guard connection?.type == .IRC else {
 				return false
 			}
 			
@@ -807,7 +807,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			return true
 			
 		case "ctcp":
-			if connection?.type == .ircType {
+			if connection?.type == .IRC {
 				return handleCTCP(arguments: arguments.string, for: connection)
 			}
 
@@ -844,7 +844,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 			return handleUnignore(arguments: arguments.string, in: room)
 			
 		case "invite":
-			guard connection?.type == .ircType else {
+			guard connection?.type == .IRC else {
 				return false
 			}
 			var nick1: NSString?
@@ -890,13 +890,13 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 				return false
 			}
 		case "globops":
-			guard connection?.type == .ircType else {
+			guard connection?.type == .IRC else {
 				return false
 			}
 			connection?.sendRawMessage("\(command) :\(arguments.string)")
 			
 		case "notice", "onotice":
-			guard connection?.type == .ircType else {
+			guard connection?.type == .IRC else {
 				return false
 			}
 			var targetPrefix: NSString? = nil;

@@ -14,20 +14,20 @@ COLLOQUY_EXPORT extern NSNotificationName MVFileTransferErrorOccurredNotificatio
 COLLOQUY_EXPORT extern NSErrorDomain MVFileTransferErrorDomain;
 
 typedef NS_ENUM(OSType, MVFileTransferStatus) {
-	MVFileTransferDoneStatus = 'trDn',
-	MVFileTransferNormalStatus = 'trNo',
-	MVFileTransferHoldingStatus = 'trHo',
-	MVFileTransferStoppedStatus = 'trSt',
-	MVFileTransferErrorStatus = 'trEr'
+	MVFileTransferDoneStatus NS_SWIFT_NAME(done) = 'trDn',
+	MVFileTransferNormalStatus NS_SWIFT_NAME(normal) = 'trNo',
+	MVFileTransferHoldingStatus NS_SWIFT_NAME(holding) = 'trHo',
+	MVFileTransferStoppedStatus NS_SWIFT_NAME(stopped) = 'trSt',
+	MVFileTransferErrorStatus NS_SWIFT_NAME(error) = 'trEr'
 };
 
 typedef NS_ERROR_ENUM(MVFileTransferErrorDomain, MVFileTransferError) {
-	MVFileTransferConnectionError = -1,
-	MVFileTransferFileCreationError = -2,
-	MVFileTransferFileOpenError = -3,
-	MVFileTransferAlreadyExistsError = -4,
-	MVFileTransferUnexpectedlyEndedError = -5,
-	MVFileTransferKeyAgreementError = -6
+	MVFileTransferConnectionError NS_SWIFT_NAME(connection) = -1,
+	MVFileTransferFileCreationError NS_SWIFT_NAME(fileCreation) = -2,
+	MVFileTransferFileOpenError NS_SWIFT_NAME(foleOpen) = -3,
+	MVFileTransferAlreadyExistsError NS_SWIFT_NAME(alreadyExists) = -4,
+	MVFileTransferUnexpectedlyEndedError NS_SWIFT_NAME(unexpectedlyEnded) = -5,
+	MVFileTransferKeyAgreementError NS_SWIFT_NAME(keyAgreement) = -6
 };
 
 static inline NSString *NSStringFromMVFileTransferStatus(MVFileTransferStatus status);

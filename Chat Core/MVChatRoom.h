@@ -9,29 +9,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_OPTIONS(NSUInteger, MVChatRoomMode) {
 	MVChatRoomNoModes = 0,
-	MVChatRoomPrivateMode = 1 << 0,
-	MVChatRoomSecretMode = 1 << 1,
-	MVChatRoomInviteOnlyMode = 1 << 2,
-	MVChatRoomNormalUsersSilencedMode = 1 << 3,
-	MVChatRoomOperatorsSilencedMode = 1 << 4,
-	MVChatRoomOperatorsOnlySetTopicMode = 1 << 5,
-	MVChatRoomNoOutsideMessagesMode = 1 << 6,
-	MVChatRoomPassphraseToJoinMode = 1 << 7,
-	MVChatRoomLimitNumberOfMembersMode = 1 << 8
+	MVChatRoomPrivateMode NS_SWIFT_NAME(private) = 1 << 0,
+	MVChatRoomSecretMode NS_SWIFT_NAME(secret) = 1 << 1,
+	MVChatRoomInviteOnlyMode NS_SWIFT_NAME(inviteOnly) = 1 << 2,
+	MVChatRoomNormalUsersSilencedMode NS_SWIFT_NAME(normalUsersSilenced) = 1 << 3,
+	MVChatRoomOperatorsSilencedMode NS_SWIFT_NAME(operatorsSilenced) = 1 << 4,
+	MVChatRoomOperatorsOnlySetTopicMode NS_SWIFT_NAME(operatorsOnlySetTopic) = 1 << 5,
+	MVChatRoomNoOutsideMessagesMode NS_SWIFT_NAME(noOutsideMessages) = 1 << 6,
+	MVChatRoomPassphraseToJoinMode NS_SWIFT_NAME(passphraseToJoin) = 1 << 7,
+	MVChatRoomLimitNumberOfMembersMode NS_SWIFT_NAME(limitNumberOfMembers) = 1 << 8
 };
 
 typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberMode) {
 	MVChatRoomMemberNoModes = 0,
-	MVChatRoomMemberVoicedMode = 1 << 0,
-	MVChatRoomMemberHalfOperatorMode = 1 << 1,
-	MVChatRoomMemberOperatorMode = 1 << 2,
-	MVChatRoomMemberAdministratorMode = 1 << 3,
-	MVChatRoomMemberFounderMode = 1 << 4
+	MVChatRoomMemberVoicedMode NS_SWIFT_NAME(voiced) = 1 << 0,
+	MVChatRoomMemberHalfOperatorMode NS_SWIFT_NAME(halfOperator) = 1 << 1,
+	MVChatRoomMemberOperatorMode NS_SWIFT_NAME(operator) = 1 << 2,
+	MVChatRoomMemberAdministratorMode NS_SWIFT_NAME(administrator) = 1 << 3,
+	MVChatRoomMemberFounderMode NS_SWIFT_NAME(founder) = 1 << 4
 };
 
 typedef NS_OPTIONS(NSUInteger, MVChatRoomMemberDisciplineMode) {
 	MVChatRoomMemberNoDisciplineModes = 0,
-	MVChatRoomMemberDisciplineQuietedMode = 1 << 0
+	MVChatRoomMemberDisciplineQuietedMode NS_SWIFT_NAME(quieted) = 1 << 0
 };
 
 typedef NSString *MVChatRoomMemberFeatures NS_TYPED_ENUM;

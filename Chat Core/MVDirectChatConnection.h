@@ -17,10 +17,10 @@ COLLOQUY_EXPORT extern NSNotificationName MVDirectChatConnectionGotMessageNotifi
 COLLOQUY_EXPORT extern NSErrorDomain MVDirectChatConnectionErrorDomain;
 
 typedef NS_ENUM(OSType, MVDirectChatConnectionStatus) {
-	MVDirectChatConnectionConnectedStatus = 'dcCo',
-	MVDirectChatConnectionWaitingStatus = 'dcWa',
-	MVDirectChatConnectionDisconnectedStatus = 'dcDs',
-	MVDirectChatConnectionErrorStatus = 'dcEr'
+	MVDirectChatConnectionConnectedStatus NS_SWIFT_NAME(connected) = 'dcCo',
+	MVDirectChatConnectionWaitingStatus NS_SWIFT_NAME(waiting) = 'dcWa',
+	MVDirectChatConnectionDisconnectedStatus NS_SWIFT_NAME(disconnected) = 'dcDs',
+	MVDirectChatConnectionErrorStatus NS_SWIFT_NAME(error) = 'dcEr'
 };
 
 @class MVChatUser;

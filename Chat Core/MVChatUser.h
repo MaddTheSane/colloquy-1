@@ -8,22 +8,22 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(OSType, MVChatUserType) {
-	MVChatRemoteUserType = 'remT',
-	MVChatLocalUserType = 'locL',
-	MVChatWildcardUserType = 'wilD'
+	MVChatRemoteUserType NS_SWIFT_NAME(remote) = 'remT',
+	MVChatLocalUserType NS_SWIFT_NAME(local) = 'locL',
+	MVChatWildcardUserType NS_SWIFT_NAME(wildcard) = 'wilD'
 };
 
 typedef NS_ENUM(OSType, MVChatUserStatus) {
-	MVChatUserUnknownStatus = 'uKnw',
-	MVChatUserOfflineStatus = 'oflN',
-	MVChatUserDetachedStatus = 'detA',
-	MVChatUserAvailableStatus = 'avaL',
-	MVChatUserAwayStatus = 'awaY'
+	MVChatUserUnknownStatus NS_SWIFT_NAME(unknown) = 'uKnw',
+	MVChatUserOfflineStatus NS_SWIFT_NAME(offline) = 'oflN',
+	MVChatUserDetachedStatus NS_SWIFT_NAME(detached) = 'detA',
+	MVChatUserAvailableStatus NS_SWIFT_NAME(available) = 'avaL',
+	MVChatUserAwayStatus NS_SWIFT_NAME(away) = 'awaY'
 };
 
 typedef NS_OPTIONS(NSUInteger, MVChatUserMode) {
 	MVChatUserNoModes = 0,
-	MVChatUserInvisibleMode = 1 << 0
+	MVChatUserInvisibleMode NS_SWIFT_NAME(invisible) = 1 << 0
 };
 
 COLLOQUY_EXPORT extern NSString *MVChatUserKnownRoomsAttribute;

@@ -75,7 +75,6 @@
 		55394955213CC4780041EA2F /* NSCharacterSetAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55394953213CC4770041EA2F /* NSCharacterSetAdditions.m */; };
 		555906561C555D8100FA6B72 /* NSStringAdditions_Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */; };
 		5577DD0F1C599B48001A76E1 /* MVMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 5577DD0E1C599B48001A76E1 /* MVMessaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		55A0A5DE1DD7A5E5001FA99D /* ChatCore.apinotes in Sources */ = {isa = PBXBuildFile; fileRef = 55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */; };
 		55A3A0541D0B8B29001F92CA /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A3A0531D0B8B29001F92CA /* libicucore.tbd */; };
 		55B748171AD2E6FD001459F7 /* RunOnMainThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 55B748161AD2E6FD001459F7 /* RunOnMainThread.h */; };
 		899F4EFE12617870003B9D9A /* NSFileManagerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 899F4EFC12617870003B9D9A /* NSFileManagerAdditions.h */; };
@@ -109,21 +108,6 @@
 		DDF64CE60BD29E41009E8FF6 /* MVXMPPChatConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF64CE40BD29E41009E8FF6 /* MVXMPPChatConnection.m */; settings = {COMPILER_FLAGS = "-Wno-implicit-retain-self -Wno-pointer-arith"; }; };
 		DDF64E1A0BD2CABE009E8FF6 /* MVXMPPChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF64E180BD2CABE009E8FF6 /* MVXMPPChatUser.m */; settings = {COMPILER_FLAGS = "-Wno-implicit-retain-self -Wno-pointer-arith"; }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildRule section */
-		55A0A5DF1DD7A7C2001FA99D /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*.apinotes";
-			fileType = pattern.proxy;
-			isEditable = 1;
-			name = "Swift API notes";
-			outputFiles = (
-				"$(CONFIGURATION_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Modules/$(PRODUCT_MODULE_NAME).swiftmodule/$(INPUT_FILE_BASE).apinotesc",
-			);
-			script = "if [ ! -d \"$CONFIGURATION_BUILD_DIR/$CONTENTS_FOLDER_PATH/Modules/$PRODUCT_MODULE_NAME.swiftmodule\" ]; then\n  mkdir -p \"$CONFIGURATION_BUILD_DIR/$CONTENTS_FOLDER_PATH/Modules/$PRODUCT_MODULE_NAME.swiftmodule\"\nfi\n\nxcrun swift -apinotes -yaml-to-binary -target x86_64-apple-macosx10.10 -o \"$CONFIGURATION_BUILD_DIR/$CONTENTS_FOLDER_PATH/Modules/$PRODUCT_MODULE_NAME.swiftmodule/$INPUT_FILE_BASE.apinotesc\" \"$INPUT_FILE_PATH\"\n";
-		};
-/* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
 		1C0FE8A80B4F647D00855B9C /* MVDirectClientConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVDirectClientConnection.h; sourceTree = "<group>"; };
@@ -205,7 +189,6 @@
 		55394953213CC4770041EA2F /* NSCharacterSetAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCharacterSetAdditions.m; sourceTree = "<group>"; };
 		555906551C555D8100FA6B72 /* NSStringAdditions_Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStringAdditions_Swift.swift; sourceTree = "<group>"; };
 		5577DD0E1C599B48001A76E1 /* MVMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVMessaging.h; sourceTree = "<group>"; };
-		55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChatCore.apinotes; path = "Chat Core/ChatCore.apinotes"; sourceTree = SOURCE_ROOT; };
 		55A3A0531D0B8B29001F92CA /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		55AA73C81C554FD000BD820C /* ChatCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = ChatCore.modulemap; sourceTree = SOURCE_ROOT; };
 		55B260891F8CC2350084EEA9 /* MaddsPathExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaddsPathExtensions.h; sourceTree = "<group>"; };
@@ -509,7 +492,6 @@
 				1CCA517E0598AFBA00F0A4CD /* ChatCore.scriptSuite */,
 				1CCA517F0598AFBA00F0A4CD /* ChatCore.scriptTerminology */,
 				55AA73C81C554FD000BD820C /* ChatCore.modulemap */,
-				55A0A5DD1DD7A5E5001FA99D /* ChatCore.apinotes */,
 			);
 			fileEncoding = 4;
 			indentWidth = 4;
@@ -593,7 +575,6 @@
 				1C51B47A052DE0CB00BB459B /* Resources */,
 			);
 			buildRules = (
-				55A0A5DF1DD7A7C2001FA99D /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -687,7 +668,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55A0A5DE1DD7A5E5001FA99D /* ChatCore.apinotes in Sources */,
 				1C51B483052DE0CB00BB459B /* NSAttributedStringAdditions.m in Sources */,
 				1CD020B505759347000F93B4 /* NSStringAdditions.m in Sources */,
 				1CD020C0057593F9000F93B4 /* NSColorAdditions.m in Sources */,

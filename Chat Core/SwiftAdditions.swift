@@ -8,26 +8,6 @@
 
 import Foundation
 
-extension MVChatConnectionError: Error {
-	public var _domain: String {
-		return MVChatConnectionErrorDomain
-	}
-	
-	public var _code: Int {
-		return rawValue
-	}
-}
-
-extension MVFileTransferError: Error {
-	public var _domain: String {
-		return MVFileTransferErrorDomain
-	}
-	
-	public var _code: Int {
-		return rawValue
-	}
-}
-
 extension MVChatRoom {
 	public var encoding: String.Encoding {
 		get {
