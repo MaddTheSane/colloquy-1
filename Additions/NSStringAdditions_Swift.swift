@@ -63,4 +63,64 @@ extension String {
 		let newRange = try range(ofRegex: regex, options: options, in: range1)
 		self.replaceSubrange(newRange, with: replacement)
 	}
+	
+	public mutating func decodeXMLSpecialCharacterEntities() {
+		guard let _ = range(of: "&") else {
+			return
+		}
+		
+		while let rangeOfStr = range(of: "&lt;", options: [.literal]) {
+			replaceSubrange(rangeOfStr, with: "<")
+		}
+		while let rangeOfStr = range(of: "&gt;", options: [.literal]) {
+			replaceSubrange(rangeOfStr, with: ">")
+		}
+		while let rangeOfStr = range(of: "&quot;", options: [.literal]) {
+			replaceSubrange(rangeOfStr, with: "\"")
+		}
+		while let rangeOfStr = range(of: "&amp;", options: [.literal]) {
+			replaceSubrange(rangeOfStr, with: "&")
+		}
+	}
+	
+	public mutating func replaceCharacters<T>(In set: CharacterSet, with string: T) where T : StringProtocol {
+		var range = startIndex ..< endIndex
+		let stringLength = string.count
+		
+		while let replaceRange = rangeOfCharacter(from: set, options: [.literal], range: range) {
+			replaceSubrange(replaceRange, with: string)
+			guard let startLocation = index(replaceRange.lowerBound, offsetBy: stringLength, limitedBy: endIndex) else {
+				break
+			}
+			range = startLocation ..< endIndex
+		}
+	}
+	
+	/*
+- (void) stripIllegalXMLCharacters {
+NSCharacterSet *illegalSet = [NSCharacterSet illegalXMLCharacterSet];
+NSRange range = [self rangeOfCharacterFromSet:illegalSet];
+while( range.location != NSNotFound ) {
+[self deleteCharactersInRange:range];
+range = [self rangeOfCharacterFromSet:illegalSet];
+}
+}
+
+- (void) stripXMLTags {
+NSRange searchRange = NSMakeRange(0, self.length);
+while (1) {
+NSRange tagStartRange = [self rangeOfString:@"<" options:NSLiteralSearch range:searchRange];
+if (tagStartRange.location == NSNotFound)
+break;
+
+NSRange tagEndRange = [self rangeOfString:@">" options:NSLiteralSearch range:NSMakeRange(tagStartRange.location, (self.length - tagStartRange.location))];
+if (tagEndRange.location == NSNotFound)
+break;
+
+[self deleteCharactersInRange:NSMakeRange(tagStartRange.location, (NSMaxRange(tagEndRange) - tagStartRange.location))];
+
+searchRange = NSMakeRange(tagStartRange.location, (self.length - tagStartRange.location));
+}
+}
+*/
 }
