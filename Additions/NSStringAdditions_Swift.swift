@@ -19,6 +19,16 @@ extension NSString {
 	}
 }
 
+extension StringProtocol where Self.Index == String.Index {
+	public func replacingOccurences<T, X>(ofRegex regex: T, with replacement: X, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<Self.Index>? = nil) throws -> String where T : StringProtocol, X : StringProtocol {
+		let range = range1 ?? startIndex ..< endIndex
+		var toRet = String(self)
+		//TODO: convert Self range to created string ranges. Is this needed?
+		try toRet.replaceOccurrences(ofRegex: regex, with: replacement, options: options, in: range)
+		return toRet
+	}
+}
+
 extension String {
 	/// - parameter regex: The regular expression to search for.
 	/// - parameter options: The regular expression options.<br>
@@ -59,9 +69,18 @@ extension String {
 	/// searches the whole string.<br>
 	/// Default is `nil`
 	/// - parameter replacement: What to replace the matched regex with.
-	public mutating func replaceOccurrences<T>(ofRegex regex: T, with replacement: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws where T : StringProtocol {
-		let newRange = try range(ofRegex: regex, options: options, in: range1)
-		self.replaceSubrange(newRange, with: replacement)
+	@discardableResult
+	public mutating func replaceOccurrences<T, X>(ofRegex regex: T, with replacement: X, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws -> Bool where T : StringProtocol, X : StringProtocol {
+		let range = range1 ?? startIndex ..< endIndex
+		
+		let regularExpression = try NSRegularExpression.cachedRegularExpression(withPattern: String(regex), options: options)
+		
+		let toReplace = regularExpression.stringByReplacingMatches(in: self, options: [], range: NSRange(range, in: self), withTemplate: String(replacement))
+		if toReplace == self {
+			return false
+		}
+		self = toReplace
+		return true
 	}
 	
 	public mutating func decodeXMLSpecialCharacterEntities() {
@@ -83,7 +102,7 @@ extension String {
 		}
 	}
 	
-	public mutating func replaceCharacters<T>(In set: CharacterSet, with string: T) where T : StringProtocol {
+	public mutating func replaceCharacters<T>(in set: CharacterSet, with string: T) where T : StringProtocol {
 		var range = startIndex ..< endIndex
 		let stringLength = string.count
 		
@@ -96,31 +115,22 @@ extension String {
 		}
 	}
 	
-	/*
-- (void) stripIllegalXMLCharacters {
-NSCharacterSet *illegalSet = [NSCharacterSet illegalXMLCharacterSet];
-NSRange range = [self rangeOfCharacterFromSet:illegalSet];
-while( range.location != NSNotFound ) {
-[self deleteCharactersInRange:range];
-range = [self rangeOfCharacterFromSet:illegalSet];
-}
-}
-
-- (void) stripXMLTags {
-NSRange searchRange = NSMakeRange(0, self.length);
-while (1) {
-NSRange tagStartRange = [self rangeOfString:@"<" options:NSLiteralSearch range:searchRange];
-if (tagStartRange.location == NSNotFound)
-break;
-
-NSRange tagEndRange = [self rangeOfString:@">" options:NSLiteralSearch range:NSMakeRange(tagStartRange.location, (self.length - tagStartRange.location))];
-if (tagEndRange.location == NSNotFound)
-break;
-
-[self deleteCharactersInRange:NSMakeRange(tagStartRange.location, (NSMaxRange(tagEndRange) - tagStartRange.location))];
-
-searchRange = NSMakeRange(tagStartRange.location, (self.length - tagStartRange.location));
-}
-}
-*/
+	public mutating func stripIllegalXMLCharacters() {
+		let illegalSet = NSCharacterSet.illegalXML as CharacterSet
+		while let range = rangeOfCharacter(from: illegalSet) {
+			removeSubrange(range)
+		}
+	}
+	
+	public mutating func stripXMLTags() {
+		var searchRange = startIndex ..< endIndex
+		while true {
+			guard let tagStartRange = range(of: "<", options: [.literal], range: searchRange),
+				let tagEndRange = range(of: ">", options: [.literal], range: tagStartRange.lowerBound ..< endIndex) else {
+					break
+			}
+			removeSubrange(tagStartRange.lowerBound ..< tagEndRange.upperBound)
+			searchRange = tagStartRange.lowerBound ..< endIndex
+		}
+	}
 }
