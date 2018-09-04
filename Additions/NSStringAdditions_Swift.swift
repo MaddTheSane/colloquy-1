@@ -9,6 +9,12 @@
 import Foundation
 
 extension NSString {
+	/// - parameter regex: The regular expression to search for.
+	/// - parameter options: The regular expression options.<br>
+	/// Default is `[.useUnicodeWordBoundaries]`.
+	/// - parameter range: The range to search for the regex.
+	/// - parameter capture: Which capture to use.<br>
+	/// Default is `0`.
 	@nonobjc public func range(ofRegex regex: String, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range: NSRange, capture: Int = 0) throws -> NSRange {
 		var errPtr: NSError? = nil
 		let regRange = self.__range(ofRegex: regex, options: options, in: range, capture: capture, error: &errPtr)
@@ -20,6 +26,13 @@ extension NSString {
 }
 
 extension StringProtocol where Self.Index == String.Index {
+	/// - parameter regex: The regular expression to search for.
+	/// - parameter options: The regular expression options.<br>
+	/// Default is `[.useUnicodeWordBoundaries]`.
+	/// - parameter range1: The range to search for the regex. If `nil`,
+	/// searches the whole string.<br>
+	/// Default is `nil`
+	/// - parameter replacement: What to replace the matched regex with.
 	public func replacingOccurences<T, X>(ofRegex regex: T, with replacement: X, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<Self.Index>? = nil) throws -> String where T : StringProtocol, X : StringProtocol {
 		let range = range1 ?? startIndex ..< endIndex
 		var toRet = String(self)
@@ -40,12 +53,13 @@ extension String {
 	/// Default is `0`.
 	public func range<T>(ofRegex regex: T, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil, capture: Int = 0) throws -> Range<String.Index> where T : StringProtocol {
 		let range = range1 ?? startIndex ..< endIndex
-		let regRange = try (self as NSString).range(ofRegex: String(regex), options: options, in: NSRange(range, in: self), capture: capture)
-		
-		guard let convRange = Range(regRange, in: self) else {
+		let regularExpression = try NSRegularExpression.cachedRegularExpression(withPattern: String(regex), options: options)
+		guard let result = regularExpression.firstMatch(in: self, options: [.reportCompletion], range: NSRange(range, in: self)),
+			let foundRange = Range(result.range(at: capture), in: self) else {
 			throw CocoaError(.formatting)
 		}
-		return convRange
+		
+		return foundRange
 	}
 	
 	/// - parameter regex: The regular expression to search for.
@@ -60,6 +74,54 @@ extension String {
 		let newRange = try range(ofRegex: regex, options: options, in: range1, capture: capture)
 		let subStr = self[newRange]
 		return subStr
+	}
+	
+	/// - parameter regex: The regular expression to search for.
+	/// - parameter options: The regular expression options.<br>
+	/// Default is `[.useUnicodeWordBoundaries]`.
+	/// - parameter range1: The range to search for the regex. If `nil`,
+	/// searches the whole string.<br>
+	/// Default is `nil`
+	public func isMatched<T>(byRegex regex: T, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws -> Bool where T : StringProtocol {
+		let range = range1 ?? startIndex ..< endIndex
+		let regularExpression = try NSRegularExpression.cachedRegularExpression(withPattern: String(regex), options: options)
+		let foundRange = regularExpression.rangeOfFirstMatch(in: self, options: [.reportCompletion], range: NSRange(range, in: self))
+		return foundRange.location != NSNotFound
+	}
+
+	
+	public func captureComponents<T>(matchedByRegex regex: T, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws -> [Substring] where T : StringProtocol {
+		let range = range1 ?? startIndex ..< endIndex
+		let regularExpression = try NSRegularExpression.cachedRegularExpression(withPattern: String(regex), options: options)
+		guard let result = regularExpression.firstMatch(in: self, options: [.reportCompletion], range: NSRange(range, in: self)) else {
+			return []
+		}
+		var results = [Substring]()
+		results.reserveCapacity(result.numberOfRanges)
+		
+		for i in 1 ..< result.numberOfRanges {
+			let range = result.range(at: i)
+			guard let trueRange = Range(range, in: self) else {
+				throw CocoaError(.formatting)
+			}
+			results.append(self[trueRange])
+		}
+		
+		return results
+	}
+	
+	/// - parameter regex: The regular expression to search for.
+	/// - parameter options: The regular expression options.<br>
+	/// Default is `[.useUnicodeWordBoundaries]`.
+	/// - parameter range1: The range to search for the regex. If `nil`,
+	/// searches the whole string.<br>
+	/// Default is `nil`
+	/// - parameter replacement: What to replace the matched regex with.
+	public func replacingOccurences<T, X>(ofRegex regex: T, with replacement: X, options: NSRegularExpression.Options = [.useUnicodeWordBoundaries], in range1: Range<String.Index>? = nil) throws -> String where T : StringProtocol, X : StringProtocol {
+		let range = range1 ?? startIndex ..< endIndex
+		var toRet = self
+		try toRet.replaceOccurrences(ofRegex: regex, with: replacement, options: options, in: range)
+		return toRet
 	}
 	
 	/// - parameter regex: The regular expression to search for.
@@ -116,7 +178,7 @@ extension String {
 	}
 	
 	public mutating func stripIllegalXMLCharacters() {
-		let illegalSet = NSCharacterSet.illegalXML as CharacterSet
+		let illegalSet = NSCharacterSet.illegalXML
 		while let range = rangeOfCharacter(from: illegalSet) {
 			removeSubrange(range)
 		}
@@ -130,6 +192,7 @@ extension String {
 					break
 			}
 			removeSubrange(tagStartRange.lowerBound ..< tagEndRange.upperBound)
+			// TODO: is this safe?
 			searchRange = tagStartRange.lowerBound ..< endIndex
 		}
 	}
