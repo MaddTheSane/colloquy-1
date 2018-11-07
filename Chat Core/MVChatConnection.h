@@ -51,7 +51,7 @@ typedef NS_ENUM(OSType, MVChatMessageFormat) {
 	MVChatJSONMessageFormat = 'jsoN'
 };
 
-extern NSErrorDomain MVChatConnectionErrorDomain;
+COLLOQUY_EXPORT extern NSErrorDomain MVChatConnectionErrorDomain;
 
 typedef NS_ERROR_ENUM(MVChatConnectionErrorDomain, MVChatConnectionError) {
 	MVChatConnectionUnknownError = -1,
