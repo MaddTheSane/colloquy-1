@@ -1059,9 +1059,9 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	NSTextStorage *storage = [[send textStorage] mutableCopy];
 
 	// Strip semantic text color (used for 10.14 dark mode)
-	[storage enumerateAttribute:NSForegroundColorAttributeName inRange:NSMakeRange(0, storage.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+	[storage enumerateAttribute:NSForegroundColorAttributeName inRange:NSMakeRange(0, storage.length) options:0 usingBlock:^(id  _Nullable value, NSRange attributeRange, BOOL * _Nonnull stop) {
 		if ([NSColor.textColor isEqual:value]) {
-			[storage removeAttribute:NSForegroundColorAttributeName range:range];
+			[storage removeAttribute:NSForegroundColorAttributeName range:attributeRange];
 		}
 	}];
 
