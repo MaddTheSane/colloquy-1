@@ -1083,11 +1083,9 @@ static NSMenu *favoritesMenu = nil;
 - (IBAction) clear:(id) sender {
 	[self _delete:sender];
 }
-@end
 
-#pragma mark -
+#pragma mark - MVConnectionsControllerDelegate
 
-@implementation MVConnectionsController (MVConnectionsControllerDelegate)
 - (BOOL) validateMenuItem:(NSMenuItem *) menuItem {
 	if( [menuItem action] == @selector( cut: ) ) {
 		if( [connections selectedRow] == -1 ) return NO;
