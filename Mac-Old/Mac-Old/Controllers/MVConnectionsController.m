@@ -32,7 +32,7 @@ static NSString *MVConnectionPboardType = @"Colloquy Chat Connection v1.0 pasteb
 
 static NSMenu *favoritesMenu = nil;
 
-@interface MVConnectionsController () <NSMenuDelegate>
+@interface MVConnectionsController () <NSMenuDelegate, NSComboBoxDelegate, NSComboBoxDataSource>
 - (void) _loadInterfaceIfNeeded;
 - (void) _registerNotificationsForConnection:(MVChatConnection *) connection;
 - (void) _deregisterNotificationsForConnection:(MVChatConnection *) connection;
