@@ -32,7 +32,7 @@ static NSString *MVConnectionPboardType = @"Colloquy Chat Connection v1.0 pasteb
 
 static NSMenu *favoritesMenu = nil;
 
-@interface MVConnectionsController (Private) <NSMenuDelegate>
+@interface MVConnectionsController () <NSMenuDelegate>
 - (void) _loadInterfaceIfNeeded;
 - (void) _registerNotificationsForConnection:(MVChatConnection *) connection;
 - (void) _deregisterNotificationsForConnection:(MVChatConnection *) connection;
@@ -1535,11 +1535,9 @@ static NSMenu *favoritesMenu = nil;
 		MVToolbarEditItemIdentifier, MVToolbarInspectorItemIdentifier, MVToolbarDeleteItemIdentifier, MVToolbarConsoleItemIdentifier,
 		MVToolbarJoinRoomItemIdentifier, MVToolbarQueryUserItemIdentifier];
 }
-@end
 
 #pragma mark -
 
-@implementation MVConnectionsController (Private)
 - (void) _loadInterfaceIfNeeded {
 	if( ! [self isWindowLoaded] ) [self window];
 }
