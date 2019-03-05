@@ -11,6 +11,7 @@ import Security
 
 private func createBaseDictionary(_ server: String, account: String?) -> [String: Any] {
 	var query = [String: Any]()
+	query.reserveCapacity(6)
 	
 	query[kSecClass as String] = kSecClassInternetPassword
 	query[kSecAttrServer as String] = server
@@ -41,7 +42,7 @@ final public class CQKeychain : NSObject {
 			return
 		}
 		
-		let passwordData = Data(bytes: Array(password.utf8))
+		let passwordData = password.data(using: .utf8)!
 		
 		setData(passwordData, forServer: server, area: area, displayValue: displayValue)
 	}
@@ -99,8 +100,8 @@ final public class CQKeychain : NSObject {
 		
 		var resultDataRef: AnyObject? = nil
 		let status = SecItemCopyMatching(passwordQuery as NSDictionary, &resultDataRef)
-		if status == noErr, let resultDataRef = resultDataRef as? Data {
-			return resultDataRef
+		if status == noErr, let resultDataRef = resultDataRef as? NSData {
+			return resultDataRef as Data
 		}
 		
 		return nil
