@@ -3,7 +3,6 @@
 #import "JVChatController.h"
 #import "JVChatConsolePanel.h"
 #import "MVConnectionsController.h"
-#import "MVTableView.h"
 #import "NSImageAdditions.h"
 
 @interface JVChatRoomBrowser (Private) <NSTableViewDelegate>

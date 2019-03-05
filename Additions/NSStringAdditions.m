@@ -1107,8 +1107,27 @@ static NSCharacterSet *typicalEmoticonCharacters;
 }
 
 - (NSRange) rangeOfEmojiCharactersInRange:(NSRange) range {
-	if (!emojiCharacters)
-		emojiCharacters = [NSCharacterSet characterSetWithRange:NSMakeRange(0xe001, (0xe53e - 0xe001))];
+	if (!emojiCharacters) {
+		//The original Softbank Emojis.
+		NSMutableCharacterSet *tmpEmojis = [NSMutableCharacterSet characterSetWithRange:NSMakeRange(0xe001, (0xe53e - 0xe001))];
+		// Newer Emojis
+		[tmpEmojis addCharactersInRange:NSMakeRange(127744, 796)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(128543, 49)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(128640, 85)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(128736, 13)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(128752, 10)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129280, 12)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129296, 47)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129344, 49)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129395, 4)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129402, 1)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129404, 15)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129424, 19)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129456, 10)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129472, 3)];
+		[tmpEmojis addCharactersInRange:NSMakeRange(129488, 48)];
+		emojiCharacters = [tmpEmojis copy];
+	}
 	return [self rangeOfCharacterFromSet:emojiCharacters options:NSLiteralSearch range:range];
 }
 

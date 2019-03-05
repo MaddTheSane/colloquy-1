@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSNotificationName const JVChatStyleInstalledNotification;
 extern NSNotificationName const JVChatEmoticonSetInstalledNotification;
-extern NSNotificationName const JVMachineBecameIdleNotification;
+COLLOQUY_EXPORT extern NSNotificationName const JVMachineBecameIdleNotification;
 COLLOQUY_EXPORT extern NSNotificationName const JVMachineStoppedIdlingNotification;
 
 @class CQMPreferencesWindowController;

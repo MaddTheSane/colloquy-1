@@ -6,7 +6,7 @@
 
 @interface JVNotificationPreferencesViewController ()
 
-@property(nonatomic, strong) NSMutableDictionary *eventPrefs;
+@property(nonatomic, strong) NSMutableDictionary<NSString*,id> *eventPrefs;
 
 @property(nonatomic, strong) IBOutlet NSTextField *highlightWords;
 @property(nonatomic, strong) IBOutlet NSPopUpButton *chatActions;

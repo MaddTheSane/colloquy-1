@@ -1059,6 +1059,13 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	[[[send textStorage] mutableString] replaceOccurrencesOfString:@"\r" withString:@"\n" options:NSLiteralSearch range:NSMakeRange( 0, [[send string] length] )];
 	NSTextStorage *storage = [[send textStorage] mutableCopy];
 
+	// Strip semantic text color (used for 10.14 dark mode)
+	[storage enumerateAttribute:NSForegroundColorAttributeName inRange:NSMakeRange(0, storage.length) options:0 usingBlock:^(id  _Nullable value, NSRange attributeRange, BOOL * _Nonnull stop) {
+		if ([NSColor.textColor isEqual:value]) {
+			[storage removeAttribute:NSForegroundColorAttributeName range:attributeRange];
+		}
+	}];
+
 	while( [[storage string] length] ) {
 		range = [[storage string] rangeOfString:@"\n"];
 		if( ! range.length ) range.location = [[storage string] length];
