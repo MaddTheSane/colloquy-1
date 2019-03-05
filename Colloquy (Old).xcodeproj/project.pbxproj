@@ -172,8 +172,6 @@
 		5509D1CF1F5B6F160037CE4E /* libexslt.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1CE1F5B6F160037CE4E /* libexslt.tbd */; };
 		557D715F1E4915270041D61B /* MaddsPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 557D715E1E4915270041D61B /* MaddsPathExtensions.m */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
-		55C8A2D9180735D100A7BB42 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55C8A2D7180735D100A7BB42 /* InfoPlist.strings */; };
-		55C8A2E41807361900A7BB42 /* JVChatWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C59A91F09FDEBA3000682B8 /* JVChatWindowControllerTests.m */; };
 		55F42AC01AEC39A00085CA56 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */; };
 		55F7D7D22127844100CED413 /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9220565D11018298005CD72D /* NSDateAdditions.m */; };
 		891EF3D1106426CB00CCEA35 /* PFMoveApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 891EF3D0106426CB00CCEA35 /* PFMoveApplicationController.m */; };
@@ -237,13 +235,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
 			remoteInfo = "JavaScript Support Plugin";
-		};
-		55C8A2DD180735D200A7BB42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1CB2CCF5052DDC560094AAA4;
-			remoteInfo = "Colloquy (Application)";
 		};
 		9295C9D216784593009F9014 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -881,13 +872,6 @@
 				1CF5F8D207D537E50019DC13 /* Growl.framework in Frameworks */,
 				C26287EE1FC1A4AA0085B19F /* Sparkle.framework in Frameworks */,
 				1C386FAA1032471F00660864 /* TCMPortMapper.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55C8A2CD180735D100A7BB42 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1549,23 +1533,6 @@
 			productReference = 1CB2CD8C052DDC570094AAA4 /* Colloquy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		55C8A2CF180735D100A7BB42 /* Colloquy Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55C8A2E3180735D200A7BB42 /* Build configuration list for PBXNativeTarget "Colloquy Tests" */;
-			buildPhases = (
-				55C8A2CC180735D100A7BB42 /* Sources */,
-				55C8A2CD180735D100A7BB42 /* Frameworks */,
-				55C8A2CE180735D100A7BB42 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				55C8A2DE180735D200A7BB42 /* PBXTargetDependency */,
-			);
-			name = "Colloquy Tests";
-			productName = "Colloquy Tests";
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		CBF685140820186F00F498FB /* Colloquy (Metadata Importer) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1C041A6C0854E97700A5A5BA /* Build configuration list for PBXNativeTarget "Colloquy (Metadata Importer)" */;
@@ -1592,11 +1559,6 @@
 				BuildIndependentTargetsInParallel = NO;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Colloquy Project";
-				TargetAttributes = {
-					55C8A2CF180735D100A7BB42 = {
-						TestTargetID = 1CB2CCF5052DDC560094AAA4;
-					};
-				};
 			};
 			buildConfigurationList = 1C041A700854E97700A5A5BA /* Build configuration list for PBXProject "Colloquy (Old)" */;
 			compatibilityVersion = "Xcode 8.0";
@@ -1643,7 +1605,6 @@
 				1C51B4BB052DE14B00BB459B /* Standard Commands (Plug-In) */,
 				CBF685140820186F00F498FB /* Colloquy (Metadata Importer) */,
 				9295C92416782ECB009F9014 /* Colloquy (Aggregate) */,
-				55C8A2CF180735D100A7BB42 /* Colloquy Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -1752,14 +1713,6 @@
 				9200338D13D92515005B69BA /* MVFileTransfer.xib in Resources */,
 				55F42AC01AEC39A00085CA56 /* AppIcon.xcassets in Resources */,
 				1C043B4B13DC8B7200B8FD9E /* Credits.rtf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55C8A2CE180735D100A7BB42 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				55C8A2D9180735D100A7BB42 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1947,14 +1900,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		55C8A2CC180735D100A7BB42 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				55C8A2E41807361900A7BB42 /* JVChatWindowControllerTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CBF685120820186F00F498FB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1968,11 +1913,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		55C8A2DE180735D200A7BB42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1CB2CCF5052DDC560094AAA4 /* Colloquy (Application) */;
-			targetProxy = 55C8A2DD180735D200A7BB42 /* PBXContainerItemProxy */;
-		};
 		9295C9D316784593009F9014 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "AppleScript Support Plugin";
@@ -2614,43 +2554,6 @@
 			};
 			name = Release;
 		};
-		55C8A2DF180735D200A7BB42 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89FB4EDC12FAABBB00668905 /* old-mac-target.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mac-Old/Mac-Old/Colloquy.pch";
-				INFOPLIST_FILE = "Mac-Old/Tests/Colloquy Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Colloquy.app/Contents/MacOS/Colloquy";
-			};
-			name = Release;
-		};
-		55C8A2E0180735D200A7BB42 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89FB4EDC12FAABBB00668905 /* old-mac-target.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mac-Old/Mac-Old/Colloquy.pch";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INFOPLIST_FILE = "Mac-Old/Tests/Colloquy Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "info.colloquy.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Colloquy.app/Contents/MacOS/Colloquy";
-			};
-			name = Debug;
-		};
 		9295C92616782ECB009F9014 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89FB4EDC12FAABBB00668905 /* old-mac-target.xcconfig */;
@@ -2702,15 +2605,6 @@
 			buildConfigurations = (
 				1C041DCC0855377900A5A5BA /* Release */,
 				1C041A720854E97700A5A5BA /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55C8A2E3180735D200A7BB42 /* Build configuration list for PBXNativeTarget "Colloquy Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55C8A2DF180735D200A7BB42 /* Release */,
-				55C8A2E0180735D200A7BB42 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
