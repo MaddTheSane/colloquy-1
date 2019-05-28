@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class MVChatUser;
 @class CQChatController;
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 @protocol JVChatViewController;
 #endif
 
@@ -23,7 +23,7 @@ COLLOQUY_EXPORT
 + (instancetype) ruleForUser:(nullable NSString *) user message:(nullable NSString *) message inRooms:(nullable NSArray<NSString*> *) rooms isPermanent:(BOOL) permanent friendlyName:(nullable NSString *) friendlyName;
 - (instancetype) initForUser:(nullable NSString *) user message:(nullable NSString *) message inRooms:(nullable NSArray<NSString*> *) rooms isPermanent:(BOOL) permanent friendlyName:(nullable NSString *) friendlyName;
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 - (JVIgnoreMatchResult) matchUser:(MVChatUser *) user message:(nullable NSString *) message inView:(nullable id <JVChatViewController>) view;
 #else
 - (JVIgnoreMatchResult) matchUser:(MVChatUser *) user message:(NSString *) message inTargetRoom:(id) target;

@@ -4,7 +4,7 @@
 
 #include <sys/sysctl.h>
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 #include <IOKit/IOKitLib.h>
 #include <IOKit/network/IOEthernetInterface.h>
 #include <IOKit/network/IONetworkInterface.h>
@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 static NSString *applicationNameKey = @"application-name";
 
-#if SYSTEM(IOS)
+#if TARGET_OS_IPHONE
 static NSString *analyticsURL = @"http://colloquy.mobi/analytics.php";
 static NSString *deviceIdentifierKey = @"device-identifier";
-#elif SYSTEM(MAC)
+#elif TARGET_OS_OSX
 static NSString *analyticsURL = @"http://colloquy.info/analytics.php";
 static NSString *deviceIdentifierKey = @"machine-identifier";
 #endif
@@ -26,7 +26,7 @@ static NSString *deviceIdentifierKey = @"machine-identifier";
 static NSString *deviceIdentifier;
 static NSString *applicationName;
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 static NSString *hardwareInfoAsString(const char *keyPath) {
 	char buffer[512] = { 0 };
 	size_t size = sizeof(buffer);
@@ -113,7 +113,7 @@ static void generateDeviceIdentifier() {
 	if (deviceIdentifier)
 		return;
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 	kern_return_t kernResult = KERN_SUCCESS;
 	io_iterator_t intfIterator;
 	UInt8 MACAddress[kIOEthernetAddressSize];
@@ -127,7 +127,7 @@ static void generateDeviceIdentifier() {
 	}
 
 	IOObjectRelease(intfIterator);
-#elif SYSTEM(IOS)
+#elif TARGET_OS_IPHONE
 	deviceIdentifier = [[UIDevice currentDevice].identifierForVendor.UUIDString mutableCopy];
 	if (deviceIdentifier)
 		return;
@@ -146,7 +146,7 @@ static void generateDeviceIdentifier() {
 }
 
 + (CQAnalyticsController *) defaultController {
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:@"JVAllowAnalytics"])
 		return nil;
 #endif
@@ -176,13 +176,13 @@ static void generateDeviceIdentifier() {
 
 	generateDeviceIdentifier();
 
-#if SYSTEM(IOS)
+#if TARGET_OS_IPHONE
 	_data[@"device-model"] = [UIDevice currentDevice].modelIdentifier;
 	_data[@"device-system-name"] = [UIDevice currentDevice].systemName;
 	_data[@"device-system-version"] = [UIDevice currentDevice].systemVersion;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate) name:UIApplicationWillTerminateNotification object:nil];
-#elif SYSTEM(MAC)
+#elif TARGET_OS_OSX
 	NSDictionary *systemVersion = [[NSDictionary alloc] initWithContentsOfFile:@"/System/Library/CoreServices/ServerVersion.plist"];
 	if ( !systemVersion ) systemVersion = [[NSDictionary alloc] initWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
 

@@ -25,3 +25,4 @@
 #import <ChatCore/NSScriptCommandAdditions.h>
 #import <ChatCore/NSDateAdditions.h>
 #import <ChatCore/NSRegularExpressionAdditions.h>
+#import <ChatCore/MVDirectClientConnection.h>
