@@ -171,7 +171,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 			}
 		}
 
-		_settings = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:[[self identifier] stringByAppendingString:@" Settings"]]];
+		_settings = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:[[self identifier] stringByAppendingString:@" Settings"]] ?: @{}];
 	}
 
 	return self;
@@ -216,6 +216,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	[send setAllowsUndo:YES];
 	[send setUsesRuler:NO];
 	[send setDelegate:self];
+	[send setTextContainerInset:NSMakeSize(3.0, 6.0)];
 	[send reset:nil];
 
 	NSRect sendFrame = [[send enclosingScrollView] frame];

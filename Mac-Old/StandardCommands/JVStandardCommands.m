@@ -786,7 +786,7 @@
 	NSMutableArray *rules = [[MVConnectionsController defaultController] ignoreRulesForConnection:view.connection];
 	for( NSUInteger i = 0; i < rules.count; i++ ) {
 		KAIgnoreRule *rule = rules[i];
-		if( ( !rule.user || [rule.user isCaseInsensitiveEqualToString:memberString] ) && ( !rule.message || [rule.message isCaseInsensitiveEqualToString:messageString] ) && ( !rule.rooms || [rule.rooms isEqualToArray:rooms] ) ) {
+		if( ( !rule.user || ( memberString && [rule.user isCaseInsensitiveEqualToString:memberString] ) ) && ( !rule.message || ( messageString && [rule.message isCaseInsensitiveEqualToString:messageString] ) ) && ( !rule.rooms || !rooms || [rule.rooms isEqualToArray:rooms] ) ) {
 			[rules removeObjectAtIndex:i];
 			i--;
 			break;

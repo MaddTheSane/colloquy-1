@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *MVChatUserWatchRuleMatchedNotification = @"MVChatUserWatchRuleMatchedNotification";
-NSString *MVChatUserWatchRuleRemovedMatchedUserNotification = @"MVChatUserWatchRuleRemovedMatchedUserNotification";
+NSString *const MVChatUserWatchRuleMatchedNotification = @"MVChatUserWatchRuleMatchedNotification";
+NSString *const MVChatUserWatchRuleRemovedMatchedUserNotification = @"MVChatUserWatchRuleRemovedMatchedUserNotification";
 
 @implementation MVChatUserWatchRule {
 	NSMutableSet *_matchedChatUsers;

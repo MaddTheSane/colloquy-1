@@ -26,46 +26,48 @@ typedef NS_OPTIONS(NSUInteger, MVChatUserMode) {
 	MVChatUserInvisibleMode NS_SWIFT_NAME(invisible) = 1 << 0
 };
 
-COLLOQUY_EXPORT extern NSString *MVChatUserKnownRoomsAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserPictureAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserPingAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserLocalTimeAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserClientInfoAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserVCardAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserServiceAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserMoodAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserStatusMessageAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserPreferredLanguageAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserPreferredContactMethodsAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserTimezoneAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserGeoLocationAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserDeviceInfoAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserExtensionAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserPublicKeyAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserServerPublicKeyAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserDigitalSignatureAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserServerDigitalSignatureAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserBanServerAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserBanAuthorAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserBanDateAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserSSLCertFingerprintAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserEmailAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserPhoneAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserWebsiteAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserIMServiceAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserCurrentlyPlayingAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserStatusAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserClientNameAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserClientVersionAttribute;
-COLLOQUY_EXPORT extern NSString *MVChatUserClientUnknownAttributes;
+typedef NSString *MVChatUserAttributeKey NS_TYPED_EXTENSIBLE_ENUM;
 
-COLLOQUY_EXPORT extern NSString *MVChatUserNicknameChangedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserStatusChangedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserAwayStatusMessageChangedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserIdleTimeUpdatedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserModeChangedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserInformationUpdatedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserAttributeUpdatedNotification;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserKnownRoomsAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserPictureAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserPingAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserLocalTimeAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserClientInfoAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserVCardAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserServiceAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserMoodAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserStatusMessageAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserPreferredLanguageAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserPreferredContactMethodsAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserTimezoneAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserGeoLocationAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserDeviceInfoAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserExtensionAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserPublicKeyAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserServerPublicKeyAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserDigitalSignatureAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserServerDigitalSignatureAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserBanServerAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserBanAuthorAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserBanDateAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserSSLCertFingerprintAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserEmailAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserPhoneAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserWebsiteAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserIMServiceAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserCurrentlyPlayingAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserStatusAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserClientNameAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserClientVersionAttribute;
+COLLOQUY_EXPORT extern MVChatUserAttributeKey const MVChatUserClientUnknownAttributes;
+
+COLLOQUY_EXPORT extern NSString *const MVChatUserNicknameChangedNotification;
+COLLOQUY_EXPORT extern NSString *const MVChatUserStatusChangedNotification;
+COLLOQUY_EXPORT extern NSString *const MVChatUserAwayStatusMessageChangedNotification;
+COLLOQUY_EXPORT extern NSString *const MVChatUserIdleTimeUpdatedNotification;
+COLLOQUY_EXPORT extern NSString *const MVChatUserModeChangedNotification;
+COLLOQUY_EXPORT extern NSString *const MVChatUserInformationUpdatedNotification;
+COLLOQUY_EXPORT extern NSString *const MVChatUserAttributeUpdatedNotification;
 
 @class MVChatConnection;
 @class MVUploadFileTransfer;
@@ -88,7 +90,7 @@ COLLOQUY_EXPORT
 	NSDate *_dateUpdated;
 	NSData *_awayStatusMessage;
 	NSDate *_mostRecentUserActivity;
-	NSMutableDictionary *_attributes;
+	NSMutableDictionary<MVChatUserAttributeKey,id> *_attributes;
 	MVChatUserType _type;
 	MVChatUserStatus _status;
 	NSTimeInterval _idleTime;
@@ -125,12 +127,12 @@ COLLOQUY_EXPORT
 @property(readonly) NSTimeInterval lag;
 
 @property(copy, readonly) NSString *displayName;
-@property(copy, readonly) NSString *nickname;
-@property(copy, readonly) NSString *realName;
-@property(copy, readonly) NSString *username;
-@property(copy, readonly) NSString *account;
+@property(nullable, copy, readonly) NSString *nickname;
+@property(nullable, copy, readonly) NSString *realName;
+@property(nullable, copy, readonly) NSString *username;
+@property(nullable, copy, readonly) NSString *account;
 @property(copy, readonly) NSString *address;
-@property(copy, readonly) NSString *serverAddress;
+@property(nullable, copy, readonly) NSString *serverAddress;
 @property(copy, readonly, nullable) NSString *maskRepresentation;
 
 @property(nonatomic, strong, readonly) id uniqueIdentifier;
@@ -140,8 +142,8 @@ COLLOQUY_EXPORT
 @property(readonly) NSUInteger supportedModes;
 @property(readonly) NSUInteger modes;
 
-@property(strong, readonly) NSSet<NSString*> *supportedAttributes;
-@property(strong, readonly) NSDictionary<NSString*,id> *attributes;
+@property(strong, readonly) NSSet<MVChatUserAttributeKey> *supportedAttributes;
+@property(strong, readonly) NSDictionary<MVChatUserAttributeKey,id> *attributes;
 
 - (BOOL) isEqual:(nullable id) object;
 - (BOOL) isEqualToChatUser:(MVChatUser *) anotherUser;
@@ -156,11 +158,11 @@ COLLOQUY_EXPORT
 - (void) refreshInformation;
 
 - (void) refreshAttributes;
-- (void) refreshAttributeForKey:(NSString *) key;
+- (void) refreshAttributeForKey:(MVChatUserAttributeKey) key;
 
-- (BOOL) hasAttributeForKey:(NSString *) key;
-- (id __nullable) attributeForKey:(NSString *) key;
-- (void) setAttribute:(id __nullable) attribute forKey:(id) key;
+- (BOOL) hasAttributeForKey:(MVChatUserAttributeKey) key;
+- (id __nullable) attributeForKey:(MVChatUserAttributeKey) key;
+- (void) setAttribute:(id __nullable) attribute forKey:(MVChatUserAttributeKey) key;
 
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding asAction:(BOOL) action;
 - (void) sendMessage:(MVChatString *) message withEncoding:(NSStringEncoding) encoding withAttributes:(NSDictionary<NSString*,id> *) attributes;

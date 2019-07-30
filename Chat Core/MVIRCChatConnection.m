@@ -175,7 +175,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 - (void) _handlePrivmsgWithParameters:(NSArray *) parameters fromSender:(MVChatUser *) sender;
 
 - (void) _handleNotice:(NSMutableDictionary *) noticeInfo;
-- (void) _handleNoticeWithParameters:(NSArray *) parameters fromSender:(MVChatUser *) sender;
+- (void) _handleNoticeWithParameters:(NSArray *) parameters fromSender:(nullable MVChatUser *) sender;
 
 - (void) _handleCTCP:(NSDictionary *) ctcpInfo;
 - (void) _handleCTCP:(NSMutableData *) data asRequest:(BOOL) request fromSender:(MVChatUser *) sender toTarget:(id) target forRoom:(MVChatRoom *__nullable) room withTags:(NSDictionary *) tags;
@@ -462,10 +462,10 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	if( ! _nickname || ! connectiongOrConnected )
 		MVSafeCopyAssign( _nickname, newNickname );
 
-	if( [newNickname isEqualToString:_currentNickname] )
+	if( _currentNickname && [newNickname isEqualToString:_currentNickname] )
 		return;
 
-	if( ! _currentNickname || ! connectiongOrConnected )
+	if( ( ! _currentNickname || ! connectiongOrConnected ) && newNickname )
 		[self _setCurrentNickname:newNickname];
 
 	if( connectiongOrConnected )
@@ -706,7 +706,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	return [self joinedChatRoomWithUniqueIdentifier:[self properNameForChatRoomNamed:name]];
 }
 
-- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
+- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
 	NSParameterAssert( [identifier isKindOfClass:[NSString class]] );
 	MVChatRoom *room = [super chatRoomWithUniqueIdentifier:[identifier lowercaseString]];
 	if( ! room ) room = [[MVIRCChatRoom alloc] initWithName:identifier andConnection:self];
@@ -748,7 +748,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	return [NSSet setWithObject:[self chatUserWithUniqueIdentifier:name]];
 }
 
-- (MVChatUser *) chatUserWithUniqueIdentifier:(id) identifier {
+- (nullable MVChatUser *) chatUserWithUniqueIdentifier:(id) identifier {
 	NSParameterAssert( [identifier isKindOfClass:[NSString class]] );
 	MVChatUser *user = [super chatUserWithUniqueIdentifier:[identifier lowercaseString]];
 	if( ! user ) user = [[MVIRCChatUser alloc] initWithNickname:identifier andConnection:self];
@@ -1285,7 +1285,7 @@ parsingFinished: { // make a scope for this
 			[chatUser _setAddress:hostString];
 		}
 
-		if( ! [chatUser username] ) {
+		if( ! [chatUser username] && userLength > 0 && user != NULL ) {
 			NSString *userString = [self _newStringWithBytes:user length:userLength];
 			[chatUser _setUsername:userString];
 		}
@@ -1549,7 +1549,7 @@ parsingFinished: { // make a scope for this
 	} else return NO;
 }
 
-- (void) _sendCommand:(NSString *) command withArguments:(MVChatString *) arguments withEncoding:(NSStringEncoding) encoding toTarget:(id __nullable) target {
+- (void) _sendCommand:(NSString *) command withArguments:(nullable MVChatString *) arguments withEncoding:(NSStringEncoding) encoding toTarget:(id __nullable) target {
 	MVAssertMainThreadRequired();
 
 	BOOL isRoom = [target isKindOfClass:[MVChatRoom class]];
@@ -1972,7 +1972,10 @@ parsingFinished: { // make a scope for this
 	MVSafeRetainAssign( _queueWait, [NSDate dateWithTimeIntervalSinceNow:0.5] );
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self _resetSendQueueInterval];
-		[self _didConnect];
+
+		dispatch_async(_connectionQueue, ^{
+			[self _didConnect];
+		});
 	});
 }
 
@@ -3306,10 +3309,10 @@ parsingFinished: { // make a scope for this
 	}
 }
 
-- (void) _handleNoticeWithParameters:(NSArray *) parameters tags:(NSDictionary *) tags fromSender:(MVChatUser *) sender {
+- (void) _handleNoticeWithParameters:(NSArray *) parameters tags:(NSDictionary *) tags fromSender:(nullable MVChatUser *) sender {
 	// if the sender is a server lets make a user for the server name
 	// this is not ideal but the notifications need user objects
-	if( [sender isKindOfClass:[NSString class]] )
+	if( sender && [sender isKindOfClass:[NSString class]] )
 		sender = [self chatUserWithUniqueIdentifier:(NSString *)sender];
 	else if( !sender )
 		sender = [self chatUserWithUniqueIdentifier:[self server]];
@@ -3343,7 +3346,7 @@ parsingFinished: { // make a scope for this
 	}
 }
 
-- (void) _handleNoticeWithParameters:(NSArray *) parameters fromSender:(MVChatUser *) sender {
+- (void) _handleNoticeWithParameters:(NSArray *) parameters fromSender:(nullable MVChatUser *) sender {
 	[self _handleNoticeWithParameters:parameters tags:@{} fromSender:sender];
 }
 
@@ -3412,10 +3415,6 @@ parsingFinished: { // make a scope for this
 	[invocation setArgument:&unsafeCommand atIndex:2];
 	[invocation setArgument:&unsafeArguments atIndex:3];
 	[invocation setArgument:&unsafeSender atIndex:4];
-
-	command = nil;
-	arguments = nil;
-	sender = nil;
 
 	NSArray <NSNumber *> *results = [[MVChatPluginManager defaultManager] makePluginsPerformInvocation:invocation stoppingOnFirstSuccessfulReturn:YES];
 	if( [[results lastObject] boolValue] ) {

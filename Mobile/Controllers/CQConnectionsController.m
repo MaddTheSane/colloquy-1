@@ -27,7 +27,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <UserNotifications/UserNotifications.h>
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 #import <SecurityInterface/SFCertificatePanel.h>
 #endif
 
@@ -436,7 +436,7 @@ CQBouncerConnectionDelegate>
 	} else if ([connectionInvalidSSLCertAction isEqualToString:@"Allow"]) {
 		completionHandler(YES);
 	} else { // Ask people what to do
-#if SYSTEM(IOS)
+#if TARGET_OS_IPHONE
 		SecTrustRef trust = (__bridge SecTrustRef)notification.userInfo[@"trust"];
 		SecCertificateRef certificate;
 		NSString *certificateSubject = nil;
@@ -494,7 +494,7 @@ CQBouncerConnectionDelegate>
 		[errorToAlertMappingsForConnection setObject:alertView forKey:@"peerTrust"];
 
 		[alertView show];
-#elif SYSTEM(MAC)
+#elif TARGET_OS_OSX
 		// Ask people what to do
 		SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
 		panel.showsHelp = YES;

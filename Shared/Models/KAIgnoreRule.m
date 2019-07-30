@@ -6,7 +6,7 @@
 
 #import <ChatCore/MVChatUser.h>
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 #import "JVChatWindowController.h"
 #import "JVDirectChatPanel.h"
 #endif
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 
-#if SYSTEM(MAC)
+#if TARGET_OS_OSX
 - (JVIgnoreMatchResult) matchUser:(MVChatUser *) user message:(nullable NSString *) message inView:(nullable id <JVChatViewController>) view {
 	if (!_rooms.count || !view || ([view isKindOfClass:[JVDirectChatPanel class]] && [_rooms containsObject:[[(JVDirectChatPanel *)view target] displayName]])) {
 #else

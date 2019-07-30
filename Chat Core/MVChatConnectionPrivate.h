@@ -5,11 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSThread (NSThreadLeopard)
-- (void) cancel;
-- (void) setName:(NSString *) name;
-@end
-
 #pragma mark -
 
 @interface MVChatConnection (MVChatConnectionPrivate)

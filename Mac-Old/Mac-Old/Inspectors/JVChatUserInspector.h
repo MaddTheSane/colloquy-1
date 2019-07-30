@@ -38,14 +38,11 @@
 	IBOutlet NSTextField *clientInfo;
 	IBOutlet NSButton *requestInfo;
 	MVChatUser *_user;
-	NSDate *_localTimeUpdated;
-	NSTimer *_localTimeUpdateTimer;
 	NSTimer *_updateTimer;
 	BOOL _nibLoaded;
 	BOOL _addressResolved;
 }
 - (instancetype) initWithChatUser:(MVChatUser *) user;
-- (void) updateLocalTime;
 
 - (IBAction) requestLocalTime:(id) sender;
 - (IBAction) requestClientInfo:(id) sender;

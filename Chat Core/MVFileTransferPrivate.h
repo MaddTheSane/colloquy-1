@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MVFileTransfer (MVFileTransferPrivate)
+@interface MVFileTransfer ()
 - (void) _setStatus:(MVFileTransferStatus) status;
 - (void) _setFinalSize:(unsigned long long) finalSize;
 - (void) _setTransferred:(unsigned long long) transferred;
@@ -17,11 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) _postError:(NSError *) error;
 @end
 
-@interface MVUploadFileTransfer (MVUploadFileTransferPrivate)
+@interface MVUploadFileTransfer ()
 - (void) _setSource:(NSString *) source;
 @end
 
-@interface MVDownloadFileTransfer (MVDownloadFileTransferPrivate)
+@interface MVDownloadFileTransfer ()
 - (void) _setOriginalFileName:(NSString *) originalFileName;
 @end
 

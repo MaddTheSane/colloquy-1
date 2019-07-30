@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, class, copy) NSArray<NSNumber*> *defaultServerPorts;
 @property (readonly, class) NSUInteger maxMessageLength;
 
-- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
+- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
 @end
 
 @class ICBPacket;
