@@ -484,8 +484,8 @@ static const NSStringEncoding supportedEncodings[] = {
 static void reachabilityCallback( SCNetworkReachabilityRef target, SCNetworkConnectionFlags flags, void *context ) {
 	MVChatConnection *connection = (__bridge MVChatConnection *)context;
 
-	BOOL reachable = ( flags & kSCNetworkFlagsReachable );
-	BOOL connectionRequired = ( flags & kSCNetworkFlagsConnectionRequired );
+	BOOL reachable = ( flags & kSCNetworkFlagsReachable ) == kSCNetworkFlagsReachable;
+	BOOL connectionRequired = ( flags & kSCNetworkFlagsConnectionRequired ) == kSCNetworkFlagsConnectionRequired;
 
 #if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 	if( flags & kSCNetworkReachabilityFlagsIsWWAN ) connectionRequired = NO;
@@ -526,7 +526,7 @@ static void reachabilityCallback( SCNetworkReachabilityRef target, SCNetworkConn
 - (NSString *) server {
 // subclass this method
 	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+	return @"";
 }
 
 #pragma mark -
@@ -773,7 +773,7 @@ static void reachabilityCallback( SCNetworkReachabilityRef target, SCNetworkConn
 
 #pragma mark -
 
-- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
+- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier {
 	@synchronized( _knownRooms ) {
 		return _knownRooms[identifier];
 	}
@@ -824,7 +824,11 @@ static void reachabilityCallback( SCNetworkReachabilityRef target, SCNetworkConn
 	return [NSSet set];
 }
 
-- (MVChatUser *) chatUserWithUniqueIdentifier:(id) identifier {
+- (nullable MVChatUser *) chatUserWithUniqueIdentifier:(id) identifier {
+	if (identifier == nil) {
+		return nil;
+	}
+
 	if( [identifier isEqual:[[self localUser] uniqueIdentifier]] )
 		return [self localUser];
 

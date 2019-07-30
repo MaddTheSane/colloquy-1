@@ -369,8 +369,8 @@ COLLOQUY_EXPORT
 
 #pragma mark -
 
-- (MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
-- (MVChatRoom *__nullable) chatRoomWithName:(NSString *) room;
+- (nullable MVChatRoom *) chatRoomWithUniqueIdentifier:(id) identifier;
+- (nullable MVChatRoom *) chatRoomWithName:(NSString *) room;
 
 #pragma mark -
 
@@ -381,7 +381,7 @@ COLLOQUY_EXPORT
 
 - (NSSet<__kindof MVChatUser*> *) chatUsersWithNickname:(NSString *) nickname;
 - (NSSet<__kindof MVChatUser*> *) chatUsersWithFingerprint:(NSString *) fingerprint;
-- (MVChatUser *) chatUserWithUniqueIdentifier:(id) identifier;
+- (nullable MVChatUser *) chatUserWithUniqueIdentifier:(id) identifier;
 
 #pragma mark -
 

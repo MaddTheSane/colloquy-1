@@ -125,12 +125,12 @@ COLLOQUY_EXPORT
 @property(readonly) NSTimeInterval lag;
 
 @property(copy, readonly) NSString *displayName;
-@property(copy, readonly) NSString *nickname;
-@property(copy, readonly) NSString *realName;
-@property(copy, readonly) NSString *username;
-@property(copy, readonly) NSString *account;
+@property(nullable, copy, readonly) NSString *nickname;
+@property(nullable, copy, readonly) NSString *realName;
+@property(nullable, copy, readonly) NSString *username;
+@property(nullable, copy, readonly) NSString *account;
 @property(copy, readonly) NSString *address;
-@property(copy, readonly) NSString *serverAddress;
+@property(nullable, copy, readonly) NSString *serverAddress;
 @property(copy, readonly, nullable) NSString *maskRepresentation;
 
 @property(nonatomic, strong, readonly) id uniqueIdentifier;
