@@ -10,33 +10,33 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *MVChatRoomMemberQuietedFeature = @"MVChatRoomMemberQuietedFeature";
-NSString *MVChatRoomMemberVoicedFeature = @"MVChatRoomMemberVoicedFeature";
-NSString *MVChatRoomMemberHalfOperatorFeature = @"MVChatRoomMemberHalfOperatorFeature";
-NSString *MVChatRoomMemberOperatorFeature = @"MVChatRoomMemberOperatorFeature";
-NSString *MVChatRoomMemberAdministratorFeature = @"MVChatRoomMemberAdministratorFeature";
-NSString *MVChatRoomMemberFounderFeature = @"MVChatRoomMemberFounderFeature";
+NSString *const MVChatRoomMemberQuietedFeature = @"MVChatRoomMemberQuietedFeature";
+NSString *const MVChatRoomMemberVoicedFeature = @"MVChatRoomMemberVoicedFeature";
+NSString *const MVChatRoomMemberHalfOperatorFeature = @"MVChatRoomMemberHalfOperatorFeature";
+NSString *const MVChatRoomMemberOperatorFeature = @"MVChatRoomMemberOperatorFeature";
+NSString *const MVChatRoomMemberAdministratorFeature = @"MVChatRoomMemberAdministratorFeature";
+NSString *const MVChatRoomMemberFounderFeature = @"MVChatRoomMemberFounderFeature";
 
-NSString *MVChatRoomJoinedNotification = @"MVChatRoomJoinedNotification";
-NSString *MVChatRoomPartedNotification = @"MVChatRoomPartedNotification";
-NSString *MVChatRoomKickedNotification = @"MVChatRoomKickedNotification";
-NSString *MVChatRoomInvitedNotification = @"MVChatRoomInvitedNotification";
+NSString *const MVChatRoomJoinedNotification = @"MVChatRoomJoinedNotification";
+NSString *const MVChatRoomPartedNotification = @"MVChatRoomPartedNotification";
+NSString *const MVChatRoomKickedNotification = @"MVChatRoomKickedNotification";
+NSString *const MVChatRoomInvitedNotification = @"MVChatRoomInvitedNotification";
 
-NSString *MVChatRoomMemberUsersSyncedNotification = @"MVChatRoomMemberUsersSyncedNotification";
-NSString *MVChatRoomBannedUsersSyncedNotification = @"MVChatRoomBannedUsersSyncedNotification";
+NSString *const MVChatRoomMemberUsersSyncedNotification = @"MVChatRoomMemberUsersSyncedNotification";
+NSString *const MVChatRoomBannedUsersSyncedNotification = @"MVChatRoomBannedUsersSyncedNotification";
 
-NSString *MVChatRoomUserJoinedNotification = @"MVChatRoomUserJoinedNotification";
-NSString *MVChatRoomUserPartedNotification = @"MVChatRoomUserPartedNotification";
-NSString *MVChatRoomUserKickedNotification = @"MVChatRoomUserKickedNotification";
-NSString *MVChatRoomUserBannedNotification = @"MVChatRoomUserBannedNotification";
-NSString *MVChatRoomUserBanRemovedNotification = @"MVChatRoomUserBanRemovedNotification";
-NSString *MVChatRoomUserModeChangedNotification = @"MVChatRoomUserModeChangedNotification";
-NSString *MVChatRoomUserBrickedNotification = @"MVChatRoomUserBrickedNotification";
+NSString *const MVChatRoomUserJoinedNotification = @"MVChatRoomUserJoinedNotification";
+NSString *const MVChatRoomUserPartedNotification = @"MVChatRoomUserPartedNotification";
+NSString *const MVChatRoomUserKickedNotification = @"MVChatRoomUserKickedNotification";
+NSString *const MVChatRoomUserBannedNotification = @"MVChatRoomUserBannedNotification";
+NSString *const MVChatRoomUserBanRemovedNotification = @"MVChatRoomUserBanRemovedNotification";
+NSString *const MVChatRoomUserModeChangedNotification = @"MVChatRoomUserModeChangedNotification";
+NSString *const MVChatRoomUserBrickedNotification = @"MVChatRoomUserBrickedNotification";
 
-NSString *MVChatRoomGotMessageNotification = @"MVChatRoomGotMessageNotification";
-NSString *MVChatRoomTopicChangedNotification = @"MVChatRoomTopicChangedNotification";
-NSString *MVChatRoomModesChangedNotification = @"MVChatRoomModesChangedNotification";
-NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedNotification";
+NSString *const MVChatRoomGotMessageNotification = @"MVChatRoomGotMessageNotification";
+NSString *const MVChatRoomTopicChangedNotification = @"MVChatRoomTopicChangedNotification";
+NSString *const MVChatRoomModesChangedNotification = @"MVChatRoomModesChangedNotification";
+NSString *const MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedNotification";
 
 @implementation MVChatRoom
 #if ENABLE(SCRIPTING)
@@ -481,11 +481,9 @@ NSString *MVChatRoomAttributeUpdatedNotification = @"MVChatRoomAttributeUpdatedN
 - (NSString *) description {
 	return [self name];
 }
-@end
 
 #pragma mark -
 
-@implementation MVChatRoom (MVChatRoomPrivate)
 - (void) _connectionDestroyed {
 	_connection = nil;
 }

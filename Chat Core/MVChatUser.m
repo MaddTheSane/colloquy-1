@@ -8,46 +8,46 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *MVChatUserKnownRoomsAttribute = @"MVChatUserKnownRoomsAttribute";
-NSString *MVChatUserPictureAttribute = @"MVChatUserPictureAttribute";
-NSString *MVChatUserPingAttribute = @"MVChatUserPingAttribute";
-NSString *MVChatUserLocalTimeAttribute = @"MVChatUserLocalTimeAttribute";
-NSString *MVChatUserClientInfoAttribute = @"MVChatUserClientInfoAttribute";
-NSString *MVChatUserVCardAttribute = @"MVChatUserVCardAttribute";
-NSString *MVChatUserServiceAttribute = @"MVChatUserServiceAttribute";
-NSString *MVChatUserMoodAttribute = @"MVChatUserMoodAttribute";
-NSString *MVChatUserStatusMessageAttribute = @"MVChatUserStatusMessageAttribute";
-NSString *MVChatUserPreferredLanguageAttribute = @"MVChatUserPreferredLanguageAttribute";
-NSString *MVChatUserPreferredContactMethodsAttribute = @"MVChatUserPreferredContactMethodsAttribute";
-NSString *MVChatUserTimezoneAttribute = @"MVChatUserTimezoneAttribute";
-NSString *MVChatUserGeoLocationAttribute = @"MVChatUserGeoLocationAttribute";
-NSString *MVChatUserDeviceInfoAttribute = @"MVChatUserDeviceInfoAttribute";
-NSString *MVChatUserExtensionAttribute = @"MVChatUserExtensionAttribute";
-NSString *MVChatUserPublicKeyAttribute = @"MVChatUserPublicKeyAttribute";
-NSString *MVChatUserServerPublicKeyAttribute = @"MVChatUserServerPublicKeyAttribute";
-NSString *MVChatUserDigitalSignatureAttribute = @"MVChatUserDigitalSignatureAttribute";
-NSString *MVChatUserServerDigitalSignatureAttribute = @"MVChatUserServerDigitalSignatureAttribute";
-NSString *MVChatUserBanServerAttribute = @"MVChatUserBanServerAttribute";
-NSString *MVChatUserBanAuthorAttribute = @"MVChatUserBanAuthorAttribute";
-NSString *MVChatUserBanDateAttribute = @"MVChatUserBanDateAttribute";
-NSString *MVChatUserSSLCertFingerprintAttribute = @"MVChatUserSSLCertFingerprintAttribute";
-NSString *MVChatUserEmailAttribute = @"MVChatUserEmailAttribute";
-NSString *MVChatUserPhoneAttribute = @"MVChatUserPhoneAttribute";
-NSString *MVChatUserWebsiteAttribute = @"MVChatUserWebsiteAttribute";
-NSString *MVChatUserIMServiceAttribute = @"MVChatUserWebsiteAttribute";
-NSString *MVChatUserCurrentlyPlayingAttribute = @"MVChatUserCurrentlyPlayingAttribute";
-NSString *MVChatUserStatusAttribute = @"MVChatUserStatusAttribute";
-NSString *MVChatUserClientNameAttribute = @"MVChatUserClientNameAttribute";
-NSString *MVChatUserClientVersionAttribute = @"MVChatUserClientVersionAttribute";
-NSString *MVChatUserClientUnknownAttributes = @"MVChatUserClientUnknownAttributes";
+NSString *const MVChatUserKnownRoomsAttribute = @"MVChatUserKnownRoomsAttribute";
+NSString *const MVChatUserPictureAttribute = @"MVChatUserPictureAttribute";
+NSString *const MVChatUserPingAttribute = @"MVChatUserPingAttribute";
+NSString *const MVChatUserLocalTimeAttribute = @"MVChatUserLocalTimeAttribute";
+NSString *const MVChatUserClientInfoAttribute = @"MVChatUserClientInfoAttribute";
+NSString *const MVChatUserVCardAttribute = @"MVChatUserVCardAttribute";
+NSString *const MVChatUserServiceAttribute = @"MVChatUserServiceAttribute";
+NSString *const MVChatUserMoodAttribute = @"MVChatUserMoodAttribute";
+NSString *const MVChatUserStatusMessageAttribute = @"MVChatUserStatusMessageAttribute";
+NSString *const MVChatUserPreferredLanguageAttribute = @"MVChatUserPreferredLanguageAttribute";
+NSString *const MVChatUserPreferredContactMethodsAttribute = @"MVChatUserPreferredContactMethodsAttribute";
+NSString *const MVChatUserTimezoneAttribute = @"MVChatUserTimezoneAttribute";
+NSString *const MVChatUserGeoLocationAttribute = @"MVChatUserGeoLocationAttribute";
+NSString *const MVChatUserDeviceInfoAttribute = @"MVChatUserDeviceInfoAttribute";
+NSString *const MVChatUserExtensionAttribute = @"MVChatUserExtensionAttribute";
+NSString *const MVChatUserPublicKeyAttribute = @"MVChatUserPublicKeyAttribute";
+NSString *const MVChatUserServerPublicKeyAttribute = @"MVChatUserServerPublicKeyAttribute";
+NSString *const MVChatUserDigitalSignatureAttribute = @"MVChatUserDigitalSignatureAttribute";
+NSString *const MVChatUserServerDigitalSignatureAttribute = @"MVChatUserServerDigitalSignatureAttribute";
+NSString *const MVChatUserBanServerAttribute = @"MVChatUserBanServerAttribute";
+NSString *const MVChatUserBanAuthorAttribute = @"MVChatUserBanAuthorAttribute";
+NSString *const MVChatUserBanDateAttribute = @"MVChatUserBanDateAttribute";
+NSString *const MVChatUserSSLCertFingerprintAttribute = @"MVChatUserSSLCertFingerprintAttribute";
+NSString *const MVChatUserEmailAttribute = @"MVChatUserEmailAttribute";
+NSString *const MVChatUserPhoneAttribute = @"MVChatUserPhoneAttribute";
+NSString *const MVChatUserWebsiteAttribute = @"MVChatUserWebsiteAttribute";
+NSString *const MVChatUserIMServiceAttribute = @"MVChatUserWebsiteAttribute";
+NSString *const MVChatUserCurrentlyPlayingAttribute = @"MVChatUserCurrentlyPlayingAttribute";
+NSString *const MVChatUserStatusAttribute = @"MVChatUserStatusAttribute";
+NSString *const MVChatUserClientNameAttribute = @"MVChatUserClientNameAttribute";
+NSString *const MVChatUserClientVersionAttribute = @"MVChatUserClientVersionAttribute";
+NSString *const MVChatUserClientUnknownAttributes = @"MVChatUserClientUnknownAttributes";
 
-NSString *MVChatUserNicknameChangedNotification = @"MVChatUserNicknameChangedNotification";
-NSString *MVChatUserStatusChangedNotification = @"MVChatUserStatusChangedNotification";
-NSString *MVChatUserAwayStatusMessageChangedNotification = @"MVChatUserAwayStatusMessageChangedNotification";
-NSString *MVChatUserIdleTimeUpdatedNotification = @"MVChatUserIdleTimeUpdatedNotification";
-NSString *MVChatUserModeChangedNotification = @"MVChatUserModeChangedNotification";
-NSString *MVChatUserInformationUpdatedNotification = @"MVChatUserInformationUpdatedNotification";
-NSString *MVChatUserAttributeUpdatedNotification = @"MVChatUserAttributeUpdatedNotification";
+NSString *const MVChatUserNicknameChangedNotification = @"MVChatUserNicknameChangedNotification";
+NSString *const MVChatUserStatusChangedNotification = @"MVChatUserStatusChangedNotification";
+NSString *const MVChatUserAwayStatusMessageChangedNotification = @"MVChatUserAwayStatusMessageChangedNotification";
+NSString *const MVChatUserIdleTimeUpdatedNotification = @"MVChatUserIdleTimeUpdatedNotification";
+NSString *const MVChatUserModeChangedNotification = @"MVChatUserModeChangedNotification";
+NSString *const MVChatUserInformationUpdatedNotification = @"MVChatUserInformationUpdatedNotification";
+NSString *const MVChatUserAttributeUpdatedNotification = @"MVChatUserAttributeUpdatedNotification";
 
 @implementation MVChatUser
 #if ENABLE(SCRIPTING)
@@ -340,7 +340,7 @@ NSString *MVChatUserAttributeUpdatedNotification = @"MVChatUserAttributeUpdatedN
 		else [_attributes removeObjectForKey:key];
 	}
 
-	NSDictionary *info = @{ @"attribute": key };
+	NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:key, @"attribute", nil];
 	[[NSNotificationCenter chatCenter] postNotificationOnMainThreadWithName:MVChatUserAttributeUpdatedNotification object:self userInfo:info];
 }
 
@@ -383,11 +383,9 @@ NSString *MVChatUserAttributeUpdatedNotification = @"MVChatUserAttributeUpdatedN
 - (NSString *) description {
 	return [self displayName];
 }
-@end
 
 #pragma mark -
 
-@implementation MVChatUser (MVChatUserPrivate)
 - (void) _connectionDestroyed {
 	_connection = nil;
 }

@@ -6,8 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class MVChatUser;
 @class MVChatConnection;
 
-COLLOQUY_EXPORT extern NSString *MVChatUserWatchRuleMatchedNotification;
-COLLOQUY_EXPORT extern NSString *MVChatUserWatchRuleRemovedMatchedUserNotification;
+COLLOQUY_EXPORT extern NSNotificationName const MVChatUserWatchRuleMatchedNotification;
+COLLOQUY_EXPORT extern NSNotificationName const MVChatUserWatchRuleRemovedMatchedUserNotification;
 
 COLLOQUY_EXPORT
 @interface MVChatUserWatchRule : NSObject <NSCopying>

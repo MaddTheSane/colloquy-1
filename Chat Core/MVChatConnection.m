@@ -43,70 +43,70 @@
 #import "MVXMPPChatConnection.h"
 #endif
 
-NSString *MVChatConnectionWatchFeature = @"MVChatConnectionWatchFeature";
+NSString *const MVChatConnectionWatchFeature = @"MVChatConnectionWatchFeature";
 
 // IRC3v1 Required
-NSString *MVChatConnectionSASLFeature = @"MVChatConnectionSASLFeature";
-NSString *MVChatConnectionMultipleNicknamePrefixFeature = @"MVChatConnectionMultipleNicknamePrefixFeature";
+NSString *const MVChatConnectionSASLFeature = @"MVChatConnectionSASLFeature";
+NSString *const MVChatConnectionMultipleNicknamePrefixFeature = @"MVChatConnectionMultipleNicknamePrefixFeature";
 
 // IRC3v1 Optional
-NSString *MVChatConnectionAccountNotifyFeature = @"MVChatConnectionAccountNotifyFeature";
-NSString *MVChatConnectionAwayNotifyFeature = @"MVChatConnectionAwayNotifyFeature";
-NSString *MVChatConnectionExtendedJoinFeature = @"MVChatConnectionExtendedJoinFeature";
-NSString *MVChatConnectionTLSFeature = @"MVChatConnectionTLSFeature";
+NSString *const MVChatConnectionAccountNotifyFeature = @"MVChatConnectionAccountNotifyFeature";
+NSString *const MVChatConnectionAwayNotifyFeature = @"MVChatConnectionAwayNotifyFeature";
+NSString *const MVChatConnectionExtendedJoinFeature = @"MVChatConnectionExtendedJoinFeature";
+NSString *const MVChatConnectionTLSFeature = @"MVChatConnectionTLSFeature";
 
 // IRC3v2 Required
-NSString *MVChatConnectionMessageTagsFeature = @"MVChatConnectionMessageTagsFeature";
-NSString *MVChatConnectionMonitorFeature = @"MVChatConnectionMonitorFeature";
+NSString *const MVChatConnectionMessageTagsFeature = @"MVChatConnectionMessageTagsFeature";
+NSString *const MVChatConnectionMonitorFeature = @"MVChatConnectionMonitorFeature";
 
 // IRC3v2 Optional
-NSString *MVChatConnectionServerTimeFeature = @"MVChatConnectionServerTimeFeature";
-NSString *MVChatConnectionBatchFeature = @"MVChatConnectionBatchFeature";
-NSString *MVChatConnectionUserhostInNamesFeature = @"MVChatConnectionUserhostInNamesFeature";
-NSString *MVChatConnectionAccountTagFeature = @"MVChatConnectionAccountTagFeature";
-NSString *MVChatConnectionChghostFeature = @"MVChatConnectionChghostFeature";
-NSString *MVChatConnectionCapNotifyFeature = @"MVChatConnectionCapNotifyFeature";
-NSString *MVChatConnectionInviteFeature = @"MVChatConnectionInviteFeature";
-NSString *MVChatConnectionEchoMessageFeature = @"MVChatConnectionEchoMessageFeature";
+NSString *const MVChatConnectionServerTimeFeature = @"MVChatConnectionServerTimeFeature";
+NSString *const MVChatConnectionBatchFeature = @"MVChatConnectionBatchFeature";
+NSString *const MVChatConnectionUserhostInNamesFeature = @"MVChatConnectionUserhostInNamesFeature";
+NSString *const MVChatConnectionAccountTagFeature = @"MVChatConnectionAccountTagFeature";
+NSString *const MVChatConnectionChghostFeature = @"MVChatConnectionChghostFeature";
+NSString *const MVChatConnectionCapNotifyFeature = @"MVChatConnectionCapNotifyFeature";
+NSString *const MVChatConnectionInviteFeature = @"MVChatConnectionInviteFeature";
+NSString *const MVChatConnectionEchoMessageFeature = @"MVChatConnectionEchoMessageFeature";
 
 // IRC3v3
-NSString *MVChatConnectionSTSFeature = @"MVChatConnectionSTSFeature";
+NSString *const MVChatConnectionSTSFeature = @"MVChatConnectionSTSFeature";
 
 // InspIRCd Enhancements
-NSString *MVChatConnectionNamesxFeature = @"MVChatConnectionNamesxFeature";
+NSString *const MVChatConnectionNamesxFeature = @"MVChatConnectionNamesxFeature";
 
-NSString *MVChatConnectionWillConnectNotification = @"MVChatConnectionWillConnectNotification";
-NSString *MVChatConnectionDidConnectNotification = @"MVChatConnectionDidConnectNotification";
-NSString *MVChatConnectionDidNotConnectNotification = @"MVChatConnectionDidNotConnectNotification";
-NSString *MVChatConnectionWillDisconnectNotification = @"MVChatConnectionWillDisconnectNotification";
-NSString *MVChatConnectionDidDisconnectNotification = @"MVChatConnectionDidDisconnectNotification";
-NSString *MVChatConnectionGotErrorNotification = @"MVChatConnectionGotErrorNotification";
-NSString *MVChatConnectionErrorNotification = @"MVChatConnectionErrorNotification";
+NSString *const MVChatConnectionWillConnectNotification = @"MVChatConnectionWillConnectNotification";
+NSString *const MVChatConnectionDidConnectNotification = @"MVChatConnectionDidConnectNotification";
+NSString *const MVChatConnectionDidNotConnectNotification = @"MVChatConnectionDidNotConnectNotification";
+NSString *const MVChatConnectionWillDisconnectNotification = @"MVChatConnectionWillDisconnectNotification";
+NSString *const MVChatConnectionDidDisconnectNotification = @"MVChatConnectionDidDisconnectNotification";
+NSString *const MVChatConnectionGotErrorNotification = @"MVChatConnectionGotErrorNotification";
+NSString *const MVChatConnectionErrorNotification = @"MVChatConnectionErrorNotification";
 
-NSString *MVChatConnectionNeedTLSPeerTrustFeedbackNotification = @"MVChatConnectionNeedTLSPeerTrustFeedbackNotification";
-NSString *MVChatConnectionNeedNicknamePasswordNotification = @"MVChatConnectionNeedNicknamePasswordNotification";
-NSString *MVChatConnectionNeedServerPasswordNotification = @"MVChatConnectionNeedServerPasswordNotification";
-NSString *MVChatConnectionNeedCertificatePasswordNotification = @"MVChatConnectionNeedCertificatePasswordNotification";
-NSString *MVChatConnectionNeedPublicKeyVerificationNotification = @"MVChatConnectionNeedPublicKeyVerificationNotification";
+NSString *const MVChatConnectionNeedTLSPeerTrustFeedbackNotification = @"MVChatConnectionNeedTLSPeerTrustFeedbackNotification";
+NSString *const MVChatConnectionNeedNicknamePasswordNotification = @"MVChatConnectionNeedNicknamePasswordNotification";
+NSString *const MVChatConnectionNeedServerPasswordNotification = @"MVChatConnectionNeedServerPasswordNotification";
+NSString *const MVChatConnectionNeedCertificatePasswordNotification = @"MVChatConnectionNeedCertificatePasswordNotification";
+NSString *const MVChatConnectionNeedPublicKeyVerificationNotification = @"MVChatConnectionNeedPublicKeyVerificationNotification";
 
-NSString *MVChatConnectionGotBeepNotification = @"MVChatConnectionGotBeepNotification";
-NSString *MVChatConnectionGotImportantMessageNotification = @"MVChatConnectionGotInformationalMessageNotification";
-NSString *MVChatConnectionGotInformationalMessageNotification = @"MVChatConnectionGotInformationalMessageNotification";
-NSString *MVChatConnectionGotRawMessageNotification = @"MVChatConnectionGotRawMessageNotification";
-NSString *MVChatConnectionGotPrivateMessageNotification = @"MVChatConnectionGotPrivateMessageNotification";
-NSString *MVChatConnectionChatRoomListUpdatedNotification = @"MVChatConnectionChatRoomListUpdatedNotification";
-NSString *MVChatConnectionBatchUpdatesWillBeginNotification = @"MVChatConnectionBatchUpdatesWillBeginNotification";
-NSString *MVChatConnectionBatchUpdatesDidEndNotification = @"MVChatConnectionBatchUpdatesDidEndNotification";
+NSString *const MVChatConnectionGotBeepNotification = @"MVChatConnectionGotBeepNotification";
+NSString *const MVChatConnectionGotImportantMessageNotification = @"MVChatConnectionGotInformationalMessageNotification";
+NSString *const MVChatConnectionGotInformationalMessageNotification = @"MVChatConnectionGotInformationalMessageNotification";
+NSString *const MVChatConnectionGotRawMessageNotification = @"MVChatConnectionGotRawMessageNotification";
+NSString *const MVChatConnectionGotPrivateMessageNotification = @"MVChatConnectionGotPrivateMessageNotification";
+NSString *const MVChatConnectionChatRoomListUpdatedNotification = @"MVChatConnectionChatRoomListUpdatedNotification";
+NSString *const MVChatConnectionBatchUpdatesWillBeginNotification = @"MVChatConnectionBatchUpdatesWillBeginNotification";
+NSString *const MVChatConnectionBatchUpdatesDidEndNotification = @"MVChatConnectionBatchUpdatesDidEndNotification";
 
-NSString *MVChatConnectionSelfAwayStatusChangedNotification = @"MVChatConnectionSelfAwayStatusChangedNotification";
+NSString *const MVChatConnectionSelfAwayStatusChangedNotification = @"MVChatConnectionSelfAwayStatusChangedNotification";
 
-NSString *MVChatConnectionNicknameAcceptedNotification = @"MVChatConnectionNicknameAcceptedNotification";
-NSString *MVChatConnectionNicknameRejectedNotification = @"MVChatConnectionNicknameRejectedNotification";
+NSString *const MVChatConnectionNicknameAcceptedNotification = @"MVChatConnectionNicknameAcceptedNotification";
+NSString *const MVChatConnectionNicknameRejectedNotification = @"MVChatConnectionNicknameRejectedNotification";
 
-NSString *MVChatConnectionDidIdentifyWithServicesNotification = @"MVChatConnectionDidIdentifyWithServicesNotification";
+NSString *const MVChatConnectionDidIdentifyWithServicesNotification = @"MVChatConnectionDidIdentifyWithServicesNotification";
 
-NSString *MVChatConnectionSubcodeRequestNotification = @"MVChatConnectionSubcodeRequestNotification";
-NSString *MVChatConnectionSubcodeReplyNotification = @"MVChatConnectionSubcodeReplyNotification";
+NSString *const MVChatConnectionSubcodeRequestNotification = @"MVChatConnectionSubcodeRequestNotification";
+NSString *const MVChatConnectionSubcodeReplyNotification = @"MVChatConnectionSubcodeReplyNotification";
 
 NSString *MVChatConnectionErrorDomain = @"MVChatConnectionErrorDomain";
 

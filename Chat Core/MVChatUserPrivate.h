@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MVChatUser (MVChatUserPrivate)
+@interface MVChatUser ()
 - (void) _connectionDestroyed;
 - (void) _setType:(MVChatUserType) type;
 - (void) _setUniqueIdentifier:(id) identifier;

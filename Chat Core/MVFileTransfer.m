@@ -100,11 +100,9 @@ static BOOL autoPortMapping = YES;
 // subclass, don't call super
 	[self doesNotRecognizeSelector:_cmd];
 }
-@end
 
 #pragma mark -
 
-@implementation MVFileTransfer (MVFileTransferPrivate)
 - (void) _setStatus:(MVFileTransferStatus) newStatus {
 	_status = newStatus;
 }
@@ -170,11 +168,9 @@ static BOOL autoPortMapping = YES;
 - (BOOL) isUpload {
 	return YES;
 }
-@end
 
 #pragma mark -
 
-@implementation MVUploadFileTransfer (MVUploadFileTransferPrivate)
 - (void) _setSource:(NSString *) newSource {
 	MVSafeCopyAssign( _source, [newSource stringByStandardizingPath] );
 }
@@ -221,11 +217,9 @@ static BOOL autoPortMapping = YES;
 // subclass, don't call super
 	[self doesNotRecognizeSelector:_cmd];
 }
-@end
 
 #pragma mark -
 
-@implementation MVDownloadFileTransfer (MVDownloadFileTransferPrivate)
 - (void) _setOriginalFileName:(NSString *) newOriginalFileName {
 	MVSafeCopyAssign( _originalFileName, newOriginalFileName );
 }

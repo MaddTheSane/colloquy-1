@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MVChatRoom (MVChatRoomPrivate)
+@interface MVChatRoom ()
 - (void) _connectionDestroyed;
 - (void) _updateMemberUser:(MVChatUser *) user fromOldUniqueIdentifier:(id) identifier;
 - (void) _clearMemberUsers;
