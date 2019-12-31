@@ -102,9 +102,9 @@ typedef NS_ENUM(NSInteger, JVTranscriptCriterionQueryUnits) {
 
 @property (readonly, strong) NSView *view;
 
-@property (readonly) JVTranscriptCriterionFormat format;
+@property (nonatomic, readonly) JVTranscriptCriterionFormat format;
 
-@property JVTranscriptCriterionKind kind;
+@property (nonatomic) JVTranscriptCriterionKind kind;
 
 - (IBAction) selectCriterionKind:(id) sender;
 - (IBAction) selectCriterionOperation:(id) sender;
@@ -115,13 +115,13 @@ typedef NS_ENUM(NSInteger, JVTranscriptCriterionQueryUnits) {
 @property (readonly) BOOL changedSinceLastMatch;
 - (BOOL) matchMessage:(JVChatMessage *) message fromChatView:(id <JVChatViewController>) chatView ignoringCase:(BOOL) ignoreCase;
 
-@property (strong) id query;
+@property (nonatomic, strong) id query;
 
-@property JVTranscriptCriterionOperation operation;
+@property (nonatomic) JVTranscriptCriterionOperation operation;
 
-@property JVTranscriptCriterionQueryUnits queryUnits;
+@property (nonatomic) JVTranscriptCriterionQueryUnits queryUnits;
 
-@property BOOL usesSmartTranscriptCriterion;
+@property (nonatomic) BOOL usesSmartTranscriptCriterion;
 
 @property (readonly, strong) NSView *firstKeyView;
 @property (readonly, strong) NSView *lastKeyView;

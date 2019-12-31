@@ -8,6 +8,10 @@
 #import "JVChatRoomPanel.h"
 #import <ChatCore/NSRegularExpressionAdditions.h>
 
+@interface JVTranscriptCriterionController ()
+@property (nonatomic, readwrite) JVTranscriptCriterionFormat format;
+@end
+
 @implementation JVTranscriptCriterionController
 + (instancetype) controller {
 	return [[self alloc] init];
@@ -113,9 +117,7 @@
 
 #pragma mark -
 
-- (JVTranscriptCriterionFormat) format {
-	return _format;
-}
+@synthesize format=_format;
 
 - (void) setFormat:(JVTranscriptCriterionFormat) format {
 	if( format != _format ) {
@@ -137,9 +139,7 @@
 
 #pragma mark -
 
-- (JVTranscriptCriterionKind) kind {
-	return _kind;
-}
+@synthesize kind=_kind;
 
 - (void) setKind:(JVTranscriptCriterionKind) kind {
 	if( kind != _kind ) {
@@ -234,9 +234,7 @@
 
 #pragma mark -
 
-- (BOOL) changedSinceLastMatch {
-	return _changed;
-}
+@synthesize changedSinceLastMatch=_changed;
 
 - (BOOL) matchMessage:(JVChatMessage *) message fromChatView:(id <JVChatViewController>) chatView ignoringCase:(BOOL) ignoreCase {
 	_changed = NO;
@@ -340,9 +338,7 @@
 
 #pragma mark -
 
-- (id) query {
-	return _query;
-}
+@synthesize query=_query;
 
 - (void) setQuery:(id) query {
 	_query = query;
@@ -379,9 +375,7 @@
 
 #pragma mark -
 
-- (JVTranscriptCriterionQueryUnits) queryUnits {
-	return _queryUnits;
-}
+@synthesize queryUnits=_queryUnits;
 
 - (void) setQueryUnits:(JVTranscriptCriterionQueryUnits) units {
 	_queryUnits = units;
@@ -393,9 +387,7 @@
 
 #pragma mark -
 
-- (BOOL) usesSmartTranscriptCriterion {
-	return _smartTranscriptCriterion;
-}
+@synthesize usesSmartTranscriptCriterion=_smartTranscriptCriterion;
 
 - (void) setUsesSmartTranscriptCriterion:(BOOL) use {
 	_smartTranscriptCriterion = use;

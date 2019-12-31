@@ -84,19 +84,19 @@ COLLOQUY_EXPORT
 - (IBAction) messageSelectedBuddy:(id) sender;
 - (IBAction) sendFileToSelectedBuddy:(id) sender;
 
-@property BOOL showFullNames;
+@property (nonatomic) BOOL showFullNames;
 - (IBAction) toggleShowFullNames:(id) sender;
 
-@property BOOL showNicknameAndServer;
+@property (nonatomic) BOOL showNicknameAndServer;
 - (IBAction) toggleShowNicknameAndServer:(id) sender;
 
-@property BOOL showIcons;
+@property (nonatomic) BOOL showIcons;
 - (IBAction) toggleShowIcons:(id) sender;
 
-@property BOOL showOfflineBuddies;
+@property (nonatomic) BOOL showOfflineBuddies;
 - (IBAction) toggleShowOfflineBuddies:(id) sender;
 
-@property MVBuddyListSortOrder sortOrder;
+@property (nonatomic) MVBuddyListSortOrder sortOrder;
 - (IBAction) sortByAvailability:(id) sender;
 - (IBAction) sortByFirstName:(id) sender;
 - (IBAction) sortByLastName:(id) sender;

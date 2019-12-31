@@ -380,9 +380,7 @@ static MVBuddyListController *sharedInstance = nil;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL) showFullNames {
-	return _showFullNames;
-}
+@synthesize showFullNames=_showFullNames;
 
 - (IBAction) toggleShowFullNames:(id) sender {
 	[self setShowFullNames:(! _showFullNames)];
@@ -399,9 +397,7 @@ static MVBuddyListController *sharedInstance = nil;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL) showNicknameAndServer {
-	return _showNicknameAndServer;
-}
+@synthesize showNicknameAndServer=_showNicknameAndServer;
 
 - (IBAction) toggleShowNicknameAndServer:(id) sender {
 	[self setShowNicknameAndServer:(! _showNicknameAndServer)];
@@ -418,9 +414,7 @@ static MVBuddyListController *sharedInstance = nil;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL) showIcons {
-	return _showIcons;
-}
+@synthesize showIcons=_showIcons;
 
 - (IBAction) toggleShowIcons:(id) sender {
 	[self setShowIcons:(! _showIcons)];
@@ -439,9 +433,7 @@ static MVBuddyListController *sharedInstance = nil;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL) showOfflineBuddies {
-	return _showOfflineBuddies;
-}
+@synthesize showOfflineBuddies=_showOfflineBuddies;
 
 - (IBAction) toggleShowOfflineBuddies:(id) sender {
 	[self setShowOfflineBuddies:(! _showOfflineBuddies)];
@@ -456,9 +448,7 @@ static MVBuddyListController *sharedInstance = nil;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (MVBuddyListSortOrder) sortOrder {
-	return _sortOrder;
-}
+@synthesize sortOrder=_sortOrder;
 
 - (IBAction) sortByAvailability:(id) sender {
 	[self setSortOrder:MVAvailabilitySortOrder];
