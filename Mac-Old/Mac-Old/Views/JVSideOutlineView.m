@@ -12,7 +12,7 @@ static void gradientInterpolate( void *info, CGFloat const *inData, CGFloat *out
 
 @interface NSOutlineView (NSOutlineViewPrivate)
 - (NSColor *) _highlightColorForCell:(NSCell *) cell;
-- (void) _highlightRow:(int) row clipRect:(NSRect) clip;
+- (void) _highlightRow:(NSInteger) row clipRect:(NSRect) clip;
 @end
 
 @implementation JVSideOutlineView
@@ -24,7 +24,7 @@ static void gradientInterpolate( void *info, CGFloat const *inData, CGFloat *out
     return nil;
 }
 
-- (void) _highlightRow:(int) row clipRect:(NSRect) clip {
+- (void) _highlightRow:(NSInteger) row clipRect:(NSRect) clip {
 	if( [super respondsToSelector:_cmd] )
 		return [super _highlightRow:row clipRect:clip];
 

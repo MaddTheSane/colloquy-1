@@ -1,4 +1,3 @@
-#import "Colloquy-Swift.h"
 #import "MVColorPanel.h"
 #import "MVApplicationController.h"
 #import "JVChatWindowController.h"
@@ -14,6 +13,7 @@
 #import "JVChatRoomPanel.h"
 #import "JVDirectChatPanel.h"
 #import "JVAnalyticsController.h"
+#import "Colloquy-Swift.h"
 //#import "JVChatTranscriptBrowserPanel.h"
 
 #import "PFMoveApplicationController.h"
