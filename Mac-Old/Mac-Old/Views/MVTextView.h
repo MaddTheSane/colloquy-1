@@ -2,7 +2,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol MVTextViewDelegate;
+@class MVTextView;
+
+@protocol MVTextViewDelegate <NSTextViewDelegate>
+@optional
+- (BOOL) textView:(NSTextView *) textView functionKeyPressed:(NSEvent *) event;
+- (BOOL) textView:(NSTextView *) textView enterKeyPressed:(NSEvent *) event;
+- (BOOL) textView:(NSTextView *) textView returnKeyPressed:(NSEvent *) event;
+- (BOOL) textView:(NSTextView *) textView escapeKeyPressed:(NSEvent *) event;
+- (NSArray<NSString*> *) textView:(NSTextView *) textView stringCompletionsForPrefix:(NSString *) prefix;
+- (void) textView:(NSTextView *) textView selectedCompletion:(NSString *) completion fromPrefix:(NSString *) prefix;
+@end
 
 @interface MVTextView : NSTextView {
     NSDictionary *defaultTypingAttributes;
@@ -30,16 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) autocompleteWithSuffix:(BOOL) suffix;
 
 @property (atomic, weak, nullable) id <MVTextViewDelegate>delegate;
-@end
-
-@protocol MVTextViewDelegate <NSTextViewDelegate>
-@optional
-- (BOOL) textView:(NSTextView *) textView functionKeyPressed:(NSEvent *) event;
-- (BOOL) textView:(NSTextView *) textView enterKeyPressed:(NSEvent *) event;
-- (BOOL) textView:(NSTextView *) textView returnKeyPressed:(NSEvent *) event;
-- (BOOL) textView:(NSTextView *) textView escapeKeyPressed:(NSEvent *) event;
-- (NSArray<NSString*> *) textView:(NSTextView *) textView stringCompletionsForPrefix:(NSString *) prefix;
-- (void) textView:(NSTextView *) textView selectedCompletion:(NSString *) completion fromPrefix:(NSString *) prefix;
 @end
 
 NS_ASSUME_NONNULL_END
