@@ -16,6 +16,7 @@
 @end
 
 @protocol JVFontPreviewFieldDelegate <NSTextFieldDelegate>
+@optional
 - (BOOL) fontPreviewField:(JVFontPreviewField *) field shouldChangeToFont:(NSFont *) font;
 - (void) fontPreviewField:(JVFontPreviewField *) field didChangeToFont:(NSFont *) font;
 @end

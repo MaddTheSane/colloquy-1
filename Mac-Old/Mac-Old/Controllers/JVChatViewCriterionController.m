@@ -34,9 +34,9 @@
 - (instancetype) initWithCoder:(NSCoder *) coder {
 	if( [coder allowsKeyedCoding] ) {
 		self = [self init];
-		[self setKind:[coder decodeIntForKey:@"kind"]];
+		[self setKind:[coder decodeIntegerForKey:@"kind"]];
 		[self setQuery:[coder decodeObjectForKey:@"query"]];
-		[self setOperation:[coder decodeIntForKey:@"operation"]];
+		[self setOperation:[coder decodeIntegerForKey:@"operation"]];
 		return self;
 	}
 
@@ -47,9 +47,9 @@
 
 - (void) encodeWithCoder:(NSCoder *) coder {
 	if( [coder allowsKeyedCoding] ) {
-		[coder encodeInt:[self kind] forKey:@"kind"];
+		[coder encodeInteger:[self kind] forKey:@"kind"];
 		[coder encodeObject:[self query] forKey:@"query"];
-		[coder encodeInt:[self operation] forKey:@"operation"];
+		[coder encodeInteger:[self operation] forKey:@"operation"];
 	} else [NSException raise:NSInvalidArchiveOperationException format:@"Only supports NSKeyedArchiver coders"];
 }
 

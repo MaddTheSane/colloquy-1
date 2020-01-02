@@ -37,7 +37,7 @@ COLLOQUY_EXPORT
 
 - (IBAction) changeConnection:(id) sender;
 
-@property (copy) NSString *filter;
+@property (nonatomic, copy) NSString *filter;
 
-@property (strong) MVChatConnection *connection;
+@property (nonatomic, strong) MVChatConnection *connection;
 @end
