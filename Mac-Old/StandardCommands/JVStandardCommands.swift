@@ -10,7 +10,7 @@ import Foundation
 import ChatCore
 import WebKit
 
-public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlugin {
+@objcMembers @objc public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlugin {
 	public required init(manager: MVChatPluginManager) {
 		super.init()
 	}
@@ -220,7 +220,7 @@ public class StandardCommands : NSObject, MVChatPluginCommandSupport, MVChatPlug
 	}
 	
 	private func handleMassMessage(command: String, with message: NSAttributedString!, for connection: MVChatConnection!) -> Bool {
-		guard message.length > 0 else {
+		guard let message = message, message.length > 0 else {
 			return false
 		}
 		

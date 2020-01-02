@@ -418,8 +418,8 @@ COLLOQUY_EXPORT
 
 @protocol MVChatPluginConnectionSupport <MVChatPlugin>
 @optional
-- (void) processIncomingMessageAsData:(NSMutableData *) message from:(MVChatUser *) sender to:(id) receiver attributes:(NSMutableDictionary *)msgAttributes;
-- (void) processOutgoingMessageAsData:(NSMutableData *) message to:(id) receiver attributes:(NSDictionary *)msgAttributes;
+- (void) processIncomingMessageAsData:(NSMutableData *) message from:(MVChatUser *) sender to:(id) receiver attributes:(NSMutableDictionary<NSAttributedStringKey,id> *)msgAttributes;
+- (void) processOutgoingMessageAsData:(NSMutableData *) message to:(id) receiver attributes:(NSDictionary<NSAttributedStringKey,id> *)msgAttributes;
 
 - (void) processTopicAsData:(NSMutableData *) topic inRoom:(MVChatRoom *) room author:(MVChatUser *) author;
 
