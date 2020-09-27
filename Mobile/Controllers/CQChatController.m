@@ -23,6 +23,7 @@
 #import "NSNotificationAdditions.h"
 
 #import <UserNotifications/UserNotifications.h>
+#import <UniformTypeIdentifiers/UTCoreTypes.h>
 
 static CQSoundController *highlightSound;
 
@@ -56,9 +57,10 @@ static CQSoundController *fileTransferSound;
 #pragma mark -
 
 @interface CQChatController () <CQActionSheetDelegate, CQAlertViewDelegate
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 , UIImagePickerControllerDelegate
 #endif
+, UIDocumentPickerDelegate
 >
 @end
 
@@ -90,9 +92,7 @@ static CQSoundController *fileTransferSound;
 
 	soundName = [[CQSettingsController settingsController] stringForKey:@"CQSoundOnFileTransfer"];
 
-	old = fileTransferSound;
 	fileTransferSound = ([soundName isEqualToString:@"None"] ? nil : [[CQSoundController alloc] initWithSoundNamed:soundName]);
-	[old release];
 #endif
 }
 
@@ -232,8 +232,6 @@ static CQSoundController *fileTransferSound;
 	[fileTransferSound playSound];
 
 	[alert show];
-
-	[alert release];
 }
 
 - (void) _sendImage:(UIImage *) image asPNG:(BOOL) asPNG {
@@ -245,7 +243,6 @@ static CQSoundController *fileTransferSound;
 	[formatter setDateFormat:@"yyyy-MM-dd-A"];
 
 	NSString *name = [[formatter stringFromDate:[NSDate date]] stringByAppendingString:@".png"];
-	[formatter release];
 
 	name = [name stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
@@ -254,7 +251,7 @@ static CQSoundController *fileTransferSound;
 
 	MVUploadFileTransfer *transfer = [_fileUser sendFile:path passively:YES];
 	[self chatViewControllerForFileTransfer:transfer ifExists:NO];
-	[_fileUser release];
+	_fileUser = nil;
 }
 #endif
 
@@ -282,7 +279,7 @@ static CQSoundController *fileTransferSound;
 
 	NSString *message = [NSString stringWithFormat:NSLocalizedString(@"You are invited to \"%@\" by \"%@\" on \"%@\".", "Invited to join room alert message"), room.displayName, user.displayName, connection.displayName];
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
 		UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
 		content.threadIdentifier = connection.uniqueIdentifier;
@@ -367,11 +364,14 @@ static CQSoundController *fileTransferSound;
 		}
 #if ENABLE(FILE_TRANSFERS)
 	} else if (actionSheet.tag == SendFileActionSheetTag) {
+		BOOL sendFile = NO;
 		BOOL sendExistingPhoto = NO;
 		BOOL takeNewPhoto = NO;
 		BOOL sendContact = NO;
 
 		if (buttonIndex == 0) {
+			sendFile = YES;
+		} else if (buttonIndex == 1) {
 			if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 				takeNewPhoto = YES;
 			} else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
@@ -379,7 +379,7 @@ static CQSoundController *fileTransferSound;
 			} else {
 				sendContact = YES;
 			}
-		} else if (buttonIndex == 1) {
+		} else if (buttonIndex == 2) {
 			if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 				sendExistingPhoto = YES;
 			} else {
@@ -389,32 +389,46 @@ static CQSoundController *fileTransferSound;
 			sendContact = YES;
 		}
 
+		if (sendFile) {
+			UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[ UTTypeData, UTTypePackage, UTTypeItem, UTTypeContent, UTTypeCompositeContent ] inMode:UIDocumentPickerModeOpen];
+			picker.delegate = self;
+			[UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:picker animated:YES completion:nil];
+		}
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 		if (takeNewPhoto) {
 			UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 			picker.delegate = self;
 			picker.allowsEditing = YES;
 			picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 			[[CQColloquyApplication sharedApplication] presentModalViewController:picker animated:YES];
-			[picker release];
 		} else if (sendExistingPhoto) {
 			UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 			picker.delegate = self;
 			picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 			[[CQColloquyApplication sharedApplication] presentModalViewController:picker animated:YES];
-			[picker release];
 		} else if (sendContact) {
 			NSAssert(NO, @"Contact sending not implemented.");
 		}
+#else
+#endif
 	} else if (actionSheet.tag == FileTypeActionSheetTag) {
 		[self _sendImage:[actionSheet associatedObjectForKey:@"image"] asPNG:(buttonIndex == 0)];
 #endif
 	}
 }
 
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls {
+
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+
+}
+
 #pragma mark -
 
 #if ENABLE(FILE_TRANSFERS)
-- (void) imagePickerController:(UIImagePickerController *) picker didFinishPickingImage:(UIImage *) image editingInfo:(NSDictionary *) editingInfo {
+- (void) imagePickerController:(UIImagePickerController *) picker didFinishPickingImage:(UIImage *) image editingInfo:(nullable NSDictionary *) editingInfo {
 	NSString *behavior = [[CQSettingsController settingsController] stringForKey:@"CQImageFileTransferBehavior"];
 	if ([behavior isEqualToString:@"Ask"]) {
 		CQActionSheet *sheet = [[CQActionSheet alloc] init];
@@ -424,7 +438,6 @@ static CQSoundController *fileTransferSound;
 		[sheet addButtonWithTitle:NSLocalizedString(@"PNG", @"PNG button title")];
 		[sheet addButtonWithTitle:NSLocalizedString(@"JPG", @"JPG button title")];
 		[[CQColloquyApplication sharedApplication] showActionSheet:sheet];
-		[sheet release];
 	} else {
 		[self _sendImage:image asPNG:[behavior isEqualToString:@"PNG"]];
 	}
@@ -434,7 +447,7 @@ static CQSoundController *fileTransferSound;
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *) picker {
 	[[CQColloquyApplication sharedApplication] dismissModalViewControllerAnimated:YES];
-	[_fileUser release];
+	_fileUser = nil;
 }
 #endif
 
@@ -446,7 +459,7 @@ static CQSoundController *fileTransferSound;
 
 	_totalImportantUnreadCount = count;
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	[UIApplication sharedApplication].applicationIconBadgeNumber = count;
 #endif
 
@@ -615,19 +628,21 @@ static CQSoundController *fileTransferSound;
 	sheet.delegate = self;
 	sheet.tag = SendFileActionSheetTag;
 
+	[sheet addButtonWithTitle:NSLocalizedString(@"Choose File", @"Choose File button title")];
+
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
 		[sheet addButtonWithTitle:NSLocalizedString(@"Take Photo", @"Take Photo button title")];
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
 		[sheet addButtonWithTitle:NSLocalizedString(@"Choose Existing Photo", @"Choose Existing Photo button title")];
 //	[sheet addButtonWithTitle:NSLocalizedString(@"Choose Contact", @"Choose Contact button title")];
+#endif
 
 	sheet.cancelButtonIndex = [sheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button title")];
 
-	_fileUser = [user retain];
+	_fileUser = user;
 
 	[[CQColloquyApplication sharedApplication] showActionSheet:sheet];
-
-	[sheet release];
 }
 #endif
 

@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 	_nicknameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	_timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	_disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	_disclosureButton.showsTouchWhenHighlighted = YES;
 #endif
 	_disclosureButton.adjustsImageWhenHighlighted = YES;
@@ -151,11 +151,11 @@ NS_ASSUME_NONNULL_BEGIN
 		unsigned hours = (absoluteInterval / 3600);
 
 		if (interval >= 1.) {
-			if (UNLIKELY(hours)) newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"-%zd:%02zd:%02zd", @"Countdown time format with hours, minutes and seconds"), hours, minutes, seconds];
-			else newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"-%u:%02zd", @"Countdown time format with minutes and seconds"), minutes, seconds];
+			if (UNLIKELY(hours)) newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"-%d:%02d:%02d", @"Countdown time format with hours, minutes and seconds"), hours, minutes, seconds];
+			else newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"-%u:%02d", @"Countdown time format with minutes and seconds"), minutes, seconds];
 		} else {
-			if (UNLIKELY(hours)) newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"%u:%02zd:%02zd", @"Countup time format with hours, minutes and seconds"), hours, minutes, seconds];
-			else newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"%u:%02zd", @"Countup time format with minutes and seconds"), minutes, seconds];
+			if (UNLIKELY(hours)) newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"%u:%02d:%02d", @"Countup time format with hours, minutes and seconds"), hours, minutes, seconds];
+			else newTime = [[NSString alloc] initWithFormat:NSLocalizedString(@"%u:%02d", @"Countup time format with minutes and seconds"), minutes, seconds];
 		}
 	}
 
