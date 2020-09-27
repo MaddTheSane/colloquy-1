@@ -387,7 +387,6 @@
 		1C51B4CC052DE14B00BB459B /* Info-StandardCommands.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-StandardCommands.plist"; sourceTree = "<group>"; };
 		1C51B4CD052DE14B00BB459B /* Standard Commands.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Standard Commands.plugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C51B89D052DF91E00BB459B /* Info-Mac-Old.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "Info-Mac-Old.plist"; sourceTree = "<group>"; };
-		1C59A91F09FDEBA3000682B8 /* JVChatWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatWindowControllerTests.m; sourceTree = "<group>"; };
 		1C59BD61059E2E02001487E2 /* ChatPlugIn.scriptSuite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptSuite; path = ChatPlugIn.scriptSuite; sourceTree = "<group>"; };
 		1C59BD63059E2E16001487E2 /* ChatPlugIn.scriptTerminology */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptTerminology; path = ChatPlugIn.scriptTerminology; sourceTree = "<group>"; };
 		1C5EF35807B45C1F004E66D3 /* JVChatEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVChatEvent.h; sourceTree = "<group>"; };
@@ -577,9 +576,6 @@
 		5582BE6A1F8709780010EE03 /* RunOnMainThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RunOnMainThread.h; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
 		55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
-		55C8A2D0180735D100A7BB42 /* Colloquy Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Colloquy Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		55C8A2D6180735D100A7BB42 /* Colloquy Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Colloquy Tests-Info.plist"; sourceTree = "<group>"; };
-		55C8A2D8180735D100A7BB42 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55CFBD9F20B5CB8900AD846B /* nn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nn; path = nn.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F7D7BB2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVGeneralPreferencesViewController.strings; sourceTree = "<group>"; };
 		55F7D7BC2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVInterfacePreferencesViewController.strings; sourceTree = "<group>"; };
@@ -883,7 +879,6 @@
 				F50B0AA10170C89301A84BDE /* Resources */,
 				1C6A13E608666DDC009EE6D2 /* Settings */,
 				C26F48CE1FB7223700FB8FA6 /* Shared */,
-				1C59A92909FDEBC6000682B8 /* Unit Tests */,
 				C26D0E121F5B0A7700B58261 /* old-mac-binary-frameworks */,
 				089C1671FE841209C02AAC07 /* Frameworks */,
 				1CB2C8CC052DDA360094AAA4 /* Products */,
@@ -961,19 +956,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1C59A92909FDEBC6000682B8 /* Unit Tests */ = {
-			isa = PBXGroup;
-			children = (
-				1C59A91F09FDEBA3000682B8 /* JVChatWindowControllerTests.m */,
-				55C8A2D5180735D100A7BB42 /* Supporting Files */,
-			);
-			indentWidth = 4;
-			name = "Unit Tests";
-			path = "Mac-Old/Tests";
-			sourceTree = "<group>";
-			tabWidth = 4;
-			usesTabs = 1;
-		};
 		1C6A13E608666DDC009EE6D2 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,7 +1009,6 @@
 				1CB2CD8C052DDC570094AAA4 /* Colloquy.app */,
 				1C51B4CD052DE14B00BB459B /* Standard Commands.plugin */,
 				CBF685150820186F00F498FB /* Colloquy.mdimporter */,
-				55C8A2D0180735D100A7BB42 /* Colloquy Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1229,15 +1210,6 @@
 				891EF4091064278200CCEA35 /* PFMoveApplicationController.h */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		55C8A2D5180735D100A7BB42 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				55C8A2D6180735D100A7BB42 /* Colloquy Tests-Info.plist */,
-				55C8A2D7180735D100A7BB42 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		C24705C220135D4800385F62 /* StandardCommands */ = {
@@ -2149,14 +2121,6 @@
 			);
 			name = JVBuddyInspector.xib;
 			path = Languages;
-			sourceTree = "<group>";
-		};
-		55C8A2D7180735D100A7BB42 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				55C8A2D8180735D100A7BB42 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		9200338B13D92515005B69BA /* MVFileTransfer.xib */ = {
