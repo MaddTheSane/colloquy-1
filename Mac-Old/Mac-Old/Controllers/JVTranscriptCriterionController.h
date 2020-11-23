@@ -10,7 +10,7 @@ typedef NS_ENUM(NSInteger, JVTranscriptCriterionFormat) {
 };
 
 /// corresponds to the nib menu tags
-typedef NS_ENUM(int, JVTranscriptCriterionKind) {
+typedef NS_ENUM(NSInteger, JVTranscriptCriterionKind) {
 	JVTranscriptMessageBodyCriterionKind = 1,
 	JVTranscriptSenderNameCriterionKind,
 	JVTranscriptDateReceivedCriterionKind,
@@ -38,7 +38,7 @@ typedef NS_ENUM(int, JVTranscriptCriterionKind) {
 };
 
 /// corresponds to the nib menu tags
-typedef NS_ENUM(int, JVTranscriptCriterionOperation) {
+typedef NS_ENUM(NSInteger, JVTranscriptCriterionOperation) {
 	JVTranscriptNoCriterionOperation = 0,
 	JVTranscriptTextMatchCriterionOperation = 1,
 	JVTranscriptTextDoesNotMatchCriterionOperation,
@@ -53,7 +53,7 @@ typedef NS_ENUM(int, JVTranscriptCriterionOperation) {
 };
 
 /// corresponds to the nib menu tags
-typedef NS_ENUM(int, JVTranscriptCriterionQueryUnits) {
+typedef NS_ENUM(NSInteger, JVTranscriptCriterionQueryUnits) {
 	JVTranscriptNoCriterionQueryUnits = 0,
 	JVTranscriptSecondCriterionQueryUnits = 1,
 	JVTranscriptMinuteCriterionQueryUnits,
