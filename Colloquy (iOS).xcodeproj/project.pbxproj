@@ -1345,7 +1345,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Colloquy Project";
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
@@ -1832,13 +1832,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C15B12913107243006FA16B /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Jane Lee (N94ANP6XYA)";
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1917,8 +1917,8 @@
 					"ENABLE_CHAT_CENTER=1",
 				);
 				INFOPLIST_FILE = Mobile/Resources/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.mobile.development;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.mobile.development;
 				PRODUCT_NAME = Colloquy;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2139,13 +2139,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C15B12913107243006FA16B /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2155,13 +2155,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C15B12913107243006FA16B /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

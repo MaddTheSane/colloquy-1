@@ -161,7 +161,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 #pragma mark -
 
 - (NSString *) identifier {
-	return [NSString stringWithFormat:@"F-Script Console %x", self];
+	return [NSString stringWithFormat:@"AppleScript Console %x", self];
 }
 
 - (MVChatConnection *) connection {
