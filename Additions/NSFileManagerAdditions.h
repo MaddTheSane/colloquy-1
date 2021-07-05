@@ -10,6 +10,7 @@ typedef struct {
 	BOOL armv6;
 	BOOL armv7;
 	BOOL armv8;
+	BOOL arm64;
 	NSInteger unknown; ///< 68k, MIPS, etc
 } MVArchitectures;
 
