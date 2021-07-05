@@ -42,6 +42,9 @@ static inline void markArchitectureAsActiveForCPUType(MVArchitectures *architect
 		break;
 	case CPU_TYPE_ARM64:
 		switch (cpuSubtype) {
+		case CPU_SUBTYPE_ARM64_ALL:
+			architectures->arm64 = YES;
+			break;
 		case CPU_SUBTYPE_ARM64_V8:
 			architectures->arm64 = YES;
 			break;
