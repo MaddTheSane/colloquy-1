@@ -58,9 +58,10 @@ NSString *const JVEmoticonSetsScannedNotification = @"JVEmoticonSetsScannedNotif
 	if( [identifier isEqualToString:@"cc.javelin.colloquy.emoticons.text-only"] )
 		return [self textOnlyEmoticonSet];
 
-	for( JVEmoticonSet *emoticon in allEmoticonSets )
-		if( [[emoticon identifier] isEqualToString:identifier] )
-			return emoticon;
+	if( identifier )
+		for( JVEmoticonSet *emoticon in allEmoticonSets )
+			if( [[emoticon identifier] isEqualToString:identifier] )
+				return emoticon;
 
 	NSBundle *bundle = [NSBundle bundleWithIdentifier:identifier];
 	if( bundle ) return [[JVEmoticonSet alloc] initWithBundle:bundle];

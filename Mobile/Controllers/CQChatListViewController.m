@@ -30,7 +30,7 @@ static BOOL showsChatIcons;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CQChatListViewController () <CQActionSheetDelegate, UIViewControllerPreviewingDelegate>
+@interface CQChatListViewController () <CQActionSheetDelegate, UIViewControllerPreviewingDelegate, UIDocumentInteractionControllerDelegate>
 @end
 
 @implementation CQChatListViewController {
@@ -198,8 +198,8 @@ static NSIndexPath * __nullable indexPathForChatController(id <CQChatViewControl
 }
 
 #if ENABLE(FILE_TRANSFERS)
-static NSIndexPath *indexPathForFileTransferController(CQFileTransferController *controller) {
-	return indexPathForChatController((id <CQChatViewController>)controller);
+static NSIndexPath *indexPathForFileTransferController(CQFileTransferController *controller, BOOL editing) {
+	return indexPathForChatController((id <CQChatViewController>)controller, editing);
 }
 #endif
 
@@ -209,7 +209,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 - (void) _closeFileTransferController:(CQFileTransferController *) fileTransferController withRowAnimation:(UITableViewRowAnimation) animation {
 	[[CQChatController defaultController] closeViewController:fileTransferController];
 
-	NSArray <id <CQChatViewController>> *allFileTransferControllers = [[CQChatController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
+	NSArray <id <CQChatViewController>> *allFileTransferControllers = [[CQChatOrderingController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
 
 	if (!allFileTransferControllers.count) {
 		[self.tableView beginUpdates];
@@ -220,13 +220,11 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 	}
 
 	NSMutableArray <NSIndexPath *> *rowsToDelete = [[NSMutableArray alloc] init];
-	[rowsToDelete addObject:indexPathForFileTransferController(fileTransferController)];
+	[rowsToDelete addObject:indexPathForFileTransferController(fileTransferController, self.editing)];
 
 	[self.tableView beginUpdates];
 	[self.tableView deleteRowsAtIndexPaths:rowsToDelete withRowAnimation:animation];
 	[self.tableView endUpdates];
-
-	[rowsToDelete release];
 }
 #endif
 
@@ -283,7 +281,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 
 #if ENABLE(FILE_TRANSFERS)
 - (CQFileTransferTableCell *) _fileTransferCellForController:(CQFileTransferController *) controller {
-	NSIndexPath *indexPath = indexPathForFileTransferController(controller);
+	NSIndexPath *indexPath = indexPathForFileTransferController(controller, self.editing);
 	return (CQFileTransferTableCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 }
 #endif
@@ -430,7 +428,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 }
 
 - (void) _keyboardWillShow:(NSNotification *) notification {
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 	if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
 #endif
 		[self performSelector:@selector(_scrollToRevealSeclectedRow) withObject:nil afterDelay:0.];
@@ -888,7 +886,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 	return self;
 }
 
-- (BOOL) documentInteractionController:(UIDocumentInteractionController *) controller canPerformAction:(SEL) action {
+- (BOOL) documentInteractionController:(UIDocumentInteractionController *) controller canPerformAction:(nullable SEL) action {
 	if (action == @selector(print:) && [UIPrintInteractionController canPrintURL:controller.URL])
 		return YES;
 	return NO;
@@ -949,7 +947,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 		return numberOfRowsInSection;
 	}
 #if ENABLE(FILE_TRANSFERS)
-	return [[CQChatController defaultController] chatViewControllersOfClass:[CQFileTransferController class]].count;
+	return [[CQChatOrderingController defaultController] chatViewControllersOfClass:[CQFileTransferController class]].count;
 #else
 	return 0;
 #endif
@@ -1008,7 +1006,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 #if ENABLE(FILE_TRANSFERS)
 	}
 
-	NSArray <id <CQChatViewController>> *controllers = [[CQChatController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
+	NSArray <id <CQChatViewController>> *controllers = [[CQChatOrderingController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
 	CQFileTransferController *controller = [controllers objectAtIndex:indexPath.row];
 
 	CQFileTransferTableCell *cell = (CQFileTransferTableCell *)[tableView dequeueReusableCellWithIdentifier:@"FileTransferTableCell"];
@@ -1108,7 +1106,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 #if ENABLE(FILE_TRANSFERS)
 	}
 
-	NSArray <id <CQChatViewController>> *controllers = [[CQChatController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
+	NSArray <id <CQChatViewController>> *controllers = [[CQChatOrderingController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
 	CQFileTransferController *controller = [controllers objectAtIndex:indexPath.row];
 
 	MVFileTransferStatus status = controller.transfer.status;
@@ -1362,7 +1360,7 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	NSArray <id <CQChatViewController>> *controllers = [[CQChatController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
+	NSArray <id <CQChatViewController>> *controllers = [[CQChatOrderingController defaultController] chatViewControllersKindOfClass:[CQFileTransferController class]];
 	CQFileTransferController *controller = [controllers objectAtIndex:indexPath.row];
 	if (controller.transfer.upload || controller.transfer.status != MVFileTransferDoneStatus)
 		return;
@@ -1377,14 +1375,26 @@ static NSIndexPath *indexPathForFileTransferController(CQFileTransferController 
 
 #pragma mark -
 
-- (void) showPreferences:(__nullable id) sender {
-//	if ([UIDevice currentDevice].systemNine)
-//		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-//	else {
+- (BOOL) _showPreferencesMac:(_Nullable id) sender {
+#if SYSTEM(MAC)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+	id NSApplication = NSClassFromString(@"NSApplication");
+	id sharedApplication = [NSApplication performSelector:@selector(sharedApplication)];
+	if ([sharedApplication respondsToSelector:@selector(orderFrontPreferencesPanel:)]) {
+		[sharedApplication performSelector:@selector(orderFrontPreferencesPanel:)];
+		return YES;
+	}
+#endif
+	return NO;
+}
+
+- (void) showPreferences:(_Nullable id) sender {
+	if (![self _showPreferencesMac:sender]) {
 		CQPreferencesViewController *preferencesViewController = [[CQPreferencesViewController alloc] init];
 
 		[[CQColloquyApplication sharedApplication] presentModalViewController:preferencesViewController animated:[UIView areAnimationsEnabled]];
-//	}
+	}
 }
 @end
 

@@ -356,6 +356,8 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	dispatch_queue_t _connectionQueue;
 
 	NSTimeInterval _nextPingTimeInterval;
+
+	NSInteger _capabilityNegotiationMessageCounter;
 }
 
 + (NSArray <NSNumber *> *) defaultServerPorts {
@@ -367,6 +369,20 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 }
 
 #pragma mark -
+
+- (void) waitingForCapNegotiation {
+	_capabilityNegotiationMessageCounter++;
+	[self _sendEndCapabilityCommandAfterTimeout];
+}
+
+- (void) receivedCapResponse {
+	_capabilityNegotiationMessageCounter--;
+	if (_capabilityNegotiationMessageCounter < 1) {
+		[self _sendEndCapabilityCommandSoon];
+	} else {
+		[self _sendEndCapabilityCommandAfterTimeout];
+	}
+}
 
 - (instancetype) init {
 	if( ( self = [super init] ) ) {
@@ -886,6 +902,7 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 	_pendingIdentificationAttempt = NO;
 	_sentEndCapabilityCommand = NO;
 	_userDisconnected = NO;
+	_capabilityNegotiationMessageCounter = 0;
 
 	_failedNickname = nil;
 	_failedNicknameCount = 1;
@@ -1089,37 +1106,9 @@ NSString *const MVIRCChatConnectionZNCPluginPlaybackFeature = @"MVIRCChatConnect
 		}
 	}
 
-	{ // schedule an end to the capability negotiation in case it stalls the connection
-		[self _sendEndCapabilityCommandAfterTimeout];
-
-		NSArray <NSString *> *IRCv31Required = nil;
-		if ( _requestsSASL && self.nicknamePassword.length )
-			IRCv31Required = @[ @"sasl", @"multi-prefix", @" " ];
-		else IRCv31Required = @[ @"multi-prefix", @" " ];
-
-		NSArray <NSString *> *IRCv31Optional = @[ @"tls", @"away-notify", @"extended-join", @"account-notify", @" " ];
-		NSArray <NSString *> *IRCv32Required = @[ @"account-tag", @"intent", @" " ];
-		NSArray <NSString *> *IRCv32Optional = @[ @"self-message", @"cap-notify", @"chghost", @"invite-notify", @"server-time", @"userhost-in-names", @"batch", @" " ];
-		NSArray <NSString *> *IRCv33Prototypes = nil;
-		if( !_secure )
-			IRCv33Prototypes = @[ /* @"sts", */ @" " ]; // we only request sts support if we are on insecure connections
-		else IRCv33Prototypes = @[ @" " ];
-
-		// Older versions of ZNC prefixes their capabilities (from when IRCv3.2 wasn't finished).
-		NSArray <NSString *> *ZNCPrefixedIRCv32Optional = @[ @"znc.in/server-time-iso", @"znc.in/self-message", @"znc.in/batch", @"znc.in/playback", @" " ];
-
-		[self sendRawMessageImmediatelyWithFormat:@"CAP LS 302"];
-
-		NSMutableString *rawMessage = [@"CAP REQ : " mutableCopy];
-		[rawMessage appendString:[IRCv31Required componentsJoinedByString:@" "]];
-		[rawMessage appendString:[IRCv31Optional componentsJoinedByString:@" "]];
-		[rawMessage appendString:[IRCv32Required componentsJoinedByString:@" "]];
-		[rawMessage appendString:[IRCv32Optional componentsJoinedByString:@" "]];
-		[rawMessage appendString:[ZNCPrefixedIRCv32Optional componentsJoinedByString:@" "]];
-		[rawMessage appendString:[IRCv33Prototypes componentsJoinedByString:@" "]];
-
-		[self sendRawMessageImmediatelyWithFormat:[rawMessage copy]];
-	}
+	[self waitingForCapNegotiation];
+	
+	[self sendRawMessageImmediatelyWithFormat:@"CAP LS 302"];
 
 	if( password.length ) [self sendRawMessageImmediatelyWithFormat:@"PASS %@", password];
 	[self sendRawMessageImmediatelyWithFormat:@"NICK %@", [self preferredNickname]];
@@ -1472,33 +1461,16 @@ parsingFinished: { // make a scope for this
 
 	NSString *targetName = [target isKindOfClass:[MVChatRoom class]] ? [target name] : [target nickname];
 
-	NSString *accountName = self.localUser.account;
-	[self _stripModePrefixesFromNickname:&accountName];
 	if( [attributes[@"action"] boolValue] ) {
-		NSString *messageTags = @"";
-		NSString *prefix = nil;
-		if ([self.supportedFeatures containsObject:MVChatConnectionAccountTagFeature] && self.localUser.account && self.localUser.isIdentified) {
-			messageTags = [NSString stringWithFormat:@"@account=%@ :", accountName];
-			prefix = [[NSString alloc] initWithFormat:@"%@PRIVMSG %@%@ :\001ACTION", messageTags, targetPrefix, targetName];
-		} else {
-			prefix = [[NSString alloc] initWithFormat:@"PRIVMSG %@%@ :\001ACTION ", targetPrefix, targetName];
-		}
+		NSString *prefix = [[NSString alloc] initWithFormat:@"PRIVMSG %@%@ :\001ACTION ", targetPrefix, targetName];
 
 		NSUInteger bytesLeft = [self bytesRemainingForMessage:[[self localUser] nickname] withUsername:[[self localUser] username] withAddress:[[self localUser] address] withPrefix:prefix withEncoding:msgEncoding];
 
 		if ( msg.length > bytesLeft ) [self sendBrokenDownMessage:msg withPrefix:prefix withEncoding:msgEncoding withMaximumBytes:bytesLeft];
 		else [self sendRawMessageWithComponents:prefix, msg, @"\001", nil]; // exclude trailing \001 byte if we are using intent tags
 	} else {
-		NSString *messageTags = @"";
 		NSUInteger messageTagLength = 0;
-		NSString *prefix = nil;
-		if ([self.supportedFeatures containsObject:MVChatConnectionAccountTagFeature] && self.localUser.account && self.localUser.isIdentified) {
-			messageTags = [NSString stringWithFormat:@"@account=%@ :", accountName];
-			messageTagLength = messageTags.length; // space is in the tag substring since we don't have to worry about \001 for regular PRIVMSGs
-			prefix = [[NSString alloc] initWithFormat:@"%@PRIVMSG %@%@ :", messageTags, targetPrefix, targetName];
-		} else {
-			prefix = [[NSString alloc] initWithFormat:@"PRIVMSG %@%@ :", targetPrefix, targetName];
-		}
+		NSString *prefix = [[NSString alloc] initWithFormat:@"PRIVMSG %@%@ :", targetPrefix, targetName];
 
 		NSUInteger bytesLeft = [self bytesRemainingForMessage:[[self localUser] nickname] withUsername:[[self localUser] username] withAddress:[[self localUser] address] withPrefix:prefix withEncoding:msgEncoding];
 		bytesLeft += messageTagLength;
@@ -2416,10 +2388,13 @@ parsingFinished: { // make a scope for this
 #pragma mark Connecting Replies
 
 - (void) _handleCapWithParameters:(NSArray *) parameters fromSender:(id) sender {
-	BOOL furtherNegotiation = NO;
-
 	if( parameters.count >= 3 ) {
 		NSString *subCommand = parameters[1];
+
+		if ([subCommand isEqualToString:@"LS"] || [subCommand isEqualToString:@"ACK"] || [subCommand isEqualToString:@"NACK"]) {
+			[self receivedCapResponse];
+		}
+
 		if( [subCommand isCaseInsensitiveEqualToString:@"LS"] || [subCommand isCaseInsensitiveEqualToString:@"ACK"] || [subCommand isCaseInsensitiveEqualToString:@"NEW"] || [subCommand isCaseInsensitiveEqualToString:@"LIST"] ) {
 			NSString *capabilitiesString = [self _stringFromPossibleData:parameters[2]];
 
@@ -2427,12 +2402,25 @@ parsingFinished: { // make a scope for this
 			if( [capabilitiesString isCaseInsensitiveEqualToString:@"*"] && parameters.count >= 4 )
 				capabilitiesString = [self _stringFromPossibleData:parameters[3]];
 
+			NSMutableArray <NSString *> *capabilitiesToRequest = [[NSMutableArray alloc] init];
+
 			NSArray <NSString *> *capabilities = [capabilitiesString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 			for( NSString *capability in capabilities ) {
 				BOOL sendCapReqForFeature = YES;
 
+				NSString *key;
+				NSString *value;
+				NSRange range = [capability rangeOfString:@"="];
+				if (range.location == NSNotFound) {
+					key = capability;
+					value = nil;
+				} else {
+					key = [capability substringToIndex:range.location];
+					value = [capability substringFromIndex:NSMaxRange(range)];
+				}
+
 				// IRCv3.1 Required
-				if( [capability isCaseInsensitiveEqualToString:@"sasl"] ) {
+				if( [key isCaseInsensitiveEqualToString:@"sasl"] && (value == nil || [[value componentsSeparatedByString:@","] containsObject:@"PLAIN"])) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionSASLFeature];
 					}
@@ -2440,78 +2428,78 @@ parsingFinished: { // make a scope for this
 					if( self.nicknamePassword.length ) {
 						if( [subCommand isCaseInsensitiveEqualToString:@"ACK"] ) {
 							[self sendRawMessageImmediatelyWithFormat:@"AUTHENTICATE PLAIN"];
-							furtherNegotiation = YES;
 							sendCapReqForFeature = NO;
+							[self waitingForCapNegotiation];
 						}
 					} else {
 						[[NSNotificationCenter chatCenter] postNotificationOnMainThreadWithName:MVChatConnectionNeedNicknamePasswordNotification object:self];
 						sendCapReqForFeature = NO;
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"multi-prefix"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"multi-prefix"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionMultipleNicknamePrefixFeature];
 					}
 				}
 
 				// IRCv3.1 Optional
-				else if( [capability isCaseInsensitiveEqualToString:@"tls"] ) {
+				else if( [key isCaseInsensitiveEqualToString:@"tls"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionTLSFeature];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"away-notify"]) {
+				} else if( [key isCaseInsensitiveEqualToString:@"away-notify"]) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionAwayNotifyFeature];
 					}
 
-				} else if( [capability isCaseInsensitiveEqualToString:@"extended-join"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"extended-join"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionExtendedJoinFeature];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"account-notify"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"account-notify"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionAccountNotifyFeature];
 					}
 				}
 
 				// IRCv3.2 Required
-				else if( [capability isCaseInsensitiveEqualToString:@"account-tag"] ) {
+				else if( [key isCaseInsensitiveEqualToString:@"account-tag"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionAccountTagFeature];
 					}
 				}
 
 				// IRCv3.2 Optional
-				else if( [capability isCaseInsensitiveEqualToString:@"chghost"] ) {
+				else if( [key isCaseInsensitiveEqualToString:@"chghost"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionChghostFeature];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"server-time"] || [capability isCaseInsensitiveEqualToString:@"znc.in/server-time-iso"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"server-time"] || [key isCaseInsensitiveEqualToString:@"znc.in/server-time-iso"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionServerTimeFeature];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"userhost-in-names"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"userhost-in-names"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionUserhostInNamesFeature];
 					}
 				}
 
 				// IRCv3.2
-				else if( [capability isCaseInsensitiveEqualToString:@"cap-notify"] ) {
+				else if( [key isCaseInsensitiveEqualToString:@"cap-notify"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionCapNotifyFeature];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"self-message"] || [capability isCaseInsensitiveEqualToString:@"echo-message"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"self-message"] || [key isCaseInsensitiveEqualToString:@"echo-message"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionEchoMessageFeature];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"invite-notify"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"invite-notify"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVChatConnectionInviteFeature];
 					}
 				}
 
 				// ZNC plugins
-				else if( [capability isCaseInsensitiveEqualToString:@"znc.in/playback"] ) {
+				else if( [key isCaseInsensitiveEqualToString:@"znc.in/playback"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVIRCChatConnectionZNCPluginPlaybackFeature];
 					}
@@ -2520,18 +2508,17 @@ parsingFinished: { // make a scope for this
 						_hasRequestedPlaybackList = YES;
 						[self sendRawMessage:@"PRIVMSG *playback LIST" immediately:NO];
 					}
-				} else if( [capability isCaseInsensitiveEqualToString:@"znc/self-message"] || [capability isCaseInsensitiveEqualToString:@"znc/echo-message"] ) {
+				} else if( [key isCaseInsensitiveEqualToString:@"znc/self-message"] || [key isCaseInsensitiveEqualToString:@"znc/echo-message"] ) {
 					@synchronized( _supportedFeatures ) {
 						[_supportedFeatures addObject:MVIRCChatConnectionZNCEchoMessageFeature];
 					}
 				}
 
 				// IRCv3.3
-				else if( [capability hasCaseInsensitivePrefix:@"sts"] ) {
-					NSString *parametersSubstring = [capability stringByReplacingOccurrencesOfString:@"sts=" withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, capability.length)];
+				else if( [key isCaseInsensitiveEqualToString:@"sts"] ) {
 					NSDate *stsExpirationDate = nil;
 					unsigned short stsPort = 0;
-					for (NSString *keyValuePairs in [parametersSubstring componentsSeparatedByString:@","]) {
+					for (NSString *keyValuePairs in [value componentsSeparatedByString:@","]) {
 						NSArray *keyValueComponents = [keyValuePairs componentsSeparatedByString:@"="];
 						if( keyValueComponents.count != 2 ) continue;
 
@@ -2571,10 +2558,34 @@ parsingFinished: { // make a scope for this
 				}
 
 				if (sendCapReqForFeature) {
-					if( [subCommand isCaseInsensitiveEqualToString:@"LS"] || [subCommand isCaseInsensitiveEqualToString:@"NEW"] ) {
-						[self sendRawMessageImmediatelyWithFormat:@"CAP REQ :%@", capability.lowercaseString];
-						furtherNegotiation = YES;
+					[capabilitiesToRequest addObject:key];
+				}
+			}
+			
+			if(capabilitiesToRequest.count && ([subCommand isEqualToString:@"LS"] || [subCommand isEqualToString:@"NEW"])) {
+				// rfc2812 specifies 510 bytes per command, minus "CAP REQ :" = 501 bytes per req
+				NSMutableArray <NSString *> *listsOfCapabilitiesToRequest = [[NSMutableArray alloc] init];
+				NSMutableString *newList = [[NSMutableString alloc] init];
+				for (NSString *capability in capabilitiesToRequest) {
+					if (newList.length == 0) {
+						[newList appendString:capability];
 					}
+					else if (newList.length + capability.length + 1 > 500) {
+						[listsOfCapabilitiesToRequest addObject:newList];
+						newList = [capability mutableCopy];
+					}
+					else {
+						[newList appendFormat:@" %@", capability];
+					}
+				}
+
+				if (newList.length > 0) {
+					[listsOfCapabilitiesToRequest addObject:newList];
+				}
+
+				for (NSString *list in listsOfCapabilitiesToRequest) {
+					[self waitingForCapNegotiation];
+					[self sendRawMessageImmediatelyWithFormat:@"CAP REQ :%@", list];
 				}
 			}
 		} else if( [subCommand isCaseInsensitiveEqualToString:@"DEL"] ) {
@@ -2646,11 +2657,6 @@ parsingFinished: { // make a scope for this
 			}
 		}
 	}
-
-	if( furtherNegotiation )
-		[self _sendEndCapabilityCommandAfterTimeout];
-	else
-		[self _sendEndCapabilityCommandSoon];
 }
 
 - (void) _handleAuthenticateWithParameters:(NSArray *) parameters fromSender:(id) sender {
@@ -2672,6 +2678,7 @@ parsingFinished: { // make a scope for this
 			// If empty or the last string was exactly 400 bytes we need to send an empty AUTHENTICATE to indicate we're done.
 			[self sendRawMessageImmediatelyWithFormat:@"AUTHENTICATE +"];
 		}
+		[self receivedCapResponse];
 	} else [self _sendEndCapabilityCommandForcefully:YES];
 }
 
@@ -3234,9 +3241,6 @@ parsingFinished: { // make a scope for this
 				[msg hasCaseInsensitiveSubstring:@"i recognize you"] ) {					// AuthServ/gamesurge
 
 				_pendingIdentificationAttempt = NO;
-
-				if( [self.supportedFeatures containsObject:MVChatConnectionAccountNotifyFeature] && self.localUser.isIdentified )
-					[self sendRawMessageImmediatelyWithFormat:@"ACCOUNT %@", self.localUser.account];
 
 				if( ![[self localUser] isIdentified] )
 					[[NSNotificationCenter chatCenter] postNotificationOnMainThreadWithName:MVChatConnectionDidIdentifyWithServicesNotification object:self userInfo:noticeInfo];

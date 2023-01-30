@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CQModalNavigationController
 - (instancetype) initWithRootViewController:(UIViewController *) rootViewController {
-	if (!(self = [self initWithRootViewController:rootViewController]))
+	if (!(self = [super initWithRootViewController:rootViewController]))
 		return nil;
 
 	_rootViewController = rootViewController;
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 	self.delegate = self;
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	self.modalPresentationStyle = UIModalPresentationFormSheet;
 #endif
 

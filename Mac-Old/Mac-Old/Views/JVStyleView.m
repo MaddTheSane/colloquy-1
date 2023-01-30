@@ -40,6 +40,25 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 
 #pragma mark -
 
+@interface DOMHTMLDocument (DOMHTMLDocumentScrollingElement)
+- (DOMHTMLElement *) scrollingElement;
+@end
+
+@interface DOMHTMLDocument (DOMHTMLDocumentSafeScrollingElement)
+- (DOMHTMLElement *) cq_scrollingElement;
+@end
+
+@implementation DOMHTMLDocument (DOMHTMLDocumentSafeScrollingElement)
+- (DOMHTMLElement *) cq_scrollingElement {
+	if ([self respondsToSelector:@selector(scrollingElement)]) {
+		return [self scrollingElement];
+	}
+	return [self body];
+}
+@end
+
+#pragma mark -
+
 @interface NSScrollView (NSScrollViewWebKitPrivate)
 - (void) setAllowsHorizontalScrolling:(BOOL) allow;
 @end
@@ -599,7 +618,7 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 		CGFloat shift = [scroller shiftAmountToCenterAlign];
 		[scroller setLocationOfCurrentMark:loc];
 
-		[[_domDocument body] setInteger:( loc - shift ) forDOMProperty:@"scrollTop"];
+		[[_domDocument cq_scrollingElement] setInteger:( loc - shift ) forDOMProperty:@"scrollTop"];
 	}
 }
 
@@ -609,8 +628,8 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 		return;
 	}
 
-	DOMHTMLElement *body = [_domDocument body];
-	[body setInteger:0 forDOMProperty:@"scrollTop"];
+	DOMHTMLElement *scrollingElement = [_domDocument cq_scrollingElement];
+	[scrollingElement setInteger:0 forDOMProperty:@"scrollTop"];
 }
 
 
@@ -620,8 +639,8 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 		return;
 	}
 
-	DOMHTMLElement *body = [_domDocument body];
-	[body setInteger:[body integerForDOMProperty:@"scrollHeight"] forDOMProperty:@"scrollTop"];
+	DOMHTMLElement *scrollingElement = [_domDocument cq_scrollingElement];
+	[scrollingElement setInteger:[scrollingElement integerForDOMProperty:@"scrollHeight"] forDOMProperty:@"scrollTop"];
 }
 
 - (BOOL) scrolledNearBottom {
@@ -629,9 +648,9 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 	DOMHTMLElement *contentFrameElement = [contentFrame frameElement];
 	NSInteger frameHeight = [contentFrameElement integerForDOMProperty:@"offsetHeight"];
 
-	DOMHTMLElement *body = [_domDocument body];
-	NSInteger scrollHeight = [body integerForDOMProperty:@"scrollHeight"];
-	NSInteger scrollTop = [body integerForDOMProperty:@"scrollTop"];
+	DOMHTMLElement *scrollingElement = [_domDocument cq_scrollingElement];
+	NSInteger scrollHeight = [scrollingElement integerForDOMProperty:@"scrollHeight"];
+	NSInteger scrollTop = [scrollingElement integerForDOMProperty:@"scrollTop"];
 
 	// check if we are near the bottom 15 pixels of the chat area
 	return ( ( frameHeight + scrollTop ) >= ( scrollHeight - 15 ) );
@@ -707,7 +726,7 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 
 	_contentFrameReady = NO;
 	if( _rememberScrollPosition ) {
-		_lastScrollPosition = [[_domDocument body] integerForDOMProperty:@"scrollTop"];
+		_lastScrollPosition = [[_domDocument cq_scrollingElement] integerForDOMProperty:@"scrollTop"];
 	} else _lastScrollPosition = 0;
 
 	if( ! [[self window] isFlushWindowDisabled] )
@@ -778,7 +797,7 @@ quickEnd:
 
 	if( _rememberScrollPosition ) {
 		_rememberScrollPosition = NO;
-		[[_domDocument body] setInteger:_lastScrollPosition forDOMProperty:@"scrollTop"];
+		[[_domDocument cq_scrollingElement] setInteger:_lastScrollPosition forDOMProperty:@"scrollTop"];
 	}
 }
 

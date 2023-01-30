@@ -7,7 +7,7 @@
 #import "CQConnectionsController.h"
 #import "CQConnectionsNavigationController.h"
 #import "CQRootContainerViewController.h"
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 #import "CQWelcomeController.h"
 #endif
 
@@ -16,12 +16,10 @@
 #import "UIApplicationAdditions.h"
 #import "UIFontAdditions.h"
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 #import <SafariServices/SafariServices.h>
 #endif
 #import <UserNotifications/UserNotifications.h>
-
-#import <HockeySDK/HockeySDK.h>
 
 static NSMutableArray <NSString *> *highlightWords;
 
@@ -31,7 +29,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 #define BrowserAlertTag 1
 
-@interface CQColloquyApplication () <UIApplicationDelegate, CQAlertViewDelegate, BITHockeyManagerDelegate, UNUserNotificationCenterDelegate>
+@interface CQColloquyApplication () <UIApplicationDelegate, CQAlertViewDelegate, UNUserNotificationCenterDelegate>
 @end
 
 @implementation CQColloquyApplication {
@@ -163,17 +161,6 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 }
 
 - (void) performDeferredLaunchWork {
-#if !TARGET_IPHONE_SIMULATOR
-	NSString *hockeyappIdentifier = @"Hockeyapp_App_Identifier";
-	// Hacky check to make sure the identifier was replaced with a string that isn't ""
-	if (![hockeyappIdentifier hasPrefix:@"Hockeyapp"]) {
-		[[BITHockeyManager sharedHockeyManager] configureWithIdentifier:hockeyappIdentifier delegate:self];
-		[BITHockeyManager sharedHockeyManager].disableInstallTracking = YES;
-
-		[[BITHockeyManager sharedHockeyManager] startManager];
-	}
-#endif
-
 	[self cq_beginReachabilityMonitoring];
 
 	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
@@ -289,14 +276,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 }
 
 - (void) _applyTintColor {
-	BOOL darkerColorsEnabled = UIAccessibilityDarkerSystemColorsEnabled();
-
-	// rgb(109, 22, 101) == hsb(306°, 80%, 43%)
-	CGFloat hue = 306 * (darkerColorsEnabled ? 1.13 : 1.0);
-	CGFloat saturation = .8;
-	CGFloat brightness = .43 * (darkerColorsEnabled ? 0.88 : 1.0);
-
-	_mainWindow.tintColor = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1.0];
+	_mainWindow.tintColor = [UIColor colorWithRed:(162. / 255.) green:(122. / 255.) blue:(247. / 255.) alpha:1.];
 }
 
 #pragma mark -
@@ -363,7 +343,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	if ([[CQChatController defaultController] hasPendingChatController])
 		[[CQChatController defaultController] showPendingChatControllerAnimated:NO];
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	[self handleNotificationWithUserInfo:launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]];
 #endif
 
@@ -373,7 +353,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 }
 
 - (void) applicationWillEnterForeground:(UIApplication *) application {
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	[[UNUserNotificationCenter currentNotificationCenter] removeAllPendingNotificationRequests];
 #endif
 }
@@ -390,7 +370,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	completionHandler();
 }
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 - (void) application:(UIApplication *) application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *) deviceToken {
 	if (!deviceToken.length) {
 		[[CQAnalyticsController defaultController] setObject:nil forKey:@"device-push-token"];
@@ -424,7 +404,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 }
 
 - (void) applicationWillTerminate:(UIApplication *) application {
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 	[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
 	self.appIconOptions = CQAppIconOptionConnect;
@@ -499,6 +479,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 
 #pragma mark -
 
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 - (void) setNetworkActivityIndicatorVisible:(BOOL) visible {
 	if (visible) {
 		++_networkIndicatorStack;
@@ -510,11 +491,12 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 			super.networkActivityIndicatorVisible = NO;
 	}
 }
+#endif
 
 #pragma mark -
 
 - (void) showHelp:(__nullable id) sender {
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 	CQWelcomeController *welcomeController = [[CQWelcomeController alloc] init];
 	welcomeController.shouldShowOnlyHelpTopics = YES;
 
@@ -523,7 +505,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 }
 
 - (void) showWelcome:(__nullable id) sender {
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV) && !SYSTEM(MAC)
 	CQWelcomeController *welcomeController = [[CQWelcomeController alloc] init];
 
 	[self presentModalViewController:welcomeController animated:YES];
@@ -622,7 +604,7 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 			return;
 		}
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 		if ([selectedBrowser isEqualToString:@"Colloquy"]) {
 			SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
 			[self.window.rootViewController presentViewController:safariViewController animated:YES completion:nil];
@@ -689,8 +671,11 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 #pragma mark -
 
 - (UIColor *__nullable) tintColor {
+#if SYSTEM(MAC)
+	return _mainWindow.tintColor;
+#else
 	if ([UIDevice currentDevice].isPadModel)
-		return nil;
+		return _mainWindow.tintColor;
 
 	NSString *style = [[CQSettingsController settingsController] stringForKey:@"CQChatTranscriptStyle"];
 	if ([style hasSuffix:@"-dark"])
@@ -698,11 +683,12 @@ NSString *CQColloquyApplicationDidRecieveDeviceTokenNotification = @"CQColloquyA
 	if ([style isEqualToString:@"notes"])
 		return [UIColor colorWithRed:0.224 green:0.082 blue:0. alpha:1.];
 	return nil;
+#endif
 }
 
 #pragma mark -
 
-#if !SYSTEM(TV) && !SYSTEM(MARZIPAN)
+#if !SYSTEM(TV)
 - (void) updateAppShortcuts {
 	CQAppIconOptions options = CQAppIconOptionNone;
 

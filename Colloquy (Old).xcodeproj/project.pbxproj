@@ -17,7 +17,6 @@
 				9295C9DB16784597009F9014 /* PBXTargetDependency */,
 				9295C9D316784593009F9014 /* PBXTargetDependency */,
 				9295C9D516784593009F9014 /* PBXTargetDependency */,
-				9295C9D716784593009F9014 /* PBXTargetDependency */,
 				9295C9D916784593009F9014 /* PBXTargetDependency */,
 			);
 			name = "Colloquy (Aggregate)";
@@ -92,7 +91,6 @@
 		1C9982AA0604B979006C6417 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = F520458E01B1D37701EBB4B5 /* Sounds */; };
 		1C9982B00604BEAA006C6417 /* notifications.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C9982AF0604BEAA006C6417 /* notifications.plist */; };
 		1C9982B90604D94C006C6417 /* JVNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7D0F106015DBA00887614 /* JVNotificationController.m */; };
-		1C9D83DA0C98670000BB6C58 /* iTunes.scpt in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 1C8CE1EB05A921A00020D841 /* iTunes.scpt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1CA75A270652537A000141D5 /* styleOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CA75A260652537A000141D5 /* styleOptions.plist */; };
 		1CABF8780656414100801C15 /* NSBundleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CABF8760656414100801C15 /* NSBundleAdditions.m */; };
 		1CABFCB20657F10900801C15 /* JVSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CABFCB00657F10900801C15 /* JVSplitView.m */; };
@@ -215,13 +213,6 @@
 			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
 			remoteInfo = "AppleScript Support Plugin";
 		};
-		0A7F243008556AC100FA3D9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1CE3F9BB07C7C29A0049A366 /* F-Script Support.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
-			remoteInfo = "F-Script Support Plugin";
-		};
 		1C0A19A608B0418600324E25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1C0A19A208B0418600324E25 /* Python Support.xcodeproj */;
@@ -249,13 +240,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = "Python Support Plugin";
-		};
-		9295C9D616784593009F9014 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1CE3F9BB07C7C29A0049A366 /* F-Script Support.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
-			remoteInfo = "F-Script Support Plugin";
 		};
 		9295C9D816784593009F9014 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -320,7 +304,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				1C9D83DA0C98670000BB6C58 /* iTunes.scpt in Copy Plugins */,
 			);
 			name = "Copy Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -564,7 +547,6 @@
 		1CE2BC4A042F53AD00000102 /* JVChatRoomPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatRoomPanel.m; sourceTree = "<group>"; };
 		1CE2BC53042F75FB00000102 /* JVChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVChatController.h; sourceTree = "<group>"; };
 		1CE2BC54042F75FB00000102 /* JVChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatController.m; sourceTree = "<group>"; };
-		1CE3F9BB07C7C29A0049A366 /* F-Script Support.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "F-Script Support.xcodeproj"; sourceTree = "<group>"; };
 		1CE72A95052C745400A8FE6E /* JVChatConsolePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVChatConsolePanel.h; sourceTree = "<group>"; };
 		1CE72A96052C745400A8FE6E /* JVChatConsolePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = JVChatConsolePanel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1CE72A99052C79E700A8FE6E /* JVChatConsole.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JVChatConsole.xib; sourceTree = "<group>"; };
@@ -929,14 +911,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0A7F242D08556AC100FA3D9B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0A7F243108556AC100FA3D9B /* F-Script Support.plugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1126,20 +1100,11 @@
 			children = (
 				1C04393E07CAFC5800304949 /* AppleScript Support */,
 				1CEF8F340A3AB70E0054298A /* JavaScript Support */,
-				1CE3F7BC07C7B60A0049A366 /* F-Script Support */,
 				1C0A199A08B0416C00324E25 /* Python Support */,
 				1CA56CCD042A713E00000102 /* iTunes */,
 			);
 			name = "Plug–Ins";
 			path = "Plug-Ins";
-			sourceTree = "<group>";
-		};
-		1CE3F7BC07C7B60A0049A366 /* F-Script Support */ = {
-			isa = PBXGroup;
-			children = (
-				1CE3F9BB07C7C29A0049A366 /* F-Script Support.xcodeproj */,
-			);
-			path = "F-Script Support";
 			sourceTree = "<group>";
 		};
 		1CEF8F340A3AB70E0054298A /* JavaScript Support */ = {
@@ -1553,8 +1518,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = NO;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Colloquy Project";
 			};
 			buildConfigurationList = 1C041A700854E97700A5A5BA /* Build configuration list for PBXProject "Colloquy (Old)" */;
@@ -1586,10 +1550,6 @@
 					ProjectRef = 1C04394607CAFC7D00304949 /* AppleScript Support.xcodeproj */;
 				},
 				{
-					ProductGroup = 0A7F242D08556AC100FA3D9B /* Products */;
-					ProjectRef = 1CE3F9BB07C7C29A0049A366 /* F-Script Support.xcodeproj */;
-				},
-				{
 					ProductGroup = 1CEF8F7C0A3AB7BB0054298A /* Products */;
 					ProjectRef = 1CEF8F7B0A3AB7BB0054298A /* JavaScript Support.xcodeproj */;
 				},
@@ -1614,13 +1574,6 @@
 			fileType = wrapper.cfbundle;
 			path = "AppleScript Support.plugin";
 			remoteRef = 0A7F240E08556A9B00FA3D9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0A7F243108556AC100FA3D9B /* F-Script Support.plugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "F-Script Support.plugin";
-			remoteRef = 0A7F243008556AC100FA3D9B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1C0A19A708B0418600324E25 /* Python Support.plugin */ = {
@@ -1921,11 +1874,6 @@
 			isa = PBXTargetDependency;
 			name = "Python Support Plugin";
 			targetProxy = 9295C9D416784593009F9014 /* PBXContainerItemProxy */;
-		};
-		9295C9D716784593009F9014 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "F-Script Support Plugin";
-			targetProxy = 9295C9D616784593009F9014 /* PBXContainerItemProxy */;
 		};
 		9295C9D916784593009F9014 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

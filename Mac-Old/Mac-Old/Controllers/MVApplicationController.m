@@ -149,7 +149,7 @@ static BOOL applicationIsTerminating = NO;
 }
 
 - (IBAction) connectToSupportRoom:(id) sender {
-	[[MVConnectionsController defaultController] handleURL:[NSURL URLWithString:@"irc://irc.freenode.net/#colloquy"] andConnectIfPossible:YES];
+	[[MVConnectionsController defaultController] handleURL:[NSURL URLWithString:@"irc://irc.libera.chat/#colloquy"] andConnectIfPossible:YES];
 }
 
 - (IBAction) emailDeveloper:(id) sender {
@@ -157,11 +157,11 @@ static BOOL applicationIsTerminating = NO;
 }
 
 - (IBAction) productWebsite:(id) sender {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://colloquy.info"]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://colloquy.info"]];
 }
 
 - (IBAction) bugReportWebsite:(id) sender {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://colloquy.info?bug"]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/colloquy/colloquy/issues"]];
 }
 
 #pragma mark -
