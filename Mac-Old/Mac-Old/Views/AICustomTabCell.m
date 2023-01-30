@@ -21,8 +21,8 @@
 
 //Images (Shared between AICustomTabCell instances)
 static NSImage		*tabFrontLeft = nil;
-static NSImage		*tabFrontMiddle = nil;
 static NSImage		*tabFrontRight = nil;
+static NSImage		*tabFront = nil;
 static NSImage		*tabCloseFront = nil;
 static NSImage		*tabCloseBack = nil;
 static NSImage		*tabCloseFrontPressed = nil;
@@ -63,8 +63,8 @@ static NSSize		rightCapSize;
 
     //Share these images between all AICustomTabCell instances
     if(!haveLoadedImages){
+		tabFront = [NSImage imageNamed:@"aquaTab"];
 		tabFrontLeft = [NSImage imageNamed:@"aquaTabLeft"];
-		tabFrontMiddle = [NSImage imageNamed:@"aquaTabMiddle"];
 		tabFrontRight = [NSImage imageNamed:@"aquaTabRight"];
 
 		tabCloseFront = [NSImage imageNamed:@"aquaTabClose"];
@@ -212,35 +212,16 @@ static NSSize		rightCapSize;
 //Draw.  Pass ignore selection to ignore whether this tab is selected or not when drawing
 - (void)drawWithFrame:(NSRect)rect inView:(NSView *)controlView ignoreSelection:(BOOL)ignoreSelection
 {
-    int		middleRightEdge, middleLeftEdge;
-    NSRect	sourceRect, destRect;
+    NSRect	destRect;
     NSSize	labelSize;
 	NSPoint destPoint;
 
     //Pre-calc some dimensions
     labelSize = [tabViewItem sizeOfLabel:NO];
-    middleRightEdge = (rect.origin.x + rect.size.width - rightCapSize.width);
-    middleLeftEdge = (rect.origin.x + leftCapSize.width);
 
     //Background
     if(selected && !ignoreSelection){
-        //Draw the left cap
-		[tabFrontLeft drawAtPoint:NSMakePoint(rect.origin.x, rect.origin.y) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-
-        //Draw the middle
-        sourceRect = NSMakeRect(0, 0, [tabFrontMiddle size].width, [tabFrontMiddle size].height);
-        destRect = NSMakeRect(middleLeftEdge, rect.origin.y, sourceRect.size.width, sourceRect.size.height);
-
-        while(destRect.origin.x < middleRightEdge){
-            if((destRect.origin.x + destRect.size.width) > middleRightEdge){
-                sourceRect.size.width -= (destRect.origin.x + destRect.size.width) - middleRightEdge;
-            }
-			[tabFrontMiddle drawAtPoint:destRect.origin fromRect:sourceRect operation:NSCompositeSourceOver fraction:1.0];
-            destRect.origin.x += destRect.size.width;
-        }
-
-        //Draw the right cap
-		[tabFrontRight drawAtPoint:NSMakePoint(middleRightEdge, rect.origin.y) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+		[tabFront drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
     }else if(highlighted){
         [[NSColor colorWithCalibratedWhite:0.0 alpha:0.1] set];
         [NSBezierPath fillRect:NSMakeRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)];
