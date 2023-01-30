@@ -34,9 +34,9 @@
 - (instancetype) initWithCoder:(NSCoder *) coder {
 	if( [coder allowsKeyedCoding] ) {
 		self = [self init];
-		[self setKind:[coder decodeIntForKey:@"kind"]];
+		[self setKind:[coder decodeIntegerForKey:@"kind"]];
 		[self setQuery:[coder decodeObjectForKey:@"query"]];
-		[self setOperation:[coder decodeIntForKey:@"operation"]];
+		[self setOperation:[coder decodeIntegerForKey:@"operation"]];
 		return self;
 	}
 

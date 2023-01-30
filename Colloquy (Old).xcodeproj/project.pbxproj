@@ -157,13 +157,7 @@
 		1CE6917008B183C8006D9CA0 /* NSTextSuite.scriptSuite in Resources */ = {isa = PBXBuildFile; fileRef = 1C7C76E707DBA1C100FB5F83 /* NSTextSuite.scriptSuite */; };
 		1CEC004F0A20EF99004C2B86 /* transcriptSchema.sql in Resources */ = {isa = PBXBuildFile; fileRef = 1CEC004D0A20EF95004C2B86 /* transcriptSchema.sql */; };
 		1CEE3F06057AEC0200AD6DE2 /* JVBuddy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CEE3F04057AEC0200AD6DE2 /* JVBuddy.m */; };
-		1CF5F8D207D537E50019DC13 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF5F8D107D537E50019DC13 /* Growl.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		1CF5F8DD07D537F70019DC13 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF5F8D107D537E50019DC13 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1CF79CBF07AC77E600696918 /* JVChatTranscript.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF79CBD07AC77E600696918 /* JVChatTranscript.m */; };
-		1CF8030E070C893500C9B54C /* libsilc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030C070C893500C9B54C /* libsilc.framework */; };
-		1CF8030F070C893500C9B54C /* libsilcclient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030D070C893500C9B54C /* libsilcclient.framework */; };
-		1CF80310070C894100C9B54C /* libsilc.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030C070C893500C9B54C /* libsilc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1CF80311070C894100C9B54C /* libsilcclient.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1CF8030D070C893500C9B54C /* libsilcclient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5509D1C81F5B6DB20037CE4E /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1C71F5B6DB20037CE4E /* libxml2.tbd */; };
 		5509D1CA1F5B6EC60037CE4E /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1C71F5B6DB20037CE4E /* libxml2.tbd */; };
 		5509D1CD1F5B6EFB0037CE4E /* libxslt.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1CB1F5B6ED40037CE4E /* libxslt.tbd */; };
@@ -283,9 +277,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C25750D91F6420E2008AE623 /* MASPreferences.framework in Copy Frameworks */,
-				1CF80310070C894100C9B54C /* libsilc.framework in Copy Frameworks */,
-				1CF80311070C894100C9B54C /* libsilcclient.framework in Copy Frameworks */,
-				1CF5F8DD07D537F70019DC13 /* Growl.framework in Copy Frameworks */,
 				C26287EF1FC1A5110085B19F /* Sparkle.framework in Copy Frameworks */,
 				C25750D61F64195B008AE623 /* ChatCore.framework in Copy Frameworks */,
 				1C386FB61032474D00660864 /* TCMPortMapper.framework in Copy Frameworks */,
@@ -380,7 +371,6 @@
 		1C51B4CC052DE14B00BB459B /* Info-StandardCommands.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-StandardCommands.plist"; sourceTree = "<group>"; };
 		1C51B4CD052DE14B00BB459B /* Standard Commands.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Standard Commands.plugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C51B89D052DF91E00BB459B /* Info-Mac-Old.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "Info-Mac-Old.plist"; sourceTree = "<group>"; };
-		1C59A91F09FDEBA3000682B8 /* JVChatWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatWindowControllerTests.m; sourceTree = "<group>"; };
 		1C59BD61059E2E02001487E2 /* ChatPlugIn.scriptSuite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptSuite; path = ChatPlugIn.scriptSuite; sourceTree = "<group>"; };
 		1C59BD63059E2E16001487E2 /* ChatPlugIn.scriptTerminology */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptTerminology; path = ChatPlugIn.scriptTerminology; sourceTree = "<group>"; };
 		1C5EF35807B45C1F004E66D3 /* JVChatEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVChatEvent.h; sourceTree = "<group>"; };
@@ -558,8 +548,6 @@
 		1CF6511406EA22480073DEA8 /* Colloquy.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colloquy.pch; sourceTree = "<group>"; };
 		1CF79CBC07AC77E600696918 /* JVChatTranscript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVChatTranscript.h; sourceTree = "<group>"; };
 		1CF79CBD07AC77E600696918 /* JVChatTranscript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVChatTranscript.m; sourceTree = "<group>"; };
-		1CF8030C070C893500C9B54C /* libsilc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libsilc.framework; sourceTree = "<group>"; };
-		1CF8030D070C893500C9B54C /* libsilcclient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libsilcclient.framework; sourceTree = "<group>"; };
 		5509D1C71F5B6DB20037CE4E /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		5509D1CB1F5B6ED40037CE4E /* libxslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxslt.tbd; path = usr/lib/libxslt.tbd; sourceTree = SDKROOT; };
 		5509D1CE1F5B6F160037CE4E /* libexslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexslt.tbd; path = usr/lib/libexslt.tbd; sourceTree = SDKROOT; };
@@ -569,9 +557,6 @@
 		5582BE6A1F8709780010EE03 /* RunOnMainThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RunOnMainThread.h; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
 		55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
-		55C8A2D0180735D100A7BB42 /* Colloquy Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Colloquy Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		55C8A2D6180735D100A7BB42 /* Colloquy Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Colloquy Tests-Info.plist"; sourceTree = "<group>"; };
-		55C8A2D8180735D100A7BB42 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55CFBD9F20B5CB8900AD846B /* nn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nn; path = nn.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F7D7BB2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVGeneralPreferencesViewController.strings; sourceTree = "<group>"; };
 		55F7D7BC2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVInterfacePreferencesViewController.strings; sourceTree = "<group>"; };
@@ -593,7 +578,7 @@
 		9200339613D92565005B69BA /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
 		9200339813D9256F005B69BA /* nb */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = nb; path = nb.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
 		9200339A13D92578005B69BA /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_PT; path = "pt-PT.lproj/MVFileTransfer.xib"; sourceTree = "<group>"; };
-		9200339C13D92581005B69BA /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = en.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
+		9200339C13D92581005B69BA /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
 		9200339E13D9258A005B69BA /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_TW; path = "zh-Hant.lproj/MVFileTransfer.xib"; sourceTree = "<group>"; };
 		9220565C11018298005CD72D /* NSDateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateAdditions.h; sourceTree = "<group>"; };
 		9220565D11018298005CD72D /* NSDateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
@@ -845,10 +830,7 @@
 				5509D1CD1F5B6EFB0037CE4E /* libxslt.tbd in Frameworks */,
 				5509D1CA1F5B6EC60037CE4E /* libxml2.tbd in Frameworks */,
 				C25750D51F641958008AE623 /* ChatCore.framework in Frameworks */,
-				1CF8030E070C893500C9B54C /* libsilc.framework in Frameworks */,
-				1CF8030F070C893500C9B54C /* libsilcclient.framework in Frameworks */,
 				C25750D81F64209D008AE623 /* MASPreferences.framework in Frameworks */,
-				1CF5F8D207D537E50019DC13 /* Growl.framework in Frameworks */,
 				C26287EE1FC1A4AA0085B19F /* Sparkle.framework in Frameworks */,
 				1C386FAA1032471F00660864 /* TCMPortMapper.framework in Frameworks */,
 			);
@@ -875,7 +857,6 @@
 				F50B0AA10170C89301A84BDE /* Resources */,
 				1C6A13E608666DDC009EE6D2 /* Settings */,
 				C26F48CE1FB7223700FB8FA6 /* Shared */,
-				1C59A92909FDEBC6000682B8 /* Unit Tests */,
 				C26D0E121F5B0A7700B58261 /* old-mac-binary-frameworks */,
 				089C1671FE841209C02AAC07 /* Frameworks */,
 				1CB2C8CC052DDA360094AAA4 /* Products */,
@@ -945,19 +926,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1C59A92909FDEBC6000682B8 /* Unit Tests */ = {
-			isa = PBXGroup;
-			children = (
-				1C59A91F09FDEBA3000682B8 /* JVChatWindowControllerTests.m */,
-				55C8A2D5180735D100A7BB42 /* Supporting Files */,
-			);
-			indentWidth = 4;
-			name = "Unit Tests";
-			path = "Mac-Old/Tests";
-			sourceTree = "<group>";
-			tabWidth = 4;
-			usesTabs = 1;
-		};
 		1C6A13E608666DDC009EE6D2 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1011,7 +979,6 @@
 				1CB2CD8C052DDC570094AAA4 /* Colloquy.app */,
 				1C51B4CD052DE14B00BB459B /* Standard Commands.plugin */,
 				CBF685150820186F00F498FB /* Colloquy.mdimporter */,
-				55C8A2D0180735D100A7BB42 /* Colloquy Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1206,15 +1173,6 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		55C8A2D5180735D100A7BB42 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				55C8A2D6180735D100A7BB42 /* Colloquy Tests-Info.plist */,
-				55C8A2D7180735D100A7BB42 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		C24705C220135D4800385F62 /* StandardCommands */ = {
 			isa = PBXGroup;
 			children = (
@@ -1229,8 +1187,6 @@
 		C26D0E121F5B0A7700B58261 /* old-mac-binary-frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1CF8030C070C893500C9B54C /* libsilc.framework */,
-				1CF8030D070C893500C9B54C /* libsilcclient.framework */,
 				1CF5F8D107D537E50019DC13 /* Growl.framework */,
 			);
 			path = "old-mac-binary-frameworks";
@@ -1539,7 +1495,6 @@
 				es,
 				"zh-Hant",
 				ko,
-				en,
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* Massinova Menu Extra */;
 			productRefGroup = 089C166AFE841209C02AAC07 /* Massinova Menu Extra */;
@@ -1635,7 +1590,6 @@
 				1C0A4C9C0799BDB00093B702 /* JVFind.xib in Resources */,
 				1C0A4C9D0799BDB00093B702 /* JVTranscriptCriterion.xib in Resources */,
 				1C703EF507E4B956005CEA40 /* JVSmartTranscriptFilterSheet.xib in Resources */,
-				C2B6BF501F6F00FC0044C20E /* Mac-Old.xcassets in Resources */,
 				0A5B683F0810EC9700398D5A /* default.css in Resources */,
 				0AA8117B0826E08000A3BF2D /* default.js in Resources */,
 				1C39736A082D3ED000DCF3CF /* JVChatTranscriptBrowserPanel.xib in Resources */,
@@ -1755,7 +1709,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -R \"$CONFIGURATION_BUILD_DIR/AppleScript Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/F-Script Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/JavaScript Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/Python Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/Standard Commands.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"";
+			shellScript = "cp -R \"$CONFIGURATION_BUILD_DIR/AppleScript Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/JavaScript Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/Python Support.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\ncp -R \"$CONFIGURATION_BUILD_DIR/Standard Commands.plugin\" \"$CONFIGURATION_BUILD_DIR/Colloquy.app/Contents/PlugIns/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2115,14 +2069,6 @@
 			);
 			name = JVBuddyInspector.xib;
 			path = Languages;
-			sourceTree = "<group>";
-		};
-		55C8A2D7180735D100A7BB42 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				55C8A2D8180735D100A7BB42 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		9200338B13D92515005B69BA /* MVFileTransfer.xib */ = {

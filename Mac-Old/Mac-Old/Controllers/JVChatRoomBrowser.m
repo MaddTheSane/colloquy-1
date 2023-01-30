@@ -238,9 +238,7 @@
 	[searchField setStringValue:_currentFilter];
 }
 
-- (NSString *) filter {
-	return _currentFilter;
-}
+@synthesize filter=_currentFilter;
 
 #pragma mark -
 
@@ -271,9 +269,7 @@
 	[roomField setEnabled:( _connection ? YES : NO )];
 }
 
-- (MVChatConnection *) connection {
-	return _connection;
-}
+@synthesize connection=_connection;
 
 #pragma mark -
 

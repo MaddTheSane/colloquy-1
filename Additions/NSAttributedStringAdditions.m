@@ -102,8 +102,8 @@ static void removeItalicOrObliqueFont( NSMutableDictionary *attrs ) {
 }
 #endif
 
-NSString *NSChatWindowsIRCFormatType = @"NSChatWindowsIRCFormatType";
-NSString *NSChatCTCPTwoFormatType = @"NSChatCTCPTwoFormatType";
+NSString *const NSChatWindowsIRCFormatType = @"NSChatWindowsIRCFormatType";
+NSString *const NSChatCTCPTwoFormatType = @"NSChatCTCPTwoFormatType";
 
 #pragma mark -
 
@@ -235,9 +235,7 @@ NSString *NSChatCTCPTwoFormatType = @"NSChatCTCPTwoFormatType";
 + (instancetype) attributedStringWithChatFormat:(NSData *) data options:(NSDictionary *) options {
 	return [[self alloc] initWithChatFormat:data options:options];
 }
-#endif
 
-#if TARGET_OS_OSX
 - (instancetype) initWithChatFormat:(NSData *) data options:(NSDictionary *) options {
 	NSStringEncoding encoding = [options[@"StringEncoding"] unsignedLongValue];
 	if( ! encoding ) encoding = NSISOLatin1StringEncoding;
