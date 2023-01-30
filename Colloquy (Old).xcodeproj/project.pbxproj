@@ -164,6 +164,11 @@
 		5509D1CF1F5B6F160037CE4E /* libexslt.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1CE1F5B6F160037CE4E /* libexslt.tbd */; };
 		557D715F1E4915270041D61B /* MaddsPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 557D715E1E4915270041D61B /* MaddsPathExtensions.m */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
+		55AD71862988787B005CAB90 /* ImportExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AD71852988787B005CAB90 /* ImportExtension.swift */; };
+		55AD718B2988787B005CAB90 /* Colloquy Metadata Extension.appex in Copy Plugins */ = {isa = PBXBuildFile; fileRef = 55AD71832988787B005CAB90 /* Colloquy Metadata Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		55AD719B29887924005CAB90 /* schema.strings in Resources */ = {isa = PBXBuildFile; fileRef = C236F6581BDCE81F00E64469 /* schema.strings */; };
+		55AD719C29887928005CAB90 /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = CBF685340820190D00F498FB /* schema.xml */; };
+		55AD71A02988806E005CAB90 /* DateAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AD719F2988806E005CAB90 /* DateAdditions.swift */; };
 		55F42AC01AEC39A00085CA56 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */; };
 		55F7D7D22127844100CED413 /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9220565D11018298005CD72D /* NSDateAdditions.m */; };
 		891EF3D1106426CB00CCEA35 /* PFMoveApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 891EF3D0106426CB00CCEA35 /* PFMoveApplicationController.m */; };
@@ -220,6 +225,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
 			remoteInfo = "JavaScript Support Plugin";
+		};
+		55AD71892988787B005CAB90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55AD71822988787B005CAB90;
+			remoteInfo = newMD;
 		};
 		9295C9D216784593009F9014 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -295,6 +307,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				55AD718B2988787B005CAB90 /* Colloquy Metadata Extension.appex in Copy Plugins */,
 			);
 			name = "Copy Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -556,6 +569,11 @@
 		557D715E1E4915270041D61B /* MaddsPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaddsPathExtensions.m; sourceTree = "<group>"; };
 		5582BE6A1F8709780010EE03 /* RunOnMainThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RunOnMainThread.h; sourceTree = "<group>"; };
 		558EF2361AEC356800619BDE /* Room Member Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Room Member Icons.xcassets"; sourceTree = "<group>"; };
+		55AD71832988787B005CAB90 /* Colloquy Metadata Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Colloquy Metadata Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		55AD71852988787B005CAB90 /* ImportExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtension.swift; sourceTree = "<group>"; };
+		55AD71872988787B005CAB90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55AD71882988787B005CAB90 /* newMD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = newMD.entitlements; sourceTree = "<group>"; };
+		55AD719F2988806E005CAB90 /* DateAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAdditions.swift; sourceTree = "<group>"; };
 		55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
 		55CFBD9F20B5CB8900AD846B /* nn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nn; path = nn.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55F7D7BB2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVGeneralPreferencesViewController.strings; sourceTree = "<group>"; };
@@ -836,6 +854,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55AD71802988787B005CAB90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CBF685130820186F00F498FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -852,6 +877,7 @@
 			children = (
 				F50B0A9F0170C89301A84BDE /* Mac-Old */,
 				CBF684F00820174000F498FB /* MetadataImporter */,
+				55AD71842988787B005CAB90 /* MetadataExtension */,
 				C24705C220135D4800385F62 /* StandardCommands */,
 				F50B0AA00170C89301A84BDE /* Additions */,
 				F50B0AA10170C89301A84BDE /* Resources */,
@@ -979,9 +1005,10 @@
 				1CB2CD8C052DDC570094AAA4 /* Colloquy.app */,
 				1C51B4CD052DE14B00BB459B /* Standard Commands.plugin */,
 				CBF685150820186F00F498FB /* Colloquy.mdimporter */,
+				55AD71832988787B005CAB90 /* Colloquy Metadata Extension.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1CBC62F405488D5A009E59E1 /* Preferences */ = {
 			isa = PBXGroup;
@@ -1171,6 +1198,17 @@
 				891EF4091064278200CCEA35 /* PFMoveApplicationController.h */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		55AD71842988787B005CAB90 /* MetadataExtension */ = {
+			isa = PBXGroup;
+			children = (
+				55AD71852988787B005CAB90 /* ImportExtension.swift */,
+				55AD719F2988806E005CAB90 /* DateAdditions.swift */,
+				55AD71872988787B005CAB90 /* Info.plist */,
+				55AD71882988787B005CAB90 /* newMD.entitlements */,
+			);
+			path = MetadataExtension;
 			sourceTree = "<group>";
 		};
 		C24705C220135D4800385F62 /* StandardCommands */ = {
@@ -1445,11 +1483,30 @@
 			buildRules = (
 			);
 			dependencies = (
+				55AD718A2988787B005CAB90 /* PBXTargetDependency */,
 			);
 			name = "Colloquy (Application)";
 			productName = "Massinova (Application)";
 			productReference = 1CB2CD8C052DDC570094AAA4 /* Colloquy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		55AD71822988787B005CAB90 /* Colloquy (Metadata Extension) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55AD718E2988787B005CAB90 /* Build configuration list for PBXNativeTarget "Colloquy (Metadata Extension)" */;
+			buildPhases = (
+				55AD717F2988787B005CAB90 /* Sources */,
+				55AD71802988787B005CAB90 /* Frameworks */,
+				55AD71812988787B005CAB90 /* Resources */,
+				55AD71A129888991005CAB90 /* Update Build Number */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Colloquy (Metadata Extension)";
+			productName = newMD;
+			productReference = 55AD71832988787B005CAB90 /* Colloquy Metadata Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		CBF685140820186F00F498FB /* Colloquy (Metadata Importer) */ = {
 			isa = PBXNativeTarget;
@@ -1474,8 +1531,15 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Colloquy Project";
+				TargetAttributes = {
+					55AD71822988787B005CAB90 = {
+						CreatedOnToolsVersion = 14.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 1C041A700854E97700A5A5BA /* Build configuration list for PBXProject "Colloquy (Old)" */;
 			compatibilityVersion = "Xcode 8.0";
@@ -1518,6 +1582,7 @@
 				1CB2CCF5052DDC560094AAA4 /* Colloquy (Application) */,
 				1C51B4BB052DE14B00BB459B /* Standard Commands (Plug-In) */,
 				CBF685140820186F00F498FB /* Colloquy (Metadata Importer) */,
+				55AD71822988787B005CAB90 /* Colloquy (Metadata Extension) */,
 				9295C92416782ECB009F9014 /* Colloquy (Aggregate) */,
 			);
 		};
@@ -1622,6 +1687,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55AD71812988787B005CAB90 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55AD719C29887928005CAB90 /* schema.xml in Resources */,
+				55AD719B29887924005CAB90 /* schema.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CBF685110820186F00F498FB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1697,6 +1771,25 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"$SRCROOT/old-mac-binary-frameworks\"\nrm -rf *.{framework,a}\ntar xzf frameworks.tar.gz\n";
 			showEnvVarsInLog = 0;
+		};
+		55AD71A129888991005CAB90 /* Update Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"",
+			);
+			name = "Update Build Number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${COLLOQUY_WORKSPACE_ROOT}/Tools/writeVersionToInfoPlist.sh --infoPlist \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n";
 		};
 		9295C9D116784584009F9014 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1806,6 +1899,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55AD717F2988787B005CAB90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55AD71A02988806E005CAB90 /* DateAdditions.swift in Sources */,
+				55AD71862988787B005CAB90 /* ImportExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CBF685120820186F00F498FB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1819,6 +1921,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		55AD718A2988787B005CAB90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55AD71822988787B005CAB90 /* Colloquy (Metadata Extension) */;
+			targetProxy = 55AD71892988787B005CAB90 /* PBXContainerItemProxy */;
+		};
 		9295C9D316784593009F9014 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "AppleScript Support Plugin";
@@ -2444,6 +2551,144 @@
 			};
 			name = Release;
 		};
+		55AD718C2988787B005CAB90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = MetadataExtension/newMD.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = source;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MetadataExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(TARGET_NAME)";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Colloquy Project. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 2.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.newMD;
+				PRODUCT_NAME = "Colloquy Metadata Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		55AD718D2988787B005CAB90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = MetadataExtension/newMD.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = source;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MetadataExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(TARGET_NAME)";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Colloquy Project. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 2.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.newMD;
+				PRODUCT_NAME = "Colloquy Metadata Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
 		9295C92616782ECB009F9014 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89FB4EDC12FAABBB00668905 /* old-mac-target.xcconfig */;
@@ -2495,6 +2740,15 @@
 			buildConfigurations = (
 				1C041DCC0855377900A5A5BA /* Release */,
 				1C041A720854E97700A5A5BA /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55AD718E2988787B005CAB90 /* Build configuration list for PBXNativeTarget "Colloquy (Metadata Extension)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55AD718C2988787B005CAB90 /* Release */,
+				55AD718D2988787B005CAB90 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

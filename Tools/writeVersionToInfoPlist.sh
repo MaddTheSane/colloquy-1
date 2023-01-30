@@ -35,7 +35,7 @@ BUNDLE_VERSION=$(xcrun git rev-list --count HEAD)
 
 # If --infoPlist was specified, write the bundle version there, otherwise echo it.
 if [[ -n "${INFO_PLIST}" ]]; then
-    /usr/libexec/PlistBuddy -c "set :CFBundleVersion ${BUNDLE_VERSION}" ${INFO_PLIST}
+    /usr/libexec/PlistBuddy -c "set :CFBundleVersion ${BUNDLE_VERSION}" "${INFO_PLIST}"
 else
     echo $BUNDLE_VERSION
 fi

@@ -1,4 +1,5 @@
 #import "NSDateAdditions.h"
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -60,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation NSString (NSDateAdditions)
-- (NSDate *) dateFromFormat:(NSString *) format {
+- (nullable NSDate *) dateFromFormat:(NSString *) format {
 	NSDateFormatter *dateFormatter = [NSDate cq_cacheDictionary][format];
 	if (!dateFormatter) {
 		dateFormatter = [[NSDateFormatter alloc] init];
@@ -74,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-NSString *humanReadableTimeInterval(NSTimeInterval interval) {
+NSString *_Nullable humanReadableTimeInterval(NSTimeInterval interval) {
 	NSDateComponentsFormatter *formatter = [[NSDateComponentsFormatter alloc] init];
 	formatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
 	formatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorDropAll;
