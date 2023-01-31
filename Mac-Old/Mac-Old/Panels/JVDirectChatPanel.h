@@ -98,7 +98,7 @@ COLLOQUY_EXPORT
 - (void) processOutgoingMessage:(JVMutableChatMessage *) message inView:(id <JVChatViewController>) view;
 @end
 
-@interface JVDirectChatPanel (Private)
+@interface JVDirectChatPanel (/*Private*/)
 - (NSString *) _selfCompositeName;
 - (NSString *) _selfStoredNickname;
 - (NSMenu *) _encodingMenu;

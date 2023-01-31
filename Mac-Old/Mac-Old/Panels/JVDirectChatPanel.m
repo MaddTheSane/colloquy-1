@@ -1582,11 +1582,9 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	_personImageData = data;
 	_loadingPersonImage = NO;
 }
-@end
 
-#pragma mark -
+#pragma mark - Private Methods
 
-@implementation JVDirectChatPanel (Private)
 - (NSString *) _selfCompositeName {
 	ABPerson *_person = [[ABAddressBook sharedAddressBook] me];
 	NSString *firstName = [_person valueForProperty:kABFirstNameProperty];

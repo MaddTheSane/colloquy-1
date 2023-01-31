@@ -131,9 +131,9 @@ private class JVChatTranscriptMetadataExtractor: NSObject, XMLParserDelegate {
 	}
 }
 
-class ImportExtension: CSImportExtension {
+public class ImportExtension: CSImportExtension {
     
-    override func update(_ attributes: CSSearchableItemAttributeSet, forFileAt: URL) throws {
+	public override func update(_ attributes: CSSearchableItemAttributeSet, forFileAt: URL) throws {
 		guard let parser = XMLParser(contentsOf: forFileAt) else {
 			throw CocoaError(.fileReadUnknown, userInfo: [NSURLErrorKey: forFileAt])
 		}

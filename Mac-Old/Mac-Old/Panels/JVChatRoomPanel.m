@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdateNotification";
 
-@interface JVChatRoomPanel (Private)
+@interface JVChatRoomPanel ()
 // TODO: This method is overwriting a method of superclass category JVDirectChatPanel+Private, undefined behavior.
 - (void) _didDisconnect:(NSNotification *) notification; // overwrite
 - (void) _partedRoom:(NSNotification *) notification;
@@ -741,11 +741,8 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	[list addObject:JVToolbarQuickSearchItemIdentifier];
 	return list;
 }
-@end
 
-#pragma mark -
-
-@implementation JVChatRoomPanel (Private)
+#pragma mark - Private Methods
 
 - (void) _didDisconnect:(NSNotification *) notification {
 	_kickedFromRoom = NO;

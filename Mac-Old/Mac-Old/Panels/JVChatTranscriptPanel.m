@@ -19,10 +19,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *JVToolbarChooseStyleItemIdentifier = @"JVToolbarChooseStyleItem";
-NSString *JVToolbarEmoticonsItemIdentifier = @"JVToolbarEmoticonsItem";
-NSString *JVToolbarFindItemIdentifier = @"JVToolbarFindItem";
-NSString *JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem";
+NSString *const JVToolbarChooseStyleItemIdentifier = @"JVToolbarChooseStyleItem";
+NSString *const JVToolbarEmoticonsItemIdentifier = @"JVToolbarEmoticonsItem";
+NSString *const JVToolbarFindItemIdentifier = @"JVToolbarFindItem";
+NSString *const JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem";
 
 @interface NSWindow (NSWindowPrivate) // new Tiger private method
 - (void) _setContentHasShadow:(BOOL) shadow;
@@ -729,12 +729,10 @@ NSString *JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem";
 	[[sender window] setShowsResizeIndicator:resizable];
 	[[[sender window] standardWindowButton:NSWindowZoomButton] setEnabled:resizable];
 }
-@end
 
-#pragma mark -
-
-@implementation JVChatTranscriptPanel (Private)
+#pragma mark - Private Methods
 #pragma mark Style Support
+
 - (void) _refreshWindowFileProxy {
 	if(	[[self windowController] activeChatViewController] != self ) return;
 	if( ![[self transcript] filePath] ) return;

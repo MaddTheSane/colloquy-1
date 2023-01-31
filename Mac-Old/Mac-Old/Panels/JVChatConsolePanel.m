@@ -13,7 +13,7 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 - (void) textDidChange:(nullable NSNotification *) notification;
 @end
 
-@interface JVChatConsolePanel (Private)
+@interface JVChatConsolePanel ()
 - (void) _gotImportantMessage:(NSNotification *) notification;
 - (void) _gotInformationalMessage:(NSNotification *) notification;
 - (void) _gotRawMessage:(NSNotification *) notification;
@@ -660,11 +660,9 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	[[send enclosingScrollView] setFrame:sendFrame];
 	[[display enclosingScrollView] setFrame:displayFrame];
 }
-@end
 
-#pragma mark -
+#pragma mark - Private Methods
 
-@implementation JVChatConsolePanel (Private)
 - (void) _gotImportantMessage:(NSNotification *) notification {
 	if( _paused ) return;
 	[self addMessageToDisplay:[notification userInfo][@"message"] asOutboundMessage:NO];

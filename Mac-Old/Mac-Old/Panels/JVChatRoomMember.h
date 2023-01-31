@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (IBAction) cancelSheet:(nullable id) sender;
 @end
 
-@interface JVChatRoomMember (Private)
+@interface JVChatRoomMember (/*Private*/)
 - (void) _detach;
 - (void) _refreshIcon:(NSNotification *) notification;
 - (NSString *) _selfCompositeName;

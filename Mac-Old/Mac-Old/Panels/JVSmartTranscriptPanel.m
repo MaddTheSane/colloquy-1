@@ -11,9 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsItem";
+static const NSToolbarItemIdentifier JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsItem";
 
-@interface JVSmartTranscriptPanel (Private)
+@interface JVSmartTranscriptPanel ()
 - (void) _messageDisplayed:(NSNotification *) notification;
 @end
 
@@ -449,11 +449,9 @@ static NSString *JVToolbarRuleSettingsItemIdentifier = @"JVToolbarRuleSettingsIt
 	[list addObject:JVToolbarClearScrollbackItemIdentifier];
 	return list;
 }
-@end
 
-#pragma mark -
+#pragma mark - Private Methods
 
-@implementation JVSmartTranscriptPanel (Private)
 - (void) _messageDisplayed:(NSNotification *) notification {
 	JVChatMessage *origMessage = [notification userInfo][@"message"];
 	[self matchMessage:origMessage fromView:[notification object]];

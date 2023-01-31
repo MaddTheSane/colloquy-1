@@ -12,10 +12,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVToolbarChooseStyleItemIdentifier;
-extern NSString *JVToolbarEmoticonsItemIdentifier;
-extern NSString *JVToolbarFindItemIdentifier;
-extern NSString *JVToolbarQuickSearchItemIdentifier;
+extern const NSToolbarItemIdentifier JVToolbarChooseStyleItemIdentifier;
+extern const NSToolbarItemIdentifier JVToolbarEmoticonsItemIdentifier;
+extern const NSToolbarItemIdentifier JVToolbarFindItemIdentifier;
+extern const NSToolbarItemIdentifier JVToolbarQuickSearchItemIdentifier;
 
 @interface JVChatTranscriptPanel : NSObject <JVChatViewController, JVChatViewControllerScripting, NSToolbarDelegate, WebUIDelegate> {
 	@protected
@@ -69,7 +69,7 @@ extern NSString *JVToolbarQuickSearchItemIdentifier;
 
 #pragma mark -
 
-@interface JVChatTranscriptPanel (Private)
+@interface JVChatTranscriptPanel (/*Private*/)
 // Style Support.
 - (void) _refreshWindowFileProxy;
 - (void) _refreshSearch;

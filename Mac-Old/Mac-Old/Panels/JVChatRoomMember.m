@@ -669,11 +669,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 	[super setValue:value forUndefinedKey:key];
 }
-@end
 
-#pragma mark -
+#pragma mark - Private Methods
 
-@implementation JVChatRoomMember (Private)
 - (void) _detach {
 	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatUserInformationUpdatedNotification object:_user];
 	[[NSNotificationCenter chatCenter] removeObserver:self name:MVChatUserStatusChangedNotification object:_user];

@@ -17,8 +17,8 @@ typedef NS_ENUM(unsigned int, JVChatViewOrganizationType) {
 	JVChatViewOrganizationTypeByNetworkAndRoom,
 };
 
-NSString *JVToolbarToggleChatDrawerItemIdentifier = @"JVToolbarToggleChatDrawerItem";
-NSString *JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
+NSString *const JVToolbarToggleChatDrawerItemIdentifier = @"JVToolbarToggleChatDrawerItem";
+NSString *const JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type";
 
 #pragma mark -
 

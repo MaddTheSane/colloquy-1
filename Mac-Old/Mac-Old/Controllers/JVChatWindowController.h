@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *JVToolbarToggleChatDrawerItemIdentifier;
-extern NSString *JVChatViewPboardType;
+extern const NSToolbarItemIdentifier JVToolbarToggleChatDrawerItemIdentifier;
+extern const NSPasteboardType JVChatViewPboardType;
 
 @interface JVChatWindowController : NSWindowController <JVInspectionDelegator, NSMenuDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSToolbarDelegate, NSWindowDelegate> {
 	@protected
