@@ -95,7 +95,7 @@
 	} else if( chr == NSTabCharacter ) {
 		if( ! _tabCompletting ) {
 			NSRange curPos = [self selectedRange];
-			_complettingWithSuffix = ( curPos.location == [[self string] length] && ( ! ( [event modifierFlags] & NSAlternateKeyMask ) ) );
+			_complettingWithSuffix = ( curPos.location == [[self string] length] && ( ! ( [event modifierFlags] & NSEventModifierFlagOption ) ) );
 		}
 
 		_tabCompletting = YES;
@@ -327,10 +327,10 @@
 		[self replaceCharactersInRange:replacementRange withString:name];
 
 		if( suffix && replacementRange.location == 0 )	{
-			if( [tabCompletion length] ) [self insertText:tabCompletion];
-			else [self insertText:@": "];
+			if( [tabCompletion length] ) [self insertText:tabCompletion replacementRange:NSMakeRange(self.attributedString.length, 0)];
+			else [self insertText:@": " replacementRange:NSMakeRange(self.attributedString.length, 0)];
 		}
-		else if( suffix ) [self insertText:@" "];
+		else if( suffix ) [self insertText:@" " replacementRange:NSMakeRange(self.attributedString.length, 0)];
 		_tabCompletting = NO;
 		_ignoreSelectionChanges = NO;
 

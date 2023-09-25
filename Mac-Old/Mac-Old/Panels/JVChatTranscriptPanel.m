@@ -689,10 +689,10 @@ NSString *const JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem"
 		if( ! [[results lastObject] boolValue] ) {
 			if( [MVChatConnection supportsURLScheme:[url scheme]] ) {
 				[[MVConnectionsController defaultController] handleURL:url andConnectIfPossible:YES];
-			} else if( [actionInformation[WebActionModifierFlagsKey] unsignedIntValue] & NSAlternateKeyMask ) {
+			} else if( [actionInformation[WebActionModifierFlagsKey] unsignedIntValue] & NSEventModifierFlagOption ) {
 				[[MVFileTransferController defaultController] downloadFileAtURL:url toLocalFile:nil];
 			} else {
-				NSWorkspaceLaunchOptions options = ( [actionInformation[WebActionModifierFlagsKey] unsignedIntValue] & NSCommandKeyMask ? NSWorkspaceLaunchWithoutActivation : 0 );
+				NSWorkspaceLaunchOptions options = ( [actionInformation[WebActionModifierFlagsKey] unsignedIntValue] & NSEventModifierFlagCommand ? NSWorkspaceLaunchWithoutActivation : 0 );
 				[[NSWorkspace sharedWorkspace] openURLs:@[url] withAppBundleIdentifier:nil options:options additionalEventParamDescriptor:nil launchIdentifiers:nil];
 			}
 		}
@@ -709,7 +709,7 @@ NSString *const JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem"
 	[newWebView setUIDelegate:self];
 	if( request ) [[newWebView mainFrame] loadRequest:request];
 
-	NSWindow *window = [[NSWindow alloc] initWithContentRect:frame styleMask:( NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask ) backing:NSBackingStoreBuffered defer:NO screen:[[sender window] screen]];
+	NSWindow *window = [[NSWindow alloc] initWithContentRect:frame styleMask:( NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable ) backing:NSBackingStoreBuffered defer:NO screen:[[sender window] screen]];
 	[window setOpaque:NO];
 	[window setBackgroundColor:[NSColor clearColor]];
 	if( [window respondsToSelector:@selector( _setContentHasShadow: )] )

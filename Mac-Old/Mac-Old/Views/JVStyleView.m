@@ -567,9 +567,9 @@ NSString *const JVStyleViewDidChangeStylesNotification = @"JVStyleViewDidChangeS
 	NSString *selectedString = [(id <WebDocumentText>)[[frame frameView] documentView] selectedString];
 
 	if( [selectedString length] ) {
-		NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSFindPboard];
-		[pboard declareTypes:@[NSStringPboardType] owner:nil];
-		[pboard setString:selectedString forType:NSStringPboardType];
+		NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSPasteboardNameFind];
+		[pboard declareTypes:@[NSPasteboardTypeString] owner:nil];
+		[pboard setString:selectedString forType:NSPasteboardTypeString];
 	}
 }
 

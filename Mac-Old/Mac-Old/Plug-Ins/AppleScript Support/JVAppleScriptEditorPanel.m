@@ -275,7 +275,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 	if( _unsavedChanges ) {
 		NSImage *shaded = [[[NSImage alloc] initWithSize:[_icon size]] autorelease];
 		[shaded lockFocus];
-		[_icon drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.5];
+		[_icon drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:0.5];
 		[shaded unlockFocus];
 		return shaded;
 	}

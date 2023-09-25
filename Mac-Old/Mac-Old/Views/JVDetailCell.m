@@ -81,7 +81,7 @@
 	if( ! [self isEnabled] && [self image] ) {
 		NSImage *fadedImage = [[NSImage alloc] initWithSize:[[self image] size]];
 		[fadedImage lockFocus];
-		[[self image] drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:0.5];
+		[[self image] drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:0.5];
 		[fadedImage unlockFocus];
 		curImage = [self image]; // curImage is autoreleased 9 lines down, analyzer is just confused by the ifs
 		[self setImage:fadedImage];
@@ -131,7 +131,7 @@
 		CGFloat radius = 7.;
 
 		NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-		[paragraphStyle setAlignment:NSCenterTextAlignment];
+		[paragraphStyle setAlignment:NSTextAlignmentCenter];
 		NSDictionary *statusNumberAttributes = @{ NSFontAttributeName: font,
 												  NSParagraphStyleAttributeName: paragraphStyle,
 												  NSForegroundColorAttributeName: textColor };
@@ -213,7 +213,7 @@
 
 	if( _statusImage && NSHeight( cellFrame ) >= [_statusImage size].height ) {
 		NSPoint point = NSMakePoint( NSMaxX( cellFrame ) - statusWidth, NSMaxY( cellFrame ) - ( ( NSHeight( cellFrame ) / 2 ) - ( [_statusImage size].height / 2 ) ) );
-		[_statusImage drawAtPoint:point fromRect:NSZeroRect operation:NSCompositeSourceAtop fraction:( [self isEnabled] ? 1. : 0.5)];
+		[_statusImage drawAtPoint:point fromRect:NSZeroRect operation:NSCompositingOperationSourceAtop fraction:( [self isEnabled] ? 1. : 0.5)];
 	}
 }
 

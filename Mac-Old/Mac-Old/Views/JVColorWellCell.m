@@ -142,7 +142,7 @@ NSString *const JVColorWellCellColorDidChangeNotification = @"JVColorWellCellCol
 - (void) clicked:(id) sender {
 	[super setState:(! [self state])];
 	if( [self state] ) {
-		BOOL exclusive = ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSAlternateKeyMask );
+		BOOL exclusive = ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagOption );
 		[self activate:exclusive];
 	}
 }

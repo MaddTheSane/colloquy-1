@@ -618,8 +618,8 @@ static MVBuddyListController *sharedInstance = nil;
 			[cell setArrowPosition:NSPopUpArrowAtCenter];
 			[cell setEnabled:YES];
 
-			if( _showIcons || _showNicknameAndServer ) [cell setControlSize:NSRegularControlSize];
-			else [cell setControlSize:NSSmallControlSize];
+			if( _showIcons || _showNicknameAndServer ) [cell setControlSize:NSControlSizeRegular];
+			else [cell setControlSize:NSControlSizeSmall];
 		} else {
 			[cell setArrowPosition:NSPopUpNoArrow];
 			[cell setEnabled:NO];

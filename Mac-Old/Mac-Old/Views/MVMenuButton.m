@@ -17,7 +17,7 @@
 
 - (instancetype) initWithCoder:(NSCoder *) coder {
 	if( ( self = [super initWithCoder:coder] ) ) {
-		_size = NSRegularControlSize;
+		_size = NSControlSizeRegular;
 		_drawsArrow = NO;
 		_orgImage = [[self image] copy];
 		_smallImage = nil;
@@ -33,11 +33,11 @@
 	    NSBezierPath *path = [NSBezierPath bezierPath];
 
 		NSRect backingRect = [self convertRectToBacking:[self frame]];
-		if( _size == NSRegularControlSize ) {
+		if( _size == NSControlSizeRegular ) {
 			[path moveToPoint:NSMakePoint( NSWidth( backingRect ) - 6, NSHeight( backingRect ) - 3 )];
 			[path relativeLineToPoint:NSMakePoint( 6, 0 )];
 			[path relativeLineToPoint:NSMakePoint( -3, 3 )];
-		} else if( _size == NSSmallControlSize ) {
+		} else if( _size == NSControlSizeSmall ) {
 			[path moveToPoint:NSMakePoint( NSWidth( backingRect ) - 4, NSHeight( backingRect ) - 3 )];
 			[path relativeLineToPoint:NSMakePoint( 4, 0 )];
 			[path relativeLineToPoint:NSMakePoint( -2, 3 )];
@@ -78,16 +78,16 @@
 }
 
 - (NSControlSize) controlSize {
-	return ( _size ? _size : NSRegularControlSize );
+	return ( _size ? _size : NSControlSizeRegular );
 }
 
 - (void) setControlSize:(NSControlSize) controlSize {
 	if( ! _orgImage ) _orgImage = [[self image] copy];
-	if( controlSize == NSRegularControlSize || _retina ) {
+	if( controlSize == NSControlSizeRegular || _retina ) {
 		[super setImage:_orgImage];
 		[_toolbarItem setMinSize:NSMakeSize( 32., 32. )];
 		[_toolbarItem setMaxSize:NSMakeSize( 32., 32. )];
-	} else if( controlSize == NSSmallControlSize ) {
+	} else if( controlSize == NSControlSizeSmall ) {
 		if( ! _smallImage ) {
 			NSRect rect = NSMakeRect( 0., 0., 24., 24. );
 			NSImageRep *sourceImageRep = [_orgImage bestRepresentationForRect:rect context:[NSGraphicsContext currentContext] hints:nil];
@@ -115,8 +115,8 @@
 	[sourceImageRep drawInRect:rect];
 	[_smallImage unlockFocus];
 
-	if( _size == NSRegularControlSize ) [super setImage:image];
-	else if( _size == NSSmallControlSize ) [super setImage:_smallImage];
+	if( _size == NSControlSizeRegular ) [super setImage:image];
+	else if( _size == NSControlSizeSmall ) [super setImage:_smallImage];
 }
 
 - (NSString *)accessibilityTitle {

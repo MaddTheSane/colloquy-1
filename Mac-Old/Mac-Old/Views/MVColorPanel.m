@@ -46,7 +46,7 @@
 	NSButtonCell *cell = [[NSButtonCell alloc] init];
 
 	[cell setButtonType:NSRadioButton];
-	[cell setControlSize:NSSmallControlSize];
+	[cell setControlSize:NSControlSizeSmall];
 
 	destination = [[NSMatrix alloc] initWithFrame:NSMakeRect( 0., 0., NSWidth( [self frame] ) - 10., 36. ) mode:NSRadioModeMatrix prototype:cell numberOfRows:2 numberOfColumns:1];
 	[destination setAllowsEmptySelection:NO];

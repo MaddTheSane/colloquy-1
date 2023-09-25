@@ -474,14 +474,14 @@ static  NSImage			*tabDivider = nil;
 			origin = NSMakePoint(xLocation, 0 );
 			if(!absolute){
 				if(origin.x > [tabCell frame].origin.x){
-					NSInteger distance = (origin.x - [tabCell frame].origin.x) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) ? CUSTOM_TABS_SLOW_STEP : CUSTOM_TABS_STEP);
+					NSInteger distance = (origin.x - [tabCell frame].origin.x) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) ? CUSTOM_TABS_SLOW_STEP : CUSTOM_TABS_STEP);
 					if(distance < 1) distance = 1;
 
 					origin.x = [tabCell frame].origin.x + distance;
 
 					if(finished) finished = NO;
 				}else if(origin.x < [tabCell frame].origin.x){
-					NSInteger distance = ([tabCell frame].origin.x - origin.x) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) ? CUSTOM_TABS_SLOW_STEP : CUSTOM_TABS_STEP);
+					NSInteger distance = ([tabCell frame].origin.x - origin.x) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) ? CUSTOM_TABS_SLOW_STEP : CUSTOM_TABS_STEP);
 					if(distance < 1) distance = 1;
 
 					origin.x = [tabCell frame].origin.x - distance;
@@ -545,7 +545,7 @@ static  NSImage			*tabDivider = nil;
 				if((ignoreSelection ||
 					(tabCell != selectedCustomTabCell && (!nextTabCell || nextTabCell != selectedCustomTabCell)))
 				   && (NSInteger)[tabCellArray indexOfObject:tabCell] != tabGapIndex - 1){
-					[tabDivider drawAtPoint:NSMakePoint(cellFrame.origin.x + cellFrame.size.width, cellFrame.origin.y) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+					[tabDivider drawAtPoint:NSMakePoint(cellFrame.origin.x + cellFrame.size.width, cellFrame.origin.y) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0];
 				}
 			}
 		}
@@ -642,7 +642,7 @@ static NSRect AIConstrainRectWidth(NSRect rect, CGFloat left, CGFloat right)
 	//Give the tab cell a chance to handle tracking
     if((tabCell = [self tabAtPoint:lastClickLocation])){
         if(![tabCell willTrackMouse:theEvent inRect:[tabCell frame] ofView:self]){
-//			if(!( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask )){ //Allow background dragging
+//			if(!( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand )){ //Allow background dragging
                 [tabView selectTabViewItem:[tabCell tabViewItem]];
 //            }
         }
@@ -668,7 +668,7 @@ static NSRect AIConstrainRectWidth(NSRect rect, CGFloat left, CGFloat right)
 				[[AICustomTabDragging sharedInstance] dragTabCell:dragCell
 											   fromCustomTabsView:self
 														withEvent:theEvent
-														selectTab:(!( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask ))];
+														selectTab:(!( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand ))];
 
 				 dragCell = nil;
 				_self = nil;

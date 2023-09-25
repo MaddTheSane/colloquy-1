@@ -27,7 +27,7 @@ NSString *MVPrettyFileSize( unsigned long long size ) {
 		return ret;
 	}
 	if( size == 0. ) ret = NSLocalizedString( @"Zero bytes", "no file size" );
-	else if( size > 0. && size < 1024. ) ret = [[NSString alloc] initWithFormat:NSLocalizedString( @"%lu bytes", "file size measured in bytes" ), size];
+	else if( size > 0. && size < 1024. ) ret = [[NSString alloc] initWithFormat:NSLocalizedString( @"%lu bytes", "file size measured in bytes" ), (unsigned long)size];
 	else if( size >= 1024. && size < pow( 1024., 2. ) ) ret = [NSString stringWithFormat:NSLocalizedString( @"%.1f KB", "file size measured in kilobytes" ), ( size / 1024. )];
 	else if( size >= pow( 1024., 2. ) && size < pow( 1024., 3. ) ) ret = [NSString stringWithFormat:NSLocalizedString( @"%.2f MB", "file size measured in megabytes" ), ( size / pow( 1024., 2. ) )];
 	else if( size >= pow( 1024., 3. ) && size < pow( 1024., 4. ) ) ret = [NSString stringWithFormat:NSLocalizedString( @"%.3f GB", "file size measured in gigabytes" ), ( size / pow( 1024., 3. ) )];
@@ -306,7 +306,7 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 	NSMutableArray *array = [NSMutableArray array];
 	NSMutableString *string = [NSMutableString string];
 
-	[[NSPasteboard generalPasteboard] declareTypes:@[NSFilenamesPboardType,NSStringPboardType] owner:self];
+	[[NSPasteboard generalPasteboard] declareTypes:@[NSFilenamesPboardType,NSPasteboardTypeString] owner:self];
 
 	[[currentFiles selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger i, BOOL *stop) {
 		[array addObject:[self _infoForTransferAtIndex:i][@"path"]];
@@ -315,7 +315,7 @@ NSString *MVReadableTime( NSTimeInterval date, BOOL longFormat ) {
 	}];
 
 	[[NSPasteboard generalPasteboard] setPropertyList:array forType:NSFilenamesPboardType];
-	[[NSPasteboard generalPasteboard] setString:string forType:NSStringPboardType];
+	[[NSPasteboard generalPasteboard] setString:string forType:NSPasteboardTypeString];
 }
 @end
 

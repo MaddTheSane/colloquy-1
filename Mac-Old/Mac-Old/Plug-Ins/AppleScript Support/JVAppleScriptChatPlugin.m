@@ -374,13 +374,13 @@
 				if( tooltip ) [mitem setToolTip:tooltip];
 
 				if( alternate && [alternate unsignedIntValue] == 1 ) {
-					[mitem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+					[mitem setKeyEquivalentModifierMask:NSEventModifierFlagOption];
 					[mitem setAlternate:YES];
 				} else if( alternate && [alternate unsignedIntValue] == 2 ) {
-					[mitem setKeyEquivalentModifierMask:( NSShiftKeyMask | NSAlternateKeyMask )];
+					[mitem setKeyEquivalentModifierMask:( NSEventModifierFlagShift | NSEventModifierFlagOption )];
 					[mitem setAlternate:YES];
 				} else if( alternate && [alternate unsignedIntValue] == 3 ) {
-					[mitem setKeyEquivalentModifierMask:( NSShiftKeyMask | NSAlternateKeyMask | NSControlKeyMask )];
+					[mitem setKeyEquivalentModifierMask:( NSEventModifierFlagShift | NSEventModifierFlagOption | NSEventModifierFlagControl )];
 					[mitem setAlternate:YES];
 				}
 

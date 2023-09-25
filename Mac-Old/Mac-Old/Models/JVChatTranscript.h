@@ -45,7 +45,7 @@ extern NSNotificationName const JVChatTranscriptUpdatedNotification;
 @property (readonly) NSUInteger messageCount;
 @property (readonly) NSUInteger eventCount;
 
-@property NSUInteger elementLimit;
+@property (nonatomic) NSUInteger elementLimit;
 
 @property (readonly, copy, nullable) NSArray<id<JVChatTranscriptElement>> *elements;
 - (nullable NSArray<id<JVChatTranscriptElement>> *) elementsInRange:(NSRange) range;
@@ -98,8 +98,8 @@ extern NSNotificationName const JVChatTranscriptUpdatedNotification;
 
 #pragma mark -
 
-typedef struct _xmlNode xmlNode;
-typedef xmlNode *xmlNodePtr;
+//typedef struct _xmlNode xmlNode;
+typedef struct _xmlNode *xmlNodePtr;
 @interface JVChatTranscript (Private)
 - (void) _enforceElementLimit;
 - (void) _incrementalWriteToLog:(xmlNodePtr) node continuation:(BOOL) cont;

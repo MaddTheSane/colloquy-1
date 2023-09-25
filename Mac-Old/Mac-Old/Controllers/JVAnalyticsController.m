@@ -102,7 +102,7 @@ static kern_return_t getMACAddress(io_iterator_t intfIterator, UInt8 *MACAddress
 	return kernResult;
 }
 
-static void generateUniqueMachineIdentifier() {
+static void generateUniqueMachineIdentifier(void) {
 	if (uniqueMachineIdentifier)
 		return;
 

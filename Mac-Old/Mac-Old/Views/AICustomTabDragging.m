@@ -130,7 +130,7 @@ static AICustomTabDragging *sharedTabDragInstance = nil;
 	}
 
 	//Perform the drag
-	pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
+	pboard = [NSPasteboard pasteboardWithName:NSPasteboardNameDrag];
 	[pboard declareTypes:@[TAB_CELL_IDENTIFIER] owner:self];
 	[pboard setString:TAB_CELL_IDENTIFIER forType:TAB_CELL_IDENTIFIER];
 	[[inEvent window] dragImage:[tabDragWindow dragImage]

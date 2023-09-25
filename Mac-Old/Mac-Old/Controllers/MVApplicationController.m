@@ -552,7 +552,7 @@ static BOOL applicationIsTerminating = NO;
 
 	NSMenu *viewMenu = [[[[NSApplication sharedApplication] mainMenu] itemAtIndex:3] submenu];
 	NSMenuItem *fullscreenItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Enter Full Screen", @"Enter Full Screen menu item") action:@selector(toggleFullScreen:) keyEquivalent:@"f"];
-	[fullscreenItem setKeyEquivalentModifierMask:(NSControlKeyMask | NSCommandKeyMask)];
+	[fullscreenItem setKeyEquivalentModifierMask:(NSEventModifierFlagControl | NSEventModifierFlagCommand)];
 	[fullscreenItem setTarget:nil];
 
 	[viewMenu insertItem:fullscreenItem atIndex:6];
@@ -619,7 +619,7 @@ static BOOL applicationIsTerminating = NO;
 	[confirmQuitAlert setInformativeText:NSLocalizedString( @"Are you sure you want to quit Colloquy and disconnect from all active connections?", "are you sure you want to quit message" )];
 	[confirmQuitAlert addButtonWithTitle:NSLocalizedString( @"Quit", "quit button" )];
 	[confirmQuitAlert addButtonWithTitle:NSLocalizedString( @"Cancel", "cancel button" )];
-	[confirmQuitAlert setAlertStyle:NSCriticalAlertStyle];
+	[confirmQuitAlert setAlertStyle:NSAlertStyleCritical];
 	/* no quit message field in the quit dialog until someone makes it prettier (for example label it). Ticket #1557.
 	// quit message. leopard only for now, because NSAlert's setAccessoryView is 10.5+ only, 10.4 would need a new NIB for this feature:
 	if ( floor( NSAppKitVersionNumber ) > NSAppKitVersionNumber10_4) {
@@ -707,7 +707,7 @@ static BOOL applicationIsTerminating = NO;
 	}
 
 	alert.informativeText = informativeText;
-	alert.alertStyle = NSWarningAlertStyle;
+	alert.alertStyle = NSAlertStyleWarning;
 
 	[alert addButtonWithTitle:NSLocalizedString( @"OK", @"OK button title" )];
 

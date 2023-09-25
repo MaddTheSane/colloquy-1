@@ -19,7 +19,7 @@
 @end
 #endif
 
-MVInline BOOL useSystemThreadPerformSelector() {
+MVInline BOOL useSystemThreadPerformSelector(void) {
 #if ALWAYS_HAS_SYSTEM_SUPPORT
 	return YES;
 #else

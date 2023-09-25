@@ -464,9 +464,9 @@ end:
 - (void) loadFindStringFromPasteboard {
 	_findPasteboardNeedsUpdated = NO;
 
-	NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSFindPboard];
-	if( [[pasteboard types] containsObject:NSStringPboardType] ) {
-		NSString *string = [pasteboard stringForType:NSStringPboardType];
+	NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSPasteboardNameFind];
+	if( [[pasteboard types] containsObject:NSPasteboardTypeString] ) {
+		NSString *string = [pasteboard stringForType:NSPasteboardTypeString];
 		if( [string isKindOfClass:[NSString class]] && [string length] ) {
 			NSEnumerator *rules = [[self criterionControllers] objectEnumerator];
 			JVTranscriptCriterionController *rule = nil;
@@ -495,9 +495,9 @@ end:
 
 	if( ! findString || ! [findString isKindOfClass:[NSString class]] ) return;
 
-	NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSFindPboard];
-	[pasteboard declareTypes:@[NSStringPboardType] owner:nil];
-	[pasteboard setString:findString forType:NSStringPboardType];
+	NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSPasteboardNameFind];
+	[pasteboard declareTypes:@[NSPasteboardTypeString] owner:nil];
+	[pasteboard setString:findString forType:NSPasteboardTypeString];
 }
 
 #pragma mark -

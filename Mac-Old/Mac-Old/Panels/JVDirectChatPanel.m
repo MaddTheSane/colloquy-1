@@ -611,7 +611,11 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	else targetName = [_target description];
 
 	if( ![connURL scheme] || ![connURL host] || ![connURL path] ) return;
-	NSURL *source = [[NSURL alloc] initWithScheme:[connURL scheme] host:[connURL host] path:[[connURL path] stringByAppendingString:[NSString stringWithFormat:@"/%@", targetName]]];
+	NSURLComponents *components = [NSURLComponents new];
+	components.scheme = connURL.scheme;
+	components.host = connURL.host;
+	components.path = [[connURL path] stringByAppendingFormat:@"/%@", targetName];
+	NSURL *source = components.URL;
 	[[self transcript] setSource:source];
 	[[self transcript] setAutomaticallyWritesChangesToFile:YES];
 	[[self transcript] setElementLimit:0]; // start with zero limit
@@ -1019,7 +1023,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 			NSAlert *alert = [[NSAlert alloc] init];
 			[alert setMessageText:[NSString stringWithFormat:NSLocalizedString( @"User \"%@\" is not online", "user not online alert dialog title" ), [[self user] displayName]]];
 			[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"The user \"%@\" is not online and is unavailable until they reconnect.", "user not online alert dialog message" ), [[self user] displayName]]];
-			[alert setAlertStyle:NSInformationalAlertStyle];
+			[alert setAlertStyle:NSAlertStyleInformational];
 			[alert runModal];
 		}
 		return;
@@ -1044,7 +1048,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 			[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"You are about to send a message with %@ lines. Are you sure you want to do this?", "about to send a %d line message alert dialog message" ), @(newlineCount)]];
 			[alert addButtonWithTitle:NSLocalizedString( @"Send", "Send alert dialog button title" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"Cancel", "Cancel alert dialog button title" )];
-			[alert setAlertStyle:NSWarningAlertStyle];
+			[alert setAlertStyle:NSAlertStyleWarning];
 
 			if ( [alert runModal] == NSAlertSecondButtonReturn ) return;
 		}
@@ -1202,9 +1206,9 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 
 	if( [textView hasMarkedText] ) {
 		ret = NO;
-	} else if( ( [event modifierFlags] & NSAlternateKeyMask ) != 0 ) {
+	} else if( ( [event modifierFlags] & NSEventModifierFlagOption ) != 0 ) {
 		ret = NO;
-	} else if( ([event modifierFlags] & NSControlKeyMask) != 0 ) {
+	} else if( ([event modifierFlags] & NSEventModifierFlagControl) != 0 ) {
 		[self send:@YES];
 		ret = YES;
 	} else if( [[NSUserDefaults standardUserDefaults] boolForKey:@"MVChatSendOnReturn"] ) {
@@ -1266,13 +1270,13 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	} else return NO;
 
 	// exclude device-dependent flags, caps-lock and fn key (necessary for pg up/pg dn/home/end on portables)
-	if( [event modifierFlags] & ~( NSFunctionKeyMask | NSNumericPadKeyMask | NSAlphaShiftKeyMask | NSAlternateKeyMask | 0xffff ) ) return NO;
+	if( [event modifierFlags] & ~( NSEventModifierFlagFunction | NSEventModifierFlagNumericPad | NSEventModifierFlagCapsLock | NSEventModifierFlagOption | 0xffff ) ) return NO;
 
 	BOOL usesOnlyArrows = [[NSUserDefaults standardUserDefaults] boolForKey:@"JVSendHistoryUsesOnlyArrows"];
 
-	if( chr == NSUpArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSAlternateKeyMask ) ) {
+	if( chr == NSUpArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSEventModifierFlagOption ) ) {
 		return [self upArrowKeyPressed];
-	} else if( chr == NSDownArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSAlternateKeyMask ) ) {
+	} else if( chr == NSDownArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSEventModifierFlagOption ) ) {
 		return [self downArrowKeyPressed];
 	} else if( chr == NSPageUpFunctionKey || chr == NSPageDownFunctionKey || chr == NSHomeFunctionKey || chr == NSBeginFunctionKey || chr == NSEndFunctionKey ) {
 		[[[[display mainFrame] findFrameNamed:@"content"] frameView] keyDown:event];
@@ -1319,7 +1323,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	NSEvent *event = [[NSApplication sharedApplication] currentEvent];
 	NSString *search = [[[send textStorage] string] substringWithRange:charRange];
 	NSMutableArray *ret = [NSMutableArray array];
-	NSString *suffix = ( ! ( [event modifierFlags] & NSAlternateKeyMask ) ? ( charRange.location == 0 ? @": " : @" " ) : @"" );
+	NSString *suffix = ( ! ( [event modifierFlags] & NSEventModifierFlagOption ) ? ( charRange.location == 0 ? @": " : @" " ) : @"" );
 	NSString *comparison = [[[self user] nickname] substringToIndex:[search length]];
 
 	if( [search length] <= [[self title] length] && comparison && [search caseInsensitiveCompare:comparison] == NSOrderedSame )

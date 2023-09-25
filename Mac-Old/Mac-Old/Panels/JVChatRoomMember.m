@@ -335,7 +335,7 @@ NS_ASSUME_NONNULL_BEGIN
 		[menu addItem:item];
 
 		item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Kick From Room...", "kick from room (customized) contextual menu - admin only" ) action:@selector( customKick: ) keyEquivalent:@""];
-		[item setKeyEquivalentModifierMask:NSAlternateKeyMask];
+		[item setKeyEquivalentModifierMask:NSEventModifierFlagOption];
 		[item setAlternate:YES];
 		[item setTarget:self];
 		[menu addItem:item];
@@ -346,7 +346,7 @@ NS_ASSUME_NONNULL_BEGIN
 			[menu addItem:item];
 
 			item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Ban From Room...", "ban from room (customized) contextual menu - admin only" ) action:@selector( customBan: ) keyEquivalent:@""];
-			[item setKeyEquivalentModifierMask:NSAlternateKeyMask];
+			[item setKeyEquivalentModifierMask:NSEventModifierFlagOption];
 			[item setAlternate:YES];
 			[item setTarget:self];
 			[menu addItem:item];
@@ -356,7 +356,7 @@ NS_ASSUME_NONNULL_BEGIN
 			[menu addItem:item];
 
 			item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Kick & Ban From Room...", "kickban from room (customized) contextual menu - admin only" ) action:@selector( customKickban: ) keyEquivalent:@""];
-			[item setKeyEquivalentModifierMask:NSAlternateKeyMask];
+			[item setKeyEquivalentModifierMask:NSEventModifierFlagOption];
 			[item setAlternate:YES];
 			[item setTarget:self];
 			[menu addItem:item];

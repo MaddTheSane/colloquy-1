@@ -705,7 +705,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	NSEvent *event = [[NSApplication sharedApplication] currentEvent];
 	NSString *search = [[[send textStorage] string] substringWithRange:charRange];
 	NSMutableArray *ret = [NSMutableArray array];
-	NSString *suffix = ( ! ( [event modifierFlags] & NSAlternateKeyMask ) ? ( charRange.location == 0 ? @": " : @" " ) : @"" );
+	NSString *suffix = ( ! ( [event modifierFlags] & NSEventModifierFlagOption ) ? ( charRange.location == 0 ? @": " : @" " ) : @"" );
 	NSUInteger length = [search length];
 
 	for( JVChatRoomMember *member in _sortedMembers ) {

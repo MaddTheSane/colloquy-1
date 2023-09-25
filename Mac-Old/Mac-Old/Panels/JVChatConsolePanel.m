@@ -440,13 +440,13 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 	} else return NO;
 
 	// exclude device-dependent flags, caps-lock and fn key (necessary for pg up/pg dn/home/end on portables)
-	if( [event modifierFlags] & ~( NSFunctionKeyMask | NSNumericPadKeyMask | NSAlphaShiftKeyMask | NSAlternateKeyMask | 0xffff ) ) return NO;
+	if( [event modifierFlags] & ~( NSEventModifierFlagFunction | NSEventModifierFlagNumericPad | NSEventModifierFlagCapsLock | NSEventModifierFlagOption | 0xffff ) ) return NO;
 
 	BOOL usesOnlyArrows = [[NSUserDefaults standardUserDefaults] boolForKey:@"JVSendHistoryUsesOnlyArrows"];
 
-	if( chr == NSUpArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSAlternateKeyMask ) ) {
+	if( chr == NSUpArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSEventModifierFlagOption ) ) {
 		return [self upArrowKeyPressed];
-	} else if( chr == NSDownArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSAlternateKeyMask ) ) {
+	} else if( chr == NSDownArrowFunctionKey && ( usesOnlyArrows || [event modifierFlags] & NSEventModifierFlagOption ) ) {
 		return [self downArrowKeyPressed];
 	}
 

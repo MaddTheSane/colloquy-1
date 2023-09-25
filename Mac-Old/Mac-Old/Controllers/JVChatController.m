@@ -79,7 +79,7 @@ static NSMenu *smartTranscriptMenu = nil;
 	[smartTranscriptMenu addItem:[NSMenuItem separatorItem]];
 
 	menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"New Smart Transcript...", "new smart transcript menu title" ) action:@selector( _newSmartTranscript: ) keyEquivalent:@"n"];
-	[menuItem setKeyEquivalentModifierMask:(NSCommandKeyMask | NSAlternateKeyMask)];
+	[menuItem setKeyEquivalentModifierMask:(NSEventModifierFlagCommand | NSEventModifierFlagOption)];
 	[menuItem setTarget:[JVChatController defaultController]];
 	[smartTranscriptMenu addItem:menuItem];
 }
@@ -163,8 +163,8 @@ static NSMenu *smartTranscriptMenu = nil;
 
 	if( ! windowController ) windowController = [self createChatWindowController];
 
-	if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask ) initiated = NO;
-	if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) initiated = NO;
+	if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand ) initiated = NO;
+	if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) initiated = NO;
 
 	[windowController addChatViewController:controller];
 
@@ -627,7 +627,7 @@ static NSMenu *smartTranscriptMenu = nil;
 		NSAlert *alert = [[NSAlert alloc] init];
 		[alert setMessageText:NSLocalizedString( @"Connection error", "connection error alert dialog title" )];
 		[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"Could not connect to server because the requested nickname (%@) was unavailable or invalid.", "connection error alert dialog message" ), nickname]];
-		[alert setAlertStyle:NSInformationalAlertStyle];
+		[alert setAlertStyle:NSAlertStyleInformational];
 		[alert runModal];
 	} else if( [error code] == MVChatConnectionNoSuchUserError ) {
 		MVChatUser *user = [error userInfo][@"user"];
@@ -636,21 +636,21 @@ static NSMenu *smartTranscriptMenu = nil;
 			NSAlert *alert = [[NSAlert alloc] init];
 			[alert setMessageText:[NSString stringWithFormat:NSLocalizedString( @"User \"%@\" is not online", "user not online alert dialog title" ), [user displayName]]];
 			[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"The user \"%@\" is not online and is unavailable until they reconnect.", "user not online alert dialog message" ), [user displayName]]];
-			[alert setAlertStyle:NSInformationalAlertStyle];
+			[alert setAlertStyle:NSAlertStyleInformational];
 			[alert runModal];
 		}
 	} else if( [error code] == MVChatConnectionOutOfBricksError ) {
 		NSAlert *alert = [[NSAlert alloc] init];
 		[alert setMessageText:NSLocalizedString( @"Out of bricks", "out of bricks alert dialog title" )];
 		[alert setInformativeText:NSLocalizedString( @"The user you specified could not be bricked because you are out of bricks. You can regain some more when somebody else bricks you.", "out of bricks alert dialog message" )];
-		[alert setAlertStyle:NSInformationalAlertStyle];
+		[alert setAlertStyle:NSAlertStyleInformational];
 		[alert runModal];
 	} else if( [error code] == MVChatConnectionProtocolError ) {
 		NSString *reason = [error userInfo][@"reason"];
 		NSAlert *alert = [[NSAlert alloc] init];
 		[alert setMessageText:NSLocalizedString( @"Chat protocol error", "malformed packet alert dialog title" )];
 		[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"Client got a malformed packet: %@", "malformed packet alert dialog message" ), reason]];
-		[alert setAlertStyle:NSInformationalAlertStyle];
+		[alert setAlertStyle:NSAlertStyleInformational];
 		[alert runModal];
 	}
 }

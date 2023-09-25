@@ -258,10 +258,6 @@ NSString *const JVChatTranscriptUpdatedNotification = @"JVChatTranscriptUpdatedN
 	[self _enforceElementLimit];
 }
 
-- (NSUInteger) elementLimit {
-	return _elementLimit;
-}
-
 #pragma mark -
 
 - (nullable NSArray *) elements {
@@ -1265,7 +1261,7 @@ NSString *const JVChatTranscriptUpdatedNotification = @"JVChatTranscriptUpdatedN
 		}
 
 		@synchronized( _transcript ) {
-			xmlChar *idStr = xmlGetProp( (xmlNode *) _node, (xmlChar *) "id" );
+			xmlChar *idStr = xmlGetProp( _node, (xmlChar *) "id" );
 			_messageIdentifier = ( idStr ? [[NSString alloc] initWithUTF8String:(char *) idStr] : nil );
 			xmlFree( idStr );
 		}

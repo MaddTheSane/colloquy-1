@@ -127,10 +127,10 @@
     CGFloat   alphaValue = [panel alphaValue];
 
     if(windowIsVisible){
-        alphaValue += (maxOpacity - alphaValue) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) ? WINDOW_FADE_SLOW_STEP : WINDOW_FADE_STEP);
+        alphaValue += (maxOpacity - alphaValue) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) ? WINDOW_FADE_SLOW_STEP : WINDOW_FADE_STEP);
         if(alphaValue > maxOpacity - WINDOW_FADE_SNAP) alphaValue = maxOpacity;
     }else{
-        alphaValue -= (alphaValue - WINDOW_FADE_MIN) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) ? WINDOW_FADE_SLOW_STEP : WINDOW_FADE_STEP);
+        alphaValue -= (alphaValue - WINDOW_FADE_MIN) * (( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) ? WINDOW_FADE_SLOW_STEP : WINDOW_FADE_STEP);
         if(alphaValue < WINDOW_FADE_MIN + WINDOW_FADE_SNAP) alphaValue = WINDOW_FADE_MIN;
     }
     [self _setWindowOpacity:alphaValue];

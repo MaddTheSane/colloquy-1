@@ -221,7 +221,7 @@ static NSSize		rightCapSize;
 
     //Background
     if(selected && !ignoreSelection){
-		[tabFront drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+		[tabFront drawInRect:rect fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0];
     }else if(highlighted){
         [[NSColor colorWithCalibratedWhite:0.0 alpha:0.1] set];
         [NSBezierPath fillRect:NSMakeRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)];
@@ -229,7 +229,7 @@ static NSSize		rightCapSize;
 
 	//We'll display our close icon if the user is hovering.  Otherwise, we display the tab specified icon
 	NSImage *leftIcon = [tabViewItem icon];
-	if((hoveringClose && (selected || allowsInactiveTabClosing || ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask ))) || !leftIcon){
+	if((hoveringClose && (selected || allowsInactiveTabClosing || ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand ))) || !leftIcon){
 		if(hoveringClose){
 			leftIcon = (trackingClose ? tabCloseFrontPressed : tabCloseFrontRollover);
 		}else{
@@ -240,7 +240,7 @@ static NSSize		rightCapSize;
 	}else{
 		destPoint = [self _tabIconRect].origin;
 	}
-	[leftIcon drawAtPoint:destPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:( hoveringClose || [tabViewItem isEnabled] ? 1. : 0.5 )];
+	[leftIcon drawAtPoint:destPoint fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:( hoveringClose || [tabViewItem isEnabled] ? 1. : 0.5 )];
 
 	//Move over for label drawing.  We always move based on the tab icon and not on the close button.  This prevents
 	//tab text from jumping when hovered if the tab icons are a different size from the close button
@@ -266,7 +266,7 @@ static NSSize		rightCapSize;
 		wasEnabled = [tabViewItem isEnabled];
 		//Paragraph Style (Turn off clipping by word)
 		NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-		[paragraphStyle setAlignment:NSCenterTextAlignment];
+		[paragraphStyle setAlignment:NSTextAlignmentCenter];
 		[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 
 		//Update the attributed string
@@ -312,12 +312,12 @@ static NSSize		rightCapSize;
 - (void)mouseEntered:(NSEvent *)theEvent
 {
 	//Scrubs the tab if option/alt is down. This is damn annoying!!
-//	if(([theEvent modifierFlags] & NSAlternateKeyMask) && !selected){
+//	if(([theEvent modifierFlags] & NSEventModifierFlagOption) && !selected){
 //		[[tabViewItem tabView] selectTabViewItem:tabViewItem];
 //	}
 
     //Set ourself (or our close button) as hovered
-    if((allowsInactiveTabClosing || selected || ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask )) &&
+    if((allowsInactiveTabClosing || selected || ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand )) &&
 	   ([theEvent trackingNumber] == closeTrackingTag)){
 		[self setHoveringClose:YES];
     }else{
@@ -341,7 +341,7 @@ static NSSize		rightCapSize;
 //Track click and hold on the close button
 - (BOOL)willTrackMouse:(NSEvent *)theEvent inRect:(NSRect)cellFrame ofView:(NSView *)controlView
 {
-    if((allowsInactiveTabClosing || selected || ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask )) &&
+    if((allowsInactiveTabClosing || selected || ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand )) &&
 	   (SHOW_CLOSE_BUTTON_FOR_SINGLE_TAB || [[tabViewItem tabView] numberOfTabViewItems] != 1) &&
 	   NSPointInRect([controlView convertPoint:[theEvent locationInWindow] fromView:nil], [self _closeButtonRect])){
 
@@ -383,7 +383,7 @@ static NSSize		rightCapSize;
     BOOL	hovering = NSPointInRect(stopPoint, [self _closeButtonRect]);
 
 	//Closes all the other tabs in the current window if option is held down (And we have more than one tab)
-	if(hovering && ([[[controlView window] currentEvent] modifierFlags] & NSAlternateKeyMask) && [[tabViewItem tabView] numberOfTabViewItems] > 1){
+	if(hovering && ([[[controlView window] currentEvent] modifierFlags] & NSEventModifierFlagOption) && [[tabViewItem tabView] numberOfTabViewItems] > 1){
 		[(AICustomTabsView *)controlView closeAllTabsExceptFor:self];
 	}else if(hovering){ //If the mouse was released over the close button, close our tab
         [(AICustomTabsView *)controlView closeTab:self];

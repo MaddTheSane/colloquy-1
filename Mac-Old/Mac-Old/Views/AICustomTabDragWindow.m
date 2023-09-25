@@ -38,11 +38,11 @@
 
 	if(useFancyAnimations){
 		//Create a floating window for our tab
-		dragTabFloater = [ESFloater floaterWithImage:floaterTabImage styleMask:NSBorderlessWindowMask title:nil];
+		dragTabFloater = [ESFloater floaterWithImage:floaterTabImage styleMask:NSWindowStyleMaskBorderless title:nil];
 		[dragTabFloater setMaxOpacity:1.0];
 
 		//Create a floating window for the stand-alone window our tab would produce
-		dragWindowFloater = [ESFloater floaterWithImage:floaterWindowImage styleMask:NSTitledWindowMask title:[[inTabView window] title]];
+		dragWindowFloater = [ESFloater floaterWithImage:floaterWindowImage styleMask:NSWindowStyleMaskTitled title:[[inTabView window] title]];
 		[dragWindowFloater setMaxOpacity:(transparent ? 0.75 : 1.00)];
 	}
 
@@ -131,11 +131,11 @@
         [customTabsView drawBackgroundInRect:[customTabsView frame] withFrame:[customTabsView frame] selectedTabRect:NSMakeRect(0,0,0,0)];
         insertPoint = [customTabsView frame].origin;
         insertPoint.x += CUSTOM_TABS_INDENT; //Line the tab up a bit more realistically
-		[tabImage drawAtPoint:insertPoint fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+		[tabImage drawAtPoint:insertPoint fromRect:NSZeroRect operation:NSCompositingOperationCopy fraction:1.0];
 
         //Draw the content
 		NSPoint	frameOrigin = [[[tabCell tabViewItem] tabView] frame].origin;
-		[contentImage drawAtPoint:NSMakePoint(frameOrigin.x + CONTENT_OFFSET_X, frameOrigin.y) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+		[contentImage drawAtPoint:NSMakePoint(frameOrigin.x + CONTENT_OFFSET_X, frameOrigin.y) fromRect:NSZeroRect operation:NSCompositingOperationCopy fraction:1.0];
 
         [dragWindowImage unlockFocus];
     }

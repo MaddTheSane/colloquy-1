@@ -51,7 +51,7 @@ void PFMoveToApplicationsFolderIfNecessary(void)
 	[alert setMessageText:NSLocalizedString(@"Move to Applications folder?", nil)];
 	[alert setInformativeText:NSLocalizedString(@"I can move myself to the Applications folder if you'd like. This will keep your Downloads folder uncluttered.", nil)];
 	[alert setShowsSuppressionButton:YES];
-	[[[alert suppressionButton] cell] setControlSize:NSSmallControlSize];
+	[[[alert suppressionButton] cell] setControlSize:NSControlSizeSmall];
 	[[[alert suppressionButton] cell] setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
 	[alert addButtonWithTitle:NSLocalizedString(@"Move to Applications Folder", nil)];
 	[alert addButtonWithTitle:NSLocalizedString(@"Do Not Move", nil)];
@@ -111,7 +111,7 @@ void PFMoveToApplicationsFolderIfNecessary(void)
 	return;
 }
 
-void showFailureAlert()
+void showFailureAlert(void)
 {
  // Show failure message
  NSAlert *alert = [[NSAlert alloc] init];

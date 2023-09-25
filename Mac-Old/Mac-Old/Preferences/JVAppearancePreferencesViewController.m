@@ -169,7 +169,7 @@
 	NSTableColumn *column = [self.optionsTable tableColumnWithIdentifier:@"key"];
 	JVDetailCell *prototypeCell = [JVDetailCell new];
 	[prototypeCell setFont:[NSFont boldSystemFontOfSize:11.]];
-	[prototypeCell setAlignment:NSRightTextAlignment];
+	[prototypeCell setAlignment:NSTextAlignmentRight];
 	[column setDataCell:prototypeCell];
 
 	[JVStyle scanForStyles];
@@ -609,7 +609,7 @@
 
 // Shows the drawer, option clicking the button will open the custom variant CSS file.
 - (IBAction) showOptions:(id) sender {
-	if( ! self.variantLocked && [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSAlternateKeyMask ) {
+	if( ! self.variantLocked && [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagOption ) {
 		[[NSWorkspace sharedWorkspace] openURL:[self.style variantStyleSheetLocationWithName:[self.style defaultVariantName]]];
 		return;
 	}
@@ -755,14 +755,14 @@
 
 			for( NSString *optionTitle in options[@"options"] )
 				[localizedOptions addObject:NSLocalizedString( optionTitle, "title of style option value" )];
-			[cell setControlSize:NSSmallControlSize];
+			[cell setControlSize:NSControlSizeSmall];
 			[cell setFont:[NSFont menuFontOfSize:[NSFont smallSystemFontSize]]];
 			[cell addItemsWithTitles:localizedOptions];
 			options[@"cell"] = cell;
 			return cell;
         } else if( [options[@"type"] isEqualToString:@"file"] ) {
 			NSPopUpButtonCell *cell = [NSPopUpButtonCell new];
-			[cell setControlSize:NSSmallControlSize];
+			[cell setControlSize:NSControlSizeSmall];
 			[cell setFont:[NSFont menuFontOfSize:[NSFont smallSystemFontSize]]];
 			[self buildFileMenuForCell:cell andOptions:options];
 			options[@"cell"] = cell;

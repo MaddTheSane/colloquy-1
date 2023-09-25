@@ -229,7 +229,7 @@ NSString *const JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type
 		row = [chatViewsOutlineView selectedRow];
 	id item = [chatViewsOutlineView itemAtRow:row]; // get the row the user right-clicked
 	if( [item conformsToProtocol:@protocol( JVInspection )] ) {
-		if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSAlternateKeyMask )
+		if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagOption )
 			[JVInspectorController showInspector:sender];
 		else [[JVInspectorController inspectorOfObject:item] show:sender];
 	}
@@ -325,11 +325,11 @@ NSString *const JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type
 	CGFloat deltaY = [event deltaY];
 
 	if( deltaX > 0 || deltaY > 0 ) {
-		if( [event modifierFlags] & NSAlternateKeyMask )
+		if( [event modifierFlags] & NSEventModifierFlagOption )
 			[self selectPreviousActivePanel:nil];
 		else [self selectPreviousPanel:nil];
 	} else if( deltaX < 0 || deltaY < 0 ) {
-		if( [event modifierFlags] & NSAlternateKeyMask )
+		if( [event modifierFlags] & NSEventModifierFlagOption )
 			[self selectNextActivePanel:nil];
 		else [self selectNextPanel:nil];
 	}
@@ -864,7 +864,7 @@ NSString *const JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type
 }
 
 - (BOOL) outlineView:(NSOutlineView *) outlineView shouldExpandItem:(id) item {
-	if( [[[NSApplication sharedApplication] currentEvent] type] == NSLeftMouseDragged ) return NO; // if we are dragging don't expand
+	if( [[[NSApplication sharedApplication] currentEvent] type] == NSEventTypeLeftMouseDragged ) return NO; // if we are dragging don't expand
 	return YES;
 }
 
@@ -972,17 +972,17 @@ NSString *const JVChatViewPboardType = @"Colloquy Chat View v1.0 pasteboard type
 @implementation JVChatWindowController (Private)
 - (void) _claimMenuCommands {
 	NSMenuItem *closeItem = [[[[[NSApplication sharedApplication] mainMenu] itemAtIndex:1] submenu] itemWithTag:1];
-	[closeItem setKeyEquivalentModifierMask:NSCommandKeyMask];
+	[closeItem setKeyEquivalentModifierMask:NSEventModifierFlagCommand];
 	[closeItem setKeyEquivalent:@"W"];
 
 	closeItem = (NSMenuItem *)[[[[[NSApplication sharedApplication] mainMenu] itemAtIndex:1] submenu] itemWithTag:2];
-	[closeItem setKeyEquivalentModifierMask:NSCommandKeyMask];
+	[closeItem setKeyEquivalentModifierMask:NSEventModifierFlagCommand];
 	[closeItem setKeyEquivalent:@"w"];
 }
 
 - (void) _resignMenuCommands {
 	NSMenuItem *closeItem = [[[[[NSApplication sharedApplication] mainMenu] itemAtIndex:1] submenu] itemWithTag:1];
-	[closeItem setKeyEquivalentModifierMask:NSCommandKeyMask];
+	[closeItem setKeyEquivalentModifierMask:NSEventModifierFlagCommand];
 	[closeItem setKeyEquivalent:@"w"];
 
 	closeItem = (NSMenuItem *)[[[[[NSApplication sharedApplication] mainMenu] itemAtIndex:1] submenu] itemWithTag:2];

@@ -1054,10 +1054,10 @@ static NSMenu *favoritesMenu = nil;
 	if( [connections selectedRow] == -1 ) return;
 	connection = _bookmarks[[connections selectedRow]][@"connection"];
 
-	[[NSPasteboard generalPasteboard] declareTypes:@[NSURLPboardType, NSStringPboardType] owner:self];
+	[[NSPasteboard generalPasteboard] declareTypes:@[NSURLPboardType, NSPasteboardTypeString] owner:self];
 
 	[[connection url] writeToPasteboard:[NSPasteboard generalPasteboard]];
-	[[NSPasteboard generalPasteboard] setString:[[connection url] description] forType:NSStringPboardType];
+	[[NSPasteboard generalPasteboard] setString:[[connection url] description] forType:NSPasteboardTypeString];
 
 	[self _delete:sender];
 }
@@ -1068,15 +1068,15 @@ static NSMenu *favoritesMenu = nil;
 	if( [connections selectedRow] == -1 ) return;
 	connection = _bookmarks[[connections selectedRow]][@"connection"];
 
-	[[NSPasteboard generalPasteboard] declareTypes:@[NSURLPboardType, NSStringPboardType] owner:self];
+	[[NSPasteboard generalPasteboard] declareTypes:@[NSURLPboardType, NSPasteboardTypeString] owner:self];
 
 	[[connection url] writeToPasteboard:[NSPasteboard generalPasteboard]];
-	[[NSPasteboard generalPasteboard] setString:[[connection url] description] forType:NSStringPboardType];
+	[[NSPasteboard generalPasteboard] setString:[[connection url] description] forType:NSPasteboardTypeString];
 }
 
 - (IBAction) paste:(id) sender {
 	NSURL *url = [NSURL URLFromPasteboard:[NSPasteboard generalPasteboard]];
-	if( ! url ) url = [NSURL URLWithString:[[NSPasteboard generalPasteboard] stringForType:NSStringPboardType]];
+	if( ! url ) url = [NSURL URLWithString:[[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString]];
 	[self handleURL:url andConnectIfPossible:NO];
 }
 
@@ -1299,7 +1299,7 @@ static NSMenu *favoritesMenu = nil;
 		connection = info[@"connection"];
 		data = [NSData dataWithBytes:&row length:sizeof( &row )];
 
-		[board declareTypes:@[MVConnectionPboardType, NSURLPboardType, NSStringPboardType, @"CorePasteboardFlavorType 0x75726C20", @"CorePasteboardFlavorType 0x75726C6E", @"WebURLsWithTitlesPboardType"] owner:self];
+		[board declareTypes:@[MVConnectionPboardType, NSURLPboardType, NSPasteboardTypeString, @"CorePasteboardFlavorType 0x75726C20", @"CorePasteboardFlavorType 0x75726C6E", @"WebURLsWithTitlesPboardType"] owner:self];
 
 		[board setData:data forType:MVConnectionPboardType];
 
@@ -1307,8 +1307,8 @@ static NSMenu *favoritesMenu = nil;
 
 		string = [[connection url] absoluteString];
 		data = [string dataUsingEncoding:NSASCIIStringEncoding];
-		[board setString:string forType:NSStringPboardType];
-		[board setData:data forType:NSStringPboardType];
+		[board setString:string forType:NSPasteboardTypeString];
+		[board setData:data forType:NSPasteboardTypeString];
 
 		string = [[connection url] absoluteString];
 		data = [string dataUsingEncoding:NSASCIIStringEncoding];
@@ -1348,7 +1348,7 @@ static NSMenu *favoritesMenu = nil;
 			if( [MVChatConnection supportsURLScheme:[[NSURL URLFromPasteboard:[info draggingPasteboard]] scheme]] )
 				return NSDragOperationEvery;
 
-			string = [[info draggingPasteboard] stringForType:NSStringPboardType];
+			string = [[info draggingPasteboard] stringForType:NSPasteboardTypeString];
 			if( string && [MVChatConnection supportsURLScheme:[[NSURL URLWithString:string] scheme]] )
 				return NSDragOperationEvery;
 
@@ -1394,7 +1394,7 @@ static NSMenu *favoritesMenu = nil;
 			}
 
 			if( ! url || ! [MVChatConnection supportsURLScheme:[url scheme]] ) {
-				string = [[info draggingPasteboard] stringForType:NSStringPboardType];
+				string = [[info draggingPasteboard] stringForType:NSPasteboardTypeString];
 				if( string ) url = [NSURL URLWithString:string];
 			}
 
@@ -1657,7 +1657,7 @@ static NSMenu *favoritesMenu = nil;
 		[chatErrorAlert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"%@\n\nServer Details:\n%@", "error alert informative text with literal reason"), [[notification userInfo][@"error"] localizedDescription], [[notification userInfo][@"error"] userInfo][@"errorLiteralReason"]]];
 	else [chatErrorAlert setInformativeText:[[notification userInfo][@"error"] localizedDescription]];
 
-	[chatErrorAlert setAlertStyle:NSInformationalAlertStyle];
+	[chatErrorAlert setAlertStyle:NSAlertStyleInformational];
 
 	if ( error.code == MVChatConnectionServicesDownError ) {
 		// ask the user if we want to continue auto joining rooms without identification (== no hostmask cloaking) now that we know services are down
@@ -1903,7 +1903,7 @@ static NSMenu *favoritesMenu = nil;
 		}
 		connection.nicknamePassword = nicknamePassword;
 
-		if( [info[@"automatic"] boolValue] && ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) )
+		if( [info[@"automatic"] boolValue] && ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) )
 			[connection connect];
 	}
 
@@ -2063,7 +2063,7 @@ static NSMenu *favoritesMenu = nil;
 		}
 	}
 
-	if( [roomIdentifiers count] && ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask ) )
+	if( [roomIdentifiers count] && ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagShift ) )
 		[connection joinChatRoomsNamed:roomIdentifiers];
 }
 
@@ -2080,7 +2080,7 @@ static NSMenu *favoritesMenu = nil;
 
 	NSString *strcommands = [self connectCommandsForConnection:connection];
 
-	if( ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask ) ) {
+	if( ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand ) ) {
 		for( __strong NSMutableString *command in [strcommands componentsSeparatedByString:@"\n"] ) {
 			command = [command mutableCopy];
 			[command replaceOccurrencesOfString:@"%@" withString:[connection nickname] options:NSLiteralSearch range:NSMakeRange( 0, [command length] )];
@@ -2136,7 +2136,7 @@ static NSMenu *favoritesMenu = nil;
 
 	NSString *strcommands = [self connectCommandsForConnection:connection];
 
-	if( ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSCommandKeyMask ) ) {
+	if( ! ( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagCommand ) ) {
 		for( __strong NSMutableString *command in [strcommands componentsSeparatedByString:@"\n"] ) {
 			command = [command mutableCopy];
 			[command replaceOccurrencesOfString:@"%@" withString:[connection nickname] options:NSLiteralSearch range:NSMakeRange( 0, [command length] )];

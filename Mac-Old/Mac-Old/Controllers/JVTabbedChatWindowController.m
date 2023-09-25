@@ -153,7 +153,7 @@
 	if( [chatViewsOutlineView numberOfSelectedRows] && [[chatViewsOutlineView window] firstResponder] == chatViewsOutlineView ) {
 		[super getInfo:sender];
 	} else if( [_activeViewController conformsToProtocol:@protocol( JVInspection )] ) {
-		if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSAlternateKeyMask )
+		if( [[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSEventModifierFlagOption )
 			[JVInspectorController showInspector:_activeViewController];
 		else [[JVInspectorController inspectorOfObject:(id <JVInspection>)_activeViewController] show:sender];
 	}

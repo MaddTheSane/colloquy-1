@@ -42,7 +42,7 @@ static NSMutableSet *inspectors = nil;
 	panelRect.origin.x = 200; panelRect.origin.y = NSMaxY( [[NSScreen mainScreen] visibleFrame] ) + 400;
 	panelRect.size.width = 175; panelRect.size.height = 200;
 
-	NSWindow *panel = [[NSPanel alloc] initWithContentRect:panelRect styleMask:( ( ! locked ? NSUtilityWindowMask : 0 ) | NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask ) backing:NSBackingStoreBuffered defer:YES];
+	NSWindow *panel = [[NSPanel alloc] initWithContentRect:panelRect styleMask:( ( ! locked ? NSWindowStyleMaskUtilityWindow : 0 ) | NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable ) backing:NSBackingStoreBuffered defer:YES];
 
 	if( locked ) {
 		[(NSPanel *)panel setFloatingPanel:YES];
