@@ -114,7 +114,7 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 - (void) promptForReload {
 	NSAlert *alert = [[NSAlert alloc] init];
 	alert.messageText = NSLocalizedStringFromTableInBundle( @"Python Script Changed", nil, [NSBundle bundleForClass:[self class]], "Python script file changed dialog title" );
-	alert.informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The Python script \"%@\" has changed on disk. Any script variables will reset if reloaded.", nil, [NSBundle bundleForClass:[self class]], "Python script changed on disk message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension]];
+	alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The Python script \"%@\" has changed on disk. Any script variables will reset if reloaded.", nil, [NSBundle bundleForClass:[self class]], "Python script changed on disk message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension]];
 	alert.alertStyle = NSAlertStyleInformational;
 	[alert addButtonWithTitle:NSLocalizedStringFromTableInBundle( @"Reload", nil, [NSBundle bundleForClass:[self class]], "reload button title" )];
 	[alert addButtonWithTitle:NSLocalizedStringFromTableInBundle( @"Keep Previous Version", nil, [NSBundle bundleForClass:[self class]], "keep previous version button title" )];
@@ -238,9 +238,9 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 		
 		NSString *informativeText;
 		if( functionName ) {
-			informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The Python script \"%@\" had an error while calling the \"%@\" function.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "Python script plugin error message" ), scriptTitle, functionName, errorDesc];
+			informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The Python script \"%@\" had an error while calling the \"%@\" function.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "Python script plugin error message" ), scriptTitle, functionName, errorDesc];
 		} else {
-			informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The Python script \"%@\" had an error while loading.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "Python script error message" ), scriptTitle, errorDesc];
+			informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The Python script \"%@\" had an error while loading.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "Python script error message" ), scriptTitle, errorDesc];
 		}
 		
 		_errorShown = YES;

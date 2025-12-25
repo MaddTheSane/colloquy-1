@@ -328,10 +328,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 }
 
 - (NSString *) toolTip {
-	NSString *messageCount = @"";
-	if( [self newMessagesWaiting] == 0 ) messageCount = NSLocalizedString( @"no messages waiting", "no messages waiting room tooltip" );
-	else if( [self newMessagesWaiting] == 1 ) messageCount = NSLocalizedString( @"1 message waiting", "one message waiting room tooltip" );
-	else messageCount = [NSString stringWithFormat:NSLocalizedString( @"%@ messages waiting", "messages waiting room tooltip" ), @([self newMessagesWaiting])];
+	NSString *messageCount = [NSString localizedStringWithFormat:NSLocalizedString( @"%lu messages waiting", "messages waiting room tooltip" ), (unsigned long)[self newMessagesWaiting]];
 
 /*	if( _buddy && [_buddy preferredNameWillReturn] != JVBuddyActiveNickname )
 		return [NSString stringWithFormat:@"%@\n%@ (%@)\n%@", [_buddy preferredName], [self target], [[self user] serverAddress], messageCount]; */
@@ -850,7 +847,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	if( [cmessage isHighlighted] && [cmessage ignoreStatus] == JVNotIgnored ) {
 		_newHighlightMessageCount++;
 		NSMutableDictionary *context = [NSMutableDictionary dictionary];
-		context[@"title"] = [NSString stringWithFormat:NSLocalizedString( @"%@ Mentioned a Highlight Word", "mention bubble title" ), [user displayName]];
+		context[@"title"] = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ Mentioned a Highlight Word", "mention bubble title" ), [user displayName]];
 		context[@"description"] = [messageString string];
 		context[@"image"] = [NSImage imageNamed:@"activityNewImportant"];
 		context[@"target"] = self;
@@ -861,8 +858,8 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	if( [cmessage ignoreStatus] != JVNotIgnored ) {
 		NSMutableDictionary *context = [NSMutableDictionary dictionary];
 		context[@"title"] = ( ( [cmessage ignoreStatus] == JVUserIgnored ) ? NSLocalizedString( @"User Ignored", "user ignored bubble title" ) : NSLocalizedString( @"Message Ignored", "message ignored bubble title" ) );
-		if( [self isMemberOfClass:[JVChatRoomPanel class]] ) context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"%@'s message was ignored in %@.", "chat room user ignored bubble text" ), user, [self title]];
-		else context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"%@'s message was ignored.", "direct chat user ignored bubble text" ), user];
+		if( [self isMemberOfClass:[JVChatRoomPanel class]] ) context[@"description"] = [NSString localizedStringWithFormat:NSLocalizedString( @"%@'s message was ignored in %@.", "chat room user ignored bubble text" ), user, [self title]];
+		else context[@"description"] = [NSString localizedStringWithFormat:NSLocalizedString( @"%@'s message was ignored.", "direct chat user ignored bubble text" ), user];
 		context[@"image"] = [NSImage imageNamed:@"activity"];
 		[self performNotification:( ( [cmessage ignoreStatus] == JVUserIgnored ) ? @"JVUserIgnored" : @"JVMessageIgnored" ) withContextInfo:context];
 	}
@@ -911,7 +908,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 		if( [message ignoreStatus] == JVNotIgnored && _firstMessage ) {
 			NSMutableDictionary *context = [NSMutableDictionary dictionary];
 			[context setObject:NSLocalizedString( @"New Private Message", "first message bubble title" ) forKey:@"title"];
-			[context setObject:[NSString stringWithFormat:NSLocalizedString( @"%@ wrote you a private message.", "first message bubble text" ), [self title]] forKey:@"description"];
+			[context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ wrote you a private message.", "first message bubble text" ), [self title]] forKey:@"description"];
 			[context setObject:[NSImage imageNamed:@"messageUser"] forKey:@"image"];
 			[context setObject:[windowTitle stringByAppendingString:@"JVChatPrivateMessage"] forKey:@"coalesceKey"];
 			[context setObject:self forKey:@"target"];
@@ -921,8 +918,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 		} else if( [message ignoreStatus] == JVNotIgnored ) {
 			NSMutableDictionary *context = [NSMutableDictionary dictionary];
 			[context setObject:NSLocalizedString( @"Private Message", "new message bubble title" ) forKey:@"title"];
-			if( [self newMessagesWaiting] == 1 ) [context setObject:[NSString stringWithFormat:NSLocalizedString( @"You have 1 message waiting from %@.", "new single message bubble text" ), [self title]] forKey:@"description"];
-			[context setObject:[NSString stringWithFormat:NSLocalizedString( @"You have %@ messages waiting from %@.", "new messages bubble text" ), @([self newMessagesWaiting]), [self title]] forKey:@"description"];
+			[context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"You have %lu messages waiting from %@.", "new messages bubble text" ), (unsigned long)[self newMessagesWaiting], [self title]] forKey:@"description"];
 			[context setObject:[NSImage imageNamed:@"messageUser"] forKey:@"image"];
 			[context setObject:[windowTitle stringByAppendingString:@"JVChatPrivateMessage"] forKey:@"coalesceKey"];
 			[context setObject:self forKey:@"target"];
@@ -1021,8 +1017,8 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	if( ( _cantSendMessages || ! [self isEnabled] ) && ( ! [[[send textStorage] string] hasPrefix:@"/"] || [[[send textStorage] string] hasPrefix:@"//"] ) ) {
 		if( [[self target] isKindOfClass:[MVChatUser class]] && [[self user] status] == MVChatUserOfflineStatus ) {
 			NSAlert *alert = [[NSAlert alloc] init];
-			[alert setMessageText:[NSString stringWithFormat:NSLocalizedString( @"User \"%@\" is not online", "user not online alert dialog title" ), [[self user] displayName]]];
-			[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"The user \"%@\" is not online and is unavailable until they reconnect.", "user not online alert dialog message" ), [[self user] displayName]]];
+			[alert setMessageText:[NSString localizedStringWithFormat:NSLocalizedString( @"User \"%@\" is not online", "user not online alert dialog title" ), [[self user] displayName]]];
+			[alert setInformativeText:[NSString localizedStringWithFormat:NSLocalizedString( @"The user \"%@\" is not online and is unavailable until they reconnect.", "user not online alert dialog message" ), [[self user] displayName]]];
 			[alert setAlertStyle:NSAlertStyleInformational];
 			[alert runModal];
 		}
@@ -1045,7 +1041,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 		if ( newlineCount > messageLimit ) {
 			NSAlert *alert = [[NSAlert alloc] init];
 			[alert setMessageText:NSLocalizedString( @"Multiple lines detected", "multiple lines detected alert dialog title")];
-			[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"You are about to send a message with %@ lines. Are you sure you want to do this?", "about to send a %d line message alert dialog message" ), @(newlineCount)]];
+			[alert setInformativeText:[NSString localizedStringWithFormat:NSLocalizedString( @"You are about to send a message with %lu lines. Are you sure you want to do this?", "about to send a %d line message alert dialog message" ), (unsigned long)newlineCount]];
 			[alert addButtonWithTitle:NSLocalizedString( @"Send", "Send alert dialog button title" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"Cancel", "Cancel alert dialog button title" )];
 			[alert setAlertStyle:NSAlertStyleWarning];
@@ -1677,7 +1673,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 	if( [error code] == MVChatConnectionNoSuchUserError ) {
 		MVChatUser *user = [error userInfo][@"user"];
 		if( [user isEqualTo:[self user]] )
-			[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"%@ is not online. Any messages sent will not be received.", "user not online" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"offline" andAttributes:nil];
+			[self addEventMessageToDisplay:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ is not online. Any messages sent will not be received.", "user not online" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"offline" andAttributes:nil];
 	}
 }
 
@@ -1693,7 +1689,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 		NSDictionary *options = @{@"IgnoreFonts": @YES, @"IgnoreFontSizes": @YES};
 		NSString *msgString = [messageString HTMLFormatWithOptions:options];
 
-		[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"You have set yourself away with \"%@\".", "self away status set message" ), msgString] withName:@"awaySet" andAttributes:[NSDictionary dictionaryWithObjectsAndKeys:messageString, @"away-message", nil]];
+		[self addEventMessageToDisplay:[NSString localizedStringWithFormat:NSLocalizedString( @"You have set yourself away with \"%@\".", "self away status set message" ), msgString] withName:@"awaySet" andAttributes:[NSDictionary dictionaryWithObjectsAndKeys:messageString, @"away-message", nil]];
 
 		NSUInteger messageCount = [display _visibleMessageCount];
 		NSUInteger loc = [display _locationOfElementAtIndex:( messageCount - 1 )];
@@ -1879,11 +1875,11 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 
 - (void) _userStatusChanged:(NSNotification *) notification {
 	if ([(MVChatUser *)_target status] == MVChatUserOfflineStatus)
-		[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"%@ disconnected from the server.", "User disconnected event message" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"userDisconnected" andAttributes:nil];
+		[self addEventMessageToDisplay:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ disconnected from the server.", "User disconnected event message" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"userDisconnected" andAttributes:nil];
 	else if ([(MVChatUser *)_target status] == MVChatUserAwayStatus)
-		[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"<span class=\"member\">%@</span> is marked as away.", "User marked as away event message" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"userAway" andAttributes:nil];
+		[self addEventMessageToDisplay:[NSString localizedStringWithFormat:NSLocalizedString( @"<span class=\"member\">%@</span> is marked as away.", "User marked as away event message" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"userAway" andAttributes:nil];
 	else if ([(MVChatUser *)_target status] == MVChatUserAvailableStatus)
-		[self addEventMessageToDisplay:[NSString stringWithFormat:NSLocalizedString( @"<span class=\"member\">%@</span> is now available.", "User available event message" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"userAvailable" andAttributes:nil];
+		[self addEventMessageToDisplay:[NSString localizedStringWithFormat:NSLocalizedString( @"<span class=\"member\">%@</span> is now available.", "User available event message" ), [[[self user] displayName] stringByEncodingXMLSpecialCharactersAsEntities]] withName:@"userAvailable" andAttributes:nil];
 }
 
 @end

@@ -263,9 +263,7 @@ static NSString *JVInterfacePreferencesWindowDragPboardType = @"JVInterfacePrefe
 		else [(JVDetailCell *) cell setMainText:[info objectForKey:@"title"]];
 
 		NSUInteger c = [(NSArray *)[info objectForKey:@"rules"] count];
-		if( c == 0 ) [(JVDetailCell *) cell setInformationText:NSLocalizedString( @"No rules", "no rules info label" )];
-		else if( c == 1 ) [(JVDetailCell *) cell setInformationText:NSLocalizedString( @"1 rule", "one rule info label" )];
-		else [(JVDetailCell *) cell setInformationText:[NSString stringWithFormat:NSLocalizedString( @"%@ rules", "number of rules info label" ), @(c)]];
+		[(JVDetailCell *) cell setInformationText:[NSString localizedStringWithFormat:NSLocalizedString( @"%lu rules", "number of rules info label" ), (unsigned long)c]];
 	} else if( view == self.rulesTable ) {
 		NSArray *ruleSets = [self selectedRules];
 		NSDictionary *info = [ruleSets objectAtIndex:row];
@@ -395,7 +393,7 @@ static NSString *JVInterfacePreferencesWindowDragPboardType = @"JVInterfacePrefe
 #pragma mark -
 
 - (IBAction) addWindowSet:(id) sender {
-	NSString *title = [NSString stringWithFormat:NSLocalizedString( @"Window %@", "starting window title, window and a number" ), @([self.windowSets count])];
+	NSString *title = [NSString localizedStringWithFormat:NSLocalizedString( @"Window %lu", "starting window title, window and a number" ), (unsigned long)[self.windowSets count]];
 	[self.windowTitle setStringValue:title];
 	[self.rememberPanels setState:NSOnState];
 	[self.windowEditSaveButton setEnabled:YES];

@@ -606,7 +606,7 @@ static NSMenu *favoritesMenu = nil;
 			[self _validateToolbar];
 
 			_userSelectionPossibleUsers = [users allObjects];
-			[userSelectionDescription setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Multiple users with the name '%@' have been found.", "multiple user same nickname, user selection description"), [userToMessage stringValue]]];
+			[userSelectionDescription setStringValue:[NSString localizedStringWithFormat:NSLocalizedString(@"Multiple users with the name '%@' have been found.", "multiple user same nickname, user selection description"), [userToMessage stringValue]]];
 
 			[userSelectionTable reloadData];
 			[userSelectionTable selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
@@ -1654,7 +1654,7 @@ static NSMenu *favoritesMenu = nil;
 
 	[chatErrorAlert setMessageText:errorTitle];
 	if( error.userInfo[@"errorLiteralReason"] )
-		[chatErrorAlert setInformativeText:[NSString stringWithFormat:NSLocalizedString( @"%@\n\nServer Details:\n%@", "error alert informative text with literal reason"), [[notification userInfo][@"error"] localizedDescription], [[notification userInfo][@"error"] userInfo][@"errorLiteralReason"]]];
+		[chatErrorAlert setInformativeText:[NSString localizedStringWithFormat:NSLocalizedString( @"%@\n\nServer Details:\n%@", "error alert informative text with literal reason"), [[notification userInfo][@"error"] localizedDescription], [[notification userInfo][@"error"] userInfo][@"errorLiteralReason"]]];
 	else [chatErrorAlert setInformativeText:[[notification userInfo][@"error"] localizedDescription]];
 
 	[chatErrorAlert setAlertStyle:NSAlertStyleInformational];
@@ -1705,7 +1705,7 @@ static NSMenu *favoritesMenu = nil;
 				}
 				break;
 			default:
-				NSRunCriticalAlertPanel( NSLocalizedString( @"You have been disconnected", "title of the you have been disconnected error" ), [NSString stringWithFormat:NSLocalizedString( @"The connection was terminated between your computer and the server. %s.", "unknown disconnection error dialog message" ), [MVChatConnection descriptionForError:error]], nil, nil, nil );
+				NSRunCriticalAlertPanel( NSLocalizedString( @"You have been disconnected", "title of the you have been disconnected error" ), [NSString localizedStringWithFormat:NSLocalizedString( @"The connection was terminated between your computer and the server. %s.", "unknown disconnection error dialog message" ), [MVChatConnection descriptionForError:error]], nil, nil, nil );
 				break;
 		}
 	} else if( [[[notification userInfo] objectForKey:@"whileConnecting"] boolValue] ) {
@@ -1719,10 +1719,10 @@ static NSMenu *favoritesMenu = nil;
 				NSRunCriticalAlertPanel( NSLocalizedString( @"Your Chat password is invalid", "chat invalid password dialog title" ), NSLocalizedString( @"The password you specified is invalid or a connection could not be made without a proper password. Make sure you have access to the server.", "chat invalid password dialog message" ), nil, nil, nil );
 				break;
 			case MVChatBadTargetError:
-				NSRunCriticalAlertPanel( NSLocalizedString( @"Your Chat nickname could not be used", "chat invalid nickname dialog title" ), [NSString stringWithFormat:NSLocalizedString( @"The nickname you specified is in use or invalid on this server. A connection could not be made with '%@' as your nickname.", "chat invalid nicknames dialog message" ), [connection nickname]], nil, nil, nil );
+				NSRunCriticalAlertPanel( NSLocalizedString( @"Your Chat nickname could not be used", "chat invalid nickname dialog title" ), [NSString localizedStringWithFormat:NSLocalizedString( @"The nickname you specified is in use or invalid on this server. A connection could not be made with '%@' as your nickname.", "chat invalid nicknames dialog message" ), [connection nickname]], nil, nil, nil );
 				break;
 			default:
-				NSRunCriticalAlertPanel( NSLocalizedString( @"An error occured while connecting", "chat connecting error dialog title" ), [NSString stringWithFormat:NSLocalizedString( @"The connection could not be made. %s.", "unknown connection error dialog message" ), [NSString stringWithFormat:NSLocalizedString( @"The connection was terminated between your computer and the server. %s.", "unknown disconnection error dialog message" ), [MVChatConnection descriptionForError:error]]], nil, nil, nil );
+				NSRunCriticalAlertPanel( NSLocalizedString( @"An error occured while connecting", "chat connecting error dialog title" ), [NSString localizedStringWithFormat:NSLocalizedString( @"The connection could not be made. %s.", "unknown connection error dialog message" ), [NSString localizedStringWithFormat:NSLocalizedString( @"The connection was terminated between your computer and the server. %s.", "unknown disconnection error dialog message" ), [MVChatConnection descriptionForError:error]]], nil, nil, nil );
 				break;
 		}
 	} else {
@@ -1739,7 +1739,7 @@ static NSMenu *favoritesMenu = nil;
 				}
 				break;
 			default:
-				NSRunCriticalAlertPanel( NSLocalizedString( @"An error occured", "unknown error dialog title" ), [NSString stringWithFormat:NSLocalizedString( @"An error occured when dealing with %@. %@", "unknown error dialog message" ), ( target ? target : NSLocalizedString( @"server", "singular server label" ) ), [MVChatConnection descriptionForError:error]], nil, nil, nil );
+				NSRunCriticalAlertPanel( NSLocalizedString( @"An error occured", "unknown error dialog title" ), [NSString localizedStringWithFormat:NSLocalizedString( @"An error occured when dealing with %@. %@", "unknown error dialog message" ), ( target ? target : NSLocalizedString( @"server", "singular server label" ) ), [MVChatConnection descriptionForError:error]], nil, nil, nil );
 				break;
 		}
 	}*/
@@ -2003,7 +2003,7 @@ static NSMenu *favoritesMenu = nil;
 		return;
 	}
 
-	[certificateDescription setObjectValue:[NSString stringWithFormat:NSLocalizedString( @"Your certificate is locked with a passphrase. In order to connect to %@, you need to unlock your certificate.", "certificate unlock request, server name inserted" ), [connection server]]];
+	[certificateDescription setObjectValue:[NSString localizedStringWithFormat:NSLocalizedString( @"Your certificate is locked with a passphrase. In order to connect to %@, you need to unlock your certificate.", "certificate unlock request, server name inserted" ), [connection server]]];
 	[certificatePassphrase setObjectValue:@""];
 	[certificateKeychain setState:NSOffState];
 
@@ -2073,7 +2073,7 @@ static NSMenu *favoritesMenu = nil;
 	if ( [[notification name] isEqualToString:MVChatConnectionDidIdentifyWithServicesNotification] ) {
 		NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
 		context[@"title"] = NSLocalizedString( @"You Have Been Identified", "identified bubble title" );
-		context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"%@ has identified you as %@ on %@.", "identified bubble message, server message and server name" ), [notification userInfo][@"user"], [notification userInfo][@"target"], [connection server]];
+		context[@"description"] = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ has identified you as %@ on %@.", "identified bubble message, server message and server name" ), [notification userInfo][@"user"], [notification userInfo][@"target"], [connection server]];
 		context[@"image"] = [NSImage imageNamed:@"Keychain"];
 		[[JVNotificationController defaultController] performNotification:@"JVNickNameIdentifiedWithServer" withContextInfo:context];
 	}
@@ -2272,7 +2272,7 @@ static NSMenu *favoritesMenu = nil;
 	
 	NSAlert *alert = [[NSAlert alloc] init];
 	alert.messageText = NSLocalizedString( @"Are you sure you want to delete?", "delete confirm dialog title" );
-	alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"Are you sure you want to delete the connection for %@? Any associated Keychain passwords will also be deleted.", "confirm the delete of a connection" ), [connection server]];
+	alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"Are you sure you want to delete the connection for %@? Any associated Keychain passwords will also be deleted.", "confirm the delete of a connection" ), [connection server]];
 	alert.alertStyle = NSAlertStyleCritical;
 	[alert addButtonWithTitle:NSLocalizedString( @"Cancel", "cancel button" )];
 	[alert addButtonWithTitle:NSLocalizedString( @"OK", "OK button" )];

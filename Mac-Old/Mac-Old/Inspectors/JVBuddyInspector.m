@@ -313,10 +313,8 @@
 
 		count--; // exclude the first rule criterion in the count
 
-		if( count == 1 )
-			[description appendFormat:NSLocalizedString( @" (and 1 other criterion)", "one other buddy identifier criterion" ), count];
-		else if( count > 1 )
-			[description appendFormat:NSLocalizedString( @" (and %@ other criteria)", "count of other buddy identifier criteria" ), @(count)];
+		if( count >= 1 )
+			[description appendFormat:NSLocalizedString( @" (and %lu other criteria)", "count of other buddy identifier criteria" ), (unsigned long)count];
 
 		return description;
 	}

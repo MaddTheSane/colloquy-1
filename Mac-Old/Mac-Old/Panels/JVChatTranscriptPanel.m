@@ -146,7 +146,7 @@ NSString *const JVToolbarQuickSearchItemIdentifier = @"JVToolbarQuickSearchItem"
 - (NSString *) windowTitle {
 	NSDateComponents *dateComponents = [[self transcript] dateBegan];
 	NSDate *date = [[NSCalendar autoupdatingCurrentCalendar] dateFromComponents:dateComponents];
-	return [NSString stringWithFormat:NSLocalizedString( @"%@ - %@ Transcript", "chat transcript/log - window title" ), [self title], ( date ? [NSDate formattedShortDateStringForDate:[NSDate date]] : @"" )];
+	return [NSString localizedStringWithFormat:NSLocalizedString( @"%@ - %@ Transcript", "chat transcript/log - window title" ), [self title], ( date ? [NSDate formattedShortDateStringForDate:[NSDate date]] : @"" )];
 }
 
 - (nullable NSString *) information {

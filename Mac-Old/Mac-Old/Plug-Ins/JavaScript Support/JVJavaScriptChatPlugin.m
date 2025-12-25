@@ -308,7 +308,7 @@ NSString *JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
 - (void) promptForReload {
 	NSAlert *alert = [[NSAlert alloc] init];
 	alert.messageText = NSLocalizedStringFromTableInBundle( @"JavaScript Changed", nil, [NSBundle bundleForClass:[self class]], "JavaScript file changed dialog title" );
-	alert.informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" has changed on disk. Any script variables will reset if reloaded.", nil, [NSBundle bundleForClass:[self class]], "JavaScript changed on disk message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension]];
+	alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" has changed on disk. Any script variables will reset if reloaded.", nil, [NSBundle bundleForClass:[self class]], "JavaScript changed on disk message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension]];
 	alert.alertStyle = NSAlertStyleInformational;
 	[alert addButtonWithTitle:NSLocalizedStringFromTableInBundle( @"Reload", nil, [NSBundle bundleForClass:[self class]], "reload button title" )];
 	[alert addButtonWithTitle:NSLocalizedStringFromTableInBundle( @"Keep Previous Version", nil, [NSBundle bundleForClass:[self class]], "keep previous version button title" )];
@@ -389,11 +389,11 @@ NSString *JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
 	
 	NSString *informativeText;
 	if( whileLoading ) {
-		informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" had an error while loading.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "JavaScript error message while loading" ), scriptTitle, errorDesc];
+		informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" had an error while loading.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "JavaScript error message while loading" ), scriptTitle, errorDesc];
 	} else if( functionName ) {
-		informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" had an error while calling the \"%@\" function.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "JavaScript plugin error message calling function" ), scriptTitle, functionName, errorDesc];
+		informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" had an error while calling the \"%@\" function.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "JavaScript plugin error message calling function" ), scriptTitle, functionName, errorDesc];
 	} else {
-		informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" had an error.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "JavaScript error message" ), scriptTitle, errorDesc];
+		informativeText = [NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle( @"The JavaScript \"%@\" had an error.\n\n%@", nil, [NSBundle bundleForClass:[self class]], "JavaScript error message" ), scriptTitle, errorDesc];
 	}
 	
 	_errorShown = YES;

@@ -307,11 +307,11 @@
 - (NSString *) description {
 	[self view];
 	if( [self format] == JVChatViewTextCriterionFormat ) {
-		return [NSString stringWithFormat:NSLocalizedString( @"%@ %@ \"%@\"", "description format for kind, operation and query, JVChatViewCriterion" ), [textKindButton titleOfSelectedItem], [textOperationButton titleOfSelectedItem], [self query]];
+		return [NSString localizedStringWithFormat:NSLocalizedString( @"%@ %@ \"%@\"", "description format for kind, operation and query, JVChatViewCriterion" ), [textKindButton titleOfSelectedItem], [textOperationButton titleOfSelectedItem], [self query]];
 	} else if( [self format] == JVChatViewBooleanCriterionFormat ) {
 		return [booleanKindButton titleOfSelectedItem];
 	} else if( [self format] == JVChatViewListCriterionFormat ) {
-		return [NSString stringWithFormat:NSLocalizedString( @"%@ %@ %@", "description format for kind, operation and type, JVChatViewCriterion" ), [listKindButton titleOfSelectedItem], [listOperationButton titleOfSelectedItem], [listQuery titleOfSelectedItem]];
+		return [NSString localizedStringWithFormat:NSLocalizedString( @"%@ %@ %@", "description format for kind, operation and type, JVChatViewCriterion" ), [listKindButton titleOfSelectedItem], [listOperationButton titleOfSelectedItem], [listQuery titleOfSelectedItem]];
 	} else return [super description];
 }
 @end

@@ -194,7 +194,7 @@
 			
 			NSAlert *alert = [[NSAlert alloc] init];
 			alert.messageText = NSLocalizedString( @"AppleScript Plugin Error", "AppleScript plugin error title" );
-			alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"The AppleScript plugin \"%@\" had an error while calling the \"%@\" handler.\n\n%@", "AppleScript plugin error message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension], handlerName, errorDesc];
+			alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"The AppleScript plugin \"%@\" had an error while calling the \"%@\" handler.\n\n%@", "AppleScript plugin error message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension], handlerName, errorDesc];
 			alert.alertStyle = NSAlertStyleCritical;
 			[alert addButtonWithTitle:NSLocalizedString( @"OK", @"OK button title" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"Edit...", "edit button title" )];
@@ -223,7 +223,7 @@
 - (void) promptForReload {
 	NSAlert *alert = [[NSAlert alloc] init];
 	alert.messageText = NSLocalizedString( @"AppleScript Plugin Changed", "AppleScript plugin file changed dialog title" );
-	alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"The AppleScript plugin \"%@\" has changed on disk. Any script variables will reset if reloaded.", "AppleScript plugin changed on disk message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension]];
+	alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"The AppleScript plugin \"%@\" has changed on disk. Any script variables will reset if reloaded.", "AppleScript plugin changed on disk message" ), [[[self scriptFilePath] lastPathComponent] stringByDeletingPathExtension]];
 	alert.alertStyle = NSAlertStyleInformational;
 	[alert addButtonWithTitle:NSLocalizedString( @"Reload", "reload button title" )];
 	[alert addButtonWithTitle:NSLocalizedString( @"Keep Previous Version", "keep previous version button title" )];

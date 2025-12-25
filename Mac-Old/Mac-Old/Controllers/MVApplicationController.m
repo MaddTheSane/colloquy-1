@@ -351,8 +351,8 @@ static BOOL applicationIsTerminating = NO;
 
 		if( /* [[NSWorkspace sharedWorkspace] isFilePackageAtPath:newPath] && */ [[NSFileManager defaultManager] isDeletableFileAtPath:newPath] ) {
 			NSAlert *alert = [[NSAlert alloc] init];
-			alert.messageText = [NSString stringWithFormat:NSLocalizedString( @"%@ Already Installed", "style already installed title" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
-			alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"The %@ style is already installed. Would you like to replace it with this version?", "would you like to replace a style with a different version" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
+			alert.messageText = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ Already Installed", "style already installed title" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
+			alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"The %@ style is already installed. Would you like to replace it with this version?", "would you like to replace a style with a different version" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
 			alert.alertStyle = NSAlertStyleInformational;
 			[alert addButtonWithTitle:NSLocalizedString( @"Yes", "yes button" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"No", "no button" )];
@@ -372,8 +372,8 @@ static BOOL applicationIsTerminating = NO;
 			[[NSNotificationCenter chatCenter] postNotificationName:JVChatStyleInstalledNotification object:style];
 
 			NSAlert *alert = [[NSAlert alloc] init];
-			alert.messageText = [NSString stringWithFormat:NSLocalizedString( @"%@ Successfully Installed", "style installed title" ), [style displayName]];
-			alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"%@ is ready to be used in your colloquies. Would you like to view %@ and it's options in the Appearance Preferences?", "would you like to view the style in the Appearance Preferences" ), [style displayName], [style displayName]];
+			alert.messageText = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ Successfully Installed", "style installed title" ), [style displayName]];
+			alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ is ready to be used in your colloquies. Would you like to view %@ and it's options in the Appearance Preferences?", "would you like to view the style in the Appearance Preferences" ), [style displayName], [style displayName]];
 			alert.alertStyle = NSAlertStyleInformational;
 			[alert addButtonWithTitle:NSLocalizedString( @"Yes", "yes button" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"No", "no button" )];
@@ -407,8 +407,8 @@ static BOOL applicationIsTerminating = NO;
 
 		if( /* [[NSWorkspace sharedWorkspace] isFilePackageAtPath:newPath] && */ [[NSFileManager defaultManager] isDeletableFileAtPath:newPath] ) {
 			NSAlert *alert = [[NSAlert alloc] init];
-			alert.messageText = [NSString stringWithFormat:NSLocalizedString( @"%@ Already Installed", "emoticons already installed title" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
-			alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"The %@ emoticons are already installed. Would you like to replace them with this version?", "would you like to replace an emoticon bundle with a different version" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
+			alert.messageText = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ Already Installed", "emoticons already installed title" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
+			alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"The %@ emoticons are already installed. Would you like to replace them with this version?", "would you like to replace an emoticon bundle with a different version" ), [[filename lastPathComponent] stringByDeletingPathExtension]];
 			alert.alertStyle = NSAlertStyleInformational;
 			[alert addButtonWithTitle:NSLocalizedString( @"Yes", "yes button" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"No", "no button" )];
@@ -424,8 +424,8 @@ static BOOL applicationIsTerminating = NO;
 			[[NSNotificationCenter chatCenter] postNotificationName:JVChatEmoticonSetInstalledNotification object:emoticon];
 
 			NSAlert *alert = [[NSAlert alloc] init];
-			alert.messageText = [NSString stringWithFormat:NSLocalizedString( @"%@ Successfully Installed", "emoticon installed title" ), [emoticon displayName]];
-			alert.informativeText = [NSString stringWithFormat:NSLocalizedString( @"%@ is ready to be used in your colloquies. Would you like to view %@ and it's options in the Appearance Preferences?", "would you like to view the emoticons in the Appearance Preferences" ), [emoticon displayName], [emoticon displayName]];
+			alert.messageText = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ Successfully Installed", "emoticon installed title" ), [emoticon displayName]];
+			alert.informativeText = [NSString localizedStringWithFormat:NSLocalizedString( @"%@ is ready to be used in your colloquies. Would you like to view %@ and it's options in the Appearance Preferences?", "would you like to view the emoticons in the Appearance Preferences" ), [emoticon displayName], [emoticon displayName]];
 			alert.alertStyle = NSAlertStyleInformational;
 			[alert addButtonWithTitle:NSLocalizedString( @"Yes", "yes button" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"No", "no button" )];
@@ -703,7 +703,7 @@ static BOOL applicationIsTerminating = NO;
 			[informativeText appendFormat:@"%@\n", [pluginName fileName]];
 	} else {
 		NSString *pluginName = [[invalidPlugins lastObject] fileName];
-		informativeText = [NSMutableString stringWithFormat:NSLocalizedString( @"Colloquy is unable to load the plugin named \"%@\".", @"Colloquy is unable to load the plugin named \"%@\". informative text"), pluginName];
+		informativeText = [NSMutableString localizedStringWithFormat:NSLocalizedString( @"Colloquy is unable to load the plugin named \"%@\".", @"Colloquy is unable to load the plugin named \"%@\". informative text"), pluginName];
 	}
 
 	alert.informativeText = informativeText;

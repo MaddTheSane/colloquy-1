@@ -139,7 +139,7 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 }
 
 - (NSString *) windowTitle {
-	return [NSString stringWithFormat:NSLocalizedString( @"%@ - Console", "chat console - window title" ), [[self connection] server]];
+	return [NSString localizedStringWithFormat:NSLocalizedString( @"%@ - Console", "chat console - window title" ), [[self connection] server]];
 }
 
 - (nullable NSString *) information {
@@ -150,7 +150,7 @@ static NSString *JVToolbarClearItemIdentifier = @"JVToolbarClearItem";
 
 - (NSString *) toolTip {
 	if( ! [[self connection] lag] ) return [self title];
-	return [NSString stringWithFormat:NSLocalizedString( @"%@\n%.3f seconds lag", "console tooltip witg lag (server delay) info in seconds" ), [self title], [[self connection] lag] / 1000.];
+	return [NSString localizedStringWithFormat:NSLocalizedString( @"%@\n%.3f seconds lag", "console tooltip witg lag (server delay) info in seconds" ), [self title], [[self connection] lag] / 1000.];
 }
 
 #pragma mark -

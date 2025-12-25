@@ -881,7 +881,7 @@ static MVBuddyListController *sharedInstance = nil;
 
 	NSMutableDictionary *context = [NSMutableDictionary dictionary];
 	context[@"title"] = NSLocalizedString( @"Buddy Available", "available buddy bubble title" );
-	context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"Your buddy %@ is now online.", "available buddy bubble text" ), [buddy displayName]];
+	context[@"description"] = [NSString localizedStringWithFormat:NSLocalizedString( @"Your buddy %@ is now online.", "available buddy bubble text" ), [buddy displayName]];
 
 	NSImage *icon = [buddy picture];
 	if( ! icon ) icon = [NSImage imageNamed:@"person"];
@@ -904,7 +904,7 @@ static MVBuddyListController *sharedInstance = nil;
 	if( [buddyConnection isConnected] ) {
 		NSMutableDictionary *context = [NSMutableDictionary dictionary];
 		context[@"title"] = NSLocalizedString( @"Buddy Unavailable", "unavailable buddy bubble title" );
-		context[@"description"] = [NSString stringWithFormat:NSLocalizedString( @"Your buddy %@ is now offline.", "unavailable buddy bubble text" ), [buddy displayName]];
+		context[@"description"] = [NSString localizedStringWithFormat:NSLocalizedString( @"Your buddy %@ is now offline.", "unavailable buddy bubble text" ), [buddy displayName]];
 
 		NSImage *icon = [buddy picture];
 		if( ! icon ) icon = [NSImage imageNamed:@"person"];
