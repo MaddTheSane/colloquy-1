@@ -162,7 +162,7 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 		NSMutableString *errorDesc = [[NSMutableString alloc] initWithCapacity:64];
 
 		PyObject *message = errValue;
-		char *filename = NULL;
+		const char *filename = NULL;
 		int line = -1;
 
 		if( PyErr_GivenExceptionMatches( errType, PyExc_SyntaxError ) ) {
@@ -178,12 +178,12 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 				if( ( value = PyObject_GetAttrString( errValue, (char *) "filename" ) ) ) {
 					if( value == Py_None )
 						filename = NULL;
-					else filename = PyString_AsString( value );
+					else filename = PyUnicode_AsUTF8( value );
 					Py_DECREF( value );
 				}
 
 				if( ( value = PyObject_GetAttrString( errValue, (char *) "lineno" ) ) && value != Py_None ) {
-					long hold = PyInt_AsLong( value );
+					long hold = PyLong_AsLong( value );
 					Py_DECREF( value );
 
 					if( ! ( hold == -1 && PyErr_Occurred() ) )
@@ -199,12 +199,12 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 				if( code && code != Py_None && ( value = PyObject_GetAttrString( code, (char *) "co_filename" ) ) ) {
 					if( value == Py_None )
 						filename = NULL;
-					else filename = PyString_AsString( value );
+					else filename = PyUnicode_AsUTF8( value );
 					Py_DECREF( value );
 				}
 
 				if( ( value = PyObject_GetAttrString( errFrame, (char *) "f_lineno" ) ) && value != Py_None ) {
-					long hold = PyInt_AsLong( value );
+					long hold = PyLong_AsLong( value );
 					Py_DECREF( value );
 
 					if( ! ( hold == -1 && PyErr_Occurred() ) )
@@ -213,9 +213,9 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 			}
 		}
 
-		char *str = NULL;
+		const char *str = NULL;
 		PyObject *strObj = PyObject_Str( errType );
-		if( strObj && ( str = PyString_AsString( strObj ) ) ) {
+		if( strObj && ( str = PyUnicode_AsUTF8( strObj ) ) ) {
 			NSString *errorName = @(str);
 			if( [errorName hasPrefix:@"exceptions."] )
 				errorName = [errorName substringFromIndex:[@"exceptions." length]];
@@ -223,7 +223,7 @@ NSString *JVPythonErrorDomain = @"JVPythonErrorDomain";
 			Py_DECREF( strObj );
 		} else [errorDesc appendString:NSLocalizedStringFromTableInBundle( @"Unknown Error", nil, [NSBundle bundleForClass:[self class]], "unknown error" )];
 
-		if( message && ( strObj = PyObject_Str( message ) ) && ( str = PyString_AsString( strObj ) ) ) {
+		if( message && ( strObj = PyObject_Str( message ) ) && ( str = PyUnicode_AsUTF8( strObj ) ) ) {
 			[errorDesc appendString:NSLocalizedStringFromTableInBundle( @": ", nil, [NSBundle bundleForClass:[self class]], "error reason prefix" )];
 			[errorDesc appendString:@(str)];
 			Py_DECREF( strObj );

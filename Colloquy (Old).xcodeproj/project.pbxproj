@@ -162,6 +162,7 @@
 		5509D1CA1F5B6EC60037CE4E /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1C71F5B6DB20037CE4E /* libxml2.tbd */; };
 		5509D1CD1F5B6EFB0037CE4E /* libxslt.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1CB1F5B6ED40037CE4E /* libxslt.tbd */; };
 		5509D1CF1F5B6F160037CE4E /* libexslt.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5509D1CE1F5B6F160037CE4E /* libexslt.tbd */; };
+		5523F6682EFD18E5005B7395 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5523F6672EFD18E5005B7395 /* Localizable.xcstrings */; };
 		557D715F1E4915270041D61B /* MaddsPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 557D715E1E4915270041D61B /* MaddsPathExtensions.m */; };
 		558EF2371AEC356800619BDE /* Room Member Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558EF2361AEC356800619BDE /* Room Member Icons.xcassets */; };
 		55AD71862988787B005CAB90 /* ImportExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55AD71852988787B005CAB90 /* ImportExtension.swift */; };
@@ -225,6 +226,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
 			remoteInfo = "JavaScript Support Plugin";
+		};
+		5523F67F2EFD24AE005B7395 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CBF685140820186F00F498FB;
+			remoteInfo = "Colloquy (Metadata Importer)";
 		};
 		55AD71892988787B005CAB90 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -564,6 +572,7 @@
 		5509D1C71F5B6DB20037CE4E /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		5509D1CB1F5B6ED40037CE4E /* libxslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxslt.tbd; path = usr/lib/libxslt.tbd; sourceTree = SDKROOT; };
 		5509D1CE1F5B6F160037CE4E /* libexslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexslt.tbd; path = usr/lib/libexslt.tbd; sourceTree = SDKROOT; };
+		5523F6672EFD18E5005B7395 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5530388F171722A200652D45 /* GetMetadataForFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetMetadataForFile.h; sourceTree = "<group>"; };
 		557D715D1E4915270041D61B /* MaddsPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaddsPathExtensions.h; sourceTree = "<group>"; };
 		557D715E1E4915270041D61B /* MaddsPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaddsPathExtensions.m; sourceTree = "<group>"; };
@@ -1207,6 +1216,7 @@
 				55AD719F2988806E005CAB90 /* DateAdditions.swift */,
 				55AD71872988787B005CAB90 /* Info.plist */,
 				55AD71882988787B005CAB90 /* newMD.entitlements */,
+				5523F6672EFD18E5005B7395 /* Localizable.xcstrings */,
 			);
 			path = MetadataExtension;
 			sourceTree = "<group>";
@@ -1483,6 +1493,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5523F6802EFD24AE005B7395 /* PBXTargetDependency */,
 				55AD718A2988787B005CAB90 /* PBXTargetDependency */,
 			);
 			name = "Colloquy (Application)";
@@ -1693,6 +1704,7 @@
 			files = (
 				55AD719C29887928005CAB90 /* schema.xml in Resources */,
 				55AD719B29887924005CAB90 /* schema.strings in Resources */,
+				5523F6682EFD18E5005B7395 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1921,6 +1933,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5523F6802EFD24AE005B7395 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CBF685140820186F00F498FB /* Colloquy (Metadata Importer) */;
+			targetProxy = 5523F67F2EFD24AE005B7395 /* PBXContainerItemProxy */;
+		};
 		55AD718A2988787B005CAB90 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 55AD71822988787B005CAB90 /* Colloquy (Metadata Extension) */;
@@ -2489,6 +2506,7 @@
 			buildSettings = {
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)";
 				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Debug;
 		};
@@ -2548,6 +2566,7 @@
 			buildSettings = {
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)";
 				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
@@ -2610,6 +2629,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.newMD;
 				PRODUCT_NAME = "Colloquy Metadata Extension";
 				SKIP_INSTALL = YES;
+				STRINGS_FILE_OUTPUT_ENCODING = binary;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
@@ -2682,6 +2702,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = info.colloquy.newMD;
 				PRODUCT_NAME = "Colloquy Metadata Extension";
 				SKIP_INSTALL = YES;
+				STRINGS_FILE_OUTPUT_ENCODING = binary;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
