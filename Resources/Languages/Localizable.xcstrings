@@ -1838,7 +1838,7 @@
       }
     },
     "%@ has 1 message waiting." : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1856,6 +1856,7 @@
     },
     "%@ has a message waiting\nfrom %@." : {
       "comment" : "new single room message bubble text",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4625,9 +4626,21 @@
     "%lu important items" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lu important items"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lu important item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lu important items"
+                }
+              }
+            }
           }
         }
       }
@@ -4635,9 +4648,21 @@
     "%lu items" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lu items"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lu item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lu items"
+                }
+              }
+            }
           }
         }
       }
@@ -28179,7 +28204,7 @@
       }
     },
     "You are about to send a message with %lu lines. Are you sure you want to do this?" : {
-      "comment" : "about to send a %d line message alert dialog message",
+      "comment" : "about to send a %lu line message alert dialog message",
       "localizations" : {
         "en" : {
           "stringUnit" : {

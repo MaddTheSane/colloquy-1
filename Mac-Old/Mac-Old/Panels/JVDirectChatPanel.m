@@ -1041,7 +1041,7 @@ NSString *const JVChatEventMessageWasProcessedNotification = @"JVChatEventMessag
 		if ( newlineCount > messageLimit ) {
 			NSAlert *alert = [[NSAlert alloc] init];
 			[alert setMessageText:NSLocalizedString( @"Multiple lines detected", "multiple lines detected alert dialog title")];
-			[alert setInformativeText:[NSString localizedStringWithFormat:NSLocalizedString( @"You are about to send a message with %lu lines. Are you sure you want to do this?", "about to send a %d line message alert dialog message" ), (unsigned long)newlineCount]];
+			[alert setInformativeText:[NSString localizedStringWithFormat:NSLocalizedString( @"You are about to send a message with %lu lines. Are you sure you want to do this?", "about to send a %lu line message alert dialog message" ), (unsigned long)newlineCount]];
 			[alert addButtonWithTitle:NSLocalizedString( @"Send", "Send alert dialog button title" )];
 			[alert addButtonWithTitle:NSLocalizedString( @"Cancel", "Cancel alert dialog button title" )];
 			[alert setAlertStyle:NSAlertStyleWarning];

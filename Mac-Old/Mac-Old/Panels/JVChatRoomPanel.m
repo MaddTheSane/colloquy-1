@@ -341,8 +341,7 @@ NSString *const MVFavoritesListDidUpdateNotification = @"MVFavoritesListDidUpdat
 	if( [message ignoreStatus] == JVNotIgnored && [[message sender] respondsToSelector:@selector( isLocalUser )] && ! [[message sender] isLocalUser] ) {
 		NSMutableDictionary *context = [NSMutableDictionary dictionary];
 		[context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ Room Activity", "room activity bubble title" ), [self title]] forKey:@"title"];
-		if( [self newMessagesWaiting] == 1 ) [context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ has a message waiting\nfrom %@.", "new single room message bubble text" ), [self title], [member displayName]] forKey:@"title"];
-		else [context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ has %lu messages waiting.\nLast from %@", "new room messages bubble text" ), [self title], (unsigned long)[self newMessagesWaiting], [member displayName]] forKey:@"title"];
+		if( [self newMessagesWaiting] >= 1 ) [context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"%@ has %lu messages waiting.\nLast from %@", "new room messages bubble text" ), [self title], (unsigned long)[self newMessagesWaiting], [member displayName]] forKey:@"title"];
 		[context setObject:[NSString localizedStringWithFormat:NSLocalizedString( @"%@", "room activity bubble message" ), [message bodyAsPlainText]] forKey:@"description"];
 		context[@"image"] = [NSImage imageNamed:@"room"];
 		context[@"coalesceKey"] = [[self windowTitle] stringByAppendingString:@"JVChatRoomActivity"];

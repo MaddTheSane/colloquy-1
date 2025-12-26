@@ -2,7 +2,7 @@
 #import "JVAppleScriptChatPlugin.h"
 #import <ChatCore/JVChatController.h>
 
-#include <OpenScripting/OSA.h>
+#include <Carbon/Carbon.h>
 
 static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
@@ -37,6 +37,36 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
 	return NO;
 }
+
+- (BOOL) saveToFileURL:(NSURL *) path error:(NSError**)outerr {
+	AEDesc desc = { typeNull, NULL };
+	NSNumber *compiledScriptIdentifer = [self valueForKey:@"_compiledScriptID"];
+	OSAError result = OSAStore( [NSAppleScript _defaultScriptingComponent], [compiledScriptIdentifer unsignedIntValue], typeOSAGenericStorage, kOSAModeNull, &desc );
+
+	if( result == noErr ) {
+		NSMutableData *data = [NSMutableData dataWithLength:(unsigned int)AEGetDescDataSize( &desc )];
+
+		if( ( result = AEGetDescData( &desc, [data mutableBytes], [data length] )) != noErr )
+			data = nil;
+
+		AEDisposeDesc( &desc );
+		if (result != noErr && outerr) {
+			*outerr = [NSError errorWithDomain:NSOSStatusErrorDomain code:result userInfo:@{NSURLErrorKey: path}];
+		}
+
+		return [data writeToURL:path options:(NSDataWritingOptions)0 error:outerr];
+	}
+
+	if (outerr) {
+		*outerr = [NSError errorWithDomain:NSOSStatusErrorDomain code:result userInfo:@{NSURLErrorKey: path}];
+	}
+	return NO;
+}
+
+@end
+
+@interface JVAppleScriptEditorPanel () <NSOpenSavePanelDelegate>
+
 @end
 
 #pragma mark -
@@ -44,6 +74,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 @implementation JVAppleScriptEditorPanel
 @synthesize contents;
 @synthesize editor;
+@synthesize toolbarIdentifier;
 
 + (NSDictionary *) uncompiledScriptAttributes {
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
@@ -116,7 +147,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
 - (NSView *) view {
 	if( ! _nibLoaded ) {
-		_nibLoaded = [[NSBundle bundleForClass:[self class]] loadNibFile:@"AppleScriptPanel" externalNameTable:[[NSDictionary alloc] initWithObject:self forKey:@"NSOwner"] withZone:[self zone]];
+		_nibLoaded = [[NSBundle bundleForClass:[self class]] loadNibFile:@"AppleScriptPanel" externalNameTable:@{@"NSOwner": self} withZone:[self zone]];
 	}
 
 	return contents;
@@ -137,7 +168,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 - (NSString *) title {
 	if( [[[self plugin] scriptFilePath] length] )
 		return [[[[self plugin] scriptFilePath] lastPathComponent] stringByDeletingPathExtension];
-	return NSLocalizedString( @"Untitled", "untitled AppleScript editor panel title" );
+	return NSLocalizedStringFromTableInBundle( @"Untitled", nil, [NSBundle bundleForClass:self.class], "untitled AppleScript editor panel title" );
 }
 
 - (NSString *) windowTitle {
@@ -161,7 +192,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 #pragma mark -
 
 - (NSString *) identifier {
-	return [NSString stringWithFormat:@"AppleScript Console %x", self];
+	return [NSString stringWithFormat:@"AppleScript Console %lx", self];
 }
 
 - (MVChatConnection *) connection {
@@ -176,7 +207,7 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
 - (BOOL) compile:(id) sender {
 	NSAppleScript *script = [[[NSAppleScript alloc] initWithSource:[[editor textStorage] string]] autorelease];
-	if( ! script ) return;
+	if( ! script ) return NO;
 
 	NSDictionary *errorInfo = nil;
 
@@ -185,13 +216,13 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 		[editor setSelectedRange:range affinity:NSSelectionAffinityUpstream stillSelecting:NO];
 		
 		NSAlert *alert = [[NSAlert alloc] init];
-		alert.messageText = NSLocalizedString( @"AppleScript Syntax Error", "AppleScript syntax error title" );
+		alert.messageText = NSLocalizedStringFromTableInBundle( @"AppleScript Syntax Error", nil, [NSBundle bundleForClass:self.class], "AppleScript syntax error title" );
 		alert.informativeText = [errorInfo objectForKey:NSAppleScriptErrorMessage];
 		alert.alertStyle = NSAlertStyleCritical;
 		[alert runModal];
 		[alert release];
 		
-		return;
+		return NO;
 	}
 
 	[_script autorelease];
@@ -219,9 +250,10 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 - (void) savePanelDidEnd:(NSSavePanel *) sheet returnCode:(int) returnCode contextInfo:(void *) contextInfo {
 	[sheet autorelease];
 	if( returnCode == NSModalResponseOK && [self compile:nil] ) {
-		[[[self plugin] script] saveToFile:[sheet filename]];
-		[[self plugin] setScriptFilePath:[sheet filename]];
-		[[NSFileManager defaultManager] changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:[sheet isExtensionHidden]], NSFileExtensionHidden, nil] atPath:[sheet filename]];
+		[[[self plugin] script] saveToFileURL:[sheet URL] error:nil];
+		NSString *sheetName = [sheet URL].path;
+		[[self plugin] setScriptFilePath:sheetName];
+		[[NSFileManager defaultManager] setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:[sheet isExtensionHidden]], NSFileExtensionHidden, nil] ofItemAtPath:sheetName error:nil];
 	}
 }
 
@@ -243,23 +275,23 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 	if( [self plugin] ) {
 		[menu addItem:[NSMenuItem separatorItem]];
 
-		item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Open Script File", "open script file menu item title" ) action:@selector( openScriptFile: ) keyEquivalent:@""] autorelease];
+		item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedStringFromTableInBundle( @"Open Script File", nil, [NSBundle bundleForClass:self.class], "open script file menu item title" ) action:@selector( openScriptFile: ) keyEquivalent:@""] autorelease];
 		[item setTarget:self];
 		[menu addItem:item];
 
-		item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Reload Script File", "reload script file menu item title" ) action:@selector( reloadScriptFile: ) keyEquivalent:@""] autorelease];
+		item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedStringFromTableInBundle( @"Reload Script File", nil, [NSBundle bundleForClass:self.class], "reload script file menu item title" ) action:@selector( reloadScriptFile: ) keyEquivalent:@""] autorelease];
 		[item setTarget:self];
 		[menu addItem:item];
 	}
 
 	[menu addItem:[NSMenuItem separatorItem]];
 
-	item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Detach From Window", "detach from window contextual menu item title" ) action:@selector( detachView: ) keyEquivalent:@""] autorelease];
+	item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedStringFromTableInBundle( @"Detach From Window", nil, [NSBundle bundleForClass:self.class], "detach from window contextual menu item title" ) action:@selector( detachView: ) keyEquivalent:@""] autorelease];
 	[item setRepresentedObject:self];
 	[item setTarget:[JVChatController defaultController]];
 	[menu addItem:item];
 
-	item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Close", "close contextual menu item title" ) action:@selector( close: ) keyEquivalent:@""] autorelease];
+	item = [[[NSMenuItem alloc] initWithTitle:NSLocalizedStringFromTableInBundle( @"Close", nil, [NSBundle bundleForClass:self.class], "close contextual menu item title" ) action:@selector( close: ) keyEquivalent:@""] autorelease];
 	[item setTarget:self];
 	[menu addItem:item];
 
@@ -297,8 +329,8 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 	if( [identifier isEqualToString:JVToolbarToggleChatDrawerItemIdentifier] ) {
 		toolbarItem = [_windowController toggleChatDrawerToolbarItem];
 	} else if( [identifier isEqualToString:JVToolbarCompileItemIdentifier] ) {
-		[toolbarItem setLabel:NSLocalizedString( @"Compile", "compile script toolbar item label" )];
-		[toolbarItem setPaletteLabel:NSLocalizedString( @"Compile", "compile script toolbar item patlette label" )];
+		[toolbarItem setLabel:NSLocalizedStringFromTableInBundle( @"Compile", nil, [NSBundle bundleForClass:self.class], "compile script toolbar item label" )];
+		[toolbarItem setPaletteLabel:NSLocalizedStringFromTableInBundle( @"Compile", nil, [NSBundle bundleForClass:self.class], "compile script toolbar item patlette label" )];
 		[toolbarItem setToolTip:NSLocalizedString( @"Compile the Script", "compile script toolbar item tooltip" )];
 		[toolbarItem setImage:[[NSImage alloc] initByReferencingFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"compile" ofType:@"png"]]];
 		[toolbarItem setTarget:self];
@@ -319,4 +351,5 @@ static NSString *JVToolbarCompileItemIdentifier = @"JVToolbarCompileItem";
 
 	return [[list retain] autorelease];
 }
+
 @end

@@ -9,11 +9,19 @@
 /* Begin PBXBuildFile section */
 		1C0431BC07CAEC1700304949 /* JVAppleScriptChatPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0431BA07CAEC1700304949 /* JVAppleScriptChatPlugin.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1C4FD36807C6BC25000EA451 /* JVAppleScriptPluginLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4FD36607C6BC25000EA451 /* JVAppleScriptPluginLoader.m */; };
+		55F615C92EFE794000B8618A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 55F615C82EFE794000B8618A /* Localizable.xcstrings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		9295C94C16782FCE009F9014 /* ChatCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9295C94B16782FCE009F9014 /* ChatCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		55F615C52EFE78E000B8618A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92823CF516900F97000EC36E /* Colloquy (Old).xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55AD71832988787B005CAB90;
+			remoteInfo = "Colloquy (Metadata Extension)";
+		};
 		92823CFC16900F97000EC36E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92823CF516900F97000EC36E /* Colloquy (Old).xcodeproj */;
@@ -57,6 +65,7 @@
 		1C4FD3CD07C6BF1B000EA451 /* JVAppleScriptEditorPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVAppleScriptEditorPanel.m; sourceTree = "<group>"; };
 		1CE3FB5407C7DFD50049A366 /* AppleScriptPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AppleScriptPanel.xib; sourceTree = "<group>"; };
 		1CF7A61407CD661200965F52 /* compile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compile.png; sourceTree = "<group>"; };
+		55F615C82EFE794000B8618A /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* AppleScript Support.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AppleScript Support.plugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92823CF516900F97000EC36E /* Colloquy (Old).xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Colloquy (Old).xcodeproj"; path = "../../../../Colloquy (Old).xcodeproj"; sourceTree = "<group>"; };
@@ -104,6 +113,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55F615C82EFE794000B8618A /* Localizable.xcstrings */,
 				1C04316407CADBE100304949 /* scriptEditor.png */,
 				1CF7A61407CD661200965F52 /* compile.png */,
 				1CE3FB5407C7DFD50049A366 /* AppleScriptPanel.xib */,
@@ -177,6 +187,7 @@
 				92823CFD16900F97000EC36E /* Colloquy.app */,
 				92823CFF16900F97000EC36E /* Standard Commands.plugin */,
 				92823D0116900F97000EC36E /* Colloquy.mdimporter */,
+				55F615C62EFE78E000B8618A /* Colloquy Metadata Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -218,6 +229,7 @@
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				en,
+				English,
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* FScript Plugin */;
 			projectDirPath = "";
@@ -235,6 +247,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		55F615C62EFE78E000B8618A /* Colloquy Metadata Extension.appex */ = {
+			isa = PBXReferenceProxy;
+			fileType = "wrapper.app-extension";
+			path = "Colloquy Metadata Extension.appex";
+			remoteRef = 55F615C52EFE78E000B8618A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		92823CFD16900F97000EC36E /* Colloquy.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
@@ -263,6 +282,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F615C92EFE794000B8618A /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +339,9 @@
 			baseConfigurationReference = C29E3BE31F64A2C000C18D21 /* Base.xcconfig */;
 			buildSettings = {
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)/../../../..";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SYMROOT = ../../build;
 			};
 			name = Debug;
@@ -354,7 +376,9 @@
 			baseConfigurationReference = C29E3BE31F64A2C000C18D21 /* Base.xcconfig */;
 			buildSettings = {
 				COLLOQUY_WORKSPACE_ROOT = "$(SRCROOT)/../../../..";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SYMROOT = ../../build;
 			};
 			name = Release;
