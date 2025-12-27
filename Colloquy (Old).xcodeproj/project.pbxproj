@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -581,6 +581,8 @@
 		55AD71882988787B005CAB90 /* newMD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = newMD.entitlements; sourceTree = "<group>"; };
 		55AD719F2988806E005CAB90 /* DateAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAdditions.swift; sourceTree = "<group>"; };
 		55B0EF2D18CE34850000E4CA /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
+		55F615CE2EFFC55B00B8618A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
+		55F615D92EFFC5D300B8618A /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/MVFileTransfer.xcstrings; sourceTree = "<group>"; };
 		55F7D7BB2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVGeneralPreferencesViewController.strings; sourceTree = "<group>"; };
 		55F7D7BC2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVInterfacePreferencesViewController.strings; sourceTree = "<group>"; };
 		55F7D7BD2126968E00CED413 /* ko */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/JVAppearancePreferencesViewController.strings; sourceTree = "<group>"; };
@@ -593,16 +595,6 @@
 		891EF4091064278200CCEA35 /* PFMoveApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplicationController.h; sourceTree = "<group>"; };
 		895BCD3812BD39400082AB5A /* CQActivityWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CQActivityWindow.xib; sourceTree = "<group>"; };
 		89FB4EDC12FAABBB00668905 /* old-mac-target.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "old-mac-target.xcconfig"; sourceTree = "<group>"; };
-		9200338C13D92515005B69BA /* nl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = nl; path = nl.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200338E13D92530005B69BA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339013D92543005B69BA /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339213D9254D005B69BA /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339413D92557005B69BA /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339613D92565005B69BA /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339813D9256F005B69BA /* nb */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = nb; path = nb.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339A13D92578005B69BA /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_PT; path = "pt-PT.lproj/MVFileTransfer.xib"; sourceTree = "<group>"; };
-		9200339C13D92581005B69BA /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/MVFileTransfer.xib; sourceTree = "<group>"; };
-		9200339E13D9258A005B69BA /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_TW; path = "zh-Hant.lproj/MVFileTransfer.xib"; sourceTree = "<group>"; };
 		9220565C11018298005CD72D /* NSDateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateAdditions.h; sourceTree = "<group>"; };
 		9220565D11018298005CD72D /* NSDateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
 		92823CF0168FFA0A000EC36E /* KAIgnoreRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KAIgnoreRule.h; sourceTree = "<group>"; };
@@ -1542,7 +1534,7 @@
 				};
 			};
 			buildConfigurationList = 1C041A700854E97700A5A5BA /* Build configuration list for PBXProject "Colloquy (Old)" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -2177,16 +2169,8 @@
 		9200338B13D92515005B69BA /* MVFileTransfer.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				9200338C13D92515005B69BA /* nl */,
-				9200338E13D92530005B69BA /* en */,
-				9200339013D92543005B69BA /* fr */,
-				9200339213D9254D005B69BA /* de */,
-				9200339413D92557005B69BA /* it */,
-				9200339613D92565005B69BA /* ja */,
-				9200339813D9256F005B69BA /* nb */,
-				9200339A13D92578005B69BA /* pt_PT */,
-				9200339C13D92581005B69BA /* es */,
-				9200339E13D9258A005B69BA /* zh_TW */,
+				55F615CE2EFFC55B00B8618A /* Base */,
+				55F615D92EFFC5D300B8618A /* mul */,
 			);
 			name = MVFileTransfer.xib;
 			path = Languages;
@@ -2583,7 +2567,11 @@
 				INFOPLIST_FILE = MetadataExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(TARGET_NAME)";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Colloquy Project. All rights reserved.";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -2592,8 +2580,9 @@
 				PRODUCT_NAME = "Colloquy Metadata Extension";
 				SKIP_INSTALL = YES;
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -2655,7 +2644,11 @@
 				INFOPLIST_FILE = MetadataExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(TARGET_NAME)";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Colloquy Project. All rights reserved.";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 2.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
