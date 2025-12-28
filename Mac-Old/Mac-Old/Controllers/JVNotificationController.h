@@ -6,7 +6,6 @@ COLLOQUY_EXPORT
 @interface JVNotificationController : NSObject <NSUserNotificationCenterDelegate, KABubbleWindowControllerDelegate> {
 	NSMutableDictionary *_bubbles;
 	NSMutableDictionary *_sounds;
-	BOOL _useGrowl;
 }
 @property (readonly, strong, class) JVNotificationController *defaultController;
 - (void) performNotification:(NSString *) identifier withContextInfo:(nullable NSDictionary<NSString*,id> *) context;

@@ -1,4 +1,3 @@
-#import <Growl/GrowlApplicationBridge.h>
 #import "JVNotificationController.h"
 #import "KABubbleWindowController.h"
 #import "KABubbleWindowView.h"
@@ -8,7 +7,7 @@
 
 static JVNotificationController *sharedInstance = nil;
 
-@interface JVNotificationController (JVNotificationControllerPrivate) <GrowlApplicationBridgeDelegate, KABubbleWindowControllerDelegate>
+@interface JVNotificationController (JVNotificationControllerPrivate) <KABubbleWindowControllerDelegate>
 - (void) _bounceIconOnce;
 - (void) _bounceIconContinuously;
 - (void) _showBubbleForIdentifier:(NSString *) identifier withContext:(NSDictionary *) context andPrefs:(NSDictionary *) eventPrefs;
@@ -19,7 +18,11 @@ static JVNotificationController *sharedInstance = nil;
 
 @implementation JVNotificationController
 + (JVNotificationController *) defaultController {
-	return ( sharedInstance ? sharedInstance : ( sharedInstance = [[self alloc] init] ) );
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedInstance = [[self alloc] init];
+	});
+	return sharedInstance;
 }
 
 #pragma mark -
@@ -29,11 +32,8 @@ static JVNotificationController *sharedInstance = nil;
 		_bubbles = [[NSMutableDictionary alloc] init];
 		_sounds = [[NSMutableDictionary alloc] init];
 
-		if( floor( NSAppKitVersionNumber ) < NSAppKitVersionNumber10_8 )
-			_useGrowl = ( GrowlApplicationBridge && ! [[[NSUserDefaults standardUserDefaults] objectForKey:@"DisableGrowl"] boolValue] );
-		else [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+		[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
-		if( _useGrowl ) [GrowlApplicationBridge setGrowlDelegate:self];
 	}
 
 	return self;
@@ -116,42 +116,7 @@ static JVNotificationController *sharedInstance = nil;
 
 	if( ! icon ) icon = [[NSApplication sharedApplication] applicationIconImage];
 
-	if( _useGrowl ) {
-		NSString *desc = description;
-		if( [desc isKindOfClass:[NSAttributedString class]] ) desc = [description string];
-		NSString *programName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
-		NSDictionary *notification = [NSDictionary dictionaryWithObjectsAndKeys:
-			programName, GROWL_APP_NAME,
-			identifier, GROWL_NOTIFICATION_NAME,
-			title, GROWL_NOTIFICATION_TITLE,
-			desc, GROWL_NOTIFICATION_DESCRIPTION,
-			[icon TIFFRepresentation], GROWL_NOTIFICATION_ICON_DATA,
-			[context objectForKey:@"coalesceKey"], GROWL_NOTIFICATION_IDENTIFIER,
-			// this next key is not guaranteed to be non-nil
-			// make sure it stays last, unless you want to ensure it's non-nil
-			[eventPrefs objectForKey:@"keepBubbleOnScreen"], GROWL_NOTIFICATION_STICKY,
-			nil];
-		[GrowlApplicationBridge notifyWithDictionary:notification];
-	} else if( NSAppKitVersionNumber10_8 > floor( NSAppKitVersionNumber ) ) {
-		if( ( bubble = _bubbles[context[@"coalesceKey"]] ) ) {
-			[(id)bubble setTitle:title];
-			[(id)bubble setText:description];
-			[(id)bubble setIcon:icon];
-		} else {
-			bubble = [KABubbleWindowController bubbleWithTitle:title text:description icon:icon];
-		}
-
-		[bubble setAutomaticallyFadesOut:(! [eventPrefs[@"keepBubbleOnScreen"] boolValue] )];
-		[bubble setTarget:context[@"target"]];
-		[bubble setAction:NSSelectorFromString( context[@"action"] )];
-		[bubble setRepresentedObject:context[@"representedObject"]];
-		[bubble startFadeIn];
-
-		if( [(NSString *)context[@"coalesceKey"] length] ) {
-			[bubble setDelegate:self];
-			_bubbles[context[@"coalesceKey"]] = bubble;
-		}
-	} else {
+	{
 		NSUserNotification *notification = [[NSUserNotification alloc] init];
 		notification.title = title;
 
@@ -209,14 +174,4 @@ static JVNotificationController *sharedInstance = nil;
 	if( ! [sound isPlaying] ) [sound play];
 }
 
-- (NSDictionary *) registrationDictionaryForGrowl {
-	NSMutableArray *notifications = [[NSMutableArray alloc] init];
-	for( NSDictionary *info in [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"notifications" ofType:@"plist"]] ) {
-		if( ! info[@"seperator"] )
-			[notifications addObject:info[@"identifier"]];
-		
-	}
-
-	return @{GROWL_NOTIFICATIONS_ALL: notifications, GROWL_NOTIFICATIONS_DEFAULT: notifications};
-}
 @end

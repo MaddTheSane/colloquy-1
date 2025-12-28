@@ -5,7 +5,10 @@
 @implementation JVSpeechController
 + (JVSpeechController*) sharedSpeechController {
 	static JVSpeechController *sharedSpeechController = nil;
-	if( ! sharedSpeechController ) sharedSpeechController = [[JVSpeechController alloc] init];
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedSpeechController = [[JVSpeechController alloc] init];
+	});
 	return sharedSpeechController;
 }
 
