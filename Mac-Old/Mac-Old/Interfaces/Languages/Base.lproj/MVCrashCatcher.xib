@@ -22,7 +22,7 @@
             <rect key="contentRect" x="104" y="300" width="533" height="303"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1512" height="949"/>
             <value key="minSize" type="size" width="500" height="300"/>
-            <view key="contentView" id="8">
+            <view key="contentView" misplaced="YES" id="8">
                 <rect key="frame" x="0.0" y="0.0" width="533" height="303"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -60,7 +60,7 @@ Gw
                         </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSApplicationIcon" id="28"/>
                     </imageView>
-                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6">
                         <rect key="frame" x="90" y="227" width="425" height="56"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="26">
                             <font key="font" metaFont="smallSystem"/>
@@ -149,6 +149,7 @@ Gw
                     <constraint firstItem="15" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="8" symbolic="YES" id="rF7-JY-B1I"/>
                     <constraint firstItem="12" firstAttribute="top" secondItem="8" secondAttribute="top" constant="20" symbolic="YES" id="uPf-gi-ghY"/>
                     <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="20" symbolic="YES" id="vnR-H9-M57"/>
+                    <constraint firstItem="5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7" secondAttribute="trailing" constant="12" symbolic="YES" id="yCM-Ds-vCQ"/>
                 </constraints>
             </view>
             <connections>

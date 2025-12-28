@@ -70,7 +70,7 @@ static BOOL replacementIsSelectorExcludedFromWebScript( id self, SEL cmd, SEL se
 
 #pragma mark -
 
-NSString *JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
+NSString *const JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
 
 @implementation JVJavaScriptChatPlugin
 @synthesize pluginManager = _manager;
@@ -180,7 +180,7 @@ NSString *JVJavaScriptErrorDomain = @"JVJavaScriptErrorDomain";
 	[newWebView setUIDelegate:self];
 	if( request ) [[newWebView mainFrame] loadRequest:request];
 
-	NSWindow *window = [[NSWindow alloc] initWithContentRect:frame styleMask:( NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask ) backing:NSBackingStoreBuffered defer:NO screen:[[sender window] screen]];
+	NSWindow *window = [[NSWindow alloc] initWithContentRect:frame styleMask:( NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable ) backing:NSBackingStoreBuffered defer:NO screen:[[sender window] screen]];
 	[window setOpaque:NO];
 	[window setBackgroundColor:[NSColor clearColor]];
 	if( [window respondsToSelector:@selector( _setContentHasShadow: )] )

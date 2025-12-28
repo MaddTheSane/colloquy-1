@@ -314,6 +314,7 @@
 			baseConfigurationReference = C29E3BE61F64A2C000C18D21 /* target.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "${COLLOQUY_WORKSPACE_ROOT}/Basic.pch";
+				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../Controllers,
 					../../Models,
@@ -324,6 +325,8 @@
 					"${COLLOQUY_WORKSPACE_ROOT}/Shared/Models",
 				);
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2003-2007, Timothy Hatcher";
+				INFOPLIST_KEY_NSPrincipalClass = JVAppleScriptPluginLoader;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -351,6 +354,7 @@
 			baseConfigurationReference = C29E3BE61F64A2C000C18D21 /* target.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "${COLLOQUY_WORKSPACE_ROOT}/Basic.pch";
+				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../Controllers,
 					../../Models,
@@ -361,6 +365,8 @@
 					"${COLLOQUY_WORKSPACE_ROOT}/Shared/Models",
 				);
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2003-2007, Timothy Hatcher";
+				INFOPLIST_KEY_NSPrincipalClass = JVAppleScriptPluginLoader;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
