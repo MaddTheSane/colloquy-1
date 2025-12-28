@@ -54,7 +54,7 @@ private class JVChatTranscriptMetadataExtractor: NSObject, XMLParserDelegate {
 			if let dateStarted {
 				// Set Duration
 				let logDuration = lastDate.timeIntervalSince(dateStarted)
-				attributeSet.duration = (logDuration) as NSNumber
+				attributeSet.duration = NSNumber(value: logDuration)
 				
 				// Set Coverage
 				let coverageWording = "\(coverageFormatter.string(from: dateStarted)) - \(coverageFormatter.string(from: lastDate))"
