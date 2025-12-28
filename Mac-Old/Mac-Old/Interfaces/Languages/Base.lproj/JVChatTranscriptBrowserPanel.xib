@@ -29,9 +29,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="570" height="491"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <searchField wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13">
-                        <rect key="frame" x="20" y="463" width="530" height="22"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13">
+                        <rect key="frame" x="20" y="461" width="530" height="24"/>
                         <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" bezelStyle="round" id="48">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -42,19 +41,18 @@
                             <outlet property="searchMenuTemplate" destination="14" id="20"/>
                         </connections>
                     </searchField>
-                    <splitView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="44">
-                        <rect key="frame" x="0.0" y="26" width="570" height="429"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <splitView translatesAutoresizingMaskIntoConstraints="NO" id="44">
+                        <rect key="frame" x="0.0" y="26" width="570" height="427"/>
                         <subviews>
                             <scrollView fixedFrame="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="7">
-                                <rect key="frame" x="0.0" y="0.0" width="570" height="126"/>
+                                <rect key="frame" x="0.0" y="0.0" width="570" height="125"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <clipView key="contentView" id="DdC-HL-cJU">
-                                    <rect key="frame" x="1" y="1" width="568" height="124"/>
+                                    <rect key="frame" x="1" y="1" width="568" height="123"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="55" id="8">
-                                            <rect key="frame" x="0.0" y="0.0" width="568" height="101"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="568" height="100"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -121,11 +119,11 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="54">
-                                    <rect key="frame" x="1" y="108" width="568" height="17"/>
+                                    <rect key="frame" x="1" y="107" width="568" height="17"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="56">
-                                    <rect key="frame" x="552" y="24" width="17" height="101"/>
+                                    <rect key="frame" x="552" y="24" width="17" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" wantsLayer="YES" id="55">
@@ -134,7 +132,7 @@
                                 </tableHeaderView>
                             </scrollView>
                             <webView fixedFrame="YES" id="37" customClass="JVStyleView">
-                                <rect key="frame" x="0.0" y="135" width="570" height="294"/>
+                                <rect key="frame" x="0.0" y="134" width="570" height="293"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <webPreferences key="preferences" defaultFontSize="16" defaultFixedFontSize="13" minimumFontSize="6" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
                                     <nil key="identifier"/>
@@ -146,9 +144,8 @@
                             <real value="250"/>
                         </holdingPriorities>
                     </splitView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="45">
-                        <rect key="frame" x="165" y="5" width="214" height="13"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="45">
+                        <rect key="frame" x="180" y="5" width="210" height="13"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="The transcripts have not been indexed yet." id="49">
                             <font key="font" metaFont="label"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -156,6 +153,18 @@
                         </textFieldCell>
                     </textField>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="45" secondAttribute="bottom" constant="5" id="4nI-UY-hVv"/>
+                    <constraint firstItem="13" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="20" symbolic="YES" id="6WX-kB-NYq"/>
+                    <constraint firstItem="45" firstAttribute="top" secondItem="44" secondAttribute="bottom" constant="8" symbolic="YES" id="6kD-9n-ZOO"/>
+                    <constraint firstItem="13" firstAttribute="top" secondItem="6" secondAttribute="top" constant="6" id="6yC-c2-0xk"/>
+                    <constraint firstItem="13" firstAttribute="centerX" secondItem="44" secondAttribute="centerX" id="8fE-D9-ssa"/>
+                    <constraint firstItem="45" firstAttribute="centerX" secondItem="6" secondAttribute="centerX" id="EPb-Nh-Qpd"/>
+                    <constraint firstItem="44" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="PTz-hH-2vd"/>
+                    <constraint firstItem="44" firstAttribute="top" secondItem="13" secondAttribute="bottom" constant="8" symbolic="YES" id="Tsb-Z2-32J"/>
+                    <constraint firstAttribute="trailing" secondItem="13" secondAttribute="trailing" constant="20" symbolic="YES" id="cgV-SQ-CF5"/>
+                    <constraint firstItem="45" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6" secondAttribute="leading" constant="167" id="zfT-bd-8AY"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="139" y="143"/>
         </window>
