@@ -15,12 +15,12 @@
 	IBOutlet NSPopUpButton *encodingSelection;
 	IBOutlet NSPopUpButton *styleSelection;
 	IBOutlet NSPopUpButton *emoticonSelection;
-	IBOutlet NSButtonCell *privateRoom;
-	IBOutlet NSButtonCell *secretRoom;
-	IBOutlet NSButtonCell *inviteOnly;
-	IBOutlet NSButtonCell *noOutside;
-	IBOutlet NSButtonCell *moderated;
-	IBOutlet NSButtonCell *topicChangeable;
+	IBOutlet NSButton *privateRoom;
+	IBOutlet NSButton *secretRoom;
+	IBOutlet NSButton *inviteOnly;
+	IBOutlet NSButton *noOutside;
+	IBOutlet NSButton *moderated;
+	IBOutlet NSButton *topicChangeable;
 	IBOutlet NSButton *limitMembers;
 	IBOutlet NSTextField *memberLimit;
 	IBOutlet NSButton *requiresPassword;

@@ -116,23 +116,23 @@
 			[limitMembers setState:NSOffState];
 			[sender setEnabled:NO];
 		}
-	} else if( [sender selectedCell] == privateRoom ) {
-		if( [[sender selectedCell] state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomPrivateMode];
+	} else if( sender == privateRoom ) {
+		if( [sender state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomPrivateMode];
 		else [(MVChatRoom *)[_room target] removeMode:MVChatRoomPrivateMode];
-	} else if( [sender selectedCell] == secretRoom ) {
-		if( [[sender selectedCell] state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomSecretMode];
+	} else if( sender == secretRoom ) {
+		if( [sender state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomSecretMode];
 		else [(MVChatRoom *)[_room target] removeMode:MVChatRoomSecretMode];
-	} else if( [sender selectedCell] == inviteOnly ) {
-		if( [[sender selectedCell] state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomInviteOnlyMode];
+	} else if( sender == inviteOnly ) {
+		if( [sender state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomInviteOnlyMode];
 		else [(MVChatRoom *)[_room target] removeMode:MVChatRoomInviteOnlyMode];
-	} else if( [sender selectedCell] == noOutside ) {
-		if( [[sender selectedCell] state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomNoOutsideMessagesMode];
+	} else if( sender == noOutside ) {
+		if( [sender state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomNoOutsideMessagesMode];
 		else [(MVChatRoom *)[_room target] removeMode:MVChatRoomNoOutsideMessagesMode];
-	} else if( [sender selectedCell] == topicChangeable ) {
-		if( [[sender selectedCell] state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomOperatorsOnlySetTopicMode];
+	} else if( sender == topicChangeable ) {
+		if( [sender state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomOperatorsOnlySetTopicMode];
 		else [(MVChatRoom *)[_room target] removeMode:MVChatRoomOperatorsOnlySetTopicMode];
-	} else if( [sender selectedCell] == moderated ) {
-		if( [[sender selectedCell] state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomNormalUsersSilencedMode];
+	} else if( sender == moderated ) {
+		if( [sender state] ) [(MVChatRoom *)[_room target] setMode:MVChatRoomNormalUsersSilencedMode];
 		else [(MVChatRoom *)[_room target] removeMode:MVChatRoomNormalUsersSilencedMode];
 	}
 }
