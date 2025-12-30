@@ -187,7 +187,7 @@
 		[item setTarget:self];
 		[menu addItem:item];
 
-		item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Clear Marks from Here Down", "clear marks from here up contextual menu") action:@selector( clearMarksHereGreater: ) keyEquivalent:@""];
+		item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString( @"Clear Marks from Here Down", "clear marks from here down contextual menu") action:@selector( clearMarksHereGreater: ) keyEquivalent:@""];
 		[item setTarget:self];
 		[menu addItem:item];
 	}
